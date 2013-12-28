@@ -26,10 +26,9 @@ import scala.language.implicitConversions"""
 
     def implicitCoercions: List[String] = {
       val coercions = this match {
-        case B     => companionCoercions(S, I, L, F, D)
-        case S | C => companionCoercions(I, L, F, D)
-        case I     => companionCoercions(L, F, D)
-        case L     => companionCoercions(F, D)
+        case B     => companionCoercions(S, I, L)
+        case S | C => companionCoercions(I, L)
+        case I     => companionCoercions(L)
         case F     => companionCoercions(D)
         case _     => Nil
       }
