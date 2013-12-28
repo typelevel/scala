@@ -477,7 +477,7 @@ abstract class BCodeIdiomatic extends SubComponent {
       val isDenseEnough: Boolean = {
         /* Calculate in long to guard against overflow. TODO what overflow? */
         val keyRangeD: Double = (keyMax.asInstanceOf[Long] - keyMin + 1).asInstanceOf[Double]
-        val klenD:     Double = keys.length
+        val klenD:     Double = keys.length.toDouble
         val kdensity:  Double = (klenD / keyRangeD)
 
         kdensity >= minDensity

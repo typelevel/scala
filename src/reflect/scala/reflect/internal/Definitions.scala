@@ -53,8 +53,8 @@ trait Definitions extends api.StandardDefinitions {
       tpnme.Short  -> 4,
       tpnme.Int    -> 12,
       tpnme.Long   -> 24,
-      tpnme.Float  -> 48,
-      tpnme.Double -> 96
+      tpnme.Float  -> 7,
+      tpnme.Double -> 35
     )
 
     private val nameToTag = Map[Name, Char](

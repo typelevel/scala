@@ -466,7 +466,7 @@ private[parallel] final class FutureTasks(executor: ExecutionContext) extends Ta
   import scala.concurrent._
   import scala.util._
 
-  private val maxdepth = (math.log(parallelismLevel) / math.log(2) + 1).toInt
+  private val maxdepth = (math.log(parallelismLevel.toDouble) / math.log(2.toDouble) + 1).toInt
 
   val environment: ExecutionContext = executor
 
