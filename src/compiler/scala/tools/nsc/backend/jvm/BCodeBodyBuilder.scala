@@ -55,8 +55,8 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
              CHAR  |
              INT     => bc.iconst(0)
         case LONG    => bc.lconst(0)
-        case FLOAT   => bc.fconst(0)
-        case DOUBLE  => bc.dconst(0)
+        case FLOAT   => bc.fconst(0f)
+        case DOUBLE  => bc.dconst(0d)
         case UNIT    => ()
         case _ => emit(asm.Opcodes.ACONST_NULL)
       }

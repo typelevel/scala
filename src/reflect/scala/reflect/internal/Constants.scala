@@ -57,7 +57,7 @@ trait Constants extends api.Constants {
     def isCharRange: Boolean  = isIntRange && Char.MinValue <= intValue && intValue <= Char.MaxValue
     def isIntRange: Boolean   = ByteTag <= tag && tag <= IntTag
     def isLongRange: Boolean  = ByteTag <= tag && tag <= LongTag
-    def isFloatRange: Boolean = ByteTag <= tag && tag <= FloatTag
+    def isDoubleRange: Boolean= FloatTag == tag || tag == DoubleTag
     def isNumeric: Boolean    = ByteTag <= tag && tag <= DoubleTag
     def isNonUnitAnyVal       = BooleanTag <= tag && tag <= DoubleTag
     def isAnyVal              = UnitTag <= tag && tag <= DoubleTag
@@ -190,9 +190,7 @@ trait Constants extends api.Constants {
         Constant(intValue)
       else if (target == LongClass && isLongRange)
         Constant(longValue)
-      else if (target == FloatClass && isFloatRange)
-        Constant(floatValue)
-      else if (target == DoubleClass && isNumeric)
+      else if (target == DoubleClass && isDoubleRange)
         Constant(doubleValue)
       else
         null
