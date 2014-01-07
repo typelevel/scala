@@ -4,7 +4,7 @@ t3971.scala:6: error: type mismatch;
   f(g("abc")("def")) // g returns Int, needs String
      ^
 t3971.scala:7: error: type mismatch;
- found   : Int(5)
+ found   : 5.type (with underlying type Int)
  required: String
   f(5)
     ^

@@ -5107,11 +5107,14 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
       }
 
       def typedSingletonTypeTree(tree: SingletonTypeTree) = {
-        val refTyped =
-          context.withImplicitsDisabled {
-            typed(tree.ref, MonoQualifierModes | mode.onlyTypePat, AnyRefTpe)
-          }
-
+        val pt = if (tree.isLiteral) AnyClass.tpe else AnyRefClass.tpe
+        val refTyped = context.withImplicitsDisabled {
+          typed(tree.ref, MonoQualifierModes | mode.onlyTypePat, pt)
+        }
+        tree setType {
+          if (tree.isLiteral) refTyped.tpe.resultType.asDeclaredSingleton
+          else refTyped.tpe.resultType
+        }
         if (!refTyped.isErrorTyped)
           tree setType refTyped.tpe.resultType
 

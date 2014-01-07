@@ -1,5 +1,5 @@
 t5892.scala:5: error: type mismatch;
- found   : Boolean(false)
+ found   : false.type (with underlying type Boolean)
  required: String
 class C[@annot(false) X] {
                ^
@@ -7,7 +7,7 @@ t5892.scala:9: error: not found: value b2s
 class D[@annot(b2s(false)) X] {
                ^
 t5892.scala:13: error: type mismatch;
- found   : Boolean(false)
+ found   : false.type (with underlying type Boolean)
  required: String
 @annot(false) class E {
        ^

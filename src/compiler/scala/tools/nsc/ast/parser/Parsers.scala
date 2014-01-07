@@ -674,11 +674,11 @@ self =>
 
     def isExprIntro: Boolean = isExprIntroToken(in.token)
 
-    def isTypeIntroToken(token: Token): Boolean = token match {
+    def isTypeIntroToken(token: Token): Boolean = isLiteralToken(token) || (token match {
       case IDENTIFIER | BACKQUOTED_IDENT | THIS |
            SUPER | USCORE | LPAREN | AT => true
       case _ => false
-    }
+    })
 
     def isStatSeqEnd = in.token == RBRACE || in.token == EOF
 
@@ -1090,6 +1090,12 @@ self =>
         if (in.token == DOT) t = selectors(t, typeOK, in.skipToken())
       } else {
         val tok = in.token
+        if (tok != BACKQUOTED_IDENT && tok != IDENTIFIER && tok != NULL) {
+          val lit = literal(false)
+          accept(DOT)
+          accept(TYPE)
+          return atPos(start)(new SingletonTypeTree(lit) { override val isLiteral = true })
+        }
         val name = ident()
         t = atPos(start) {
           if (tok == BACKQUOTED_IDENT) Ident(name) updateAttachment BackquotedIdentifierAttachment
