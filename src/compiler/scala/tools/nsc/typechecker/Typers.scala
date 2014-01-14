@@ -744,7 +744,7 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
     /** Perform the following adaptations of expression, pattern or type `tree` wrt to
      *  given mode `mode` and given prototype `pt`:
      *  (-1) For expressions with annotated types, let AnnotationCheckers decide what to do
-     *  (0) Convert expressions with constant types to literals (unless in interactive/scaladoc mode)
+     *  (0) Convert expressions with constant types to literals (unless in interactive/scaladoc mode or dealing with a singleton type)
      *  (1) Resolve overloading, unless mode contains FUNmode
      *  (2) Apply parameterless functions
      *  (3) Apply polymorphic types to fresh instances of their type parameters and
@@ -1096,7 +1096,7 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
       } else tree.tpe match {
         case atp @ AnnotatedType(_, _) if canAdaptAnnotations(tree, this, mode, pt) => // (-1)
           adaptAnnotations(tree, this, mode, pt)
-        case ct @ ConstantType(value) if mode.inNone(TYPEmode | FUNmode) && (ct <:< pt) && canAdaptConstantTypeToLiteral => // (0)
+        case ct @ ConstantType(value) if mode.inNone(TYPEmode | FUNmode) && (ct <:< pt) && canAdaptConstantTypeToLiteral && !ct.isDeclaredSingleton => // (0)
           adaptConstant(value)
         case OverloadedType(pre, alts) if !mode.inFunMode => // (1)
           inferExprAlternative(tree, pt)
@@ -5107,9 +5107,8 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
       }
 
       def typedSingletonTypeTree(tree: SingletonTypeTree) = {
-        val pt = if (tree.isLiteral) AnyClass.tpe else AnyRefClass.tpe
         val refTyped = context.withImplicitsDisabled {
-          typed(tree.ref, MonoQualifierModes | mode.onlyTypePat, pt)
+          typed(tree.ref, MonoQualifierModes | mode.onlyTypePat, AnyClass.tpe)
         }
         tree setType {
           if (tree.isLiteral) refTyped.tpe.resultType.asDeclaredSingleton

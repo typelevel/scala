@@ -861,7 +861,13 @@ self =>
         in.nextToken()
         if (in.token == RPAREN) {
           in.nextToken()
-          atPos(start, accept(ARROW)) { makeFunctionTypeTree(Nil, typ()) }
+          if (in.token == DOT && lookingAhead { in.token == TYPE }) {
+            accept(DOT)
+            accept(TYPE)
+            atPos(start)(new SingletonTypeTree(Literal(Constant(()))) { override val isLiteral = true })
+          } else {
+            atPos(start, accept(ARROW)) { makeFunctionTypeTree(Nil, typ()) }
+          }
         }
         else {
           val ts = functionTypes()

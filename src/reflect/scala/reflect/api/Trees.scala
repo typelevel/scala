@@ -1872,7 +1872,7 @@ trait Trees { self: Universe =>
   trait SingletonTypeTreeApi extends TypTreeApi { this: SingletonTypeTree =>
     /** The underlying reference. */
     def ref: Tree
-    def isLiteral = false
+    def isLiteral = false // TODO: какое-то стремное имя как на мой вкус
   }
 
   /** Type selection <qualifier> # <name>, eliminated by RefCheck
