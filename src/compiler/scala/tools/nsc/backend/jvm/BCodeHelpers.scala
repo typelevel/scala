@@ -470,6 +470,7 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
   trait BCAnnotGen extends BCInnerClassGen {
 
     import genASM.{ubytesToCharArray, arrEncode}
+    import bCodeAsmCommon.{shouldEmitAnnotation, isRuntimeVisible}
 
     /*
      *  can-multi-thread
@@ -534,17 +535,6 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
       }
     }
 
-    /* Whether an annotation should be emitted as a Java annotation
-     *   .initialize: if 'annot' is read from pickle, atp might be un-initialized
-     *
-     * must-single-thread
-     */
-    private def shouldEmitAnnotation(annot: AnnotationInfo) =
-      annot.symbol.initialize.isJavaDefined &&
-      annot.matches(definitions.ClassfileAnnotationClass) &&
-      annot.args.isEmpty &&
-      !annot.matches(definitions.DeprecatedAttr)
-
     /*
      * In general,
      *   must-single-thread
@@ -564,7 +554,7 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
       for(annot <- annotations; if shouldEmitAnnotation(annot)) {
         val AnnotationInfo(typ, args, assocs) = annot
         assert(args.isEmpty, args)
-        val av = cw.visitAnnotation(descriptor(typ), true)
+        val av = cw.visitAnnotation(descriptor(typ), isRuntimeVisible(annot))
         emitAssocs(av, assocs)
       }
     }
@@ -576,7 +566,7 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
       for(annot <- annotations; if shouldEmitAnnotation(annot)) {
         val AnnotationInfo(typ, args, assocs) = annot
         assert(args.isEmpty, args)
-        val av = mw.visitAnnotation(descriptor(typ), true)
+        val av = mw.visitAnnotation(descriptor(typ), isRuntimeVisible(annot))
         emitAssocs(av, assocs)
       }
     }
@@ -588,7 +578,7 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
       for(annot <- annotations; if shouldEmitAnnotation(annot)) {
         val AnnotationInfo(typ, args, assocs) = annot
         assert(args.isEmpty, args)
-        val av = fw.visitAnnotation(descriptor(typ), true)
+        val av = fw.visitAnnotation(descriptor(typ), isRuntimeVisible(annot))
         emitAssocs(av, assocs)
       }
     }
@@ -603,7 +593,7 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
            annot <- annots) {
         val AnnotationInfo(typ, args, assocs) = annot
         assert(args.isEmpty, args)
-        val pannVisitor: asm.AnnotationVisitor = jmethod.visitParameterAnnotation(idx, descriptor(typ), true)
+        val pannVisitor: asm.AnnotationVisitor = jmethod.visitParameterAnnotation(idx, descriptor(typ), isRuntimeVisible(annot))
         emitAssocs(pannVisitor, assocs)
       }
     }
@@ -625,13 +615,6 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
   } // end of trait BCJGenSigGen
 
   trait BCForwardersGen extends BCAnnotGen with BCJGenSigGen {
-
-    // -----------------------------------------------------------------------------------------
-    // Static forwarders (related to mirror classes but also present in
-    // a plain class lacking companion module, for details see `isCandidateForForwarders`).
-    // -----------------------------------------------------------------------------------------
-
-    val ExcludedForwarderFlags = genASM.ExcludedForwarderFlags
 
     /* Adds a @remote annotation, actual use unknown.
      *
@@ -728,7 +711,7 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
       }
       debuglog(s"Potentially conflicting names for forwarders: $conflictingNames")
 
-      for (m <- moduleClass.info.membersBasedOnFlags(ExcludedForwarderFlags, symtab.Flags.METHOD)) {
+      for (m <- moduleClass.info.membersBasedOnFlags(bCodeAsmCommon.ExcludedForwarderFlags, symtab.Flags.METHOD)) {
         if (m.isType || m.isDeferred || (m.owner eq definitions.ObjectClass) || m.isConstructor)
           debuglog(s"No forwarder for '$m' from $jclassName to '$moduleClass'")
         else if (conflictingNames(m.name))
