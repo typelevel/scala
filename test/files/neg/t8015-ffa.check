@@ -1,5 +1,5 @@
 t8015-ffa.scala:7: error: type mismatch;
- found   : String("3")
+ found   : "3".type (with underlying type String)
  required: Int
   val i: Int = "3"      // error line 7 (was 8)
                ^
