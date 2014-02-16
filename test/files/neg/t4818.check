@@ -1,11 +1,6 @@
 t4818.scala:4: error: type mismatch;
-<<<<<<< HEAD
- found   : Int(5)
- required: Nothing
-=======
  found   : 5.type (with underlying type Int)
- required: A
->>>>>>> WIP: trying to apply the Literal-based singleton types commit by @paulp to the master.
+ required: Nothing
 	def f(x: Any) = x match { case Fn(f) => f(5) }
                                                   ^
 one error found
