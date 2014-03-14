@@ -44,10 +44,17 @@ object Test {
 
   def f[T](x: T)(implicit succ: Succ[T]) = succ(x)
 
+  case class Residue[N <: Int : SingleInhabitant](n: Long) { lhs =>
+    def +(rhs: Residue[N]): Residue[N] =
+      Residue((lhs.n + rhs.n) % inhabitant[N])
+  }
+
+
   def main(args: Array[String]): Unit = {
     println(f(1))
     // println(f(5))
     println((g(1), g(5), g(7)))
+    println(Residue[13.type](15) + Residue[13.type](20))
   }
   /*
 scala> val x: null.type = null

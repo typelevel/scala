@@ -776,6 +776,7 @@ trait StdNames {
     val values : NameType              = "values"
     val wait_ : NameType               = "wait"
     val withFilter: NameType           = "withFilter"
+    val witness: NameType              = "witness"
     val zero: NameType                 = "zero"
 
     // quasiquote interpolators:
