@@ -49,12 +49,23 @@ object Test {
       Residue((lhs.n + rhs.n) % inhabitant[N])
   }
 
+  class Ranged[From <: Int : SingleInhabitant, To <: Int : SingleInhabitant] {
+    def value = {
+      val rnd = new scala.util.Random
+      val from = inhabitant[From]
+      val to = inhabitant[To]
+      (from + rnd.nextInt(to - from + 1))
+    }
+  }
+
+  val range = new Ranged[10.type, 20.type]
 
   def main(args: Array[String]): Unit = {
     println(f(1))
     // println(f(5))
     println((g(1), g(5), g(7)))
     println(Residue[13.type](15) + Residue[13.type](20))
+    println(range.value <= 20, range.value >= 10)
   }
   /*
 scala> val x: null.type = null
