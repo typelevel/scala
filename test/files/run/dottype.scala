@@ -67,6 +67,7 @@ object Test {
     println(Residue[13.type](15) + Residue[13.type](20))
     println(range.value <= 20, range.value >= 10)
   }
+  // Problems with null
   /*
 scala> val x: null.type = null
 <console>:1: error: identifier expected but 'null' found.
@@ -99,4 +100,20 @@ scala> def tst(x: Int) = x match {
 java.lang.IllegalArgumentException: requirement failed: expandTypes(<notype>, List(Null), <none>)
    */
 
+  // Inlining functions with singleton result type
+  /*
+scala> def ok(): 7.type = {
+     | println("PANDA!")
+     | 7
+     | }
+ok: ()7.type
+
+scala> ok()
+res0: 7.type = 7
+
+// Expected:
+scala> ok()
+PANDA!
+res0: 7.type = 7
+   */
 }
