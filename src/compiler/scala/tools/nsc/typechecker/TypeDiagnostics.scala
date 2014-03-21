@@ -504,6 +504,7 @@ trait TypeDiagnostics {
           && !targets(m)
           && !(m.name == nme.WILDCARD)              // e.g. val _ = foo
           && !ignoreNames(m.name.toTermName)        // serialization methods
+          // TODO (folone): inlining of defs with literal-based singleton type results?
           && !isConstantType(m.info.resultType)     // subject to constant inlining
           && !treeTypes.exists(_ contains m)        // e.g. val a = new Foo ; new a.Bar
         )

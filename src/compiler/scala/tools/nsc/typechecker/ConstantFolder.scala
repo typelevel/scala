@@ -14,6 +14,7 @@ import java.lang.ArithmeticException
  *  @author Martin Odersky
  *  @version 1.0
  */
+// TODO (folone): ConstantType folding?
 abstract class ConstantFolder {
 
   val global: Global
