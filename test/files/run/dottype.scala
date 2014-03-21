@@ -58,7 +58,17 @@ object Test {
     }
   }
 
+  class IntegralRanged[N, From <: N : SingleInhabitant, To <: N : SingleInhabitant](implicit ev: Integral[N]) {
+    def value = {
+      val from = ev.toInt(inhabitant[From])
+      val to   = ev.toInt(inhabitant[To])
+      val rnd  = from + scala.util.Random.nextInt(to - from)
+      ev.fromInt(rnd)
+    }
+  }
+
   val range = new Ranged[10.type, 20.type]
+  val integral = new IntegralRanged[Int, 1.type, 50.type]
 
   def main(args: Array[String]): Unit = {
     println(f(1))
@@ -66,6 +76,7 @@ object Test {
     println((g(1), g(5), g(7)))
     println(Residue[13.type](15) + Residue[13.type](20))
     println(range.value <= 20, range.value >= 10)
+    println(integral.value <= 50, integral.value >= 1)
   }
   // Problems with null
   /*
