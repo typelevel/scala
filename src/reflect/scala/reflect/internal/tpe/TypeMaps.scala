@@ -77,19 +77,6 @@ private[internal] trait TypeMaps {
     }
   }
 
-  trait AnnotationFilter extends TypeMap {
-    def keepAnnotation(annot: AnnotationInfo): Boolean
-
-    override def mapOver(annot: AnnotationInfo) =
-      if (keepAnnotation(annot)) super.mapOver(annot)
-      else UnmappableAnnotation
-  }
-
-  trait KeepOnlyTypeConstraints extends AnnotationFilter {
-    // filter keeps only type constraint annotations
-    def keepAnnotation(annot: AnnotationInfo) = annot matches TypeConstraintClass
-  }
-
   // todo. move these into scala.reflect.api
 
   /** A prototype for mapping a function over all possible types
@@ -174,7 +161,7 @@ private[internal] trait TypeMaps {
         if (constr.instValid) this(constr.inst)
         else tv.applyArgs(mapOverArgs(tv.typeArgs, tv.params))  //@M !args.isEmpty implies !typeParams.isEmpty
       case AnnotatedType(annots, atp) =>
-        val annots1 = mapOverAnnotations(annots)
+        val annots1 = annots mapConserve mapOver
         val atp1 = this(atp)
         if ((annots1 eq annots) && (atp1 eq atp)) tp
         else if (annots1.isEmpty) atp1
@@ -247,30 +234,14 @@ private[internal] trait TypeMaps {
     def mapOver(annot: AnnotationInfo): AnnotationInfo = {
       val AnnotationInfo(atp, args, assocs) = annot
       val atp1  = mapOver(atp)
-      val args1 = mapOverAnnotArgs(args)
+      val args1 = args mapConserve mapOver
       // there is no need to rewrite assocs, as they are constants
 
       if ((args eq args1) && (atp eq atp1)) annot
-      else if (args1.isEmpty && args.nonEmpty) UnmappableAnnotation  // some annotation arg was unmappable
       else AnnotationInfo(atp1, args1, assocs) setPos annot.pos
     }
 
-    def mapOverAnnotations(annots: List[AnnotationInfo]): List[AnnotationInfo] = {
-      val annots1 = annots mapConserve mapOver
-      if (annots1 eq annots) annots
-      else annots1 filterNot (_ eq UnmappableAnnotation)
-    }
-
-    /** Map over a set of annotation arguments.  If any
-      *  of the arguments cannot be mapped, then return Nil.  */
-    def mapOverAnnotArgs(args: List[Tree]): List[Tree] = {
-      val args1 = args mapConserve mapOver
-      if (args1 contains UnmappableTree) Nil
-      else args1
-    }
-
-    def mapOver(tree: Tree): Tree =
-      mapOver(tree, () => return UnmappableTree)
+    def mapOver(tree: Tree): Tree = mapOver(tree, () => return EmptyTree)
 
     /** Map a tree that is part of an annotation argument.
       *  If the tree cannot be mapped, then invoke giveup().
@@ -430,7 +401,7 @@ private[internal] trait TypeMaps {
 
   /** A map to compute the asSeenFrom method.
     */
-  class AsSeenFromMap(seenFromPrefix: Type, seenFromClass: Symbol) extends TypeMap with KeepOnlyTypeConstraints {
+  class AsSeenFromMap(seenFromPrefix: Type, seenFromClass: Symbol) extends TypeMap {
     // Some example source constructs relevant in asSeenFrom:
     //
     // object CaptureThis {
@@ -841,7 +812,7 @@ private[internal] trait TypeMaps {
 
   /** Note: This map is needed even for non-dependent method types, despite what the name might imply.
     */
-  class InstantiateDependentMap(params: List[Symbol], actuals0: List[Type]) extends TypeMap with KeepOnlyTypeConstraints {
+  class InstantiateDependentMap(params: List[Symbol], actuals0: List[Type]) extends TypeMap {
     private val actuals      = actuals0.toIndexedSeq
     private val existentials = new Array[Symbol](actuals.size)
     def existentialsNeeded: List[Symbol] = existentials.iterator.filter(_ ne null).toList

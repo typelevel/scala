@@ -1059,9 +1059,7 @@ abstract class SpecializeTypes extends InfoTransform with TypingTransformers {
    *  primitive type losing the annotation.
    */
   private def subst(env: TypeEnv, tpe: Type): Type = {
-    class FullTypeMap(from: List[Symbol], to: List[Type]) extends SubstTypeMap(from, to) with AnnotationFilter {
-      def keepAnnotation(annot: AnnotationInfo) = !(annot matches uncheckedVarianceClass)
-
+    class FullTypeMap(from: List[Symbol], to: List[Type]) extends SubstTypeMap(from, to) {
       override def mapOver(tp: Type): Type = tp match {
         case ClassInfoType(parents, decls, clazz) =>
           val parents1  = parents mapConserve this
