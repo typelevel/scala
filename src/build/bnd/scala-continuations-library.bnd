@@ -1,5 +1,0 @@
-Bundle-Name: Scala Delimited Continuations Library
-Bundle-SymbolicName: org.scala-lang.plugins.scala-continuations-library
-ver: @VERSION@
-Bundle-Version: ${ver}
-Export-Package: *;version=${ver}

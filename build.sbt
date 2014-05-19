@@ -11,15 +11,14 @@ lazy val library = project.sub.mima plus "forkjoin" settings (
 )
 
 lazy val partest = (
-  project.sub plus ("partest-extras", "partest-javaagent") dependsOn compiler intransitiveDeps (
+  project.sub dependsOn compiler intransitiveDeps (
     "org.scala-lang.modules"         % "scala-xml_2.11"                % "1.0.1",
     "org.scala-lang.modules"         % "scala-parser-combinators_2.11" % "1.0.1",
     "org.scalacheck"                 % "scalacheck_2.11"               % "1.11.3",
     "org.scala-lang"                 % "scalap"                        % "2.11.0",
     "org.apache.ant"                 % "ant"                           % "1.9.4",
     "com.googlecode.java-diff-utils" % "diffutils"                     % "1.3.0",
-    "org.scala-sbt"                  % "test-interface"                %  "1.0",
-    "org.scala-lang"                 % "scala-actors"                  % "2.11.0"  % "test"
+    "org.scala-sbt"                  % "test-interface"                %  "1.0"
   )
   settings (
                            fork in Test := true,
@@ -31,7 +30,7 @@ lazy val partest = (
 )
 
 lazy val compiler = (
-  project.sub plus ("compiler", "reflect", "repl", "interactive", "scaladoc") dependsOn (asm, library) intransitiveDeps (
+  project.sub plus ("compiler", "reflect", "repl", "scaladoc") dependsOn (asm, library) intransitiveDeps (
     "org.apache.ant"         % "ant"                           % "1.9.4",
     "org.scala-lang.modules" % "scala-xml_2.11"                % "1.0.1", // temporary - scaladoc
     "org.scala-lang.modules" % "scala-parser-combinators_2.11" % "1.0.1"  // temporary - scaladoc
