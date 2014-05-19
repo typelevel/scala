@@ -7,9 +7,10 @@ trait Constants {
   def partestRunnerClass  = "scala.tools.partest.nest.ConsoleRunner"
   def replRunnerClass     = "scala.tools.nsc.MainGenericRunner"
   def compilerRunnerClass = "scala.tools.nsc.Main"
-  def scalacArgs          = wordSeq("-optimize -Ywarn-unused -Ywarn-unused-import")
-  def partestArgs         = wordSeq("-optimize -deprecation -unchecked -Xlint")
-  def javacArgs           = wordSeq("-nowarn")
+
+  def scalacArgs  = wordSeq("-optimize -Ywarn-unused -Ywarn-unused-import")
+  def partestArgs = wordSeq("-optimize -deprecation -unchecked -Xlint")
+  def javacArgs   = wordSeq("-nowarn")
 
   type Parser[+A] = sbt.complete.Parser[A]
 

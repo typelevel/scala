@@ -2,42 +2,43 @@ import policy._, build._
 
 policyBuildSettings
 
-lazy val asm = project.sub settings (
-   javaSource in Compile := buildBase.value / "src" / "asm"
-)
+lazy val asm = project.sub
 
-lazy val library = project.sub.mima settings (
-                 scalaSource in Compile :=  buildBase.value / "src" / "library",
-                  javaSource in Compile <<= scalaSource in Compile,
-  unmanagedSourceDirectories in Compile +=  buildBase.value / "src" / "forkjoin",
-               scalacOptions in Compile ++= strings("-sourcepath", (scalaSource in Compile).value),
-                       previousArtifact :=  Some(scalaModuleId("library").value),
-                     binaryIssueFilters ++= MimaPolicy.filters
+lazy val library = project.sub.mima plus "forkjoin" settings (
+   scalacOptions in Compile ++= strings("-sourcepath", (scalaSource in Compile).value),
+           previousArtifact :=  Some(scalaModuleId("library").value),
+         binaryIssueFilters ++= MimaPolicy.filters
 )
 
 lazy val partest = (
-  project.sub dependsOn compiler intransitiveDeps (
+  project.sub plus ("partest-extras", "partest-javaagent") dependsOn compiler intransitiveDeps (
     "org.scala-lang.modules"         % "scala-xml_2.11"                % "1.0.1",
     "org.scala-lang.modules"         % "scala-parser-combinators_2.11" % "1.0.1",
     "org.scalacheck"                 % "scalacheck_2.11"               % "1.11.3",
     "org.scala-lang"                 % "scalap"                        % "2.11.0",
     "org.apache.ant"                 % "ant"                           % "1.9.4",
     "com.googlecode.java-diff-utils" % "diffutils"                     % "1.3.0",
-    "org.scala-sbt"                  % "test-interface"                %   "1.0"
+    "org.scala-sbt"                  % "test-interface"                %  "1.0",
+    "org.scala-lang"                 % "scala-actors"                  % "2.11.0"  % "test"
   )
   settings (
-    unmanagedSourceDirectories in Compile ++= (buildBase.value / "src" * "partest-*").get
+                           fork in Test := true,
+                                   test := Partest.runAllTests.value,
+                               testOnly := Partest.runTests.evaluated,
+        javacOptions in (Test, compile) := wordSeq("-nowarn"),
+       scalacOptions in (Test, compile) := wordSeq("-optimize -deprecation -unchecked -Xlint")
   )
 )
 
 lazy val compiler = (
-  project.sub dependsOn (asm, library) intransitiveDeps (
-    "org.apache.ant" % "ant" % "1.9.4"
+  project.sub plus ("compiler", "reflect", "repl", "interactive", "scaladoc") dependsOn (asm, library) intransitiveDeps (
+    "org.apache.ant"         % "ant"                           % "1.9.4",
+    "org.scala-lang.modules" % "scala-xml_2.11"                % "1.0.1", // temporary - scaladoc
+    "org.scala-lang.modules" % "scala-parser-combinators_2.11" % "1.0.1"  // temporary - scaladoc
   )
   settings (
-    unmanagedSourceDirectories in Compile ++= Seq(buildBase.value / "src" / "reflect", buildBase.value / "src" / "compiler"),
-                 sourceGenerators in Test <+= Partest.explodeSbtSources,
-                      libraryDependencies ++= jline :: sbtModuleId("interface", "compiler-interface").value
+       sourceGenerators in Test <+= Partest.explodeSbtSources,
+            libraryDependencies ++= jline :: sbtModuleId("interface", "compiler-interface").value
   )
 )
 
@@ -46,15 +47,11 @@ lazy val root = (
     dependsOn (asm, library, compiler, partest)
     aggregate (asm, library, compiler, partest)
      settings (
-              publishArtifact :=  false,
-                  fork in run :=  true,
-                 fork in Test :=  true,
-          javaOptions in Test ++= Partest.testJavaOptions.value,
-        scalacOptions in Test :=  Nil,
-        unmanagedBase in Test :=  baseDirectory.value / "test" / "lib",
-                         test :=  Partest.runAllTests.value,
-                     testOnly :=  Partest.runTests.evaluated,
-                          run :=  Runners.runInput(compilerRunnerClass)("-usejavacp").evaluated,
-                         repl :=  Runners.runInput(replRunnerClass, Props.unsuppressTraces)("-usejavacp").evaluated
+          publishArtifact := false,
+                     test := (test in partest).value,
+                 testOnly := (testOnly in partest).value,
+              fork in run := true,
+                      run := Runners.runInput(compilerRunnerClass)("-usejavacp").evaluated,
+                     repl := Runners.runInput(replRunnerClass, Props.unsuppressTraces)("-usejavacp").evaluated
     )
 )

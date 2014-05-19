@@ -48,7 +48,7 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   )
   def scopedSubProjectSettings = subProjectSettings ++ List(
                       javacOptions in Compile ++= javacArgs,
-                     scalacOptions in Compile ++= scalacArgs,
+          scalacOptions in (Compile, compile) ++= scalacArgs,
                 resourceGenerators in Compile <+= Props.generateProperties(),
                       publishArtifact in Test :=  false,
         publishArtifact in (Test, packageBin) :=  false,
@@ -57,14 +57,14 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   )
 
   implicit class ProjectOps(val p: Project) {
-    private def legacy(id: String): List[Setting[_]] = List(
-      scalaSource in Compile := buildBase.value / "src" / id,
-       javaSource in Compile <<= scalaSource in Compile
-    )
+    private def mainSources = p.id match {
+      case "partest" => Nil
+      case id        => List(scalaSource in Compile := buildBase.value / "src" / id, javaSource in Compile <<= scalaSource in Compile)
+    }
 
-    def mima                                     = p settings (mimaDefaultSettings: _*)
-    def sub                                      = p settings (scopedSubProjectSettings: _*)
-    def deps(ms: ModuleID*): Project             = p settings (libraryDependencies ++= ms)
-    def intransitiveDeps(ms: ModuleID*): Project = p settings (libraryDependencies ++= intransitively(ms: _*))
+    def sub                             = p settings (mainSources ++ scopedSubProjectSettings: _*)
+    def mima                            = p settings (mimaDefaultSettings: _*)
+    def plus(extras: String*)           = p settings (unmanagedSourceDirectories in Compile ++= extras map (buildBase.value / "src" / _))
+    def intransitiveDeps(ms: ModuleID*) = p settings (libraryDependencies ++= intransitively(ms: _*))
   }
 }
