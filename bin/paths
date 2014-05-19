@@ -9,10 +9,12 @@ cd "$(dirname "$0")/.."
 
 # We have to enumerate good test dirs since partest chokes and fails
 # on continuations, bench, etc. tests
-pathRegex="test/files/(pos|neg|jvm|run|scalap|presentation)/[^/.]+([.]scala)?\$"
+pathRegex="test/files/(pos|neg|jvm|run)/[^/.]+([.]scala)?\$"
 
 # Echo the argument only if it matches our idea of a test and exists.
 isPath () { [[ "$1" =~ $pathRegex ]] && [[ -e "$1" ]]; }
+
+existsEither () { isPath "$1.scala" || isPath "$1"; }
 
 # Filter stdin down to actual test paths.
 asTestPaths() {
@@ -21,6 +23,8 @@ asTestPaths() {
     p1="${p%.*}" && isPath "$p1.scala" && echo "$p1.scala" && continue
     # Or, matched file may be in a test subdirectory, so strip the last path segment and check
     p2="${p1%/*}" && isPath "$p2" && echo "$p2" && continue
+    # Or we might be looking at a stray logfile
+    p3="${p%-*.log}" && isPath "$p3" && echo "$p3" && continue
   done
 }
 

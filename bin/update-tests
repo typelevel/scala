@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+
+run () { echo "$@" && "$@"; }
+
+argsOrStdin () { [[ $# -gt 0 ]] && echo "$@" || cat - ; }
+
+paths=( "$(argsOrStdin "$@" | $(dirname $0)/paths)" )
+
+run sbt "testOnly --update-check ${paths[@]}"
