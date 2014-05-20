@@ -547,16 +547,8 @@ private[internal] trait TypeMaps {
 
         if (argIndex < 0)
           abort(s"Something is wrong: cannot find $lhs in applied type $rhs\n" + explain)
-        else {
-          val targ   = rhsArgs(argIndex)
-          // @M! don't just replace the whole thing, might be followed by type application
-          val result = appliedType(targ, lhsArgs mapConserve this)
-          def msg = s"Created $result, though could not find ${own_s(lhsSym)} among tparams of ${own_s(rhsSym)}"
-          if (!rhsSym.typeParams.contains(lhsSym))
-            devWarning(s"Inconsistent tparam/owner views: had to fall back on names\n$msg\n$explain")
-
-          result
-        }
+        else // @M! don't just replace the whole thing, might be followed by type application
+          appliedType(rhsArgs(argIndex), lhsArgs mapConserve this)
       }
     }
 

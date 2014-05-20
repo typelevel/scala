@@ -387,20 +387,9 @@ private[internal] trait GlbLubs {
             // Verify that every given type conforms to the calculated lub.
             // In theory this should not be necessary, but higher-order type
             // parameters are not handled correctly.
-            val ok = ts forall { t =>
-              isSubType(t, lubRefined, depth) || {
-                if (settings.debug || printLubs) {
-                  Console.println(
-                    "Malformed lub: " + lubRefined + "\n" +
-                      "Argument " + t + " does not conform.  Falling back to " + lubBase
-                  )
-                }
-                false
-              }
-            }
+            val ok = ts forall (t => isSubType(t, lubRefined, depth))
             // If not, fall back on the more conservative calculation.
-            if (ok) lubRefined
-            else lubBase
+            if (ok) lubRefined else lubBase
           }
         }
       // dropIllegalStarTypes is a localized fix for SI-6897. We should probably
@@ -408,18 +397,7 @@ private[internal] trait GlbLubs {
       // the likely and maybe only spot they escape, so fixing here for 2.10.1.
       existentialAbstraction(tparams, dropIllegalStarTypes(lubType))
     }
-    if (printLubs) {
-      println(indent + "lub of " + ts + " at depth "+depth)//debug
-      indent = indent + "  "
-      assert(indent.length <= 100)
-    }
-    if (Statistics.canEnable) Statistics.incCounter(nestedLubCount)
-    val res = lub0(ts)
-    if (printLubs) {
-      indent = indent stripSuffix "  "
-      println(indent + "lub of " + ts + " is " + res)//debug
-    }
-    res
+    lub0(ts)
   }
 
   val GlbFailure = new Throwable

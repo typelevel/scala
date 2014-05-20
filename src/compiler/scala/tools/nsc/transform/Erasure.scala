@@ -421,14 +421,6 @@ abstract class Erasure extends AddInterfaces
         clashErrors += Tuple2(pos, msg)
       }
       for (bc <- root.baseClasses) {
-        if (settings.debug)
-          exitingPostErasure(println(
-            sm"""check bridge overrides in $bc
-                |${bc.info.nonPrivateDecl(bridge.name)}
-                |${site.memberType(bridge)}
-                |${site.memberType(bc.info.nonPrivateDecl(bridge.name) orElse IntClass)}
-                |${(bridge.matchingSymbol(bc, site))}"""))
-
         def overriddenBy(sym: Symbol) =
           sym.matchingSymbol(bc, site).alternatives filter (sym => !sym.isBridge)
         for (overBridge <- exitingPostErasure(overriddenBy(bridge))) {
@@ -470,12 +462,6 @@ abstract class Erasure extends AddInterfaces
 
       val newFlags = (member.flags | BRIDGE | ARTIFACT) & ~(ACCESSOR | DEFERRED | LAZY | lateDEFERRED)
       val bridge   = other.cloneSymbolImpl(root, newFlags) setPos root.pos
-
-      debuglog("generating bridge from %s (%s): %s to %s: %s".format(
-        other, flagsToString(newFlags),
-        otpe + other.locationString, member,
-        specialErasure(root)(member.tpe) + member.locationString)
-      )
 
       // the parameter symbols need to have the new owner
       bridge setInfo (otpe cloneInfo bridge)
@@ -1088,7 +1074,6 @@ abstract class Erasure extends AddInterfaces
           treeCopy.Literal(tree, Constant(erased))
 
         case ClassDef(_,_,_,_) =>
-          debuglog("defs of " + tree.symbol + " = " + tree.symbol.info.decls)
           copyClassDef(tree)(tparams = Nil)
         case DefDef(_,_,_,_,_,_) =>
           copyDefDef(tree)(tparams = Nil)

@@ -1,4 +1,4 @@
-package scala
+ package scala
 package reflect
 package internal
 package tpe
@@ -50,12 +50,9 @@ trait TypeComparers {
       pre1 =:= pre2
   }
 
-  private def isSubPre(pre1: Type, pre2: Type, sym: Symbol) =
-    if ((pre1 ne pre2) && (pre1 ne NoPrefix) && (pre2 ne NoPrefix) && pre1 <:< pre2) {
-      if (settings.debug) println(s"new isSubPre $sym: $pre1 <:< $pre2")
-      true
-    } else
-      false
+  private def isSubPre(pre1: Type, pre2: Type, sym: Symbol) = (
+    (pre1 ne pre2) && (pre1 ne NoPrefix) && (pre2 ne NoPrefix) && (pre1 <:< pre2)
+  )
 
   private def equalSymsAndPrefixes(sym1: Symbol, pre1: Type, sym2: Symbol, pre2: Type): Boolean = (
     if (sym1 == sym2)
@@ -351,14 +348,10 @@ trait TypeComparers {
   // @assume tp1.isHigherKinded || tp2.isHigherKinded
   def isHKSubType(tp1: Type, tp2: Type, depth: Depth): Boolean = {
     def isSub(ntp1: Type, ntp2: Type) = (ntp1.withoutAnnotations, ntp2.withoutAnnotations) match {
-      case (TypeRef(_, AnyClass, _), _)                                     => false                    // avoid some warnings when Nothing/Any are on the other side
-      case (_, TypeRef(_, NothingClass, _))                                 => false
-      case (pt1: PolyType, pt2: PolyType)                                   => isPolySubType(pt1, pt2)  // @assume both .isHigherKinded (both normalized to PolyType)
-      case (_: PolyType, MethodType(ps, _)) if ps exists (_.tpe.isWildcard) => false                    // don't warn on HasMethodMatching on right hand side
-      case _                                                                =>                          // @assume !(both .isHigherKinded) thus cannot be subtypes
-        def tp_s(tp: Type): String = f"$tp%-20s ${util.shortClassOfInstance(tp)}%s"
-        devWarning(s"HK subtype check on $tp1 and $tp2, but both don't normalize to polytypes:\n  tp1=${tp_s(ntp1)}\n  tp2=${tp_s(ntp2)}")
-        false
+      case (TypeRef(_, AnyClass, _), _)     => false                    // avoid some warnings when Nothing/Any are on the other side
+      case (_, TypeRef(_, NothingClass, _)) => false
+      case (pt1: PolyType, pt2: PolyType)   => isPolySubType(pt1, pt2)  // @assume both .isHigherKinded (both normalized to PolyType)
+      case _                                => false                    // @assume !(both .isHigherKinded) thus cannot be subtypes
     }
 
     (    tp1.typeSymbol == NothingClass       // @M Nothing is subtype of every well-kinded type

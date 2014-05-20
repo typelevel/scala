@@ -475,13 +475,7 @@ trait BasicBlocks {
         case CJUMP(succ, fail, _, _)  => fail :: succ :: Nil
         case CZJUMP(succ, fail, _, _) => fail :: succ :: Nil
         case SWITCH(_, labels)        => labels
-        case RETURN(_)                => Nil
-        case THROW(_)                 => Nil
-        case _                        =>
-          if (closed)
-            devWarning(s"$lastInstruction/${lastInstruction.getClass.getName} is not a control flow instruction")
-
-          Nil
+        case _                        => Nil
       }
 
     /** Returns the predecessors of this block.     */

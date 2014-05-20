@@ -2585,7 +2585,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
       case s    => " in " + s
     }
     def fullLocationString: String = toString + locationString
-    def signatureString: String    = if (hasRawInfo) infoString(rawInfo) else "<_>"
+    def signatureString: String    = if (hasCompleteInfo) infoString(info) else "<_>"
 
     /** String representation of symbol's definition following its name */
     final def infoString(tp: Type): String = {
@@ -2648,7 +2648,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
 
     /** String representation of existentially bound variable */
     def existentialToString =
-      if (isSingletonExistential && !settings.debug.value)
+      if (isSingletonExistential)
         "val " + tpnme.dropSingletonName(name) + ": " + dropSingletonType(info.bounds.hi)
       else defString
   }

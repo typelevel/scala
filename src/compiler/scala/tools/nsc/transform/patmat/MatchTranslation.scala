@@ -159,7 +159,6 @@ trait MatchTranslation {
       def translate(): List[TreeMaker] = nextStep() merge (_.translate())
 
       private def setInfo(paramType: Type): Boolean = {
-        devWarning(s"resetting info of $this to $paramType")
         setVarInfo(binder, paramType)
         true
       }
