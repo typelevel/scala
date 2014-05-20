@@ -2,6 +2,8 @@ import policy._, build._
 
 policyBuildSettings
 
+incOptions := incOptions.value withAntStyle true
+
 lazy val asm = project.sub
 
 lazy val library = project.sub.mima plus "forkjoin" settings (

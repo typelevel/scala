@@ -8,9 +8,9 @@ trait Constants {
   def replRunnerClass     = "scala.tools.nsc.MainGenericRunner"
   def compilerRunnerClass = "scala.tools.nsc.Main"
 
-  def scalacArgs  = wordSeq("-optimize -Ywarn-unused -Ywarn-unused-import")
-  def partestArgs = wordSeq("-optimize -deprecation -unchecked -Xlint")
-  def javacArgs   = wordSeq("-nowarn")
+  def scalacArgs  = wordSeq("-Ywarn-unused") // -Ywarn-unused-import")
+  def partestArgs = wordSeq("-deprecation -unchecked") //-Xlint")
+  def javacArgs   = wordSeq("-nowarn -XDignore.symbol.file")
 
   type Parser[+A] = sbt.complete.Parser[A]
 
