@@ -1,0 +1,6 @@
+Test.scala:15: error: type mismatch;
+ found   : org.objectweb.asm.tree.InsnList
+ required: scala.tools.asm.tree.InsnList
+    val got = countMagicThrees(methodNode.instructions)
+                                          ^
+one error found

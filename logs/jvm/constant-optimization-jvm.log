@@ -1,0 +1,6 @@
+Test.scala:18: error: type mismatch;
+ found   : org.objectweb.asm.tree.InsnList
+ required: scala.tools.asm.tree.InsnList
+    val got = countComparisons(methodNode.instructions)
+                                          ^
+one error found

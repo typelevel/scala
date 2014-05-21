@@ -1,0 +1,22 @@
+classfile-format-51.scala:35: error: too many arguments for method visitMethodInsn: (x$1: Int, x$2: String, x$3: String, x$4: String)Unit
+    constructor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false)
+                               ^
+classfile-format-51.scala:50: error: too many arguments for method visitMethodInsn: (x$1: Int, x$2: String, x$3: String, x$4: String)Unit
+    bootstrap.visitMethodInsn(INVOKESTATIC, "java/lang/invoke/MethodHandles", "lookup", "()Ljava/lang/invoke/MethodHandles$Lookup;", false)
+                             ^
+classfile-format-51.scala:55: error: too many arguments for method visitMethodInsn: (x$1: Int, x$2: String, x$3: String, x$4: String)Unit
+    bootstrap.visitMethodInsn(INVOKEVIRTUAL, "java/lang/invoke/MethodHandles$Lookup", "lookupClass", "()Ljava/lang/Class;", false)
+                             ^
+classfile-format-51.scala:61: error: too many arguments for method visitMethodInsn: (x$1: Int, x$2: String, x$3: String, x$4: String)Unit
+    bootstrap.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Class", "getClassLoader", "()Ljava/lang/ClassLoader;", false)
+                             ^
+classfile-format-51.scala:62: error: too many arguments for method visitMethodInsn: (x$1: Int, x$2: String, x$3: String, x$4: String)Unit
+    bootstrap.visitMethodInsn(INVOKESTATIC, "java/lang/invoke/MethodType", "fromMethodDescriptorString", "(Ljava/lang/String;Ljava/lang/ClassLoader;)Ljava/lang/invoke/MethodType;", false)
+                             ^
+classfile-format-51.scala:70: error: too many arguments for method visitMethodInsn: (x$1: Int, x$2: String, x$3: String, x$4: String)Unit
+    bootstrap.visitMethodInsn(INVOKEVIRTUAL, "java/lang/invoke/MethodHandles$Lookup", "findStatic", "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;", false)
+                             ^
+classfile-format-51.scala:77: error: too many arguments for method visitMethodInsn: (x$1: Int, x$2: String, x$3: String, x$4: String)Unit
+    bootstrap.visitMethodInsn(INVOKESPECIAL, "java/lang/invoke/ConstantCallSite", "<init>", "(Ljava/lang/invoke/MethodHandle;)V", false)
+                             ^
+7 errors found

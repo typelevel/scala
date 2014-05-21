@@ -1,0 +1,6 @@
+Test.scala:11: error: type mismatch;
+ found   : scala.tools.asm.util.TraceClassVisitor
+ required: org.objectweb.asm.ClassVisitor
+    classNode.accept(new TraceClassVisitor(null, textifier, null))
+                     ^
+one error found

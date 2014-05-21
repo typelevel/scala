@@ -1,0 +1,6 @@
+Test.scala:31: error: type mismatch;
+ found   : scala.tools.asm.tree.ClassNode
+ required: org.objectweb.asm.tree.ClassNode
+        cn
+        ^
+one error found
