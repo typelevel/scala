@@ -25,7 +25,7 @@ trait Runners {
   }
 
   def generalClasspathString(config: Configuration, join: String) =
-    Def.task[String](noScalaLangInClasspath((fullClasspath in config).value).files mkString join)
+    Def.task[String]((fullClasspath in config).value.files mkString join)
 
   def noScalaLangInClasspath(cp: Classpath): Classpath = cp filterNot (x => x.toString split "/" contains ScalaOrg)
 

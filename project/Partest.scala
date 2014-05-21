@@ -24,8 +24,8 @@ trait Partest {
   }
 
   def runTestsWithArgs(args: List[String]) = Def task {
-    logForkJava(logger.value)(("-classpath" +: classpathReadable.value +: testJavaOptions.value :+ partestRunnerClass) ++ args)
-    runForkJava(generalClasspathString(Test, ":").value, testJavaOptions.value, partestRunnerClass, args)
+    logForkJava(logger.value)(("-classpath" +: classpathReadable.value +: testJavaOptions.value :+ PartestRunnerClass) ++ args)
+    runForkJava(generalClasspathString(Test, ":").value, testJavaOptions.value, PartestRunnerClass, args)
   }
 
   def runAllTests = Def task (packageBin in Compile map (_ => runTestsWithArgs(Nil).value))
@@ -36,8 +36,8 @@ trait Partest {
       case Nil  => List("--failed", "--show-diff")
       case args => args
     }
-    logForkJava(logger.value)(("-classpath" +: classpathReadable.value +: testJavaOptions.value :+ partestRunnerClass) ++ args)
-    runForkJava(classpathString(Test).value, testJavaOptions.value, partestRunnerClass, args)
+    logForkJava(logger.value)(("-classpath" +: classpathReadable.value +: testJavaOptions.value :+ PartestRunnerClass) ++ args)
+    runForkJava(classpathString(Test).value, testJavaOptions.value, PartestRunnerClass, args)
   }
 }
 

@@ -1599,6 +1599,11 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
       if (phase.erasedTypes || (this hasFlag TRIEDCOOKING))
         return this
 
+      if (!hasCompleteInfo) {
+        log(s"resisting cook attempt on $this")
+        return this
+      }
+
       this setFlag TRIEDCOOKING
       info  // force the current info
       if (isJavaDefined || isType && owner.isJavaDefined)

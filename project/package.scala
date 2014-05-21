@@ -4,6 +4,7 @@ import sbt._, Keys._
 import Configurations.ScalaTool
 import Opts.resolver._
 import scala.sys.process.Process
+import Classpaths.publishConfig
 
 
 // private type UpElem = (String, ModuleID, Artifact, File)
@@ -58,7 +59,6 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
 
   def printResult[A](msg: String)(res: A): A = try res finally println(s"$msg: $res")
 
-  // def localMaven  = Resolver.file("Local Maven", file(Path.userHome.absolutePath+"/.m2/repository"))
   def logger      = Def task (streams in Compile).value.log
   def javaRuntime = java.lang.Runtime.getRuntime
   def numCores    = javaRuntime.availableProcessors
@@ -69,20 +69,18 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   def scalaParsers  = "org.scala-lang.modules"         %% "scala-parser-combinators" % "1.0.1"
   def scalaXml      = "org.scala-lang.modules"         %%        "scala-xml"         % "1.0.1"
   def scalacheck    = "org.scalacheck"                 %%        "scalacheck"        % "1.11.3"
-  def scalap        = "org.scala-lang"                 %           "scalap"          % "2.11.1"
-  def testInterface = "org.scala-sbt"                  %       "test-interface"      %  "1.0"
+  def testInterface = SbtOrg                           %       "test-interface"      %  "1.0"
 
   def buildBase                    = baseDirectory in ThisBuild
-  def scalaModuleId(name: String)  = ScalaOrg                   % s"scala-$name"  %  ScalaFixedVersion
-  def sbtModuleId(name: String)    = SbtOrg                     %    s"$name"     %   SbtFixedVersion
-  def policyModuleId(name: String) = PolicyOrg                  % s"policy-$name" % PolicyDynamicVersion % Bootstrap.name
 
-  // Def setting (baseDirectory in LocalProject("root")).value
-  // Def setting (baseDirectory in LocalProject("root")).value
-  // Def setting ("org.scala-lang" % s"scala-$name" % scalaVersion.value)
-   // Def setting ("org.scala-sbt" % name % sbtVersion.value)
+  def scalaModuleId(name: String)  = ScalaOrg  % s"scala-$name"  %   ScalaFixedVersion
+  def sbtModuleId(name: String)    = SbtOrg    %    s"$name"     %    SbtFixedVersion
+  def policyModuleId(name: String) = PolicyOrg % s"policy-$name" % PolicyBootstrapVersion
+
+  // % Bootstrap.name
 
   def globally(xs: Setting[_]*)     = inScope(Global)(xs.toList)
+  def thisally(xs: Setting[_]*)     = inScope(ThisScope)(xs.toList)
   def intransitively(xs: ModuleID*) = xs.toList map (_.intransitive())
 
   implicit def mkAttributedFile(f: File): Attributed[File]             = Attributed blank f
@@ -94,14 +92,17 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
 
   // Global settings.
   def policyBuildSettings = globally(
-         organization :=  PolicyOrg,
-         scalaVersion :=  ScalaFixedVersion,
-     bootstrapVersion :=  PolicyDynamicVersion,
-              version :=  PolicyBuildVersion,
-           crossPaths :=  false,
-         watchSources ++= (buildBase.value * "*.sbt").get,
-         watchSources ++= (buildBase.value / "project" * "*.sbt").get,
-           incOptions ~=  (_ withAntStyle true)
+           organization :=  PolicyOrg,
+           scalaVersion :=  ScalaFixedVersion,
+     scalaBinaryVersion :=  ScalaFixedBinaryVersion,
+       sbtBinaryVersion :=  SbtFixedBinaryVersion,
+       bootstrapVersion :=  PolicyDynamicVersion,
+                version :=  PolicyBuildVersion,
+       autoScalaLibrary :=  false,
+             crossPaths :=  false,
+           watchSources ++= (buildBase.value * "*.sbt").get,
+           watchSources ++= (buildBase.value / "project" * "*.sbt").get,
+             incOptions ~=  (_ withAntStyle true)
   )
 
   private def rootProjectSettings = List(
@@ -128,29 +129,28 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   private def subProjectSettings: List[Setting[_]] = List(
                        name ~=  (n => s"policy-$n"),
           ivyConfigurations ++= Seq(ScalaTool, Bootstrap),
-                  resolvers +=  Classpaths.typesafeResolver,
+                 resolvers +=  Classpaths.typesafeResolver,
                  traceLevel :=  50,
-           autoScalaLibrary :=  false,
               sourcesInBase :=  false,
                 logBuffered :=  false,
-       managedScalaInstance :=  false,
                 showSuccess :=  false,
                  exportJars :=  true,
        pomIncludeRepository :=  (_ => false),
                   publishTo :=  Some(mavenLocalFile),
+       managedScalaInstance :=  false,
               scalaInstance <<= bootstrapInstance
   )
   private def scopedSubProjectSettings = subProjectSettings ++ List(
-//            (updateConfiguration in Compile) :=  new UpdateConfiguration(retrieveConfiguration.value, missingOk = true, ivyLoggingLevel.value),
-                     javacOptions in Compile ++= javacArgs,
-         scalacOptions in (Compile, compile) ++= scalacArgs,
-               resourceGenerators in Compile <+= Props.generateProperties(),
-                     publishArtifact in Test :=  false,
-             javacOptions in (Test, compile) :=  wordSeq("-nowarn"),
-            scalacOptions in (Test, compile) :=  wordSeq("-optimize -deprecation -unchecked -Xlint"),
-       publishArtifact in (Test, packageBin) :=  false,
-    publishArtifact in (Compile, packageDoc) :=  false,
-    publishArtifact in (Compile, packageSrc) :=  false
+              // (updateConfiguration in Compile) :=  new UpdateConfiguration(retrieveConfiguration.value, missingOk = true, ivyLoggingLevel.value),
+                     publishLocalConfiguration ~=  (p => publishConfig(p.artifacts, p.ivyFile, p.checksums, p.resolverName, logging = UpdateLogging.Quiet, overwrite = false)),
+                       javacOptions in Compile ++= javacArgs,
+           scalacOptions in (Compile, compile) ++= scalacArgs,
+                 resourceGenerators in Compile <+= Props.generateProperties(),
+               javacOptions in (Test, compile) :=  wordSeq("-nowarn"),
+              scalacOptions in (Test, compile) :=  wordSeq("-Xlint"),
+                       publishArtifact in Test :=  false,
+      publishArtifact in (Compile, packageDoc) :=  false,
+      publishArtifact in (Compile, packageSrc) :=  false
   )
 
   implicit class ProjectOps(val p: Project) {

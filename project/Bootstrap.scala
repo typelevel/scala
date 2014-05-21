@@ -10,8 +10,27 @@ final class PolicyClassLoader(id: String, compilerVersion: String, jars: Seq[Fil
   override val config = new NativeCopyConfig(nativeTemp, jars, javaLibraryPaths)
   def resources = Map("compiler.properties" -> s"version.number=$compilerVersion")
   override def toString = jars.mkString(s"Created PolicyClassLoader($id, $compilerVersion\n  ", "\n  ", "\n)")
-
 }
+
+// trait BootstrapEnv {
+//   protected def moduleForName(name: String): ModuleId
+//   def org: String
+//   def rev: String
+//   def libraryId: ModuleID = moduleForName("library") % "scala-tool"
+//   def compilerId: ModuleID = moduleForName("compiler") % "scala-tool"
+//   def libraryJar: File
+//   def compilerJar: File
+//   def otherJars: Seq[File]
+//   def loader: ClassLoader
+// }
+
+// class ScalaBootstrapEnv(version: String) extends BootstrapEnv {
+//   def moduleForName(name: String)  = ScalaOrg                   % s"scala-$name"  %  ScalaFixedVersion
+
+//   def org = ScalaOrg
+//   def rev = version
+//   def loader = new PolicyClassLoader(id, version, libraryJar +: compilerJar +: otherJars)
+// }
 
 trait Bootstrap {
   private def findModuleId(name: String): ModuleID = if (isScalaBootstrap) scalaModuleId(name) else policyModuleId(name)
@@ -40,8 +59,8 @@ trait Bootstrap {
   private def filesFor(m: ModuleID): TaskOf[Seq[File]]             = mfold(reportFor(m), NoFiles)(_.artifacts map (_._2))
   private def fileFor(m: ModuleID): TaskOf[Option[File]]           = filesFor(m) map single
 
-  private def policyRevision: TaskOf[String]    = revisionFor(findModuleId("compiler"))
-  private def policyBaseJars: TaskOf[Seq[File]] = filesFor(findModuleId("compiler"))
+  private def policyRevision: TaskOf[String]    = revisionFor(bootstrapCompilerId)
+  private def policyBaseJars: TaskOf[Seq[File]] = filesFor(policyModuleId("compiler"))
   private def scalaBaseJars: TaskOf[Seq[File]]  = filesFor(scalaModuleId("compiler"))
 
   private def newLoader(id: String, compilerVersion: String, jars: Seq[File]) = printResult("new loader")(new PolicyClassLoader(id, compilerVersion, jars))
@@ -78,7 +97,7 @@ trait Bootstrap {
   def bootstrapInstance: TaskOf[ScalaInstance] = Def task {
     def fallback() = scalaInstanceForVersion(ScalaFixedVersion).value
     if (isScalaBootstrap) fallback()
-    else makeInstance(PolicyDynamicVersion, "bootstrap").value match {
+    else makeInstance(PolicyBootstrapVersion, "scala-tool").value match {
       case Some(r) => r
       case _       => fallback()
     }

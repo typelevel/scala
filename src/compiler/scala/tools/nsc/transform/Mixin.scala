@@ -288,47 +288,43 @@ abstract class Mixin extends InfoTransform with ast.TreeDSL {
     def mixinTraitMembers(mixinClass: Symbol) {
       // For all members of a trait's interface do:
       for (mixinMember <- mixinClass.info.decls) {
-        if (isConcreteAccessor(mixinMember)) {
-          if (isOverriddenAccessor(mixinMember, clazz.info.baseClasses))
-            devWarning(s"Overridden concrete accessor: ${mixinMember.fullLocationString}")
-          else {
-            // mixin field accessors
-            val mixedInAccessor = cloneAndAddMixinMember(mixinClass, mixinMember)
-            if (mixinMember.isLazy) {
-              initializer(mixedInAccessor) = (
-                implClass(mixinClass).info.decl(mixinMember.name)
-                  orElse abort("Could not find initializer for " + mixinMember.name)
-              )
-            }
-            if (!mixinMember.isSetter)
-              mixinMember.tpe match {
-                case MethodType(Nil, ConstantType(_)) =>
-                  // mixinMember is a constant; only getter is needed
-                  ;
-                case MethodType(Nil, TypeRef(_, UnitClass, _)) =>
-                  // mixinMember is a value of type unit. No field needed
-                  ;
-                case _ => // otherwise mixin a field as well
-                  // enteringPhase: the private field is moved to the implementation class by erasure,
-                  // so it can no longer be found in the mixinMember's owner (the trait)
-                  val accessed = enteringPickler(mixinMember.accessed)
-                  // #3857, need to retain info before erasure when cloning (since cloning only
-                  // carries over the current entry in the type history)
-                  val sym = enteringErasure {
-                    // so we have a type history entry before erasure
-                    clazz.newValue(mixinMember.localName, mixinMember.pos).setInfo(mixinMember.tpe.resultType)
-                  }
-                  sym updateInfo mixinMember.tpe.resultType // info at current phase
-
-                  val newFlags = (
-                      ( PrivateLocal )
-                    | ( mixinMember getFlag MUTABLE | LAZY)
-                    | ( if (mixinMember.hasStableFlag) 0 else MUTABLE )
-                  )
-
-                  addMember(clazz, sym setFlag newFlags setAnnotations accessed.annotations)
-              }
+        if (isConcreteAccessor(mixinMember) && !isOverriddenAccessor(mixinMember, clazz.info.baseClasses)) {
+          // mixin field accessors
+          val mixedInAccessor = cloneAndAddMixinMember(mixinClass, mixinMember)
+          if (mixinMember.isLazy) {
+            initializer(mixedInAccessor) = (
+              implClass(mixinClass).info.decl(mixinMember.name)
+                orElse abort("Could not find initializer for " + mixinMember.name)
+            )
           }
+          if (!mixinMember.isSetter)
+            mixinMember.tpe match {
+              case MethodType(Nil, ConstantType(_)) =>
+                // mixinMember is a constant; only getter is needed
+                ;
+              case MethodType(Nil, TypeRef(_, UnitClass, _)) =>
+                // mixinMember is a value of type unit. No field needed
+                ;
+              case _ => // otherwise mixin a field as well
+                // enteringPhase: the private field is moved to the implementation class by erasure,
+                // so it can no longer be found in the mixinMember's owner (the trait)
+                val accessed = enteringPickler(mixinMember.accessed)
+                // #3857, need to retain info before erasure when cloning (since cloning only
+                // carries over the current entry in the type history)
+                val sym = enteringErasure {
+                  // so we have a type history entry before erasure
+                  clazz.newValue(mixinMember.localName, mixinMember.pos).setInfo(mixinMember.tpe.resultType)
+                }
+                sym updateInfo mixinMember.tpe.resultType // info at current phase
+
+                val newFlags = (
+                    ( PrivateLocal )
+                  | ( mixinMember getFlag MUTABLE | LAZY)
+                  | ( if (mixinMember.hasStableFlag) 0 else MUTABLE )
+                )
+
+                addMember(clazz, sym setFlag newFlags setAnnotations accessed.annotations)
+            }
         }
         else if (mixinMember.isSuperAccessor) { // mixin super accessors
           val superAccessor = addMember(clazz, mixinMember.cloneSymbol(clazz)) setPos clazz.pos

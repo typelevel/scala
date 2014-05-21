@@ -755,27 +755,18 @@ trait Contexts { self: Analyzer =>
 
     def restoreTypeBounds(tp: Type): Type = {
       def restore(): Type = savedTypeBounds.foldLeft(tp) { case (current, (sym, savedInfo)) =>
-        def bounds_s(tb: TypeBounds) = if (tb.isEmptyBounds) "<empty bounds>" else s"TypeBounds(lo=${tb.lo}, hi=${tb.hi})"
         //@M TODO: when higher-kinded types are inferred, probably need a case PolyType(_, TypeBounds(...)) if ... =>
         val TypeBounds(lo, hi) = sym.info.bounds
-        val isUnique           = lo <:< hi && hi <:< lo
-        val isPresent          = current contains sym
-        def saved_s            = bounds_s(savedInfo.bounds)
-        def current_s          = bounds_s(sym.info.bounds)
+        def isUnique           = lo <:< hi && hi <:< lo
+        def isPresent          = current contains sym
 
-        if (isUnique && isPresent)
-          devWarningResult(s"Preserving inference: ${sym.nameString}=$hi in $current (based on $current_s) before restoring $sym to saved $saved_s")(
-            current.instantiateTypeParams(List(sym), List(hi))
-          )
-        else if (isPresent)
-          devWarningResult(s"Discarding inferred $current_s because it does not uniquely determine $sym in")(current)
-        else
-          logResult(s"Discarding inferred $current_s because $sym does not appear in")(current)
+        if (isUnique && isPresent) current.instantiateTypeParams(List(sym), List(hi)) else current
       }
+
       try restore()
       finally {
         for ((sym, savedInfo) <- savedTypeBounds)
-          sym setInfo debuglogResult(s"Discarding inferred $sym=${sym.info}, restoring saved info")(savedInfo)
+          sym setInfo savedInfo
 
         savedTypeBounds = Nil
       }
