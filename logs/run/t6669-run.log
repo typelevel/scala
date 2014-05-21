@@ -1,7 +1,0 @@
-t6669.scala:9: error: object scalap is not a member of package tools
-    scala.tools.scalap.Main.main(Array("-verbose", "java.lang.Object"))
-                ^
-t6669.scala:20: error: object scalap is not a member of package tools
-    scala.tools.scalap.Main.main(Array("-verbose", "-cp", "whatever", "java.lang.Object"))
-                ^
-two errors found

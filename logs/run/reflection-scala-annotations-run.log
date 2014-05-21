@@ -1,2 +1,0 @@
-new sann(1, immutable.this.List.apply[Int](1, 2))
-new jann(y = Array(1, 2), x = 2)

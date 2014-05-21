@@ -1,7 +1,0 @@
-Test.scala:13: error: value instructions is not a member of ?0
-      val got = count(methodNode.instructions, asm.Opcodes.NOP)
-                                 ^
-Test.scala:14: error: value name is not a member of ?0
-      if (got != 0) println(s"Found $got NOP(s) in ${methodNode.name}")
-                                                                ^
-two errors found

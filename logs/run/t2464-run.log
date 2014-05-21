@@ -1,6 +1,4 @@
-Test.scala:31: error: type mismatch;
- found   : scala.tools.asm.tree.ClassNode
- required: org.objectweb.asm.tree.ClassNode
-        cn
-        ^
+Test.scala:5: error: ';' expected but '.' found.
+import scala.tools.partest._.modifyClassFile
+                            ^
 one error found

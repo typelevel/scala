@@ -1,6 +1,0 @@
-t7852.scala:14: error: type mismatch;
- found   : org.objectweb.asm.tree.InsnList
- required: scala.tools.asm.tree.InsnList
-      val got = countNullChecks(methodNode.instructions)
-                                           ^
-one error found

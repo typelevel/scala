@@ -1,4 +1,0 @@
-t8601-closure-elim.scala:13: error: value getOpcode is not a member of ?0
-      val ops = methodNode.instructions.iterator.asScala.map(_.getOpcode).toList
-                                                               ^
-one error found

@@ -1,7 +1,0 @@
-t6082.scala:2: error: classfile annotation arguments have to be supplied as named arguments
-@annot("") class C
-       ^
-t6082.scala:2: error: annotation annot is missing argument notValue
-@annot("") class C
- ^
-two errors found

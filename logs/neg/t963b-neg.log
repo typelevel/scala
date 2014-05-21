@@ -1,6 +1,0 @@
-t963b.scala:25: error: type mismatch;
- found   : B.type
- required: AnyRef
-  B.f(B)
-      ^
-one error found

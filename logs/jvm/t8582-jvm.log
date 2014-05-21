@@ -1,4 +1,0 @@
-t8582.scala:37: error: value name is not a member of ?0
-    println(cnode.innerClasses.asScala.toList.map(i => s"className[${i.name}] outerClassName[${i.outerName}] innerName[${i.innerName}] access[${i.access}]").mkString(" ", "\n ", ""))
-                                                                       ^
-one error found
