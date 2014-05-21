@@ -97,8 +97,6 @@ class Runner(val testFile: File, val suiteRunner: SuiteRunner) {
   def genCrash(caught: Throwable) = Crash(testFile, caught, _transcript.fail.toArray)
   def genUpdated()                = Updated(testFile)
 
-  private def workerError(msg: String): Unit = System.err.println("Error: " + msg)
-
   def javac(files: List[File]): TestState = {
     // compile using command-line javac compiler
     val args = Seq(
@@ -506,45 +504,6 @@ class Runner(val testFile: File, val suiteRunner: SuiteRunner) {
     compilationRounds(testFile).forall(x => nextTestActionExpectTrue("compilation failed", x.isOk)) && andAlso
   }
 
-  // Apache Ant 1.6 or newer
-  def ant(args: Seq[String], output: File): Boolean = {
-    val antDir = Directory(envOrElse("ANT_HOME", "/opt/ant/"))
-    val antLibDir = Directory(antDir / "lib")
-    val antLauncherPath = SFile(antLibDir / "ant-launcher.jar").path
-    val antOptions =
-      if (NestUI._verbose) List("-verbose", "-noinput")
-      else List("-noinput")
-    val cmd = javaCmdPath +: (
-      PartestDefaults.javaOpts.split(' ').map(_.trim).filter(_ != "") ++ Seq(
-        "-classpath",
-        antLauncherPath,
-        "org.apache.tools.ant.launch.Launcher"
-      ) ++ antOptions ++ args
-    )
-
-    runCommand(cmd, output)
-  }
-
-  def runAntTest(): (Boolean, LogContext) = {
-    val (swr, wr) = newTestWriters()
-
-    val succeeded = try {
-      val binary = "-Dbinary="+ fileManager.distKind
-      val args = Array(binary, "-logfile", logFile.getPath, "-file", testFile.getPath)
-      NestUI.verbose("ant "+args.mkString(" "))
-
-      pushTranscript(s"ant ${args.mkString(" ")}")
-      nextTestActionExpectTrue("ant failed", ant(args, logFile)) && diffIsOk
-    }
-    catch { // *catch-all*
-      case e: Exception =>
-        NestUI.warning("caught "+e)
-        false
-    }
-
-    (succeeded, LogContext(logFile, swr, wr))
-  }
-
   def extraClasspath = kind match {
     case "specialized"  => List(PathSettings.srcSpecLib.fold(sys.error, identity))
     case _              => Nil
@@ -599,134 +558,18 @@ class Runner(val testFile: File, val suiteRunner: SuiteRunner) {
     try nextTestActionExpectTrue("ScalaCheck test failed", runInFramework()) finally logWriter.close()
   }
 
-  def runResidentTest() = {
-    // simulate resident compiler loop
-    val prompt = "\nnsc> "
-    val (swr, wr) = newTestWriters()
-
-    NestUI.verbose(this+" running test "+fileBase)
-    val dir = parentFile
-    val resFile = new File(dir, fileBase + ".res")
-
-    // run compiler in resident mode
-    // $SCALAC -d "$os_dstbase".obj -Xresident -sourcepath . "$@"
-    val sourcedir  = logFile.getParentFile.getAbsoluteFile
-    val sourcepath = sourcedir.getAbsolutePath+File.separator
-    NestUI.verbose("sourcepath: "+sourcepath)
-
-    val argList = List(
-      "-d", outDir.getAbsoluteFile.getPath,
-      "-Xresident",
-      "-sourcepath", sourcepath)
-
-    // configure input/output files
-    val logOut    = new FileOutputStream(logFile)
-    val logWriter = new PrintStream(logOut, true)
-    val resReader = new BufferedReader(new FileReader(resFile))
-    val logConsoleWriter = new PrintWriter(new OutputStreamWriter(logOut), true)
-
-    // create compiler
-    val settings = new Settings(workerError)
-    settings.sourcepath.value = sourcepath
-    settings.classpath.value = joinPaths(fileManager.testClassPath)
-    val reporter = new ConsoleReporter(settings, scala.Console.in, logConsoleWriter)
-    val command = new CompilerCommand(argList, settings)
-    object compiler extends Global(command.settings, reporter)
-
-    def resCompile(line: String): Boolean = {
-      // NestUI.verbose("compiling "+line)
-      val cmdArgs = (line split ' ').toList map (fs => new File(dir, fs).getAbsolutePath)
-      // NestUI.verbose("cmdArgs: "+cmdArgs)
-      val sett = new Settings(workerError)
-      sett.sourcepath.value = sourcepath
-      val command = new CompilerCommand(cmdArgs, sett)
-      // "scalac " + command.files.mkString(" ")
-      pushTranscript("scalac " + command.files.mkString(" "))
-      nextTestActionExpectTrue(
-        "compilation failed",
-        command.ok && {
-          (new compiler.Run) compile command.files
-          !reporter.hasErrors
-        }
-      )
-    }
-    def loop(): Boolean = {
-      logWriter.print(prompt)
-      resReader.readLine() match {
-        case null | ""  => logWriter.close() ; true
-        case line       => resCompile(line) && loop()
-      }
-    }
-    // res/t687.res depends on ignoring its compilation failure
-    // and just looking at the diff, so I made them all do that
-    // because this is long enough.
-    if (!Output.withRedirected(logWriter)(try loop() finally resReader.close()))
-      setLastState(genPass())
-
-    (diffIsOk, LogContext(logFile, swr, wr))
-  }
-
   def run(): TestState = {
     // javac runner, for one, would merely append to an existing log file, so just delete it before we start
     logFile.delete()
 
     if (kind == "neg" || (kind endsWith "-neg")) runNegTest()
     else kind match {
-      case "pos"          => runTestCommon(true)
-      case "ant"          => runAntTest()
-      case "scalacheck"   => runScalacheckTest()
-      case "res"          => runResidentTest()
-      case "scalap"       => runScalapTest()
-      case "script"       => runScriptTest()
-      case _              => runTestCommon(execTest(outDir, logFile) && diffIsOk)
+      case "pos"        => runTestCommon(true)
+      case "scalacheck" => runScalacheckTest()
+      case _            => runTestCommon(execTest(outDir, logFile) && diffIsOk)
     }
 
     lastState
-  }
-
-  private def decompileClass(clazz: Class[_], isPackageObject: Boolean): String = {
-    import scala.tools.scalap
-
-    // TODO: remove use of reflection once Scala 2.11.0-RC1 is out
-    // have to use reflection to work on both 2.11.0-M8 and 2.11.0-RC1.
-    // Once we require only 2.11.0-RC1, replace the following block by:
-    // import scalap.scalax.rules.scalasig.ByteCode
-    // ByteCode forClass clazz bytes
-    val bytes = {
-      import scala.language.{reflectiveCalls, existentials}
-      type ByteCode       = { def bytes: Array[Byte] }
-      type ByteCodeModule = { def forClass(clazz: Class[_]): ByteCode }
-      val ByteCode        = {
-        val ByteCodeModuleCls =
-          // RC1 package structure -- see: scala/scala#3588 and https://issues.scala-lang.org/browse/SI-8345
-          (util.Try { Class.forName("scala.tools.scalap.scalax.rules.scalasig.ByteCode$") }
-          // M8 package structure
-           getOrElse  Class.forName("scala.tools.scalap.scalasig.ByteCode$"))
-        ByteCodeModuleCls.getDeclaredFields()(0).get(null).asInstanceOf[ByteCodeModule]
-      }
-      ByteCode forClass clazz bytes
-    }
-
-    scalap.Main.decompileScala(bytes, isPackageObject)
-  }
-
-  def runScalapTest() = runTestCommon {
-    val isPackageObject = testFile.getName startsWith "package"
-    val className       = testFile.getName.stripSuffix(".scala").capitalize + (if (!isPackageObject) "" else ".package")
-    val loader          = ScalaClassLoader.fromURLs(List(outDir.toURI.toURL), this.getClass.getClassLoader)
-    logFile writeAll decompileClass(loader loadClass className, isPackageObject)
-    diffIsOk
-  }
-
-  def runScriptTest() = {
-    import scala.sys.process._
-    val (swr, wr) = newTestWriters()
-
-    val args = file2String(testFile changeExtension "args")
-    val cmdFile = if (isWin) testFile changeExtension "bat" else testFile
-    val succeeded = (((cmdFile + " " + args) #> logFile !) == 0) && diffIsOk
-
-    (succeeded, LogContext(logFile, swr, wr))
   }
 
   def cleanup() {
