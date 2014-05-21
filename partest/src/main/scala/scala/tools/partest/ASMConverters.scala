@@ -1,8 +1,14 @@
-package scala.tools.partest
+package scala
+package tools
+package partest
 
 import scala.collection.JavaConverters._
-import scala.tools.asm
-import asm.tree.{ClassNode, MethodNode, InsnList}
+import org.objectweb.asm
+import asm._
+import asm.tree._
+import scala.tools.partest.AsmNode._
+
+// import asm.tree.{ClassNode, MethodNode, InsnList, AbstractInsnNode}
 
 /** Makes using ASM from ByteCodeTests more convenient.
  *
@@ -10,13 +16,41 @@ import asm.tree.{ClassNode, MethodNode, InsnList}
  * for the purpose of bytecode diffing and pretty printing.
  */
 trait ASMConverters {
+  implicit class ListCastingOps(xs: List[_]) {
+    def typedOf[A] : List[A] = xs.asInstanceOf[List[A]]
+  }
+  implicit class InsnListOps(xs: InsnList) {
+    def typed: List[AbstractInsnNode] = xs.iterator.asScala.toList.typedOf[AbstractInsnNode]
+    def jopcodes: List[Int]           = typed map (_.getOpcode)
+  }
+  implicit class TypedConversionOps(xs: java.util.List[_]) {
+    def asScalaTyped[A]: List[A] = xs match {
+      case null               => Nil
+      case xs: List[_]        => xs.typedOf[A]
+      case xs: Traversable[_] => xs.toList.typedOf[A]
+      case _                  => xs.asScala.toList.typedOf[A]
+    }
+  }
+  implicit class MethodNodeOps(val node: MethodNode) {
+    def jinstructions: List[AbstractInsnNode] = node.instructions.typed
+    def jopcodes: List[Int]                   = node.instructions.jopcodes
+  }
+  implicit class ClassNodeOps(val node: ClassNode) {
+    def jfields: List[FieldNode]          = node.fields.asScalaTyped[FieldNode]
+    def jmethods: List[MethodNode]        = node.methods.asScalaTyped[MethodNode]
+    def jinners: List[InnerClassNode]     = node.innerClasses.asScalaTyped[InnerClassNode]
+    def fieldsAndMethods: List[AsmMember] = (jmethods map AsmNode.apply) ++ (jfields map AsmNode.apply) sortBy (_.characteristics)
+
+    // classNode.methods.asScala.asInstanceOf[List[MethodNode]].find(_.name == name) getOrElse
+  }
+
   // wrap ASM's instructions so we get case class-style `equals` and `toString`
   object instructions {
     def fromMethod(meth: MethodNode): List[Instruction] = {
       val insns = meth.instructions
       val asmToScala = new AsmToScala{ def labelIndex(l: asm.tree.AbstractInsnNode) = insns.indexOf(l) }
 
-      asmToScala.mapOver(insns.iterator.asScala.toList).asInstanceOf[List[Instruction]]
+      asmToScala.mapOver[Any](insns.typed) map { case x: Instruction => x }
     }
 
     sealed abstract class Instruction { def opcode: String }
@@ -42,13 +76,12 @@ trait ASMConverters {
 
     def labelIndex(l: asm.tree.AbstractInsnNode): Int
 
-    def mapOver(is: List[Any]): List[Any] = is map {
-      case i: asm.tree.AbstractInsnNode => apply(i)
-      case x => x
+    def mapOver[A](is: List[_]): List[A] = is map {
+      case i: AbstractInsnNode => apply(i).asInstanceOf[A]
+      case x                   => x.asInstanceOf[A]
     }
 
    def op(i: asm.tree.AbstractInsnNode) = if (asm.util.Printer.OPCODES.isDefinedAt(i.getOpcode)) asm.util.Printer.OPCODES(i.getOpcode) else "?"
-   def lst[T](xs: java.util.List[T]): List[T] = if (xs == null) Nil else xs.asScala.toList
    def apply(l: asm.tree.LabelNode): Label = this(l: asm.tree.AbstractInsnNode).asInstanceOf[Label]
    def apply(x: asm.tree.AbstractInsnNode): Instruction = x match {
       case i: asm.tree.FieldInsnNode          => Field        (op(i), i.desc: String, i.name: String, i.owner: String)
@@ -57,14 +90,14 @@ trait ASMConverters {
       case i: asm.tree.IntInsnNode            => IntOp        (op(i), i.operand: Int)
       case i: asm.tree.JumpInsnNode           => Jump         (op(i), this(i.label))
       case i: asm.tree.LdcInsnNode            => Ldc          (op(i), i.cst: Any)
-      case i: asm.tree.LookupSwitchInsnNode   => LookupSwitch (op(i), this(i.dflt), lst(i.keys), mapOver(lst(i.labels)).asInstanceOf[List[Label]])
-      case i: asm.tree.TableSwitchInsnNode    => TableSwitch  (op(i), this(i.dflt), i.max: Int, i.min: Int, mapOver(lst(i.labels)).asInstanceOf[List[Label]])
+      case i: asm.tree.LookupSwitchInsnNode   => LookupSwitch (op(i), this(i.dflt), i.keys.asScalaTyped, mapOver[Label](i.labels.asScalaTyped[Any]))
+      case i: asm.tree.TableSwitchInsnNode    => TableSwitch  (op(i), this(i.dflt), i.max: Int, i.min: Int, mapOver[Label](i.labels.asScalaTyped[Any]))
       case i: asm.tree.MethodInsnNode         => Method       (op(i), i.desc: String, i.name: String, i.owner: String)
       case i: asm.tree.MultiANewArrayInsnNode => NewArray     (op(i), i.desc: String, i.dims: Int)
       case i: asm.tree.TypeInsnNode           => TypeOp       (op(i), i.desc: String)
       case i: asm.tree.VarInsnNode            => VarOp        (op(i), i.`var`: Int)
       case i: asm.tree.LabelNode              => Label        (labelIndex(x))
-      case i: asm.tree.FrameNode              => FrameEntry   (mapOver(lst(i.local)), mapOver(lst(i.stack)))
+      case i: asm.tree.FrameNode              => FrameEntry   (mapOver[Any](i.local.asScalaTyped[Any]), mapOver[Any](i.stack.asScalaTyped[Any]))
       case i: asm.tree.LineNumberNode         => LineNumber   (i.line: Int, this(i.start): Label)
     }
   }

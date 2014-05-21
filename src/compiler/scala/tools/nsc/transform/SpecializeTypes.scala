@@ -1299,11 +1299,8 @@ abstract class SpecializeTypes extends InfoTransform with TypingTransformers {
       (treeType =:= memberType) || { // anyref specialization
         memberType match {
           case PolyType(_, resTpe) =>
-            try {
-              val e = unify(origSymbol.tpe, memberType, emptyEnv, true)
-              e.keySet == env.keySet
-            }
-            catch { case _: RuntimeException => false }
+            try unify(origSymbol.tpe, memberType, emptyEnv, true).keySet == env.keySet
+            catch { case UnifyError => false }
           case _ => false
         }
       }

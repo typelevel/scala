@@ -1,5 +1,5 @@
-import scala.tools.partest.BytecodeTest
-import scala.tools.asm
+import scala.tools.partest._
+import org.objectweb.asm
 import asm.tree.InsnList
 import scala.collection.JavaConverters._
 
@@ -14,6 +14,6 @@ object Test extends BytecodeTest {
   def count(insnList: InsnList, opcode: Int): Int = {
     def isNop(node: asm.tree.AbstractInsnNode): Boolean =
       (node.getOpcode == opcode)
-    insnList.iterator.asScala.count(isNop)
+    insnList.typed.count(isNop)
   }
 }

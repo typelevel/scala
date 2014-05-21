@@ -1,8 +1,8 @@
 import scala.reflect.io.Streamable
-import scala.tools.asm.{ClassWriter, ClassReader}
-import scala.tools.asm.tree.ClassNode
+import org.objectweb.asm.{ClassWriter, ClassReader}
+import org.objectweb.asm.tree.ClassNode
 import scala.tools.partest._
-import scala.tools.partest.BytecodeTest.modifyClassFile
+import scala.tools.partest._.modifyClassFile
 import java.io.{FileOutputStream, FileInputStream, File}
 
 object Test extends DirectTest {

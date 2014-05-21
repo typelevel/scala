@@ -84,10 +84,10 @@ match argument types (a: Int,b: String) and expected result type Any
 names-defaults-neg.scala:69: error: wrong number of arguments for pattern A1(x: Int,y: String)
   A1() match { case A1(_) => () }
                       ^
-names-defaults-neg.scala:76: error: no type parameters for method test4: (x: T[T[List[T[X forSome { type X }]]]])T[T[List[T[X forSome { type X }]]]] exist so that it can be applied to arguments (List[Int])
+names-defaults-neg.scala:76: error: no type parameters for method test4: (x: T[T[List[T[X forSome { type X }]]]])T[T[List[T[X forSome { type X }]]]] exist so that it can be applied to arguments (List[Int] @scala.annotation.unchecked.uncheckedVariance)
  --- because ---
 argument expression's type is not compatible with formal parameter type;
- found   : List[Int]
+ found   : List[Int] @scala.annotation.unchecked.uncheckedVariance
  required: ?T[?T[List[?T[X forSome { type X }]]]]
 Error occurred in an application involving default arguments.
   test4()
@@ -98,7 +98,7 @@ names-defaults-neg.scala:79: error: type mismatch;
   def test6[T](x: List[List[T]] = List(1,2)) = x
                                       ^
 names-defaults-neg.scala:82: error: type mismatch;
- found   : Int
+ found   : Int @scala.annotation.unchecked.uncheckedVariance
  required: String
 Error occurred in an application involving default arguments.
   new A2[String]()

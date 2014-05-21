@@ -16,15 +16,28 @@ isPath () { [[ "$1" =~ $pathRegex ]] && [[ -e "$1" ]]; }
 
 existsEither () { isPath "$1.scala" || isPath "$1"; }
 
+tryPath () {
+  local p="$1"
+  local p1="${p%.*}"
+  local p2="${p1%/*}"
+
+  # Matched file at the standard test depth
+  # Or, matched file may be in a test subdirectory, so strip the last path segment and check
+  if isPath "$p1.scala"; then
+    echo "$p1.scala"
+  elif isPath "$p2"; then
+    echo "$p2"
+  fi
+}
+
 # Filter stdin down to actual test paths.
 asTestPaths() {
   while read -r p; do
-    # Matched file at the standard test depth
-    p1="${p%.*}" && isPath "$p1.scala" && echo "$p1.scala" && continue
-    # Or, matched file may be in a test subdirectory, so strip the last path segment and check
-    p2="${p1%/*}" && isPath "$p2" && echo "$p2" && continue
-    # Or we might be looking at a stray logfile
-    p3="${p%-*.log}" && isPath "$p3" && echo "$p3" && continue
+    if [[ $p == *.log ]]; then
+      tryPath "${p%-*.log}"
+    else
+      tryPath "$p"
+    fi
   done
 }
 

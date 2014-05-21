@@ -10,7 +10,7 @@ package backend.jvm
 import scala.collection.{ mutable, immutable }
 import scala.reflect.internal.pickling.{ PickleFormat, PickleBuffer }
 import scala.tools.nsc.symtab._
-import scala.tools.asm
+import org.objectweb.asm
 import asm.Label
 import scala.annotation.tailrec
 

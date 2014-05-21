@@ -14,7 +14,7 @@
     };
     [36:45]private[this] val a: [40]Int = [44:45]2;
     [40]<stable> <accessor> def a: [40]Int = [40][40]A.this.a;
-    [8]<synthetic> def <init>$default$1: [8]Int = [19]A.a
+    [8]<synthetic> def <init>$default$1: [8]Int @scala.annotation.unchecked.uncheckedVariance = [19]A.a
   };
   [49:92]class B extends [57:92][65:66]A {
     [65]def <init>(): [57]B = [65]{

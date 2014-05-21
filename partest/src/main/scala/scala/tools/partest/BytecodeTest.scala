@@ -2,10 +2,10 @@ package scala.tools.partest
 
 import scala.tools.nsc.util.JavaClassPath
 import scala.collection.JavaConverters._
-import scala.tools.asm.{ClassWriter, ClassReader}
-import scala.tools.asm.tree.{ClassNode, MethodNode, InsnList}
+import org.objectweb.asm.{ClassWriter, ClassReader}
+import org.objectweb.asm.tree.{ClassNode, MethodNode, InsnList}
 import java.io.{FileOutputStream, FileInputStream, File => JFile, InputStream}
-import AsmNode._
+// import AsmNode._
 
 /**
  * Provides utilities for inspecting bytecode using ASM library.
@@ -28,7 +28,7 @@ import AsmNode._
  * See test/files/jvm/bytecode-test-example for an example of bytecode test.
  *
  */
-abstract class BytecodeTest extends ASMConverters {
+abstract class BytecodeTest {
   import instructions._
 
   /** produce the output to be compared against a checkfile */
@@ -114,8 +114,7 @@ abstract class BytecodeTest extends ASMConverters {
 
 // loading
   protected def getMethod(classNode: ClassNode, name: String): MethodNode =
-    classNode.methods.asScala.find(_.name == name) getOrElse
-      sys.error(s"Didn't find method '$name' in class '${classNode.name}'")
+    classNode.jmethods find(_.name == name) getOrElse sys.error(s"Didn't find method '$name' in class '${classNode.name}'")
 
   protected def loadClassNode(name: String, skipDebugInfo: Boolean = true): ClassNode = {
     val classBytes: InputStream = (for {

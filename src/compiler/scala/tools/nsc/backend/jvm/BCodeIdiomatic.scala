@@ -7,10 +7,12 @@ package scala
 package tools.nsc
 package backend.jvm
 
-import scala.tools.asm
+import org.objectweb.asm
 import scala.annotation.switch
 import scala.collection.{ immutable, mutable }
 import collection.convert.Wrappers.JListWrapper
+import asm.tree.AbstractInsnNode
+import java.util.ListIterator
 
 /*
  *  A high-level facade to the ASM API for bytecode generation.
@@ -709,13 +711,13 @@ abstract class BCodeIdiomatic extends BCodeGlue {
   }
 
   implicit class InsnIterMethodNode(mnode: asm.tree.MethodNode) {
-    @inline final def foreachInsn(f: (asm.tree.AbstractInsnNode) => Unit) { mnode.instructions.foreachInsn(f) }
+    @inline final def foreachInsn(f: AbstractInsnNode => Unit) { mnode.instructions.foreachInsn(f) }
   }
 
   implicit class InsnIterInsnList(lst: asm.tree.InsnList) {
 
     @inline final def foreachInsn(f: (asm.tree.AbstractInsnNode) => Unit) {
-      val insnIter = lst.iterator()
+      val insnIter = lst.iterator().asInstanceOf[ListIterator[AbstractInsnNode]]
       while (insnIter.hasNext) {
         f(insnIter.next())
       }

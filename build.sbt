@@ -8,7 +8,7 @@ initialCommands in console := """import policy.build._"""
 
 seq(policyBuildSettings: _*)
 
-lazy val asm = project.sub
+// lazy val asm = project.sub
 
 lazy val library = ( project.sub.mima
   addSourceDirs ( "forkjoin" )
@@ -21,8 +21,8 @@ lazy val library = ( project.sub.mima
 
 lazy val compiler = ( project.sub
      addSourceDirs ( "compiler", "reflect", "repl", "scaladoc" )
-         dependsOn ( asm, library )
-  intransitiveDeps ( jline, ant, scalaXml, scalaParsers )
+         dependsOn ( library )
+  intransitiveDeps ( asm, jline, ant, scalaXml, scalaParsers )
 )
 
 lazy val partest = ( project.sub
@@ -36,8 +36,8 @@ lazy val partest = ( project.sub
 )
 
 lazy val root = ( project.sub in file(".")
-    dependsOn ( asm, library, compiler, partest )
-    aggregate ( asm, library, compiler, partest )
+    dependsOn ( library, compiler, partest )
+    aggregate ( library, compiler, partest )
      settings (
       sourceDirectories :=  Nil,
           bootstrapInfo <<= bootstrapInfoOutput map printResult("bootstrap"),

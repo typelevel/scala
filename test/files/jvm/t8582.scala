@@ -1,5 +1,4 @@
-import scala.tools.partest.BytecodeTest
-import scala.collection.JavaConverters._
+import scala.tools.partest._
 
 package p1 {
   package p2 {
@@ -34,7 +33,7 @@ object Test extends BytecodeTest {
   def nprintln(s: String) = println("\n"+s)
   def printInner(cname: String): Unit = {
     val cnode = loadClassNode(cname)
-    println(cnode.innerClasses.asScala.toList.map(i => s"className[${i.name}] outerClassName[${i.outerName}] innerName[${i.innerName}] access[${i.access}]").mkString(" ", "\n ", ""))
+    println(cnode.jinners.map(i => s"className[${i.name}] outerClassName[${i.outerName}] innerName[${i.innerName}] access[${i.access}]").mkString(" ", "\n ", ""))
   }
 
   def show() {

@@ -10,7 +10,7 @@ import scala.sys.process.javaVmArguments
 import scala.tools.partest.nest.NestUI
 import scala.tools.nsc.util.{ ScalaClassLoader, Exceptional }
 
-package object partest {
+package object partest extends scala.tools.partest.ASMConverters {
   type File         = java.io.File
   type SFile        = scala.reflect.io.File
   type Directory    = scala.reflect.io.Directory

@@ -1,4 +1,4 @@
- package scala
+package scala
 package reflect
 package internal
 package tpe

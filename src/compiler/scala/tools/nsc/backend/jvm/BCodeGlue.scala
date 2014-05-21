@@ -7,7 +7,7 @@ package scala
 package tools.nsc
 package backend.jvm
 
-import scala.tools.asm
+import org.objectweb.asm
 import scala.annotation.switch
 import scala.collection.{ immutable, mutable }
 
@@ -255,8 +255,8 @@ abstract class BCodeGlue extends SubComponent {
     /*
      * can-multi-thread
      */
-    def toASMType: scala.tools.asm.Type = {
-      import scala.tools.asm
+    def toASMType: org.objectweb.asm.Type = {
+      import org.objectweb.asm
       // using `asm.Type.SHORT` instead of `BType.SHORT` because otherwise "warning: could not emit switch for @switch annotated match"
       sort match {
         case asm.Type.VOID    => asm.Type.VOID_TYPE
@@ -527,7 +527,7 @@ abstract class BCodeGlue extends SubComponent {
      * can-multi-thread
      */
     def getOpcode(opcode: Int): Int = {
-      import scala.tools.asm.Opcodes
+      import org.objectweb.asm.Opcodes
       if (opcode == Opcodes.IALOAD || opcode == Opcodes.IASTORE) {
         // the offset for IALOAD or IASTORE is in byte 1 of 'off' for
         // primitive types (buf == null)

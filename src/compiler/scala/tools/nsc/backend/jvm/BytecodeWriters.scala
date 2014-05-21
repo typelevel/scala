@@ -86,7 +86,7 @@ trait BytecodeWriters {
    *
    * */
   trait AsmpBytecodeWriter extends BytecodeWriter {
-    import scala.tools.asm
+    import org.objectweb.asm
 
     private val baseDir = Directory(settings.Ygenasmp.value).createDirectory()
 
@@ -96,7 +96,7 @@ trait BytecodeWriters {
         val cnode = new asm.tree.ClassNode()
         val cr    = new asm.ClassReader(jclassBytes)
         cr.accept(cnode, 0)
-        val trace = new scala.tools.asm.util.TraceClassVisitor(new java.io.PrintWriter(new java.io.StringWriter()))
+        val trace = new org.objectweb.asm.util.TraceClassVisitor(new java.io.PrintWriter(new java.io.StringWriter()))
         cnode.accept(trace)
         trace.p.print(pw)
       }

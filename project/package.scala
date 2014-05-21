@@ -64,6 +64,7 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   def numCores    = javaRuntime.availableProcessors
 
   def ant           = "org.apache.ant"                 %            "ant"            % "1.9.4"
+  def asm           = "org.ow2.asm"                    %          "asm-all"          % "5.0.2"
   def diffutils     = "com.googlecode.java-diff-utils" %         "diffutils"         % "1.3.0"
   def jline         = "jline"                          %           "jline"           %  "2.11"
   def scalaParsers  = "org.scala-lang.modules"         %% "scala-parser-combinators" % "1.0.1"
