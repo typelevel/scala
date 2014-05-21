@@ -1,0 +1,6 @@
+t0764.scala:13: error: type mismatch;
+ found   : Node where val _1: Node
+ required: Node
+        new Main[AType]( (value: AType).prepend )
+                                        ^
+one error found

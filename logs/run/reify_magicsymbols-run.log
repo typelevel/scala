@@ -1,0 +1,13 @@
+Any
+AnyVal
+AnyRef
+Null
+Nothing
+List[Any]
+List[AnyVal]
+List[AnyRef]
+List[Null]
+List[Nothing]
+AnyRef
+Int* => Unit
+(=> Int) => Unit

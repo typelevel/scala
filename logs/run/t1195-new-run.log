@@ -1,0 +1,6 @@
+Bar.type, underlying =  <: scala.runtime.AbstractFunction1[Int,Bar] with Serializable with Singleton
+Bar, underlying =  <: Product with Serializable
+Product with Serializable, underlying = Product with Serializable
+Bar.type, underlying =  <: scala.runtime.AbstractFunction1[Int,Bar] with Serializable with Singleton
+Bar, underlying =  <: Product with Serializable
+Product with Serializable, underlying = Product with Serializable

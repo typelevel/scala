@@ -1,0 +1,128 @@
++ quasiquotes.term construction.unquote single tree return tree itself: OK, passed 100 tests.
++ quasiquotes.term construction.unquote trees into if expression: OK, passed 100 tests.
++ quasiquotes.term construction.unquote trees into ascriptiopn: OK, passed 100 tests.
++ quasiquotes.term construction.unquote trees into apply: OK, passed 100 tests.
++ quasiquotes.term construction.unquote trees with .. rank into apply: OK, passed 100 tests.
++ quasiquotes.term construction.unquote iterable into apply: OK, passed 100 tests.
++ quasiquotes.term construction.unquote trees with ... rank into apply: OK, passed 100 tests.
++ quasiquotes.term construction.unquote term name into assign: OK, passed 100 tests.
++ quasiquotes.term construction.unquote trees into block: OK, passed 100 tests.
++ quasiquotes.term construction.unquote tree into new: OK, passed 100 tests.
++ quasiquotes.term construction.unquote tree into return: OK, passed 100 tests.
++ quasiquotes.term construction.unquote a list of arguments: OK, passed 100 tests.
++ quasiquotes.term construction.unquote list and non-list fun arguments: OK, passed 100 tests.
++ quasiquotes.term construction.unquote into new: OK, passed 100 tests.
++ quasiquotes.term construction.unquote type name into this: OK, passed 100 tests.
++ quasiquotes.term construction.unquote tree into throw: OK, passed 100 tests.
++ quasiquotes.term construction.unquote trees into type apply: OK, passed 100 tests.
++ quasiquotes.term construction.unquote trees into while loop: OK, passed 100 tests.
++ quasiquotes.term construction.unquote trees into do while loop: OK, passed 100 tests.
++ quasiquotes.term construction.unquote list of trees into block (1): OK, passed 100 tests.
++ quasiquotes.term construction.unquote list of trees into block (2): OK, passed 100 tests.
++ quasiquotes.term construction.unquote list of trees into block (3): OK, passed 100 tests.
++ quasiquotes.term construction.unquote term into brackets: OK, proved property.
++ quasiquotes.term construction.unquote terms into tuple: OK, proved property.
++ quasiquotes.term construction.unquote empty list into tuple: OK, proved property.
++ quasiquotes.term construction.unquote single element list into tuple: OK, proved property.
++ quasiquotes.term construction.function param flags are the same: OK, proved property.
++ quasiquotes.term construction.anonymous functions don't support default values: OK, proved property.
++ quasiquotes.term construction.assign variable: OK, proved property.
++ quasiquotes.term construction.assign update 1: OK, proved property.
++ quasiquotes.term construction.assign update 2: OK, proved property.
++ quasiquotes.term construction.assign or named arg: OK, proved property.
++ quasiquotes.term construction.fresh names are regenerated at each evaluation: OK, proved property.
++ quasiquotes.term construction.make sure inference doesn't infer any: OK, proved property.
++ quasiquotes.term construction.unquote iterable of non-parametric type: OK, proved property.
++ quasiquotes.term construction.SI-8016: OK, proved property.
++ quasiquotes.term construction.SI-6842: OK, proved property.
++ quasiquotes.term construction.SI-8009: OK, proved property.
++ quasiquotes.term construction.SI-8148: OK, proved property.
++ quasiquotes.term construction.SI-7275 a: OK, proved property.
++ quasiquotes.term construction.SI-7275 b: OK, proved property.
++ quasiquotes.term construction.SI-7275 c1: OK, proved property.
++ quasiquotes.term construction.SI-7275 c2: OK, proved property.
++ quasiquotes.term construction.SI-7275 d: OK, proved property.
++ quasiquotes.term construction.SI-7275 e: OK, proved property.
++ quasiquotes.term construction.SI-7275 e2: OK, proved property.
++ quasiquotes.term construction.remove synthetic unit: OK, proved property.
++ quasiquotes.term construction.don't remove user-defined unit: OK, proved property.
++ quasiquotes.term construction.empty-tree is not a block: OK, proved property.
++ quasiquotes.term construction.empty block is synthetic unit: OK, proved property.
++ quasiquotes.term construction.consistent variable order: OK, proved property.
++ quasiquotes.term construction.SI-8385 a: OK, proved property.
++ quasiquotes.term construction.SI-8385 b: OK, proved property.
++ quasiquotes.term construction.match scrutinee may not be empty: OK, proved property.
++ quasiquotes.term construction.construct partial function: OK, proved property.
++ quasiquotes.term deconstruction.f(..x) = f: OK, proved property.
++ quasiquotes.term deconstruction.f(x): OK, passed 100 tests.
++ quasiquotes.term deconstruction.f(..xs): OK, passed 100 tests.
++ quasiquotes.term deconstruction.f(y, ..ys): OK, passed 100 tests.
++ quasiquotes.term deconstruction.f(y1, y2, ..ys): OK, passed 100 tests.
++ quasiquotes.term deconstruction.f(y1, ..ys, yn): OK, passed 100 tests.
++ quasiquotes.term deconstruction.f(..ys, y_{n-1}, y_n): OK, passed 100 tests.
++ quasiquotes.term deconstruction.f(...xss): OK, passed 100 tests.
++ quasiquotes.term deconstruction.f(...$xss)(..$last): OK, passed 100 tests.
++ quasiquotes.term deconstruction.f(...$xss)(..$lastinit, $lastlast): OK, passed 100 tests.
++ quasiquotes.term deconstruction.f(...xss) = f: OK, passed 100 tests.
++ quasiquotes.term deconstruction.deconstruct unit as tuple: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct tuple: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct tuple mixed: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct tuple last element: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct expr as tuple: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct cases: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct splitting last case: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct block: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct last element of a block: OK, proved property.
++ quasiquotes.term deconstruction.exhaustive function matcher: OK, proved property.
++ quasiquotes.term deconstruction.exhaustive new pattern: OK, proved property.
++ quasiquotes.term deconstruction.exhaustive assign pattern: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct update 1: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct update 2: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct while loop: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct do while loop: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct anonymous function with placeholders: OK, proved property.
++ quasiquotes.term deconstruction.si-8275 a: OK, proved property.
++ quasiquotes.term deconstruction.si-8275 b: OK, proved property.
++ quasiquotes.term deconstruction.si-8275 c: OK, proved property.
++ quasiquotes.term deconstruction.can't flatten type into block: OK, proved property.
++ quasiquotes.term deconstruction.term select doesn't match type select: OK, proved property.
++ quasiquotes.term deconstruction.type application doesn't match applied type: OK, proved property.
++ quasiquotes.term deconstruction.match doesn't match partial function: OK, proved property.
++ quasiquotes.term deconstruction.deconstruct partial function: OK, proved property.
++ quasiquotes.term deconstruction.SI-8350 `new C` and `new C()` are equivalent: OK, proved property.
++ quasiquotes.term deconstruction.SI-8350 new applications extracted only for non-empty ctor calls: OK, proved property.
++ quasiquotes.term deconstruction.SI-8350 original test case: OK, proved property.
++ quasiquotes.term deconstruction.SI-8387 new is not an application: OK, proved property.
++ quasiquotes.type construction.bare idents contain type names: OK, proved property.
++ quasiquotes.type construction.unquote type names into AppliedTypeTree: OK, passed 100 tests.
++ quasiquotes.type construction.tuple type: OK, proved property.
++ quasiquotes.type construction.single-element tuple type: OK, proved property.
++ quasiquotes.type construction.refined type: OK, proved property.
++ quasiquotes.type construction.function type: OK, proved property.
++ quasiquotes.type construction.empty tq: OK, proved property.
++ quasiquotes.type deconstruction.ident(type name): OK, passed 100 tests.
++ quasiquotes.type deconstruction.applied type tree: OK, passed 100 tests.
++ quasiquotes.type deconstruction.tuple type (1): OK, proved property.
++ quasiquotes.type deconstruction.tuple type (2): OK, proved property.
++ quasiquotes.type deconstruction.tuple type (3): OK, proved property.
++ quasiquotes.type deconstruction.tuple type (4): OK, proved property.
++ quasiquotes.type deconstruction.tuple type (5): OK, proved property.
++ quasiquotes.type deconstruction.refined type: OK, proved property.
++ quasiquotes.type deconstruction.function type (1): OK, proved property.
++ quasiquotes.type deconstruction.function type (2): OK, proved property.
++ quasiquotes.type deconstruction.match empty type tree: OK, proved property.
++ quasiquotes.type deconstruction.type select doesn't match term select: OK, proved property.
++ quasiquotes.type deconstruction.applied type doesn't match type appliction: OK, proved property.
++ quasiquotes.pattern construction.unquote bind: OK, passed 100 tests.
++ quasiquotes.pattern construction.unquote name into bind: OK, passed 100 tests.
++ quasiquotes.pattern construction.unquote name and tree into bind: OK, passed 100 tests.
++ quasiquotes.pattern construction.unquote type name into typed: OK, passed 100 tests.
++ quasiquotes.pattern construction.unquote tree into typed: OK, passed 100 tests.
++ quasiquotes.pattern construction.unquote into apply: OK, passed 100 tests.
++ quasiquotes.pattern construction.unquote into casedef: OK, passed 100 tests.
++ quasiquotes.pattern construction.unquote into alternative: OK, passed 100 tests.
++ quasiquotes.pattern deconstruction.extract bind: OK, passed 100 tests.
++ quasiquotes.pattern deconstruction.extract bind and subpattern: OK, passed 100 tests.
++ quasiquotes.pattern deconstruction.extract typed: OK, passed 100 tests.
++ quasiquotes.pattern deconstruction.extract apply: OK, passed 100 tests.
++ quasiquotes.pattern deconstruction.extract apply many: OK, passed 100 tests.
