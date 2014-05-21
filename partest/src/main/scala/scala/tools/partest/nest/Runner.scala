@@ -156,7 +156,7 @@ class Runner(val testFile: File, val suiteRunner: SuiteRunner) {
       "-Djava.library.path="+logFile.getParentFile.getAbsolutePath,
       "-Dpartest.output="+outDir.getAbsolutePath,
       "-Dpartest.lib="+libraryUnderTest.getAbsolutePath,
-      "-Dpartest.reflect="+reflectUnderTest.getAbsolutePath,
+      "-Dpartest.reflect="+compilerUnderTest.getAbsolutePath,
       "-Dpartest.cwd="+outDir.getParent,
       "-Dpartest.test-path="+testFullPath,
       "-Dpartest.testname="+fileBase,
@@ -604,23 +604,20 @@ class SuiteRunner(
   // TODO: make this immutable
   PathSettings.testSourcePath = testSourcePath
 
-  def banner = {
-    val baseDir = fileManager.compilerUnderTest.parent.toString
-    def relativize(path: String) = path.replace(baseDir, "$baseDir").replace(PathSettings.srcDir.toString, "$sourceDir")
-    val vmBin  = javaHome + fileSeparator + "bin"
-    val vmName = "%s (build %s, %s)".format(javaVmName, javaVmVersion, javaVmInfo)
+  def banner = "\n" + {
+    val baseDir = sys.props("partest.basedir")
+    val vmBin   = javaHome + fileSeparator + "bin"
+    val vmName  = "%s (build %s, %s)".format(javaVmName, javaVmVersion, javaVmInfo)
 
-  s"""|Partest version:     ${Properties.versionNumberString}
-      |Compiler under test: ${relativize(fileManager.compilerUnderTest.getAbsolutePath)}
-      |Scala version is:    $versionMsg
-      |Scalac options are:  ${scalacExtraArgs.mkString(" ")}
-      |Compilation Path:    ${relativize(joinPaths(fileManager.testClassPath))}
-      |Java binaries in:    $vmBin
-      |Java runtime is:     $vmName
-      |Java options are:    ${PartestDefaults.javaOpts}
-      |baseDir:             $baseDir
-      |sourceDir:           ${PathSettings.srcDir}
-    """.stripMargin
+    s"""|Version being tested:  ${fileManager.compilerUnderTest}
+        |Version in properties: $versionMsg
+        |Repository root:       $baseDir
+        |Test sources root:     ${PathSettings.srcDir}
+        |Scalac options:        ${join(scalacExtraArgs: _*)}
+        |Java options:          ${PartestDefaults.javaOpts}
+        |Java binaries/runtime: $vmBin  $vmName
+        |Compilation Path:      ${fileManager.testClassPath mkString ("\n  ", "\n  ", "\n")}
+      """.stripMargin
     // |Available processors:       ${Runtime.getRuntime().availableProcessors()}
     // |Java Classpath:             ${sys.props("java.class.path")}
   }

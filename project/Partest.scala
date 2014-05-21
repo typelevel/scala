@@ -5,11 +5,17 @@ import sbt._, Keys._
 import Runners._
 
 trait Partest {
-  def explodeSbtSources = Def task (
-    (dependencyClasspath in Test).value.files
-      filter (_.name startsWith "compiler-interface-src")
-      flatMap (f => IO.unzip(f, (sourceManaged in Test).value / name.value, ((_: String) endsWith ".scala")).toSeq)
+  def hasExtension(name: String)(exts: String*) = exts exists (name endsWith "." + _)
+  def isJarName(name: String)                   = hasExtension(name)("jar", "zip")
+  def isSourceName(name: String)                = hasExtension(name)("java", "scala")
+  def isSource(file: File)                      = isSourceName(file.getName)
+  def isJar(file: File)                         = isJarName(file.getName)
+
+  def createUnzipTask: TaskOf[Seq[File]] = Def task (
+    (dependencyClasspath in Compile).value.files filter isJar flatMap (IO.unzip(_, compatSourcesDir.value, isSourceName _).toSeq)
   )
+
+  def compatSourcesDir = sourceManaged map (_ / "compat")
 
   def propertiesMapping = Def setting {
     val file = name.value + ".properties"
@@ -18,14 +24,11 @@ trait Partest {
     key -> file
   }
 
-  def testJavaOptions = Def task {
-    val propArgs = for ((k, v) <- Props.testingProperties.value) yield "-D%s=%s".format(k, v)
-    "-Xmx1g" :: propArgs
-  }
+  def testJavaOptions = Props.testingProperties map ("-Xmx1g" +: _.commandLineArgs)
 
   def runTestsWithArgs(args: List[String]) = Def task {
     logForkJava(logger.value)(("-classpath" +: classpathReadable.value +: testJavaOptions.value :+ PartestRunnerClass) ++ args)
-    runForkJava(generalClasspathString(Test, ":").value, testJavaOptions.value, PartestRunnerClass, args)
+    runForkJava(testClasspathString(":").value, testJavaOptions.value, PartestRunnerClass, args)
   }
 
   def runAllTests = Def task (packageBin in Compile map (_ => runTestsWithArgs(Nil).value))
@@ -37,7 +40,7 @@ trait Partest {
       case args => args
     }
     logForkJava(logger.value)(("-classpath" +: classpathReadable.value +: testJavaOptions.value :+ PartestRunnerClass) ++ args)
-    runForkJava(classpathString(Test).value, testJavaOptions.value, PartestRunnerClass, args)
+    runForkJava(testClasspathString(":").value, testJavaOptions.value, PartestRunnerClass, args)
   }
 }
 

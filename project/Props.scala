@@ -41,22 +41,13 @@ object Props {
 
   def unsuppressTraces = "-D" + noTraceSupression.key
 
-  def testingProperties = Def.task[List[(String, String)]] {
-    val libJar  = (fullClasspath in Test).value.files filter (_.getName contains "-library") head
-    val compJar = (fullClasspath in Test).value.files filter (_.getName contains "-compiler") head
-    val base    = buildBase.value.toString
-    List(
-      "partest.scalac_opts"      -> join((scalacOptions in Test).value),
-      "partest.java_opts"        -> join((javaOptions in (Test, compile)).value),
-      "partest.lib"              -> libJar.getAbsolutePath,
-      "partest.reflect"          -> compJar.getAbsolutePath,
-      "partest.colors"           -> "256",
-      "partest.threads"          -> (numCores / 2).toString,
-      "partest.git_diff_options" -> "--word-diff",
-      "file.encoding"            -> "UTF-8",
-      "basedir"                  -> base,
-      "policy.version"           -> version.value,
-      "partest.root"             -> s"$base/test"
-    )
-  }
+  def testingProperties = Def task newProps(
+    "partest.scalac_opts"      -> join((scalacOptions in Test).value),
+    "partest.java_opts"        -> join((javaOptions in (Test, compile)).value),
+    "partest.colors"           -> "256",
+    "partest.threads"          -> (numCores / 2).toString,
+    "partest.git_diff_options" -> "--word-diff",
+    "partest.basedir"          -> buildBase.value,
+    "partest.root"             -> testBase.value
+  )
 }

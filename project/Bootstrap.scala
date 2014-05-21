@@ -40,9 +40,10 @@ trait Bootstrap {
   private def matches(m1: ModuleID, m2: ModuleID): Boolean     = (m1.organization == m2.organization) && (m1.name == m2.name)
   private def matches(m1: ModuleReport, m2: ModuleID): Boolean = matches(m1.module, m2)
 
-  private def transitiveReports = transitiveUpdate map (_ flatMap (_ configuration Bootstrap.name toList))
-  private def transitiveModules = transitiveReports map (_ flatMap (_.modules))
-  private def reports           = update map (_ configuration Bootstrap.name toList)
+  // private def transitiveReports = transitiveUpdate map (_ flatMap (_ configuration Bootstrap.name toList))
+  // private def transitiveModules = transitiveReports map (_ flatMap (_.modules))
+  // private def reports           = update map (_ configuration Bootstrap.name toList)
+  private def reports           = update map (_ configuration ScalaTool.name toList)
   private def modules           = reports map (_ flatMap (_.modules))
 
   private def nonEmpty[A](xs: Seq[A], ys: => Seq[A]): Seq[A]   = if (xs.isEmpty) ys else xs
@@ -103,7 +104,7 @@ trait Bootstrap {
     }
   }
 
-  def bootstrapInfoOutput: TaskOf[String] = Def task s"""
+  def bootstrapSummary: TaskOf[String] = Def task s"""
     |    revision  ${ bootstrapRevision.value }
     |    library   ${ bootstrapLibrary.value }
     |    compiler  ${ bootstrapCompiler.value }

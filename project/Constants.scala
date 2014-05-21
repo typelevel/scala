@@ -6,6 +6,7 @@ import sbt.complete._
 import DefaultParsers._
 
 trait Constants {
+  type SettingOf[A]         = Def.Initialize[A]
   type TaskOf[A]            = Def.Initialize[Task[A]]
   type InTaskOf[A]          = Def.Initialize[InputTask[A]]
   type Parser[+A]           = sbt.complete.Parser[A]
@@ -21,6 +22,8 @@ trait Constants {
   val ScalaFixedBinaryVersion = ScalaFixedVersion split "[.]" take 2 mkString "."
   val PolicyDynamicVersion    = "latest.release"
   val PolicyOrg               = "org.improving"
+  val ScalaName               = "scala"
+  val PolicyName              = "policy"
   val SbtOrg                  = "org.scala-sbt"
   val ScalaOrg                = "org.scala-lang"
   val UnknownVersion          = "<unknown>"
@@ -29,9 +32,6 @@ trait Constants {
   // Values configurable via system property
   lazy val PolicyBootstrapVersion = sys.props.getOrElse("policy.bootstrap", "scala")
   lazy val PolicyBuildVersion     = sys.props.getOrElse("policy.build", generateVersion())
-
-  // Configurations
-  val Bootstrap = config("bootstrap")
 
   // Keys
   val bootstrapInfo     = taskKey[Unit]("summary of bootstrapping")

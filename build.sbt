@@ -1,18 +1,16 @@
 import policy._, build._
 
-// A fully-qualified reference to a setting or task looks like:
-//
-// {<build-uri>}<project-id>/config:inkey::key
+seq(policyThisBuildSettings ++ policyGlobalSettings: _*)
 
-initialCommands in console := """import policy.build._"""
-
-seq(policyBuildSettings: _*)
-
-// lazy val asm = project.sub
+lazy val root = ( project.sub in file(".")
+      dependsOn ( library, compiler, partest )
+      aggregate ( library, compiler, partest, compat )
+      settings  ( getScala := scalaInstanceTask.evaluated )
+)
 
 lazy val library = ( project.sub.mima
-  addSourceDirs ( "forkjoin" )
-       settings (
+     addSourceDirs ( "forkjoin" )
+          settings (
          scalacOptions in Compile ++= strings("-sourcepath", (scalaSource in Compile).value),
                  previousArtifact :=  Some(scalaModuleId("library")),
                binaryIssueFilters ++= MimaPolicy.filters
@@ -20,33 +18,24 @@ lazy val library = ( project.sub.mima
 )
 
 lazy val compiler = ( project.sub
-     addSourceDirs ( "compiler", "reflect", "repl", "scaladoc" )
-         dependsOn ( library )
-  intransitiveDeps ( asm, jline, ant, scalaXml, scalaParsers )
+      addSourceDirs ( "compiler", "reflect", "repl" )
+          dependsOn ( library )
+   intransitiveDeps ( asm, jline, ant, scalaXml, scalaParsers )
+)
+
+lazy val compat = ( project.sub
+        dependsOn ( compiler )
+          sbtDeps ( "interface", "compiler-interface" )
+         settings ( noArtifacts )
 )
 
 lazy val partest = ( project.sub
   dependsOn        ( compiler )
   intransitiveDeps ( jline, ant, scalaXml, scalaParsers, scalacheck, diffutils, testInterface )
-  sbtTestDeps      ( "interface", "compiler-interface" )
-  settings         ( sourceGenerators in Test <+= Partest.explodeSbtSources )
-  settings (
-    unmanagedJars in (Compile, compile) := Nil
+  settings         (
+       unmanagedBase := baseDirectory.value / "testlib",
+                test := Partest.runAllTests.value,
+            testOnly := Partest.runTests.evaluated
   )
-)
-
-lazy val root = ( project.sub in file(".")
-    dependsOn ( library, compiler, partest )
-    aggregate ( library, compiler, partest )
-     settings (
-      sourceDirectories :=  Nil,
-          bootstrapInfo <<= bootstrapInfoOutput map printResult("bootstrap"),
-        publishArtifact :=  false,
-               getScala :=  scalaInstanceTask.evaluated,
-           fork in Test :=  true,
-                   test :=  Partest.runAllTests.value,
-               testOnly :=  Partest.runTests.evaluated,
-                    run :=  Runners.runInput(CompilerRunnerClass)("-usejavacp").evaluated,
-                   repl :=  Runners.runInput(ReplRunnerClass, Props.unsuppressTraces)("-usejavacp").evaluated
-    )
+  settings         ( noArtifacts )
 )

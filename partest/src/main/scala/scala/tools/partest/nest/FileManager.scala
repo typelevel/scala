@@ -101,15 +101,26 @@ object FileManager {
 }
 
 class FileManager(val testClassLoader: URLClassLoader) {
+  def this(testClassPath: List[Path]) = this(new URLClassLoader(testClassPath.toArray map (_.toURI.toURL)))
+
   lazy val libraryUnderTest: Path  = findArtifact("library")
-  lazy val reflectUnderTest: Path  = findArtifact("reflect")
   lazy val compilerUnderTest: Path = findArtifact("compiler")
 
-  lazy val testClassPath = testClassLoader.getURLs().map(url => Path(new File(url.toURI))).toList
+  private val ClassesRe = """^.*/([^/]+)/target/classes$""".r
+  private val JarRe     = """^.*/policy-([^-/]+).*\.jar$""".r
 
-  def this(testClassPath: List[Path]) {
-    this(new URLClassLoader(testClassPath.toArray map (_.toURI.toURL)))
+  private def extractName(p: Path): Option[String] = p.toString match {
+    case JarRe(name)     => Some(name)
+    case ClassesRe(name) => Some(name)
+    case _               => None
   }
+
+  lazy val testClassPath = testClassLoader.getURLs().map(url => Path(new File(url.toURI))).toList //.toVector
+  lazy val artifactMap: Map[String, Path] = (
+    testClassPath
+       filter (p => (p hasExtension "jar") || (p.name == "classes"))
+      flatMap (p => extractName(p) map (_ -> p))
+  ).toMap
 
   def distKind = {
     val p = libraryUnderTest.getAbsolutePath
@@ -121,18 +132,20 @@ class FileManager(val testClassLoader: URLClassLoader) {
 
   // find library/reflect/compiler jar or subdir under build/$stage/classes/
   private def findArtifact(name: String): Path = {
-    val canaryClass =
-      name match {
-        case "library"  => Class.forName("scala.Unit", false, testClassLoader)
-        case "reflect"  => Class.forName("scala.reflect.api.Symbols", false, testClassLoader)
-        case "compiler" => Class.forName("scala.tools.nsc.Main", false, testClassLoader)
-      }
-
-    val path = Path(canaryClass.getProtectionDomain.getCodeSource.getLocation.getPath)
-    if (path.extension == "jar"
-      || path.absolutePathSegments.endsWith(Seq("classes", name))) path
-    else sys.error(
-      s"""Test Classloader does not contain a $name jar or classes/$name directory.
-           |Looked in: $testClassPath""")
+    println(artifactMap)
+    artifactMap.getOrElse(name, sys.error(s"Test Classloader does not contain a $name jar or classes/$name directory.\nLooked in: ${ testClassPath mkString "\n  " }"))
   }
 }
+
+//     val canaryClass =
+//       name match {
+//         case "library"  => Class.forName("scala.Unit", false, testClassLoader)
+//         case "reflect"  => Class.forName("scala.reflect.api.Symbols", false, testClassLoader)
+//         case "compiler" => Class.forName("scala.tools.nsc.Main", false, testClassLoader)
+//       }
+
+//     val path = Path(canaryClass.getProtectionDomain.getCodeSource.getLocation.getPath)
+//     if (path.extension == "jar"|| path.absolutePathSegments.endsWith(Seq("classes", name))) path
+//     else
+//   }
+// }

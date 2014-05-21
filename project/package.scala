@@ -4,7 +4,14 @@ import sbt._, Keys._
 import Configurations.ScalaTool
 import Opts.resolver._
 import scala.sys.process.Process
-import Classpaths.publishConfig
+import Classpaths.{ packaged, publishConfig }
+
+
+// A fully-qualified reference to a setting or task looks like:
+//
+// {<build-uri>}<project-id>/config:inkey::key
+
+// (updateConfiguration in Compile) :=  new UpdateConfiguration(retrieveConfiguration.value, missingOk = true, ivyLoggingLevel.value),
 
 
 // private type UpElem = (String, ModuleID, Artifact, File)
@@ -52,6 +59,32 @@ import Classpaths.publishConfig
 package object build extends policy.build.Constants with policy.build.Bootstrap {
   lazy val newBuildVersion = Process("bin/unique-version").lines.mkString
 
+  def newProps(in: (String, Any)*): BetterProperties = new BetterProperties(in.toMap map { case (k, v) => (k, "" + v) })
+
+  class BetterProperties(in: Map[String, String]) extends java.util.Properties {
+    locally {
+      for ((k, v) <- in) super.setProperty(k, v)
+    }
+
+    override def setProperty(key: String, value: String): Nothing = throw new RuntimeException("Immutable properties")
+
+    def filterKeys(p: String => Boolean): BetterProperties         = new BetterProperties(in filter (kv => p(kv._1)))
+    def filter(p: ((String, String)) => Boolean): BetterProperties = new BetterProperties(in filter p)
+
+    private def map[A](f: (String, String) => A): Seq[A] = for ((k, v) <- in.toSeq) yield f(k, v)
+
+    def commandLineArgs: Seq[String] = this map ("-D%s=%s".format(_, _))
+  }
+
+  implicit class PropertyMapOps(val map: Map[String, Any]) {
+    def toJavaProps: java.util.Properties = {
+      val props = new java.util.Properties
+      for ((k, v) <- map) props.setProperty(k, "" + v)
+      props
+    }
+  }
+
+  def dash(elems: Any*): String       = elems mkString "-"
   def strings(xs: Any*): List[String] = xs.toList map ("" + _)
   def join(xs: Seq[String]): String   = xs filterNot (_ == "") mkString " "
   def wordSet(s: String): Set[String] = (s.trim split "\\s+").toSet
@@ -72,13 +105,12 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   def scalacheck    = "org.scalacheck"                 %%        "scalacheck"        % "1.11.3"
   def testInterface = SbtOrg                           %       "test-interface"      %  "1.0"
 
-  def buildBase                    = baseDirectory in ThisBuild
+  def buildBase = baseDirectory in ThisBuild
+  def testBase  = buildBase map (_ / "test")
 
-  def scalaModuleId(name: String)  = ScalaOrg  % s"scala-$name"  %   ScalaFixedVersion
-  def sbtModuleId(name: String)    = SbtOrg    %    s"$name"     %    SbtFixedVersion
-  def policyModuleId(name: String) = PolicyOrg % s"policy-$name" % PolicyBootstrapVersion
-
-  // % Bootstrap.name
+  def sbtModuleId(name: String)    = SbtOrg    %          name          %    SbtFixedVersion
+  def scalaModuleId(name: String)  = ScalaOrg  % dash(ScalaName, name)  %   ScalaFixedVersion
+  def policyModuleId(name: String) = PolicyOrg % dash(PolicyName, name) % PolicyBootstrapVersion
 
   def globally(xs: Setting[_]*)     = inScope(Global)(xs.toList)
   def thisally(xs: Setting[_]*)     = inScope(ThisScope)(xs.toList)
@@ -91,8 +123,14 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
 
   def scalaInstanceTask: InTaskOf[ScalaInstance] = Def inputTaskDyn scalaInstanceForVersion(scalaVersionParser.parsed)
 
+  def policyThisBuildSettings = thisally(
+    initialCommands in console :=  """import policy.build._""",
+                  watchSources ++= (buildBase.value * "*.sbt").get,
+                  watchSources ++= (buildBase.value / "project" * "*.sbt").get
+  )
+
   // Global settings.
-  def policyBuildSettings = globally(
+  def policyGlobalSettings = globally(
            organization :=  PolicyOrg,
            scalaVersion :=  ScalaFixedVersion,
      scalaBinaryVersion :=  ScalaFixedBinaryVersion,
@@ -101,18 +139,15 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
                 version :=  PolicyBuildVersion,
        autoScalaLibrary :=  false,
              crossPaths :=  false,
-           watchSources ++= (buildBase.value * "*.sbt").get,
-           watchSources ++= (buildBase.value / "project" * "*.sbt").get,
              incOptions ~=  (_ withRecompileOnMacroDef false)
 //             incOptions ~=  (_ withAntStyle true withRecompileOnMacroDef false)
   )
+  private val Root     = "root"
+  private val Partest  = "partest"
+  private val Compat   = "compat"
+  private val Compiler = "compiler"
+  private val Library  = "library"
 
-  private def rootProjectSettings = List(
-     publishArtifact := false,
-         fork in run := true
-  )
-
-  private val Partest = "partest"
   private def mainSources(p: Project) = p.id match {
     case Partest => Nil
     case _         =>
@@ -121,29 +156,43 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
          javaSource in Compile <<= scalaSource in Compile
       )
   }
+
   private def addSettings(p: Project) = p.id match {
-    case "root"     => p settings (rootProjectSettings: _*)
-    case Partest    => p deps bootstrapCompilerId settings (scopedSubProjectSettings: _*)
-    case "compiler" => p deps bootstrapLibraryId  settings (mainSources(p) ++ scopedSubProjectSettings: _*) settings (unmanagedJars in Compile ++= bootstrapJars.value)
-    case _          => p deps bootstrapCompilerId settings (mainSources(p) ++ scopedSubProjectSettings: _*)
+    case Root     => p settings (rootProjectSettings: _*)
+    case Compat   => p settings (sourceGenerators in Compile <+= build.Partest.createUnzipTask, noArtifacts)
+    case Partest  => p deps bootstrapCompilerId settings (scopedSubProjectSettings: _*)
+    case Compiler => p deps bootstrapLibraryId  settings (mainSources(p) ++ scopedSubProjectSettings: _*) settings (unmanagedJars in Compile ++= bootstrapJars.value)
+    case Library  => p deps bootstrapCompilerId settings (mainSources(p) ++ scopedSubProjectSettings: _*)
   }
 
+  // private def partestProjectSettings = List(
+  // )
+
+  def noArtifacts = packagedArtifacts <<= packaged(Nil)
+    // packagedArtifacts <<= packaged(Nil),
+
+  private def rootProjectSettings = List(
+                 name :=  PolicyName,
+      fork in Runtime :=  true,
+                  run :=  Runners.runInput(CompilerRunnerClass)("-usejavacp").evaluated,
+                 repl :=  Runners.runInput(ReplRunnerClass, Props.unsuppressTraces)("-usejavacp").evaluated
+  )
+
   private def subProjectSettings: List[Setting[_]] = List(
-                       name ~=  (n => s"policy-$n"),
-          ivyConfigurations ++= Seq(ScalaTool, Bootstrap),
-                 resolvers +=  Classpaths.typesafeResolver,
+                       name ~=  (dash(PolicyName, _)),
+          ivyConfigurations +=  ScalaTool,
+                  resolvers +=  Classpaths.typesafeResolver,
                  traceLevel :=  50,
               sourcesInBase :=  false,
                 logBuffered :=  false,
                 showSuccess :=  false,
-                 exportJars :=  true,
        pomIncludeRepository :=  (_ => false),
                   publishTo :=  Some(mavenLocalFile),
        managedScalaInstance :=  false,
               scalaInstance <<= bootstrapInstance
   )
   private def scopedSubProjectSettings = subProjectSettings ++ List(
-              // (updateConfiguration in Compile) :=  new UpdateConfiguration(retrieveConfiguration.value, missingOk = true, ivyLoggingLevel.value),
+                             packagedArtifacts <<= packaged(Seq(packageBin in Compile)),
                      publishLocalConfiguration ~=  (p => publishConfig(p.artifacts, p.ivyFile, p.checksums, p.resolverName, logging = UpdateLogging.Quiet, overwrite = false)),
                        javacOptions in Compile ++= javacArgs,
            scalacOptions in (Compile, compile) ++= scalacArgs,
@@ -161,7 +210,7 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
     def deps(ms: ModuleID*)             = p settings (libraryDependencies ++= ms.toSeq)
     def addSourceDirs(dirs: String*)    = p settings (unmanagedSourceDirectories in Compile ++= dirs map (buildBase.value / "src" / _))
     def intransitiveDeps(ms: ModuleID*) = p settings (libraryDependencies ++= intransitively(ms: _*))
-    def sbtTestDeps(ids: String*)       = p settings (libraryDependencies ++= intransitively(ids map sbtModuleId map (_ % "test"): _*))
+    def sbtDeps(ids: String*)           = p settings (libraryDependencies ++= intransitively(ids map sbtModuleId: _*))
     def scalaDeps(ids: String*)         = p settings (libraryDependencies ++= intransitively(ids map scalaModuleId: _*))
   }
 }

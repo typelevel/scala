@@ -18,22 +18,18 @@ trait Runners {
     Fork.java(forkOptions(), all)
   }
 
-  def runForkJava(classpath: String, jvmArgs: List[String], mainClass: String, mainArgs: List[String]): Int = {
+  def runForkJava(classpath: String, jvmArgs: Seq[String], mainClass: String, mainArgs: Seq[String]): Int = {
     val options = ForkOptions(bootJars = Nil, connectInput = true, outputStrategy = Some(StdoutOutput))
-    val args    = ("-classpath" :: classpath :: jvmArgs) ::: (mainClass :: mainArgs)
+    val args    = ("-classpath" +: classpath +: jvmArgs) ++ (mainClass +: mainArgs)
     Fork.java(options, args)
   }
 
-  def generalClasspathString(config: Configuration, join: String) =
-    Def.task[String]((fullClasspath in config).value.files mkString join)
+  def testClasspathString(sep: String)       = fullClasspath in Test map (_ filterNot isScalaJar) map (_.files mkString sep)
+  def classpathString(config: Configuration) = testClasspathString(":")
+  def classpathReadable                      = testClasspathString("\n  ") map ("\n  " + _ + "\n")
 
-  def noScalaLangInClasspath(cp: Classpath): Classpath = cp filterNot (x => x.toString split "/" contains ScalaOrg)
-
-  def classpathString(config: Configuration) =
-    Def.task[String](generalClasspathString(config, ":").value)
-
-  def classpathReadable =
-    Def.task[String]("\n  " + generalClasspathString(Test, "\n  ").value + "\n")
+  def isScalaJar(f: Attributed[File]) = f.data.getPath split "/" contains ScalaOrg
+  // def noScalaLang(cp: Classpath): Classpath = cp filterNot (x => x.toString split "/" contains ScalaOrg)
 
   def logForkJava(logger: Logger)(args: Seq[String]): Unit = logger.info(args filterNot (_ == "") mkString ("java ", " ", ""))
 }

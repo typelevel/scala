@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+
+genBuildSbt () {
+  printf "%s\n\n" "autoScalaLibrary := false"
+  printf "%s\n\n" 'resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"'
+
+  for arg in "$@"; do
+    IFS=';%' read org artifact revision <<<"$arg"
+    [[ -n "$revision" ]] || revision="latest.release"
+    echo "libraryDependencies += \"$org\" % \"$artifact\" % \"$revision\""
+    echo ""
+  done
+}
+
+outdir="$(mktemp -dt sbtcp)"
+genBuildSbt "$@" >"$outdir/build.sbt"
+( cd "$outdir" && sbt -q 'export externalDependencyClasspath' 2>/dev/null )
