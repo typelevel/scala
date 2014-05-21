@@ -44,9 +44,6 @@ abstract class Constructors extends Statics with Transform with ast.TreeDSL {
       val uninitializedVals = mutable.Set[Symbol](
         stats collect { case vd: ValDef if checkableForInit(vd.symbol) => vd.symbol.accessedOrSelf }: _*
       )
-      if (uninitializedVals.size > 1)
-        log("Checking constructor for init order issues among: " + uninitializedVals.toList.map(_.name.toString.trim).distinct.sorted.mkString(", "))
-
       for (stat <- stats) {
         // Checking the qualifier symbol is necessary to prevent a selection on
         // another instance of the same class from potentially appearing to be a forward
@@ -179,7 +176,7 @@ abstract class Constructors extends Statics with Transform with ast.TreeDSL {
       // no point traversing further once omittables is empty, all candidates ruled out already.
       object detectUsages extends Traverser {
         private def markUsage(sym: Symbol) {
-          omittables -= debuglogResult("omittables -= ")(sym)
+          omittables -= sym
           // recursive call to mark as needed the field supporting the outer-accessor-method.
           bodyOfOuterAccessor get sym foreach (this traverse _.rhs)
         }
@@ -373,29 +370,22 @@ abstract class Constructors extends Statics with Transform with ast.TreeDSL {
         adapter.transform(tree)
       }
 
-      log("merging: " + originalStats.mkString("\n") + "\nwith\n" + specializedStats.mkString("\n"))
       val res = for (s <- originalStats; stat = s.duplicate) yield {
-        log("merge: looking at " + stat)
         val stat1 = stat match {
           case Assign(sel @ Select(This(_), field), _) =>
             specializedAssignFor(sel.symbol).getOrElse(stat)
           case _ => stat
         }
-        if (stat1 ne stat) {
-          log("replaced " + stat + " with " + stat1)
+        if (stat1 ne stat)
           specBuf -= stat1
-        }
 
         if (stat1 eq stat) {
           assert(ctorParams(genericClazz).length == constrInfo.constrParams.length)
           // this is just to make private fields public
           (new specializeTypes.ImplementationAdapter(ctorParams(genericClazz), constrInfo.constrParams, null, true))(stat1)
-
           val stat2 = rewriteArrayUpdate(stat1)
-          // statements coming from the original class need retyping in the current context
-          debuglog("retyping " + stat2)
-
           val d = new specializeTypes.Duplicator(Map[Symbol, Type]())
+
           d.retyped(localTyper.context1.asInstanceOf[d.Context],
                     stat2,
                     genericClazz,

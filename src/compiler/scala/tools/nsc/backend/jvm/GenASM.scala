@@ -103,7 +103,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
 
       if (settings.Xdce)
         for ((sym, cls) <- icodes.classes if inliner.isClosureClass(sym) && !deadCode.liveClosures(sym)) {
-          log(s"Optimizer eliminated ${sym.fullNameString}")
           deadCode.elidedClosures += sym
           icodes.classes -= sym
         }
@@ -118,7 +117,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
           "Such classes will overwrite one another on case-insensitive filesystems.")
       }
 
-      debuglog(s"Created new bytecode generator for ${classes.size} classes.")
       val bytecodeWriter  = initBytecodeWriter(sortedClasses filter isJavaEntryPoint)
       val needsOutfile    = bytecodeWriter.isInstanceOf[ClassBytecodeWriter]
       val plainCodeGen    = new JPlainBuilder(   bytecodeWriter, needsOutfile)
@@ -129,8 +127,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
         if (isStaticModule(c.symbol) && isTopLevelModule(c.symbol)) {
           if (c.symbol.companionClass == NoSymbol)
             mirrorCodeGen genMirrorClass (c.symbol, c.cunit)
-          else
-            log(s"No mirror class for module with linked class: ${c.symbol.fullName}")
         }
         plainCodeGen genClass c
         if (c.symbol hasAnnotation BeanInfoAttr) beanInfoCodeGen genBeanInfoClass c
@@ -644,8 +640,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
       val allInners: List[Symbol] = innerClassBuffer.toList filterNot deadCode.elidedClosures
 
       if (allInners.nonEmpty) {
-        debuglog(csym.fullName('.') + " contains " + allInners.size + " inner classes.")
-
         // entries ready to be serialized into the classfile, used to detect duplicates.
         val entries = mutable.Map.empty[String, String]
 
@@ -660,12 +654,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
           val jname = javaName(innerSym)  // never null
           val oname = outerName(innerSym) // null when method-enclosed
           val iname = innerName(innerSym) // null for anonymous inner class
-
-          // Mimicking javap inner class output
-          debuglog(
-            if (oname == null || iname == null) "//class " + jname
-            else "//%s=class %s of class %s".format(iname, jname, oname)
-          )
 
           assert(jname != null, "javaName is broken.") // documentation
           val doAdd = entries.get(jname) match {
@@ -990,25 +978,15 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
      */
     def addForwarders(isRemoteClass: Boolean, jclass: asm.ClassVisitor, jclassName: String, moduleClass: Symbol) {
       assert(moduleClass.isModuleClass, moduleClass)
-      debuglog("Dumping mirror class for object: " + moduleClass)
 
       val linkedClass  = moduleClass.companionClass
       lazy val conflictingNames: Set[Name] = {
         (linkedClass.info.members collect { case sym if sym.name.isTermName => sym.name }).toSet
       }
-      debuglog("Potentially conflicting names for forwarders: " + conflictingNames)
 
       for (m <- moduleClass.info.membersBasedOnFlags(ExcludedForwarderFlags, Flags.METHOD)) {
-        if (m.isType || m.isDeferred || (m.owner eq ObjectClass) || m.isConstructor)
-          debuglog(s"No forwarder for '$m' from $jclassName to '$moduleClass'")
-        else if (conflictingNames(m.name))
-          log(s"No forwarder for $m due to conflict with " + linkedClass.info.member(m.name))
-        else if (m.hasAccessBoundary)
-          log(s"No forwarder for non-public member $m")
-        else {
-          debuglog(s"Adding static forwarder for '$m' from $jclassName to '$moduleClass'")
-          addForwarder(isRemoteClass, jclass, moduleClass, m)
-        }
+        if (m.isType || m.isDeferred || (m.owner eq ObjectClass) || m.isConstructor || conflictingNames(m.name) || m.hasAccessBoundary) ()
+        else addForwarder(isRemoteClass, jclass, moduleClass, m)
       }
     }
 
@@ -1252,13 +1230,10 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
             val isCandidateForForwarders = {
               exitingPickler { !(lmoc.name.toString contains '$') && lmoc.hasModuleFlag && !lmoc.isImplClass && !lmoc.isNestedClass }
             }
-            if (isCandidateForForwarders) {
-              log("Adding static forwarders from '%s' to implementations in '%s'".format(c.symbol, lmoc))
+            if (isCandidateForForwarders)
               addForwarders(isRemote(clasz.symbol), jclass, thisName, lmoc.moduleClass)
-            }
           }
         }
-
       }
 
       // add static serialVersionUID field if `clasz` annotated with `@SerialVersionUID(uid: Long)`
@@ -1303,26 +1278,20 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
       val clazz = clasz.symbol
       val sym = clazz.originalEnclosingMethod
       if (sym.isMethod) {
-        debuglog("enclosing method for %s is %s (in %s)".format(clazz, sym, sym.enclClass))
         res = EnclMethodEntry(javaName(sym.enclClass), javaName(sym), javaType(sym))
-      } else if (clazz.isAnonymousClass) {
+      }
+      else if (clazz.isAnonymousClass) {
         val enclClass = clazz.rawowner
         assert(enclClass.isClass, enclClass)
         val sym = enclClass.primaryConstructor
-        if (sym == NoSymbol) {
-          log("Ran out of room looking for an enclosing method for %s: no constructor here.".format(enclClass))
-        } else {
-          debuglog("enclosing method for %s is %s (in %s)".format(clazz, sym, enclClass))
+        if (sym != NoSymbol)
           res = EnclMethodEntry(javaName(enclClass), javaName(sym), javaType(sym))
-        }
       }
 
       res
     }
 
     def genField(f: IField) {
-      debuglog("Adding field: " + f.symbol.fullName)
-
       val javagensig = getGenericSignature(f.symbol, clasz.symbol)
 
       val flags = mkFlags(
@@ -1366,7 +1335,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
         return
       }
 
-      debuglog("Generating method " + m.symbol.fullName)
       method = m
       computeLocalVarsIndex(m)
 
@@ -1422,7 +1390,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
           // add a fake local for debugging purposes
           val outerField = clasz.symbol.info.decl(nme.OUTER_LOCAL)
           if (outerField != NoSymbol) {
-            log("Adding fake local to represent outer 'this' for closure " + clasz)
             val _this =
               new Local(method.symbol.newVariable(nme.FAKE_LOCAL_THIS),
                         toTypeKind(outerField.tpe),
@@ -1948,10 +1915,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
           // an ExceptionHandler lacking covered blocks doesn't get an entry in the Exceptions table.
           // TODO in that case, ExceptionHandler.cls doesn't go through javaName(). What if cls is an inner class?
           for (e <- this.method.exh ; if e.covered.nonEmpty ; p <- intervals(e)) {
-            debuglog("Adding exception handler " + e + "at block: " + e.startBlock + " for " + method +
-                     " from: " + p.start + " to: " + p.end + " catching: " + e.cls)
-            val cls: String = if (e.cls == NoSymbol || e.cls == ThrowableClass) null
-                              else javaName(e.cls)
+            val cls: String = if (e.cls == NoSymbol || e.cls == ThrowableClass) null else javaName(e.cls)
             jmethod.visitTryCatchBlock(labels(p.start), linNext(p.end), labels(e.startBlock), cls)
           }
         } // end of genCode()'s genExceptionHandlers()
@@ -2017,16 +1981,8 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
             val st = pending.getOrElseUpdate(lv, mutable.Stack.empty[Label])
             st.push(start)
           }
-          def popScope(lv: Local, end: Label, iPos: Position) {
-            pending.get(lv) match {
-              case Some(st) if st.nonEmpty =>
-                val start = st.pop()
-                seen ::= LocVarEntry(lv, start, end)
-              case _ =>
-                // TODO SI-6049 track down the cause for these.
-                debugwarn(s"$iPos: Visited SCOPE_EXIT before visiting corresponding SCOPE_ENTER. SI-6191")
-            }
-          }
+          def popScope(lv: Local, end: Label, iPos: Position): Unit =
+            pending get lv filter (_.nonEmpty) foreach (st => seen ::= LocVarEntry(lv, st.pop(), end))
 
           def getMerged(): scala.collection.Map[Local, List[Interval]] = {
             // TODO should but isn't: unbalanced start(s) of scope(s)
@@ -2148,8 +2104,8 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
         val jname    = javaName(method)
         val jtype    = javaType(method).getDescriptor()
 
-        def dbg(invoke: String) {
-          debuglog("%s %s %s.%s:%s".format(invoke, receiver.accessString, jowner, jname, jtype))
+        def dbg(invoke: String): Unit = {
+          // log(s"$invoke ${receiver.accessString} $jowner $jname $jtype")
         }
 
         def initModule() {
@@ -2177,10 +2133,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
 
       def genBlock(b: BasicBlock) {
         jmethod.visitLabel(labels(b))
-
-        debuglog("Generating code for block: " + b)
-
-        // val lastInstr = b.lastInstruction
 
         for (instr <- b) {
 
@@ -2244,8 +2196,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
           def genStackInstr() = (instr: @unchecked) match {
 
             case LOAD_MODULE(module) =>
-              // assert(module.isModule, "Expected module: " + module)
-              debuglog("generating LOAD_MODULE for: " + module + " flags: " + module.flagString)
               def inStaticMethod = this.method != null && this.method.symbol.isStaticMember
               if (clasz.symbol == module.moduleClass && jMethodName != nme.readResolve.toString && !inStaticMethod) {
                 jmethod.visitVarInsn(Opcodes.ALOAD, 0)
@@ -2323,7 +2273,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
 
             case lf @ LOAD_FIELD(field, isStatic) =>
               val owner = javaName(lf.hostClass)
-              debuglog("LOAD_FIELD with owner: " + owner + " flags: " + field.owner.flagString)
               val fieldJName = javaName(field)
               val fieldDescr = descriptor(field)
               val opc = if (isStatic) Opcodes.GETSTATIC else Opcodes.GETFIELD
@@ -2385,7 +2334,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
               }
               val defaultLabel = labels(restBranches.head)
               assert(restBranches.tail.isEmpty)
-              debuglog("Emitting SWITCH:\ntags: " + tagss + "\nbranches: " + branches)
               jcode.emitSWITCH(flatKeys, flatBranches, defaultLabel, MIN_SWITCH_DENSITY)
 
             case JUMP(whereto) =>
@@ -2679,7 +2627,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
             genCompare()
 
           case Conversion(src, dst) =>
-            debuglog("Converting from: " + src + " to: " + dst)
             emitT2T(src, dst)
 
           case ArrayLength(_) => emit(Opcodes.ARRAYLENGTH)
@@ -2744,13 +2691,11 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
       var idx = if (m.symbol.isStaticMember) 0 else 1
 
       for (l <- m.params) {
-        debuglog("Index value for " + l + "{" + l.## + "}: " + idx)
         l.index = idx
         idx += sizeOf(l.kind)
       }
 
       for (l <- m.locals if !l.arg) {
-        debuglog("Index value for " + l + "{" + l.## + "}: " + idx)
         l.index = idx
         idx += sizeOf(l.kind)
       }
@@ -2784,8 +2729,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
                                      null /* no java-generic-signature */,
                                      JAVA_LANG_OBJECT.getInternalName,
                                      EMPTY_STRING_ARRAY)
-
-      log(s"Dumping mirror class for '$mirrorName'")
 
       // typestate: entering mode with valid call sequences:
       //   [ visitSource ] [ visitOuterClass ] ( visitAnnotation | visitAttribute )*
@@ -3031,7 +2974,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
           def replaceLastInstruction(i: Instruction) = {
             if (b.lastInstruction != i) {
               val idxLast = b.size - 1
-	          debuglog(s"In block $b, replacing last instruction ${b.lastInstruction} with ${i}")
 	          b.replaceInstruction(idxLast, i)
             }
           }
@@ -3099,25 +3041,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
         detour
       }
 
-      val detour = computeDetour
-      rephraseGotos(detour)
-
-      if (settings.debug) {
-        val (remappings, cycles) = detour partition {case (source, target) => source != target}
-        for ((source, target) <- remappings) {
-		   debuglog(s"Will elide jump only block $source because it can be jumped around to get to $target.")
-		   if (m.startBlock == source) debugwarn("startBlock should have been re-wired by now")
-        }
-        val sources = remappings.keySet
-        val targets = remappings.values.toSet
-        val intersection = sources intersect targets
-
-        if (intersection.nonEmpty) debugwarn(s"contradiction: we seem to have some source and target overlap in blocks ${intersection.mkString}. Map was ${detour.mkString}")
-
-        for ((source, _) <- cycles) {
-          debuglog(s"Block $source is in a do-nothing infinite loop. Did the user write 'while(true){}'?")
-        }
-      }
+      rephraseGotos(computeDetour)
     }
 
     /**
@@ -3155,15 +3079,11 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
       }
 
       // remove the unusued exception handler references
-      if (settings.debug)
-        for (exh <- unusedExceptionHandlers) debuglog(s"eliding exception handler $exh because it does not cover any reachable blocks")
       m.exh = m.exh filterNot unusedExceptionHandlers
 
       // everything not in the reachable set is unreachable, unused, and unloved. buh bye
-      for (b <- m.blocks filterNot reachable) {
-    	  debuglog(s"eliding block $b because it is unreachable")
+      for (b <- m.blocks filterNot reachable)
     	  m.code removeBlock b
-      }
     }
 
     def normalize(m: IMethod) {
@@ -3216,58 +3136,12 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
     val memberTpe = enteringErasure(owner.thisType.memberInfo(sym))
     getGenericSignature(sym, owner, memberTpe, unit)
   }
-  def getGenericSignature(sym: Symbol, owner: Symbol, memberTpe: Type, unit: CompilationUnit): String = {
-    if (!needsGenericSignature(sym)) { return null }
-
-    val jsOpt: Option[String] = erasure.javaSig(sym, memberTpe)
-    if (jsOpt.isEmpty) { return null }
-
-    val sig = jsOpt.get
-    log(sig) // This seems useful enough in the general case.
-
-        def wrap(op: => Unit) = {
-          try   { op; true }
-          catch { case _: Throwable => false }
-        }
-
-    if (settings.Xverify) {
-      // Run the signature parser to catch bogus signatures.
-      val isValidSignature = wrap {
-        // Alternative: scala.tools.reflect.SigParser (frontend to sun.reflect.generics.parser.SignatureParser)
-        import scala.tools.asm.util.CheckClassAdapter
-        if (sym.isMethod)    { CheckClassAdapter checkMethodSignature sig } // requires asm-util.jar
-        else if (sym.isTerm) { CheckClassAdapter checkFieldSignature  sig }
-        else                 { CheckClassAdapter checkClassSignature  sig }
-      }
-
-      if(!isValidSignature) {
-        unit.warning(sym.pos,
-            """|compiler bug: created invalid generic signature for %s in %s
-               |signature: %s
-               |if this is reproducible, please report bug at https://issues.scala-lang.org/
-            """.trim.stripMargin.format(sym, sym.owner.skipPackageObject.fullName, sig))
-        return null
-      }
-    }
-
-    if ((settings.check containsName phaseName)) {
-      val normalizedTpe = enteringErasure(erasure.prepareSigMap(memberTpe))
-      val bytecodeTpe = owner.thisType.memberInfo(sym)
-      if (!sym.isType && !sym.isConstructor && !(erasure.erasure(sym)(normalizedTpe) =:= bytecodeTpe)) {
-        unit.warning(sym.pos,
-            """|compiler bug: created generic signature for %s in %s that does not conform to its erasure
-               |signature: %s
-               |original type: %s
-               |normalized type: %s
-               |erasure type: %s
-               |if this is reproducible, please report bug at http://issues.scala-lang.org/
-            """.trim.stripMargin.format(sym, sym.owner.skipPackageObject.fullName, sig, memberTpe, normalizedTpe, bytecodeTpe))
-         return null
-      }
-    }
-
-    sig
-  }
+  def getGenericSignature(sym: Symbol, owner: Symbol, memberTpe: Type, unit: CompilationUnit): String = (
+    if (needsGenericSignature(sym))
+      erasure.javaSig(sym, memberTpe).orNull
+    else
+      null
+  )
 
   def ubytesToCharArray(bytes: Array[Byte]): Array[Char] = {
     val ca = new Array[Char](bytes.length)

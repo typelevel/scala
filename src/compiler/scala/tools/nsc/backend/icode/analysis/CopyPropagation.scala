@@ -505,19 +505,15 @@ abstract class CopyPropagation {
       var values         = in.stack.take(1 + ctor.info.paramTypes.length).reverse.drop(1)
       val bindings       = mutable.HashMap[Symbol, Value]()
 
-      debuglog("getBindings for: " + ctor + " acc: " + paramAccessors)
-
       var paramTypes = ctor.tpe.paramTypes
       val diff = paramTypes.length - paramAccessors.length
       diff match {
         case 0 => ()
         case 1 if ctor.tpe.paramTypes.head == ctor.owner.rawowner.tpe =>
           // it's an unused outer
-          debuglog("considering unused outer at position 0 in " + ctor.tpe.paramTypes)
           paramTypes = paramTypes.tail
           values = values.tail
         case _ =>
-          debuglog("giving up on " + ctor + "(diff: " + diff + ")")
           return bindings
       }
 

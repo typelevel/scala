@@ -51,20 +51,6 @@ abstract class Inliners extends SubComponent {
 
   override val enabled: Boolean = settings.inline
 
-  /** Debug - for timing the inliner. */
-  /****
-  private def timed[T](s: String, body: => T): T = {
-    val t1 = System.currentTimeMillis()
-    val res = body
-    val t2 = System.currentTimeMillis()
-    val ms = (t2 - t1).toInt
-    if (ms >= MAX_INLINE_MILLIS)
-      println("%s: %d milliseconds".format(s, ms))
-
-    res
-  }
-  ****/
-
   /** Look up implementation of method 'sym in 'clazz'.
    */
   def lookupImplFor(sym: Symbol, clazz: Symbol): Symbol = {
@@ -76,7 +62,6 @@ abstract class Inliners extends SubComponent {
       && clazz.isEffectivelyFinalOrNotOverridden
     )
     def lookup(clazz: Symbol): Symbol = {
-      // println("\t\tlooking up " + meth + " in " + clazz.fullName + " meth.owner = " + meth.owner)
       assert(clazz != NoSymbol, "Walked up past Object.superClass looking for " + sym +
                                 ", most likely this reveals the TFA at fault (receiver and callee don't match).")
       if (sym.owner == clazz || isBottomType(clazz)) sym
@@ -85,13 +70,7 @@ abstract class Inliners extends SubComponent {
         else lookup(clazz.superClass)
       )
     }
-    if (needsLookup) {
-      val concreteMethod = lookup(clazz)
-      debuglog("\tlooked up method: " + concreteMethod.fullName)
-
-      concreteMethod
-    }
-    else sym
+    if (needsLookup) lookup(clazz) else sym
   }
 
   /* A warning threshold */
@@ -334,7 +313,6 @@ abstract class Inliners extends SubComponent {
       // how many times have we already inlined this method here?
       val inlinedMethodCount = mutable.HashMap.empty[Symbol, Int] withDefaultValue 0
       val caller = new IMethodInfo(m)
-      def analyzeMessage = s"Analyzing ${caller.length} blocks of $m for inlining sites."
 
       def preInline(isFirstRound: Boolean): Int = {
         val inputBlocks = caller.m.linearizedBlocks()
@@ -422,11 +400,6 @@ abstract class Inliners extends SubComponent {
           || receiver.enclosingPackage == definitions.RuntimePackage
         )   // only count non-closures
 
-        debuglog("Treating " + i
-              + "\n\treceiver: " + receiver
-              + "\n\ticodes.available: " + isAvailable
-              + "\n\tconcreteMethod.isEffectivelyFinalOrNotOverridden: " + concreteMethod.isEffectivelyFinalOrNotOverridden)
-
         if (!isCandidate) warnNoInline("it can be overridden")
         else if (!isAvailable) warnNoInline("bytecode unavailable")
         else lookupIMethod(concreteMethod, receiver) filter (callee => callee.hasCode || warnNoInline("callee has no code")) exists { callee =>
@@ -490,7 +463,6 @@ abstract class Inliners extends SubComponent {
 
       do {
         retry = false
-        debuglog(analyzeMessage)
 
         /* it's important not to inline in unreachable basic blocks. linearizedBlocks() returns only reachable ones. */
         tfa.callerLin = caller.m.linearizedBlocks()
@@ -593,10 +565,7 @@ abstract class Inliners extends SubComponent {
     def shouldLoadImplFor(sym: Symbol, receiver: Symbol): Boolean = {
       def alwaysLoad    = (receiver.enclosingPackage == RuntimePackage) || (receiver == PredefModule.moduleClass)
       def loadCondition = sym.isEffectivelyFinalOrNotOverridden && isMonadicMethod(sym) && isHigherOrderMethod(sym)
-
-      val res = hasInline(sym) || alwaysLoad || loadCondition
-      debuglog("shouldLoadImplFor: " + receiver + "." + sym + ": " + res)
-      res
+      hasInline(sym) || alwaysLoad || loadCondition
     }
 
     class IMethodInfo(val m: IMethod) {
@@ -1011,7 +980,6 @@ abstract class Inliners extends SubComponent {
 
         if(stackLength > inc.minimumStack && inc.hasNonFinalizerHandler) {
           val msg = "method " + inc.sym + " is used on a non-empty stack with finalizer."
-          debuglog(msg)
           // FYI: not reason enough to add inc.sym to tfa.knownUnsafe (because at other callsite in this caller, inlining might be ok)
           return DontInlineHere(msg)
         }
@@ -1052,10 +1020,8 @@ abstract class Inliners extends SubComponent {
         if (inc.isSmall) score += 1
         // if (inc.hasClosureParam) score += 2
         if (inc.isLarge) score -= 1
-        if (caller.isSmall && isLargeSum) {
+        if (caller.isSmall && isLargeSum)
           score -= 1
-          debuglog(s"inliner score decreased to $score because small caller $caller would become large")
-        }
 
         if (inc.isMonadic)          score += 3
         else if (inc.isHigherOrder) score += 1

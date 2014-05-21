@@ -19,7 +19,6 @@ abstract class FormatInterpolator {
   @inline private def truly(body: => Unit): Boolean = { body ; true }
   @inline private def falsely(body: => Unit): Boolean = { body ; false }
 
-  private def fail(msg: String) = c.abort(c.enclosingPosition, msg)
   private def bail(msg: String) = global.abort(msg)
 
   def interpolate: Tree = c.macroApplication match {
@@ -252,7 +251,7 @@ abstract class FormatInterpolator {
     def goodFlags = {
       val badFlags = flags map (_ filterNot (okFlags contains _))
       for (bf <- badFlags; f <- bf) badFlag(f, s"Illegal flag '$f'")
-      badFlags.getOrElse("").isEmpty 
+      badFlags.getOrElse("").isEmpty
     }
     def goodIndex = {
       if (index.nonEmpty && hasFlag('<'))

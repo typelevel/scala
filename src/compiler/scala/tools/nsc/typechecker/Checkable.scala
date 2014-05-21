@@ -62,8 +62,6 @@ trait Checkable {
     bases foreach { bc =>
       val tps1 = (from baseType bc).typeArgs
       val tps2 = (tvarType baseType bc).typeArgs
-      if (tps1.size != tps2.size)
-        devWarning(s"Unequally sized type arg lists in propagateKnownTypes($from, $to): ($tps1, $tps2)")
 
       (tps1, tps2).zipped foreach (_ =:= _)
       // Alternate, variance respecting formulation causes
@@ -118,24 +116,12 @@ trait Checkable {
     def P3   = isNonRefinementClassType(P) && (XR matchesPattern P)
     def P4   = !(P1 || P2 || P3)
 
-    def summaryString = f"""
-      |Checking checkability of (x: $X) against pattern $P
-      |[P1] $P1%-6s X <: P             // $X  <: $P
-      |[P2] $P2%-6s x ∉ P              // (x ∈ $X) ⇒ (x ∉ $P)
-      |[P3] $P3%-6s XR <: P            // $XR <: $P
-      |[P4] $P4%-6s None of the above  // !(P1 || P2 || P3)
-    """.stripMargin.trim
-
     val result = (
       if (X.isErroneous || P.isErroneous) CheckabilityError
       else if (P1) StaticallyTrue
       else if (P2) StaticallyFalse
       else if (P3) RuntimeCheckable
-      else if (uncheckableType == NoType) {
-        // Avoid warning (except ourselves) if we can't pinpoint the uncheckable type
-        debuglog("Checkability checker says 'Uncheckable', but uncheckable type cannot be found:\n" + summaryString)
-        CheckabilityError
-      }
+      else if (uncheckableType == NoType) CheckabilityError
       else Uncheckable
     )
     lazy val uncheckableType = if (Psym.isAbstractType) P else {
@@ -210,7 +196,7 @@ trait Checkable {
 
     def isNeverSubClass(sym1: Symbol, sym2: Symbol) = areIrreconcilableAsParents(sym1, sym2)
 
-    private def isNeverSubArgs(tps1: List[Type], tps2: List[Type], tparams: List[Symbol]): Boolean = /*logResult(s"isNeverSubArgs($tps1, $tps2, $tparams)")*/ {
+    private def isNeverSubArgs(tps1: List[Type], tps2: List[Type], tparams: List[Symbol]): Boolean = {
       def isNeverSubArg(t1: Type, t2: Type, variance: Variance) = (
         if (variance.isInvariant) isNeverSameType(t1, t2)
         else if (variance.isCovariant) isNeverSubType(t2, t1)
@@ -226,7 +212,7 @@ trait Checkable {
         false
     }
     // Important to dealias at any entry point (this is the only one at this writing.)
-    def isNeverSubType(tp1: Type, tp2: Type): Boolean = /*logResult(s"isNeverSubType($tp1, $tp2)")*/((tp1.dealias, tp2.dealias) match {
+    def isNeverSubType(tp1: Type, tp2: Type): Boolean = ((tp1.dealias, tp2.dealias) match {
       case (TypeRef(_, sym1, args1), TypeRef(_, sym2, args2)) =>
         isNeverSubClass(sym1, sym2) || {
           (sym1 isSubClass sym2) && {
@@ -280,9 +266,6 @@ trait Checkable {
           parents foreach (p => checkCheckable(tree, p, X, inPattern, canRemedy))
         case _ =>
           val checker = new CheckabilityChecker(X, P)
-          if (checker.result == RuntimeCheckable)
-            log(checker.summaryString)
-
           if (checker.neverMatches) {
             val addendum = if (checker.neverSubClass) "" else " (but still might match its erasure)"
             getContext.unit.warning(tree.pos, s"fruitless type test: a value of type $X cannot also be a $PString$addendum")

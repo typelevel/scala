@@ -18,9 +18,8 @@ private[internal] trait TypeMaps {
     */
   object normalizeAliases extends TypeMap {
     def apply(tp: Type): Type = mapOver(tp match {
-      case TypeRef(_, sym, _) if sym.isAliasType && tp.isHigherKinded => logResult(s"Normalized type alias function $tp")(tp.normalize)
-      case TypeRef(_, sym, _) if sym.isAliasType                      => tp.normalize
-      case tp                                                         => tp
+      case TypeRef(_, sym, _) if sym.isAliasType => tp.normalize
+      case tp                                    => tp
     })
   }
 
@@ -389,14 +388,7 @@ private[internal] trait TypeMaps {
           val repl = if (variance.isPositive) dropSingletonType(tp1.bounds.hi) else tp1.bounds.lo
           val count = occurCount(sym)
           val containsTypeParam = tparams exists (repl contains _)
-          def msg = {
-            val word = if (variance.isPositive) "upper" else "lower"
-            s"Widened lone occurrence of $tp1 inside existential to $word bound"
-          }
-          if (!repl.typeSymbol.isBottomClass && count == 1 && !containsTypeParam)
-            debuglogResult(msg)(repl)
-          else
-            tp1
+          if (!repl.typeSymbol.isBottomClass && count == 1 && !containsTypeParam) repl else tp1
         case _ =>
           tp1
       }
@@ -502,13 +494,11 @@ private[internal] trait TypeMaps {
         case _       =>
           val qvar = clazz freshExistential nme.SINGLETON_SUFFIX setInfo singletonBounds(pre)
           _capturedParams ::= qvar
-          debuglog(s"Captured This(${clazz.fullNameString}) seen from $seenFromPrefix: ${qvar.defString}")
           qvar.tpe
       }
     }
     protected def captureSkolems(skolems: List[Symbol]) {
       for (p <- skolems; if !(capturedSkolems contains p)) {
-        debuglog(s"Captured $p seen from $seenFromPrefix")
         _capturedSkolems ::= p
       }
     }
@@ -1046,12 +1036,7 @@ private[internal] trait TypeMaps {
         sym
       else if (sym.isModuleClass) {
         val sourceModule1 = adaptToNewRun(pre, sym.sourceModule)
-
-        sourceModule1.moduleClass orElse sourceModule1.initialize.moduleClass orElse {
-          val msg = "Cannot adapt module class; sym = %s, sourceModule = %s, sourceModule.moduleClass = %s => sourceModule1 = %s, sourceModule1.moduleClass = %s"
-          debuglog(msg.format(sym, sym.sourceModule, sym.sourceModule.moduleClass, sourceModule1, sourceModule1.moduleClass))
-          sym
-        }
+        sourceModule1.moduleClass orElse sourceModule1.initialize.moduleClass orElse sym
       }
       else {
         var rebind0 = pre.findMember(sym.name, BRIDGE, 0, stableOnly = true) orElse {
@@ -1063,21 +1048,13 @@ private[internal] trait TypeMaps {
         def corresponds(sym1: Symbol, sym2: Symbol): Boolean =
           sym1.name == sym2.name && (sym1.isPackageClass || corresponds(sym1.owner, sym2.owner))
         if (!corresponds(sym.owner, rebind0.owner)) {
-          debuglog("ADAPT1 pre = "+pre+", sym = "+sym.fullLocationString+", rebind = "+rebind0.fullLocationString)
           val bcs = pre.baseClasses.dropWhile(bc => !corresponds(bc, sym.owner))
           if (bcs.isEmpty)
             assert(pre.typeSymbol.isRefinementClass, pre) // if pre is a refinementclass it might be a structural type => OK to leave it in.
           else
             rebind0 = pre.baseType(bcs.head).member(sym.name)
-          debuglog(
-            "ADAPT2 pre = " + pre +
-              ", bcs.head = " + bcs.head +
-              ", sym = " + sym.fullLocationString +
-              ", rebind = " + rebind0.fullLocationString
-          )
         }
         rebind0.suchThat(sym => sym.isType || sym.isStable) orElse {
-          debuglog("" + phase + " " +phase.flatClasses+sym.owner+sym.name+" "+sym.isType)
           throw new MalformedType(pre, sym.nameString)
         }
       }

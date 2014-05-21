@@ -59,7 +59,6 @@ abstract class Delambdafy extends Transform with TypingTransformers with ast.Tre
         if (referrers contains symbol) true
         else if (methodReferringMap(symbol) exists refersToThis) {
           // add it early to memoize
-          debuglog(s"$symbol indirectly refers to 'this'")
           referrers += symbol
           true
         } else false
@@ -282,22 +281,18 @@ abstract class Delambdafy extends Transform with TypingTransformers with ast.Tre
 
       val bridgeMethod = createBridgeMethod(anonClass, originalFunction, applyMethodDef)
 
-      def fulldef(sym: Symbol) =
-        if (sym == NoSymbol) sym.toString
-        else s"$sym: ${sym.tpe} in ${sym.owner}"
+      bridgeMethod foreach (bm =>
+        // TODO SI-6260 maybe just create the apply method with the signature (Object => Object) in all cases
+        //      rather than the method+bridge pair.
+        if (bm.symbol.tpe =:= applyMethodDef.symbol.tpe)
+          erasure.resolveAnonymousBridgeClash(applyMethodDef.symbol, bm.symbol)
+      )
 
-        bridgeMethod foreach (bm =>
-          // TODO SI-6260 maybe just create the apply method with the signature (Object => Object) in all cases
-          //      rather than the method+bridge pair.
-          if (bm.symbol.tpe =:= applyMethodDef.symbol.tpe)
-            erasure.resolveAnonymousBridgeClash(applyMethodDef.symbol, bm.symbol)
-        )
+      val body = members ++ List(constr, applyMethodDef) ++ bridgeMethod
 
-        val body = members ++ List(constr, applyMethodDef) ++ bridgeMethod
-
-        // TODO if member fields are private this complains that they're not accessible
-        (localTyper.typedPos(decapturedFunction.pos)(ClassDef(anonClass, body)).asInstanceOf[ClassDef], thisProxy, accessorMethod)
-      }
+      // TODO if member fields are private this complains that they're not accessible
+      (localTyper.typedPos(decapturedFunction.pos)(ClassDef(anonClass, body)).asInstanceOf[ClassDef], thisProxy, accessorMethod)
+    }
 
       val (anonymousClassDef, thisProxy, accessorMethod) = makeAnonymousClass
 
@@ -442,8 +437,6 @@ abstract class Delambdafy extends Transform with TypingTransformers with ast.Tre
     val liftedMethodReferences = mutable.Map[Symbol, Set[Symbol]]().withDefault(_ => mutable.Set())
     override def traverse(tree: Tree) = tree match {
       case DefDef(_, _, _, _, _, _) =>
-        // we don't expect defs within defs. At this phase trees should be very flat
-        if (currentMethod.exists) devWarning("Found a def within a def at a phase where defs are expected to be flattened out.")
         currentMethod = tree.symbol
         super.traverse(tree)
         currentMethod = NoSymbol
@@ -454,7 +447,6 @@ abstract class Delambdafy extends Transform with TypingTransformers with ast.Tre
         if (currentMethod.exists) liftedMethodReferences(currentMethod) += targetMethod(fun)
       case This(_) =>
         if (currentMethod.exists && tree.symbol == currentMethod.enclClass) {
-          debuglog(s"$currentMethod directly refers to 'this'")
           thisReferringMethods add currentMethod
         }
       case _ =>

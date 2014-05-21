@@ -795,10 +795,7 @@ trait Types
         }
       case TypeRef(_, sym, args) =>
         val that1 = existentialAbstraction(args map (_.typeSymbol), that)
-        (that ne that1) && (this <:< that1) && {
-          debuglog(s"$this.matchesPattern($that) depended on discarding args and testing <:< $that1")
-          true
-        }
+        (that ne that1) && (this <:< that1)
       case _ =>
         false
     })
@@ -2064,10 +2061,8 @@ trait Types
      */
     override def coevolveSym(newPre: Type): Symbol =
       if ((pre ne newPre) && embeddedSymbol(pre, sym.name) == sym) {
-        val newSym = embeddedSymbol(newPre, sym.name)
-        debuglog(s"co-evolve: ${pre} -> ${newPre}, $sym : ${sym.info} -> $newSym : ${newSym.info}")
         // To deal with erroneous `preNew`, fallback via `orElse sym`, in case `preNew` does not have a decl named `sym.name`.
-        newSym orElse sym
+        embeddedSymbol(newPre, sym.name) orElse sym
       } else sym
 
     override def kind = "AliasTypeRef"
@@ -2076,16 +2071,11 @@ trait Types
   // Return the symbol named `name` that's "embedded" in tp
   // This is the case if `tp` is a `T{...; type/val $name ; ...}`,
   // or a singleton type with such an underlying type.
+  // normalize to flatten nested RefinedTypes
+  // don't check whether tp is a RefinedType -- it may be a ThisType of one, for example
+  // TODO: check the resulting symbol is owned by the refinement class? likely an invariant...
   private def embeddedSymbol(tp: Type, name: Name): Symbol =
-    // normalize to flatten nested RefinedTypes
-    // don't check whether tp is a RefinedType -- it may be a ThisType of one, for example
-    // TODO: check the resulting symbol is owned by the refinement class? likely an invariant...
-    if (tp.typeSymbol.isRefinementClass) tp.normalize.decls lookup name
-    else {
-      debuglog(s"no embedded symbol $name found in ${showRaw(tp)} --> ${tp.normalize.decls lookup name}")
-      NoSymbol
-    }
-
+    if (tp.typeSymbol.isRefinementClass) tp.normalize.decls lookup name else NoSymbol
 
   trait AbstractTypeRef extends NonClassTypeRef {
     require(sym.isAbstractType, sym)
@@ -2956,10 +2946,9 @@ trait Types
     // invariant: before mutating constr, save old state in undoLog
     // (undoLog is used to reset constraints to avoid piling up unrelated ones)
     def setInst(tp: Type): this.type = {
-      if (tp eq this) {
-        log(s"TypeVar cycle: called setInst passing $this to itself.")
+      if (tp eq this)
         return this
-      }
+
       undoLog record this
       // if we were compared against later typeskolems, repack the existential,
       // because skolems are only compatible if they were created at the same level
@@ -4162,9 +4151,6 @@ trait Types
       // for the right side of the `<:<` above (`memberInfo`).
       val tpLo = preLo.memberType(symLo)
 
-      debuglog(s"specializesSymHi: $preHi . $symHi : $tpHi")
-      debuglog(s"specializesSymLo: $preLo . $symLo : $tpLo")
-
       if (symHi.isTerm)
         (isSubType(tpLo, tpHi, depth)        &&
          (!symHi.isStable || symLo.isStable) &&                                // sub-member must remain stable
@@ -4387,14 +4373,12 @@ trait Types
             // transpose freaked out because of irregular argss
             // catching just in case (shouldn't happen, but also doesn't cost us)
             // [JZ] It happens: see SI-5683.
-            debuglog(s"transposed irregular matrix!? tps=$tps argss=$argss")
             NoType
           case Some(argsst) =>
             val args = map2(sym.typeParams, argsst) { (tparam, as0) =>
               val as = as0.distinct
               if (as.size == 1) as.head
               else if (depth.isZero) {
-                log("Giving up merging args: can't unify %s under %s".format(as.mkString(", "), tparam.fullLocationString))
                 // Don't return "Any" (or "Nothing") when we have to give up due to
                 // recursion depth. Return NoType, which prevents us from poisoning
                 // lublist's results. It can recognize the recursion and deal with it, but
@@ -4446,7 +4430,6 @@ trait Types
    */
   def addMember(thistp: Type, tp: Type, sym: Symbol, depth: Depth) {
     assert(sym != NoSymbol)
-    // debuglog("add member " + sym+":"+sym.info+" to "+thistp) //DEBUG
     if (!specializesSym(thistp, sym, depth)) {
       if (sym.isTerm)
         for (alt <- tp.nonPrivateDecl(sym.name).alternatives)

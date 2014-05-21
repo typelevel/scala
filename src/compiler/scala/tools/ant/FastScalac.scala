@@ -155,13 +155,9 @@ class FastScalac extends Scalac {
     java.createJvmarg() setValue ("-Xbootclasspath/a:"+scalacPath)
     s.jvmargs.value foreach (java.createJvmarg() setValue _)
 
-    val scalaHome: String = try {
+    val scalaHome: String = {
       val url = ScalaClassLoader.originOfClass(classOf[FastScalac]).get
       File(url.getFile).jfile.getParentFile.getParentFile.getAbsolutePath
-    } catch {
-      case _: Throwable =>
-        buildError("Compilation failed because of an internal compiler error;"+
-                   " couldn't determine value for -Dscala.home=<value>")
     }
     java.createJvmarg() setValue "-Dscala.usejavacp=true"
     java.createJvmarg() setValue ("-Dscala.home="+scalaHome)

@@ -42,8 +42,7 @@ trait ScalacPatternExpanders {
           orElse definitions.elementType(ArrayClass, seq)
       )
     }
-    def newExtractor(whole: Type, fixed: List[Type], repeated: Repeated): Extractor =
-      logResult(s"newExtractor($whole, $fixed, $repeated")(Extractor(whole, fixed, repeated))
+    def newExtractor(whole: Type, fixed: List[Type], repeated: Repeated): Extractor = Extractor(whole, fixed, repeated)
 
     // Turn Seq[A] into Repeated(Seq[A], A, A*)
     def repeatedFromSeq(seqType: Type): Repeated = {
@@ -99,12 +98,10 @@ trait ScalacPatternExpanders {
 
       def owner         = tree.symbol.owner
       def offering      = extractor.offeringString
-      def symString     = tree.symbol.fullLocationString
       def offerString   = if (extractor.isErroneous) "" else s" offering $offering"
       def arityExpected = ( if (extractor.hasSeq) "at least " else "" ) + productArity
 
       def err(msg: String)         = currentUnit.error(tree.pos, msg)
-      def warn(msg: String)        = currentUnit.warning(tree.pos, msg)
       def arityError(what: String) = err(s"$what patterns for $owner$offerString: expected $arityExpected, found $totalArity")
 
       if (isStar && !isSeq)
@@ -123,7 +120,6 @@ trait ScalacPatternExpanders {
         case _             => sel
       }
       val patterns  = newPatterns(args)
-      val isSeq = sel.symbol.name == nme.unapplySeq
       val isUnapply = sel.symbol.name == nme.unapply
       val extractor = sel.symbol.name match {
         case nme.unapply    => unapplyMethodTypes(fn.tpe, isSeq = false)

@@ -60,7 +60,6 @@ trait PatternTypers {
     // more common place)
     private def hasUnapplyMember(tpe: Type): Boolean   = reallyExists(unapplyMember(tpe))
     private def hasUnapplyMember(sym: Symbol): Boolean = hasUnapplyMember(sym.tpe_*)
-    private def hasUnapplyMember(fun: Tree): Boolean   = hasUnapplyMember(fun.symbol) || hasUnapplyMember(fun.tpe)
 
     // ad-hoc overloading resolution to deal with unapplies and case class constructors
     // If some but not all alternatives survive filtering the tree's symbol with `p`,
@@ -95,7 +94,7 @@ trait PatternTypers {
       // A case class with 23+ params has no unapply method.
       // A case class constructor may be overloaded with unapply methods in the companion.
       if (caseClass.isCase && !member.isOverloaded)
-        logResult(s"convertToCaseConstructor($fun, $caseClass, pt=$pt)")(convertToCaseConstructor(fun, caseClass, pt))
+        convertToCaseConstructor(fun, caseClass, pt)
       else if (!reallyExists(member))
         CaseClassConstructorError(fun, s"${fun.symbol} is not a case class, nor does it have an unapply/unapplySeq member")
       else if (isOkay)
@@ -188,7 +187,7 @@ trait PatternTypers {
           // origin must be the type param so we can deskolemize
           val skolem = context.owner.newGADTSkolem(unit.freshTypeName("?" + tpSym.name), tpSym, bounds)
           skolemBuffer += skolem
-          logResult(s"Created gadt skolem $skolem: ${skolem.tpe_*} to stand in for $tpSym")(skolem.tpe_*)
+          skolem.tpe_*
         case tp1 => tp1
       }
     }
@@ -236,7 +235,7 @@ trait PatternTypers {
 
       // have to open up the existential and put the skolems in scope
       // can't simply package up pt in an ExistentialType, because that takes us back to square one (List[_ <: T] == List[T] due to covariance)
-      val ptSafe   = logResult(s"case constructor from (${tree.summaryString}, $caseClassType, $pt)")(variantToSkolem(pt))
+      val ptSafe   = variantToSkolem(pt)
       val freeVars = variantToSkolem.skolems
 
       // use "tree" for the context, not context.tree: don't make another CaseDef context,
@@ -275,7 +274,6 @@ trait PatternTypers {
       val unapplyMethod    = unapplyMember(fun.tpe)
       val unapplyType      = fun.tpe memberType unapplyMethod
       val unapplyParamType = firstParamType(unapplyType)
-      def isSeq            = unapplyMethod.name == nme.unapplySeq
 
       def extractor     = extractorForUncheckedType(fun.pos, unapplyParamType)
       def canRemedy     = unapplyParamType match {
@@ -338,17 +336,7 @@ trait PatternTypers {
       // and re-typechecks of the target of the unapply call in PATTERNmode,
       // this breaks down when the classTagExtractor (which defineds the unapply member) is not a simple reference to an object,
       // but an arbitrary tree as is the case here
-      val res = doTypedUnapply(app, classTagExtractor, classTagExtractor, args, PATTERNmode, pt)
-
-      log(sm"""
-        |wrapClassTagUnapply {
-        |  pattern: $uncheckedPattern
-        |  extract: $classTagExtractor
-        |       pt: $pt
-        |      res: $res
-        |}""".trim)
-
-      res
+      doTypedUnapply(app, classTagExtractor, classTagExtractor, args, PATTERNmode, pt)
     }
 
     // if there's a ClassTag that allows us to turn the unchecked type test for `pt` into a checked type test

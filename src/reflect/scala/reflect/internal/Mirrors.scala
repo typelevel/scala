@@ -49,7 +49,6 @@ trait Mirrors extends api.Mirrors {
       val result = if (path.isTermName) sym.suchThat(_ hasFlag MODULE) else sym
       if (result != NoSymbol) result
       else {
-        if (settings.debug) { log(sym.info); log(sym.info.members) }//debug
         thisMirror.missingHook(owner, name) orElse {
           MissingRequirementError.notFound((if (path.isTermName) "object " else "class ")+path+" in "+thisMirror)
         }
@@ -81,9 +80,8 @@ trait Mirrors extends api.Mirrors {
 
     protected def universeMissingHook(owner: Symbol, name: Name): Symbol = thisUniverse.missingHook(owner, name)
 
-    private[scala] def missingHook(owner: Symbol, name: Name): Symbol = logResult(s"missingHook($owner, $name)")(
+    private[scala] def missingHook(owner: Symbol, name: Name): Symbol =
       mirrorMissingHook(owner, name) orElse universeMissingHook(owner, name)
-    )
 
     // todo: get rid of most the methods here and keep just staticClass/Module/Package
 
@@ -98,20 +96,11 @@ trait Mirrors extends api.Mirrors {
       }
     }
 
-    def getClassByName(fullname: Name): ClassSymbol =
-      ensureClassSymbol(fullname.toString, getModuleOrClass(fullname.toTypeName))
-
-    def getRequiredClass(fullname: String): ClassSymbol =
-      getClassByName(newTypeNameCached(fullname))
-
-    def requiredClass[T: ClassTag] : ClassSymbol =
-      getRequiredClass(erasureName[T])
-
-    def getClassIfDefined(fullname: String): Symbol =
-      getClassIfDefined(newTypeNameCached(fullname))
-
-    def getClassIfDefined(fullname: Name): Symbol =
-      wrapMissing(getClassByName(fullname.toTypeName))
+    def getClassByName(fullname: Name): ClassSymbol     = ensureClassSymbol(fullname.toString, getModuleOrClass(fullname.toTypeName))
+    def getRequiredClass(fullname: String): ClassSymbol = getClassByName(newTypeNameCached(fullname))
+    def requiredClass[T: ClassTag] : ClassSymbol        = getRequiredClass(erasureName[T])
+    def getClassIfDefined(fullname: String): Symbol     = getClassIfDefined(newTypeNameCached(fullname))
+    def getClassIfDefined(fullname: Name): Symbol       = wrapMissing(getClassByName(fullname.toTypeName))
 
     /** @inheritdoc
      *

@@ -411,9 +411,6 @@ trait MatchTranslation {
       // never store these in local variables (for PreserveSubPatBinders)
       lazy val ignoredSubPatBinders: Set[Symbol] = subPatBinders zip args collect { case (b, PatternBoundToUnderscore()) => b } toSet
 
-      // do repeated-parameter expansion to match up with the expected number of arguments (in casu, subpatterns)
-      private def nonStarSubPatTypes = aligner.typedNonStarPatterns map (_.tpe)
-
       def subPatTypes: List[Type] = typedPatterns map (_.tpe)
 
       // there are `productArity` non-seq elements in the tuple.

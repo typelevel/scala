@@ -99,13 +99,8 @@ trait Variances {
       private def checkVarianceOfSymbol(sym: Symbol) {
         val relative = relativeVariance(sym)
         val required = relative * variance
-        if (!relative.isBivariant) {
-          def sym_s  = s"$sym (${sym.variance}${sym.locationString})"
-          def base_s = s"$base in ${base.owner}" + (if (base.owner.isClass) "" else " in " + base.owner.enclClass)
-          log(s"verifying $sym_s is $required at $base_s")
-          if (sym.variance != required)
-            issueVarianceError(base, sym, required)
-        }
+        if (!relative.isBivariant && sym.variance != required)
+          issueVarianceError(base, sym, required)
       }
       override def mapOver(decls: Scope): Scope = {
         decls foreach (sym => withVariance(if (sym.isAliasType) Invariant else variance)(this(sym.info)))
@@ -156,8 +151,7 @@ trait Variances {
         || sym.owner.isCaseApplyOrUnapply
       )
       tree match {
-        case defn: MemberDef if skip =>
-          debuglog(s"Skipping variance check of ${sym.defString}")
+        case defn: MemberDef if skip => ()
         case ClassDef(_, _, _, _) | TypeDef(_, _, _, _) =>
           validateVariance(sym)
           super.traverse(tree)

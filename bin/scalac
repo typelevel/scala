@@ -14,6 +14,7 @@ $IVY/org.scala-lang.modules/scala-xml_2.11/bundles/scala-xml_2.11-1.0.1.jar
 $IVY/org.scala-lang.modules/scala-parser-combinators_2.11/bundles/scala-parser-combinators_2.11-1.0.1.jar
 $IVY/org.scalacheck/scalacheck_2.11/jars/scalacheck_2.11-1.11.3.jar
 $IVY/com.googlecode.java-diff-utils/diffutils/jars/diffutils-1.3.0.jar
+$IVY/org.scala-sbt/test-interface/jars/test-interface-1.0.jar
 EOM
 }
 

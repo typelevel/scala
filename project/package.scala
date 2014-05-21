@@ -102,7 +102,8 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
              crossPaths :=  false,
            watchSources ++= (buildBase.value * "*.sbt").get,
            watchSources ++= (buildBase.value / "project" * "*.sbt").get,
-             incOptions ~=  (_ withAntStyle true)
+             incOptions ~=  (_ withRecompileOnMacroDef false)
+//             incOptions ~=  (_ withAntStyle true withRecompileOnMacroDef false)
   )
 
   private def rootProjectSettings = List(

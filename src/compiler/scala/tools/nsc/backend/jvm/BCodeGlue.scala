@@ -30,18 +30,18 @@ abstract class BCodeGlue extends SubComponent {
 
     // ------------- sorts -------------
 
-    val VOID   : Int =  0
-    val BOOLEAN: Int =  1
-    val CHAR   : Int =  2
-    val BYTE   : Int =  3
-    val SHORT  : Int =  4
-    val INT    : Int =  5
-    val FLOAT  : Int =  6
-    val LONG   : Int =  7
-    val DOUBLE : Int =  8
-    val ARRAY  : Int =  9
-    val OBJECT : Int = 10
-    val METHOD : Int = 11
+    final val VOID    =  0
+    final val BOOLEAN =  1
+    final val CHAR    =  2
+    final val BYTE    =  3
+    final val SHORT   =  4
+    final val INT     =  5
+    final val FLOAT   =  6
+    final val LONG    =  7
+    final val DOUBLE  =  8
+    final val ARRAY   =  9
+    final val OBJECT  = 10
+    final val METHOD  = 11
 
     // ------------- primitive types -------------
 
@@ -258,7 +258,7 @@ abstract class BCodeGlue extends SubComponent {
     def toASMType: scala.tools.asm.Type = {
       import scala.tools.asm
       // using `asm.Type.SHORT` instead of `BType.SHORT` because otherwise "warning: could not emit switch for @switch annotated match"
-      (sort: @switch) match {
+      sort match {
         case asm.Type.VOID    => asm.Type.VOID_TYPE
         case asm.Type.BOOLEAN => asm.Type.BOOLEAN_TYPE
         case asm.Type.CHAR    => asm.Type.CHAR_TYPE
@@ -403,14 +403,9 @@ abstract class BCodeGlue extends SubComponent {
      *
      * can-multi-thread
      */
-    def isIntSizedType = {
-      (sort : @switch) match {
-        case BType.BOOLEAN | BType.CHAR  |
-             BType.BYTE    | BType.SHORT | BType.INT
-          => true
-        case _
-          => false
-      }
+    def isIntSizedType = sort match {
+      case BType.BOOLEAN | BType.CHAR  | BType.BYTE | BType.SHORT | BType.INT => true
+      case _                                                                  => false
     }
 
     /* On the JVM, similar to isIntSizedType except that BOOL isn't integral while LONG is.
@@ -418,7 +413,7 @@ abstract class BCodeGlue extends SubComponent {
      * can-multi-thread
      */
     def isIntegralType = {
-      (sort : @switch) match {
+      sort match {
         case BType.CHAR  |
              BType.BYTE  | BType.SHORT | BType.INT |
              BType.LONG

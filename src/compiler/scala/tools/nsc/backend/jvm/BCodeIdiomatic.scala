@@ -290,8 +290,7 @@ abstract class BCodeIdiomatic extends BCodeGlue {
       assert(from != BOOL && to != BOOL, s"inconvertible types : $from -> $to")
 
       // We're done with BOOL already
-      (from.sort: @switch) match {
-
+      from.sort match {
         // using `asm.Type.SHORT` instead of `BType.SHORT` because otherwise "warning: could not emit switch for @switch annotated match"
 
         case asm.Type.BYTE  => pickOne(JCodeMethodN.fromByteT2T)
@@ -301,7 +300,7 @@ abstract class BCodeIdiomatic extends BCodeGlue {
 
         case asm.Type.FLOAT  =>
           import asm.Opcodes.{ F2L, F2D, F2I }
-          (to.sort: @switch) match {
+          to.sort match {
             case asm.Type.LONG    => emit(F2L)
             case asm.Type.DOUBLE  => emit(F2D)
             case _                => emit(F2I); emitT2T(INT, to)
@@ -309,7 +308,7 @@ abstract class BCodeIdiomatic extends BCodeGlue {
 
         case asm.Type.LONG   =>
           import asm.Opcodes.{ L2F, L2D, L2I }
-          (to.sort: @switch) match {
+          to.sort match {
             case asm.Type.FLOAT   => emit(L2F)
             case asm.Type.DOUBLE  => emit(L2D)
             case _                => emit(L2I); emitT2T(INT, to)
@@ -317,7 +316,7 @@ abstract class BCodeIdiomatic extends BCodeGlue {
 
         case asm.Type.DOUBLE =>
           import asm.Opcodes.{ D2L, D2F, D2I }
-          (to.sort: @switch) match {
+          to.sort match {
             case asm.Type.FLOAT   => emit(D2F)
             case asm.Type.LONG    => emit(D2L)
             case _                => emit(D2I); emitT2T(INT, to)
@@ -378,7 +377,7 @@ abstract class BCodeIdiomatic extends BCodeGlue {
       } else {
         val rand = {
           // using `asm.Type.SHORT` instead of `BType.SHORT` because otherwise "warning: could not emit switch for @switch annotated match"
-          (elem.sort: @switch) match {
+          elem.sort match {
             case asm.Type.BOOLEAN => Opcodes.T_BOOLEAN
             case asm.Type.BYTE    => Opcodes.T_BYTE
             case asm.Type.SHORT   => Opcodes.T_SHORT
@@ -563,7 +562,7 @@ abstract class BCodeIdiomatic extends BCodeGlue {
     final def emitPrimitive(opcs: Array[Int], tk: BType) {
       val opc = {
         // using `asm.Type.SHORT` instead of `BType.SHORT` because otherwise "warning: could not emit switch for @switch annotated match"
-        (tk.sort: @switch) match {
+        tk.sort match {
           case asm.Type.LONG   => opcs(1)
           case asm.Type.FLOAT  => opcs(2)
           case asm.Type.DOUBLE => opcs(3)
@@ -633,7 +632,7 @@ abstract class BCodeIdiomatic extends BCodeGlue {
    */
   final def coercionFrom(code: Int): BType = {
     import scalaPrimitives._
-    (code: @switch) match {
+    code match {
       case B2B | B2C | B2S | B2I | B2L | B2F | B2D => BYTE
       case S2B | S2S | S2C | S2I | S2L | S2F | S2D => SHORT
       case C2B | C2S | C2C | C2I | C2L | C2F | C2D => CHAR
@@ -650,7 +649,7 @@ abstract class BCodeIdiomatic extends BCodeGlue {
    */
   final def coercionTo(code: Int): BType = {
     import scalaPrimitives._
-    (code: @scala.annotation.switch) match {
+    code match {
       case B2B | C2B | S2B | I2B | L2B | F2B | D2B => BYTE
       case B2C | C2C | S2C | I2C | L2C | F2C | D2C => CHAR
       case B2S | C2S | S2S | I2S | L2S | F2S | D2S => SHORT

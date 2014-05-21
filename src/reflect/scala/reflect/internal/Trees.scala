@@ -1069,19 +1069,11 @@ trait Trees extends api.Trees {
     super.setPos(NoPosition)
     super.setType(NoType)
 
-    override def canHaveAttrs = false
-    override def setPos(pos: Position) = { requireLegal(pos, NoPosition, "pos"); this }
-    override def pos_=(pos: Position) = setPos(pos)
-    override def setType(t: Type) = { requireLegal(t, NoType, "tpe"); this }
-    override def tpe_=(t: Type) = setType(t)
-
-    private def requireLegal(value: Any, allowed: Any, what: String) = (
-      if (value != allowed) {
-        log(s"can't set $what for $self to value other than $allowed")
-        if (settings.debug && settings.developer)
-          (new Throwable).printStackTrace
-      }
-    )
+    override def canHaveAttrs          = false
+    override def setPos(pos: Position) = this
+    override def pos_=(pos: Position)  = setPos(pos)
+    override def setType(t: Type)      = this
+    override def tpe_=(t: Type)        = setType(t)
   }
 
   case object EmptyTree extends TermTree with CannotHaveAttrs { override def isEmpty = true; val asList = List(this) }
@@ -1460,25 +1452,13 @@ trait Trees extends api.Trees {
   }
 
   class ChangeOwnerTraverser(val oldowner: Symbol, val newowner: Symbol) extends Traverser {
-    final def change(sym: Symbol) = {
-      if (sym != NoSymbol && sym.owner == oldowner)
-        sym.owner = newowner
-    }
-    override def traverse(tree: Tree) {
+    final def change(sym: Symbol): Unit = if (sym.exists && sym.owner == oldowner) sym.owner = newowner
+    // SI-5612
+    override def traverse(tree: Tree): Unit = {
       tree match {
-        case _: Return =>
-          if (tree.symbol == oldowner) {
-            // SI-5612
-            if (newowner hasTransOwner oldowner)
-              log("NOT changing owner of %s because %s is nested in %s".format(tree, newowner, oldowner))
-            else {
-              log("changing owner of %s: %s => %s".format(tree, oldowner, newowner))
-              tree.symbol = newowner
-            }
-          }
-        case _: DefTree | _: Function =>
-          change(tree.symbol)
-        case _ =>
+        case _: Return if tree.symbol == oldowner && !(newowner hasTransOwner oldowner) => tree.symbol = newowner
+        case _: DefTree | _: Function                                                   => change(tree.symbol)
+        case _                                                                          =>
       }
       super.traverse(tree)
     }
@@ -1583,10 +1563,6 @@ trait Trees extends api.Trees {
           case _: DefTree =>
             val newInfo = symSubst(tree.symbol.info)
             if (!(newInfo =:= tree.symbol.info)) {
-              debuglog(sm"""
-                |TreeSymSubstituter: updated info of symbol ${tree.symbol}
-                |  Old: ${showRaw(tree.symbol.info, printTypes = true, printIds = true)}
-                |  New: ${showRaw(newInfo, printTypes = true, printIds = true)}""")
               tree.symbol updateInfo newInfo
             }
           case _          =>

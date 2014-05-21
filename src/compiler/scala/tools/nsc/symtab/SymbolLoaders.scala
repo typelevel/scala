@@ -46,7 +46,6 @@ abstract class SymbolLoaders {
   }
 
   protected def signalError(root: Symbol, ex: Throwable) {
-    if (settings.debug) ex.printStackTrace()
     globalError(ex.getMessage() match {
       case null => "i/o error while loading " + root.name
       case msg  => "error while loading " + root.name + ", " + msg
@@ -116,19 +115,8 @@ abstract class SymbolLoaders {
    *  and give them `completer` as type.
    */
   def enterClassAndModule(root: Symbol, name: String, completer: SymbolLoader) {
-    val clazz = enterClass(root, name, completer)
-    val module = enterModule(root, name, completer)
-    if (!clazz.isAnonymousClass) {
-      // Diagnostic for SI-7147
-      def msg: String = {
-        def symLocation(sym: Symbol) = if (sym == null) "null" else s"${clazz.fullLocationString} (from ${clazz.associatedFile})"
-        sm"""Inconsistent class/module symbol pair for `$name` loaded from ${symLocation(root)}.
-            |clazz = ${symLocation(clazz)}; clazz.companionModule = ${clazz.companionModule}
-            |module = ${symLocation(module)}; module.companionClass = ${module.companionClass}"""
-      }
-      assert(clazz.companionModule == module, msg)
-      assert(module.companionClass == clazz, msg)
-    }
+    enterClass(root, name, completer)
+    enterModule(root, name, completer)
   }
 
   /** In batch mode: Enter class and module with given `name` into scope of `root`
@@ -294,11 +282,8 @@ abstract class SymbolLoaders {
       if (root.associatedFile eq NoAbstractFile) {
         root match {
           // In fact, the ModuleSymbol forwards its setter to the module class
-          case _: ClassSymbol | _: ModuleSymbol =>
-            debuglog("ClassfileLoader setting %s.associatedFile = %s".format(root.name, classfile))
-            root.associatedFile = classfile
+          case _: ClassSymbol | _: ModuleSymbol => root.associatedFile = classfile
           case _ =>
-            debuglog("Not setting associatedFile to %s because %s is a %s".format(classfile, root.name, root.shortSymbolClass))
         }
       }
       if (Statistics.canEnable) Statistics.stopTimer(classReadNanos, start)

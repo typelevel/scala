@@ -673,7 +673,7 @@ class SuiteRunner(
           try {
             Some(f.get(0, NANOSECONDS))
           } catch {
-            case _: Throwable => None
+            case _: Exception => None
           }
         }
         results.flatten

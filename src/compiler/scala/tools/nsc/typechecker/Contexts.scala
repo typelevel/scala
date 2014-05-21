@@ -91,7 +91,6 @@ trait Contexts { self: Analyzer =>
     else if (settings.nopredef || treeInfo.noPredefImportForUnit(unit.body)) {
       // SI-8258 Needed for the presentation compiler using -sourcepath, otherwise cycles can occur. See the commit
       //         message for this ticket for an example.
-      debuglog("Omitted import of Predef._ for " + unit)
       RootImports.javaAndScalaList
     }
     else RootImports.completeList
@@ -466,7 +465,6 @@ trait Contexts { self: Analyzer =>
       c.enclMethod         = if (isDefDef && !owner.isLazy) c else enclMethod
 
       registerContext(c.asInstanceOf[analyzer.Context])
-      debuglog("[context] ++ " + c.unit + " / " + tree.summaryString)
       c
     }
 
@@ -547,7 +545,6 @@ trait Contexts { self: Analyzer =>
       // TODO: are errors allowed to have pos == NoPosition??
       // if not, Jason suggests doing: val pos = err.errPos.orElse( { devWarning("Que?"); context.tree.pos })
       if (settings.Yissuedebug) {
-        log("issue error: " + err.errMsg)
         (new Exception).printStackTrace()
       }
       if (pf isDefinedAt err) pf(err)
@@ -745,13 +742,7 @@ trait Contexts { self: Analyzer =>
     // Type bound management
     //
 
-    def pushTypeBounds(sym: Symbol) {
-      sym.info match {
-        case tb: TypeBounds => if (!tb.isEmptyBounds) log(s"Saving $sym info=$tb")
-        case info           => devWarning(s"Something other than a TypeBounds seen in pushTypeBounds: $info is a ${shortClassOfInstance(info)}")
-      }
-      savedTypeBounds ::= ((sym, sym.info))
-    }
+    def pushTypeBounds(sym: Symbol): Unit = savedTypeBounds ::= ((sym, sym.info))
 
     def restoreTypeBounds(tp: Type): Type = {
       def restore(): Type = savedTypeBounds.foldLeft(tp) { case (current, (sym, savedInfo)) =>
@@ -824,7 +815,6 @@ trait Contexts { self: Analyzer =>
           }
           impls
       }
-      //debuglog("collect implicit imports " + imp + "=" + collect(imp.tree.selectors))//DEBUG
       collect(imp.tree.selectors)
     }
 
@@ -844,7 +834,6 @@ trait Contexts { self: Analyzer =>
 
       val CycleMarker = NoRunId - 1
       if (implicitsRunId == CycleMarker) {
-        debuglog(s"cycle while collecting implicits at owner ${owner}, probably due to an implicit without an explicit return type. Continuing with implicits from enclosing contexts.")
         withOuter(Nil)
       } else if (implicitsRunId != currentRunId) {
         implicitsRunId = CycleMarker
@@ -873,7 +862,6 @@ trait Contexts { self: Analyzer =>
           Some(collectImplicits(owner.thisType.implicitMembers, owner.thisType))
         }
       } else if (scope != nextOuter.scope && !owner.isPackageClass) {
-        debuglog("collect local implicits " + scope.toList)//DEBUG
         Some(collectImplicits(scope, NoPrefix))
       } else if (firstImport != nextOuter.firstImport) {
         assert(imports.tail.headOption == nextOuter.firstImport, (imports, nextOuter.imports))
@@ -910,34 +898,19 @@ trait Contexts { self: Analyzer =>
       def mt1 = t1 memberType imp1Symbol
       def mt2 = t2 memberType imp2Symbol
 
-      def characterize = List(
-        s"types:  $t1 =:= $t2  ${t1 =:= t2}  members: ${mt1 =:= mt2}",
-        s"member type 1: $mt1",
-        s"member type 2: $mt2"
-      ).mkString("\n  ")
-
       if (!ambiguous || !imp2Symbol.exists) Some(imp1)
       else if (!imp1Symbol.exists) Some(imp2)
-      else (
+      else Some(imp1) filter (_ =>
         // The symbol names are checked rather than the symbols themselves because
         // each time an overloaded member is looked up it receives a new symbol.
         // So foo.member("x") != foo.member("x") if x is overloaded.  This seems
         // likely to be the cause of other bugs too...
-        if (t1 =:= t2 && imp1Symbol.name == imp2Symbol.name) {
-          log(s"Suppressing ambiguous import: $t1 =:= $t2 && $imp1Symbol == $imp2Symbol")
-          Some(imp1)
-        }
         // Monomorphism restriction on types is in part because type aliases could have the
         // same target type but attach different variance to the parameters. Maybe it can be
         // relaxed, but doesn't seem worth it at present.
-        else if (mt1 =:= mt2 && name.isTypeName && imp1Symbol.isMonomorphicType && imp2Symbol.isMonomorphicType) {
-          log(s"Suppressing ambiguous import: $mt1 =:= $mt2 && $imp1Symbol and $imp2Symbol are equivalent")
-          Some(imp1)
-        }
-        else {
-          log(s"Import is genuinely ambiguous:\n  " + characterize)
-          None
-        }
+        (    (t1 =:= t2 && imp1Symbol.name == imp2Symbol.name)
+          || (mt1 =:= mt2 && name.isTypeName && imp1Symbol.isMonomorphicType && imp2Symbol.isMonomorphicType)
+        )
       )
     }
 
@@ -957,10 +930,7 @@ trait Contexts { self: Analyzer =>
      *  what other ways we can before pushing that way.
      */
     def isInPackageObject(sym: Symbol, pkg: Symbol): Boolean = {
-      def uninitialized(what: String) = {
-        log(s"Cannot look for $sym in package object of $pkg; $what is not initialized.")
-        false
-      }
+      def uninitialized(what: String) = false
       def pkgClass = if (pkg.isTerm) pkg.moduleClass else pkg
       def matchesInfo = (
         // need to be careful here to not get a cyclic reference during bootstrap
@@ -1053,7 +1023,7 @@ trait Contexts { self: Analyzer =>
         (scope lookupUnshadowedEntries name filter (e => qualifies(e.sym))).toList
 
       def newOverloaded(owner: Symbol, pre: Type, entries: List[ScopeEntry]) =
-        logResult(s"overloaded symbol in $pre")(owner.newOverloaded(pre, entries map (_.sym)))
+        owner.newOverloaded(pre, entries map (_.sym))
 
       // Constructor lookup should only look in the decls of the enclosing class
       // not in the self-type, nor in the enclosing context, nor in imports (SI-4460, SI-6745)
@@ -1293,12 +1263,7 @@ trait Contexts { self: Analyzer =>
      */
     def importedSymbol(name: Name): Symbol = importedSymbol(name, requireExplicit = false)
 
-    private def recordUsage(sel: ImportSelector, result: Symbol) {
-      def posstr = pos.source.file.name + ":" + posOf(sel).line
-      def resstr = if (tree.symbol.hasCompleteInfo) s"(qual=$qual, $result)" else s"(expr=${tree.expr}, ${result.fullLocationString})"
-      debuglog(s"In $this at $posstr, selector '${selectorString(sel)}' resolved to $resstr")
-      allUsedSelectors(this) += sel
-    }
+    private def recordUsage(sel: ImportSelector, result: Symbol): Unit = allUsedSelectors(this) += sel
 
     /** If requireExplicit is true, wildcard imports are not considered. */
     def importedSymbol(name: Name, requireExplicit: Boolean): Symbol = {
@@ -1329,11 +1294,6 @@ trait Contexts { self: Analyzer =>
       //      the caller.
       if (definitions isImportable result) result
       else NoSymbol
-    }
-    private def selectorString(s: ImportSelector): String = {
-      if (s.name == nme.WILDCARD && s.rename == null) "_"
-      else if (s.name == s.rename) "" + s.name
-      else s.name + " => " + s.rename
     }
 
     def allImportedSymbols: Iterable[Symbol] =

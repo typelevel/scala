@@ -214,10 +214,7 @@ abstract class TreeInfo {
       }
       def isWarnableSymbol = {
         val sym = tree.symbol
-        (sym == null) || !(sym.isModule || sym.isLazy || definitions.isByNameParamType(sym.tpe_*)) || {
-          debuglog("'Pure' but side-effecting expression in statement position: " + tree)
-          false
-        }
+        (sym == null) || !(sym.isModule || sym.isLazy || definitions.isByNameParamType(sym.tpe_*))
       }
 
       (    !tree.isErrorTyped

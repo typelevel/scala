@@ -193,12 +193,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
     // with the proper specific type.
     def rawname: NameType
     def name: NameType
-    def name_=(n: Name): Unit = {
-      if (shouldLogAtThisPhase) {
-        def msg = s"In $owner, renaming $name -> $n"
-        if (isSpecialized) debuglog(msg) else log(msg)
-      }
-    }
+    def name_=(n: Name): Unit = ()
     def asNameType(n: Name): NameType
 
     // Syncnote: need not be protected, as only assignment happens in owner_=, which is not exposed to api
@@ -1440,9 +1435,11 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
     }
     catch {
       case ex: CyclicReference =>
-        devWarning("... hit cycle trying to complete " + this.fullLocationString)
+        devWarning("... hit cycle trying to complete " + ownerChainString)
         throw ex
     }
+
+    private def ownerChainString = ownerChain takeWhile (s => !s.isPackageClass) mkString " -> "
 
     def info_=(info: Type) {
       assert(info ne null)
@@ -1598,11 +1595,6 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
       // only try once...
       if (phase.erasedTypes || (this hasFlag TRIEDCOOKING))
         return this
-
-      if (!hasCompleteInfo) {
-        log(s"resisting cook attempt on $this")
-        return this
-      }
 
       this setFlag TRIEDCOOKING
       info  // force the current info
@@ -3359,10 +3351,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
 
   class RefinementClassSymbol protected[Symbols] (owner0: Symbol, pos0: Position)
   extends ClassSymbol(owner0, pos0, tpnme.REFINE_CLASS_NAME) {
-    override def name_=(name: Name) {
-      abort("Cannot set name of RefinementClassSymbol to " + name)
-      super.name_=(name)
-    }
+    override def name_=(name: Name): Unit = abort("Cannot set name of RefinementClassSymbol to " + name)
     override def isRefinementClass       = true
     override def isAnonOrRefinementClass = true
     override def isLocalClass            = true

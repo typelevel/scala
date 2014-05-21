@@ -1,40 +1,7 @@
 #!/usr/bin/env bash
 #
 
-export IVY="$HOME/.ivy2/cache"
-
-cps () { cat <<EOM
-$(ls -1 ./compiler/target/policy-compiler-*.jar | tail -n1)
-$(ls -1 ./asm/target/policy-asm-*.jar | tail -n1)
-$(ls -1 ./library/target/policy-library-*.jar | tail -n1)
-$IVY/jline/jline/jars/jline-2.11.jar
-$IVY/org.apache.ant/ant/jars/ant-1.9.4.jar
-$IVY/org.scala-lang.modules/scala-xml_2.11/bundles/scala-xml_2.11-1.0.1.jar
-$IVY/org.scala-lang.modules/scala-parser-combinators_2.11/bundles/scala-parser-combinators_2.11-1.0.1.jar
-$IVY/org.scalacheck/scalacheck_2.11/jars/scalacheck_2.11-1.11.3.jar
-$IVY/com.googlecode.java-diff-utils/diffutils/jars/diffutils-1.3.0.jar
-$IVY/org.scala-sbt/test-interface/jars/test-interface-1.0.jar
-$IVY/org.scala-sbt/interface/jars/interface-0.13.6-MSERVER-1.jar
-$IVY/org.scala-sbt/compiler-interface/jars/compiler-interface-bin-0.13.6-MSERVER-1.jar
-$IVY/org.scala-sbt/compiler-interface/jars/compiler-interface-src-0.13.6-MSERVER-1.jar
-EOM
-}
-
-allfiles () {
-  find src/ partest/src/ -name '*.scala' -o -name '*.java' | \
-    egrep -v '/library-aux/'
-}
-
-classpath="$(cps | mkString :)"
-out="$(mktemp -dt foo)"
 optsfile="$(mktemp -t allfiles)"
-allfiles >"$optsfile"
+find src/ partest/src/ -name '*.scala' -o -name '*.java' | egrep -v '/library-aux/' | sort-random | head -n100 > "$optsfile"
 
-run () { echo "$@" && "$@"; }
-
-run java -cp "$classpath" \
-  scala.tools.nsc.Main \
-  -usejavacp \
-  -d "$out" \
-  @"$optsfile" \
-  "$@"
+"$(dirname "$0")"/scalac @"$optsfile" "$@"

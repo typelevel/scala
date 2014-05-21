@@ -81,7 +81,6 @@ abstract class UnCurry extends InfoTransform
 
     private def newFunction0(body: Tree): Tree = {
       val result = localTyper.typedPos(body.pos)(Function(Nil, body)).asInstanceOf[Function]
-      log("Change owner from %s to %s in %s".format(currentOwner, result.symbol, result.body))
       result.body changeOwner (currentOwner -> result.symbol)
       transformFunction(result)
     }
@@ -205,11 +204,8 @@ abstract class UnCurry extends InfoTransform
       fun.tpe match {
         // can happen when analyzer plugins assign refined types to functions, e.g.
         // (() => Int) { def apply(): Int @typeConstraint }
-        case RefinedType(List(funTp), decls) =>
-          debuglog(s"eliminate refinement from function type ${fun.tpe}")
-          fun.tpe = funTp
-        case _ =>
-          ()
+        case RefinedType(List(funTp), decls) => fun.tpe = funTp
+        case _                               => ()
       }
 
       deEta(fun) match {
@@ -333,7 +329,6 @@ abstract class UnCurry extends InfoTransform
           arg setType functionType(Nil, arg.tpe)
         }
         else {
-          log(s"Argument '$arg' at line ${arg.pos.line} is $formal from ${fun.fullName}")
           def canUseDirectly(recv: Tree) = (
                recv.tpe.typeSymbol.isSubClass(FunctionClass(0))
             && treeInfo.isExprSafeToInline(recv)
@@ -375,7 +370,6 @@ abstract class UnCurry extends InfoTransform
      */
     private def translateSynchronized(tree: Tree) = tree match {
       case dd @ DefDef(_, _, _, _, _, Apply(fn, body :: Nil)) if isSelfSynchronized(dd) =>
-        log("Translating " + dd.symbol.defString + " into synchronized method")
         dd.symbol setFlag SYNCHRONIZED
         deriveDefDef(dd)(_ => body)
       case _ => tree
@@ -394,7 +388,6 @@ abstract class UnCurry extends InfoTransform
 
       /* Transform tree `t` to { def f = t; f } where `f` is a fresh name */
       def liftTree(tree: Tree) = {
-        debuglog("lifting tree at: " + (tree.pos))
         val sym = currentOwner.newMethod(unit.freshTermName("liftedTree"), tree.pos)
         sym.setInfo(MethodType(List(), tree.tpe))
         tree.changeOwner(currentOwner -> sym)
@@ -595,15 +588,10 @@ abstract class UnCurry extends InfoTransform
         case Ident(name) =>
           assert(name != tpnme.WILDCARD_STAR, tree)
           applyUnary()
-        case Select(_, _) | TypeApply(_, _) =>
-          applyUnary()
-        case ret @ Return(expr) if isNonLocalReturn(ret) =>
-          log("non-local return from %s to %s".format(currentOwner.enclMethod, ret.symbol))
-          atPos(ret.pos)(nonLocalReturnThrow(expr, ret.symbol))
-        case TypeTree() =>
-          tree
-        case _ =>
-          if (tree.isType) TypeTree(tree.tpe) setPos tree.pos else tree
+        case Select(_, _) | TypeApply(_, _)              => applyUnary()
+        case ret @ Return(expr) if isNonLocalReturn(ret) => atPos(ret.pos)(nonLocalReturnThrow(expr, ret.symbol))
+        case TypeTree()                                  => tree
+        case _                                           => if (tree.isType) TypeTree(tree.tpe) setPos tree.pos else tree
       }
     }
 

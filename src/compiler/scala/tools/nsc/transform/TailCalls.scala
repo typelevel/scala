@@ -120,15 +120,9 @@ abstract class TailCalls extends Transform {
       def isMandatory   = method.hasAnnotation(TailrecClass)
       def isTransformed = isEligible && accessed(label)
 
-      def newThis(pos: Position) = {
-        def msg = "Creating new `this` during tailcalls\n  method: %s\n  current class: %s".format(
-          method.ownerChain.mkString(" -> "),
-          currentClass.ownerChain.mkString(" -> ")
-        )
-        logResult(msg)(method.newValue(nme.THIS, pos, SYNTHETIC) setInfo currentClass.typeOfThis)
-      }
-      override def toString = s"${method.name} tparams=$tparams tailPos=$tailPos label=$label label info=${label.info}"
+      def newThis(pos: Position) = method.newValue(nme.THIS, pos, SYNTHETIC) setInfo currentClass.typeOfThis
 
+      override def toString = s"${method.name} tparams=$tparams tailPos=$tailPos label=$label label info=${label.info}"
     }
 
     object EmptyTailContext extends TailContext {
@@ -230,7 +224,6 @@ abstract class TailCalls extends Transform {
          * Position is unchanged (by default, the method definition.)
          */
         def fail(reason: String) = {
-          debuglog("Cannot rewrite recursive call at: " + fun.pos + " because: " + reason)
           if (ctx.isMandatory) failReasons(ctx) = reason
           treeCopy.Apply(tree, noTailTransform(target), transformArgs)
         }
@@ -240,7 +233,6 @@ abstract class TailCalls extends Transform {
           fail(reason)
         }
         def rewriteTailCall(recv: Tree): Tree = {
-          debuglog("Rewriting tail recursive call:  " + fun.pos.lineContent.trim)
           accessed += ctx.label
           typedPos(fun.pos) {
             val args = mapWithIndex(transformArgs)((arg, i) => mkAttributedCastHack(arg, ctx.label.info.params(i + 1).tpe))
@@ -259,7 +251,7 @@ abstract class TailCalls extends Transform {
         else if (!receiverIsSame)       failHere("it changes type of 'this' on a polymorphic recursive call")
         else                            rewriteTailCall(receiver)
       }
-      
+
       def isEligible(tree: DefDef) = {
         val sym = tree.symbol
         !(sym.hasAccessorFlag || sym.isConstructor)
@@ -277,7 +269,6 @@ abstract class TailCalls extends Transform {
           if (newCtx.isMandatory && !(newCtx containsRecursiveCall rhs0))
             unit.error(tree.pos, "@tailrec annotated method contains no recursive calls")
 
-          debuglog(s"Considering $name for tailcalls, with labels in tailpos: ${newCtx.tailLabels}")
           val newRHS = transform(rhs0, newCtx)
 
           deriveDefDef(tree) { rhs =>
@@ -369,7 +360,6 @@ abstract class TailCalls extends Transform {
         // it's a one-argument call to a label that is in a tailposition and that looks like label(x) {x}
         // thus, the argument to the call is in tailposition
         case Apply(fun, args @ (arg :: Nil)) if fun.symbol.isLabel && ctx.tailLabels(fun.symbol) =>
-          debuglog(s"in tailpos label: $arg")
           val res = yesTailTransform(arg)
           // we tail-called -- TODO: shield from false-positives where we rewrite but don't tail-call
           // must leave the jump to the original tailpos-label (fun)!

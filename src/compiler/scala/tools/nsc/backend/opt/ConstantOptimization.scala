@@ -534,7 +534,6 @@ abstract class ConstantOptimization extends SubComponent {
      * Also computes a list of instructions to be used to replace its last instruction
      */
     private def interpretBlock(in: State, block: BasicBlock): (Map[BasicBlock, State], Map[BasicBlock, State], List[Instruction]) = {
-      debuglog(s"interpreting block $block")
       // number of instructions excluding the last one
       val normalCount = block.size - 1
 
@@ -563,7 +562,6 @@ abstract class ConstantOptimization extends SubComponent {
     private def interpretMethod(m: IMethod): Map[BasicBlock, List[Instruction]] = {
       import scala.collection.mutable.{ Set => MSet, Map => MMap }
 
-      debuglog(s"interpreting method $m")
       var iterations = 0
 
       // initially we know that 'this' is not null and the params are initialized to some unknown value

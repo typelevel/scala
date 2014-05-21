@@ -167,7 +167,6 @@ trait Namers extends MethodSynthesis {
       (moduleFlags & ModuleToClassFlags) | inConstructorFlag
 
     def updatePosFlags(sym: Symbol, pos: Position, flags: Long): Symbol = {
-      debuglog("[overwrite] " + sym)
       val newFlags = (sym.flags & LOCKED) | flags
       sym.rawInfo match {
         case tr: TypeRef =>
@@ -329,7 +328,7 @@ trait Namers extends MethodSynthesis {
         case nme.IMPORT | nme.OUTER | nme.ANON_CLASS_NAME | nme.ANON_FUN_NAME | nme.CONSTRUCTOR => ()
         case _                                                                                  =>
           tree match {
-            case md: DefDef => log("[+symbol] " + sym.debugLocationString)
+            case md: DefDef => //log("[+symbol] " + sym.debugLocationString)
             case _          =>
           }
       }
@@ -726,11 +725,10 @@ trait Namers extends MethodSynthesis {
 
       // Suggested location only.
       if (mods.isImplicit) {
-        if (primaryConstructorArity == 1) {
-          log("enter implicit wrapper "+tree+", owner = "+owner)
+        if (primaryConstructorArity == 1)
           enterImplicitWrapper(tree)
-        }
-        else context.unit.error(tree.pos, "implicit classes must accept exactly one primary constructor parameter")
+        else
+          context.unit.error(tree.pos, "implicit classes must accept exactly one primary constructor parameter")
       }
       validateCompanionDefs(tree)
     }
@@ -790,11 +788,8 @@ trait Namers extends MethodSynthesis {
           if (sym.isJavaDefined) RestrictJavaArraysMap(tp)
           else tp
         }
-        if (needsCycleCheck) {
-          log(s"Needs cycle check: ${sym.debugLocationString}")
-          if (!typer.checkNonCyclic(tree.pos, tp))
-            sym setInfo ErrorType
-        }
+        if (needsCycleCheck && !typer.checkNonCyclic(tree.pos, tp))
+          sym setInfo ErrorType
       }
     }
 
@@ -951,7 +946,6 @@ trait Namers extends MethodSynthesis {
       // to use. clazz is the ModuleClass. sourceModule works also for classes defined in methods.
       val module = clazz.sourceModule
       for (cda <- module.attachments.get[ConstructorDefaultsAttachment]) {
-        debuglog(s"Storing the template namer in the ConstructorDefaultsAttachment of ${module.debugLocationString}.")
         cda.companionModuleClassNamer = templateNamer
       }
       val classTp = ClassInfoType(parents, decls, clazz)
@@ -971,7 +965,6 @@ trait Namers extends MethodSynthesis {
       // Allows isDerivedValueClass to look at the info.
       clazz setInfo pluginsTp
       if (clazz.isDerivedValueClass) {
-        log("Ensuring companion for derived value class " + cdef.name + " at " + cdef.pos.show)
         clazz setFlag FINAL
         // Don't force the owner's info lest we create cycles as in SI-6357.
         enclosingNamerWithScope(clazz.owner.rawInfo.decls).ensureCompanionObject(cdef)
@@ -1546,7 +1539,7 @@ trait Namers extends MethodSynthesis {
     }
 
     class LogTransitions[S](onEnter: S => String, onExit: S => String) {
-      val enabled = settings.debug.value
+      val enabled = false //settings.debug.value
       @inline final def apply[T](entity: S)(body: => T): T = {
         if (enabled) log(onEnter(entity))
         try body

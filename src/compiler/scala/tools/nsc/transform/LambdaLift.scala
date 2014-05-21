@@ -148,9 +148,7 @@ abstract class LambdaLift extends InfoTransform {
      *  }
      */
     private def markFree(sym: Symbol, enclosure: Symbol): Boolean = {
-      debuglog("mark free: " + sym.fullLocationString + " marked free in " + enclosure)
       (enclosure == sym.owner.logicallyEnclosingMember) || {
-        debuglog("%s != %s".format(enclosure, sym.owner.logicallyEnclosingMember))
         if (enclosure.isPackageClass || !markFree(sym, enclosure.skipConstructor.owner.logicallyEnclosingMember)) false
         else {
           val ss = symSet(free, enclosure)
@@ -158,7 +156,6 @@ abstract class LambdaLift extends InfoTransform {
             ss += sym
             renamable += sym
             changedFreeVars = true
-            debuglog("" + sym + " is free in " + enclosure)
             if (sym.isVariable) sym setFlag CAPTURED
           }
           !enclosure.isClass
@@ -167,15 +164,13 @@ abstract class LambdaLift extends InfoTransform {
     }
 
     private def markCalled(sym: Symbol, owner: Symbol) {
-      debuglog("mark called: " + sym + " of " + sym.owner + " is called by " + owner)
       symSet(called, owner) += sym
       if (sym.enclClass != owner.enclClass) calledFromInner += sym
     }
 
     /** The traverse function */
     private val freeVarTraverser = new Traverser {
-      override def traverse(tree: Tree) {
-       try { //debug
+      override def traverse(tree: Tree): Unit = {
         val sym = tree.symbol
         tree match {
           case ClassDef(_, _, _, _) =>
@@ -222,11 +217,6 @@ abstract class LambdaLift extends InfoTransform {
           case _ =>
         }
         super.traverse(tree)
-       } catch {//debug
-         case ex: Throwable =>
-           Console.println(s"$ex while traversing $tree")
-           throw ex
-       }
       }
     }
 
@@ -244,11 +234,7 @@ abstract class LambdaLift extends InfoTransform {
           markFree(fv, caller)
       } while (changedFreeVars)
 
-      def renameSym(sym: Symbol) {
-        val originalName = sym.name
-        sym setName newName(sym)
-        debuglog("renaming in %s: %s => %s".format(sym.owner.fullLocationString, originalName, sym.name))
-      }
+      def renameSym(sym: Symbol): Unit = sym setName newName(sym)
 
       def newName(sym: Symbol): Name = {
         val originalName = sym.name
@@ -270,11 +256,8 @@ abstract class LambdaLift extends InfoTransform {
 
       /* Rename a trait's interface and implementation class in coordinated fashion. */
       def renameTrait(traitSym: Symbol, implSym: Symbol) {
-        val originalImplName = implSym.name
         renameSym(traitSym)
         implSym setName tpnme.implClassName(traitSym.name)
-
-        debuglog("renaming impl class in step with %s: %s => %s".format(traitSym, originalImplName, implSym.name))
       }
 
       val allFree: Set[Symbol] = free.values.flatMap(_.iterator).toSet
@@ -300,7 +283,6 @@ abstract class LambdaLift extends InfoTransform {
       afterOwnPhase {
         for ((owner, freeValues) <- free.toList) {
           val newFlags = SYNTHETIC | ( if (owner.isClass) PARAMACCESSOR | PrivateLocal else PARAM )
-          debuglog("free var proxy: %s, %s".format(owner.fullLocationString, freeValues.toList.mkString(", ")))
           proxies(owner) =
             for (fv <- freeValues.toList) yield {
               val proxyName = proxyNames.getOrElse(fv, fv.name)
@@ -315,25 +297,17 @@ abstract class LambdaLift extends InfoTransform {
     private def proxy(sym: Symbol) = {
       def searchIn(enclosure: Symbol): Symbol = {
         if (enclosure eq NoSymbol) throw new IllegalArgumentException("Could not find proxy for "+ sym.defString +" in "+ sym.ownerChain +" (currentOwner= "+ currentOwner +" )")
-        debuglog("searching for " + sym + "(" + sym.owner + ") in " + enclosure + " " + enclosure.logicallyEnclosingMember)
 
         val proxyName = proxyNames.getOrElse(sym, sym.name)
         val ps = (proxies get enclosure.logicallyEnclosingMember).toList.flatten find (_.name == proxyName)
         ps getOrElse searchIn(enclosure.skipConstructor.owner)
       }
-      debuglog("proxy %s from %s has logical enclosure %s".format(
-        sym.debugLocationString,
-        currentOwner.debugLocationString,
-        sym.owner.logicallyEnclosingMember.debugLocationString)
-      )
 
-      if (isSameOwnerEnclosure(sym)) sym
-      else searchIn(currentOwner)
+      if (isSameOwnerEnclosure(sym)) sym else searchIn(currentOwner)
     }
 
     private def memberRef(sym: Symbol): Tree = {
       val clazz = sym.owner.enclClass
-      //Console.println("memberRef from "+currentClass+" to "+sym+" in "+clazz)
       def prematureSelfReference() {
         val what =
           if (clazz.isStaticOwner) clazz.fullLocationString
@@ -435,7 +409,6 @@ abstract class LambdaLift extends InfoTransform {
 */
     private def liftDef(tree: Tree): Tree = {
       val sym = tree.symbol
-      val oldOwner = sym.owner
       if (sym.isMethod && isUnderConstruction(sym.owner.owner)) { // # bug 1909
          if (sym.isModule) { // Yes, it can be a module and a method, see comments on `isModuleNotMethod`!
            // TODO promote to an implementation restriction if we can reason that this *always* leads to VerifyError.
@@ -450,7 +423,6 @@ abstract class LambdaLift extends InfoTransform {
       if (sym.isMethod) sym setFlag LIFTED
       liftedDefs(sym.owner) ::= tree
       sym.owner.info.decls enterUnique sym
-      debuglog("lifted: " + sym + " from " + oldOwner + " to " + sym.owner)
       EmptyTree
     }
 
@@ -539,7 +511,7 @@ abstract class LambdaLift extends InfoTransform {
         case ClassDef(_, _, _, _) =>
           val lifted = liftedDefs get stat.symbol match {
             case Some(xs) => xs reverseMap addLifted
-            case _        => log("unexpectedly no lifted defs for " + stat.symbol) ; Nil
+            case _        => Nil
           }
           try deriveClassDef(stat)(impl => deriveTemplate(impl)(_ ::: lifted))
           finally liftedDefs -= stat.symbol

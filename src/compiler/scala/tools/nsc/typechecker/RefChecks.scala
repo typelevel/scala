@@ -73,7 +73,6 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
       // modules as methods (albeit stable ones with singleton types.)
       // So for now lateMETHOD lives while we try to convince ourselves
       // we can live without it or deliver that info some other way.
-      log(s"Stabilizing module method for ${sym.fullLocationString}")
     }
     super.transformInfo(sym, tp)
   }
@@ -100,10 +99,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         tp1.typeSymbol.isModuleClass && tp2.typeSymbol.isModuleClass && {
           val cb1 = classBoundAsSeen(tp1)
           val cb2 = classBoundAsSeen(tp2)
-          (cb1 <:< cb2) && {
-            log("Allowing %s to override %s because %s <:< %s".format(tp1, tp2, cb1, cb2))
-            true
-          }
+          (cb1 <:< cb2)
         }
       )
   }
@@ -186,13 +182,10 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
       // Insist there at least be a java-defined ancestor which
       // defines a varargs method. TODO: Find a cheaper way to exclude.
       if (inheritsJavaVarArgsMethod(clazz)) {
-        log("Found java varargs ancestor in " + clazz.fullLocationString + ".")
         val self = clazz.thisType
         val bridges = new ListBuffer[Tree]
 
         def varargBridge(member: Symbol, bridgetpe: Type): Tree = {
-          log(s"Generating varargs bridge for ${member.fullLocationString} of type $bridgetpe")
-
           val newFlags = (member.flags | VBRIDGE | ARTIFACT) & ~PRIVATE
           val bridge   = member.cloneSymbolImpl(clazz, newFlags) setPos clazz.pos
           bridge.setInfo(bridgetpe.cloneInfo(bridge))
@@ -216,7 +209,6 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         // @PP: Can't call nonPrivateMembers because we will miss refinement members,
         //   which have been marked private. See SI-4729.
         for (member <- nonTrivialMembers(clazz)) {
-          log(s"Considering $member for java varargs bridge in $clazz")
           if (!member.isDeferred && member.isMethod && hasRepeatedParam(member.info)) {
             val inherited = clazz.info.nonPrivateMemberAdmitting(member.name, VBRIDGE)
 
@@ -232,10 +224,6 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
             }
           }
         }
-
-        if (bridges.size > 0)
-          log(s"Adding ${bridges.size} bridges for methods extending java varargs.")
-
         bridges.toList
       }
       else Nil
@@ -269,9 +257,6 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
      */
     private def checkAllOverrides(clazz: Symbol, typesOnly: Boolean = false) {
       val self = clazz.thisType
-      def classBoundAsSeen(tp: Type) = {
-        tp.typeSymbol.classBound.asSeenFrom(self, tp.typeSymbol.owner)
-      }
 
       case class MixinOverrideError(member: Symbol, msg: String)
 
@@ -314,10 +299,6 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         import pair._
         val member   = low
         val other    = high
-        def memberTp = lowType
-        def otherTp  = highType
-
-        debuglog("Checking validity of %s overriding %s".format(member.fullLocationString, other.fullLocationString))
 
         def noErrorType = !pair.isErroneous
         def isRootOrNone(sym: Symbol) = sym != null && sym.isRoot || sym == NoSymbol
@@ -1230,7 +1211,6 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         try transform(tree) :: Nil
         finally if (currentLevel.maxindex > 0) {
           // An implementation restriction to avoid VerifyErrors and lazyvals mishaps; see SI-4717
-          debuglog("refsym = " + currentLevel.refsym)
           unit.error(currentLevel.refpos, "forward reference not allowed from self constructor invocation")
         }
       case ModuleDef(_, _, _) => eliminateModuleDefs(tree)
@@ -1240,7 +1220,6 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         else {
           val lazySym = tree.symbol.lazyAccessorOrSelf
           if (lazySym.isLocalToBlock && index <= currentLevel.maxindex) {
-            debuglog("refsym = " + currentLevel.refsym)
             unit.error(currentLevel.refpos, "forward reference extends over definition of " + lazySym)
           }
           tree1 :: Nil

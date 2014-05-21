@@ -159,10 +159,7 @@ trait Infer extends Checkable {
    *  This method seems to be performance critical.
    */
   def normalize(tp: Type): Type = tp match {
-    case PolyType(_, restpe) =>
-      logResult(sm"""|Normalizing PolyType in infer:
-                     |  was: $restpe
-                     |  now""")(normalize(restpe))
+    case PolyType(_, restpe)                                     => normalize(restpe)
     case mt @ MethodType(_, restpe) if mt.isImplicit             => normalize(restpe)
     case mt @ MethodType(_, restpe) if !mt.isDependentMethodType => functionType(mt.paramTypes, normalize(restpe))
     case NullaryMethodType(restpe)                               => normalize(restpe)
@@ -1103,26 +1100,15 @@ trait Infer extends Checkable {
       val TypeBounds(lo0, hi0)      = tparam.info.bounds
       val tb @ TypeBounds(lo1, hi1) = instBounds(tvar)
       val enclCase                  = context.enclosingCaseDef
-      def enclCase_s                = enclCase.toString.replaceAll("\\n", " ").take(60)
-
-      if (enclCase.savedTypeBounds.nonEmpty) log(
-        sm"""|instantiateTypeVar with nonEmpty saved type bounds {
-             |  enclosing  $enclCase_s
-             |      saved  ${enclCase.savedTypeBounds}
-             |     tparam  ${tparam.shortSymbolClass} ${tparam.defString}
-             |}""")
 
       if (lo1 <:< hi1) {
-        if (lo1 <:< lo0 && hi0 <:< hi1) // bounds unimproved
-          log(s"redundant bounds: discarding TypeBounds($lo1, $hi1) for $tparam, no improvement on TypeBounds($lo0, $hi0)")
-        else if (tparam == lo1.typeSymbolDirect || tparam == hi1.typeSymbolDirect)
-          log(s"cyclical bounds: discarding TypeBounds($lo1, $hi1) for $tparam because $tparam appears as bounds")
+        if (lo1 <:< lo0 && hi0 <:< hi1) () // bounds unimproved
+        else if (tparam == lo1.typeSymbolDirect || tparam == hi1.typeSymbolDirect) () // cyclical
         else {
           enclCase pushTypeBounds tparam
-          tparam setInfo logResult(s"updated bounds: $tparam from ${tparam.info} to")(tb)
+          tparam setInfo tb
         }
       }
-      else log(s"inconsistent bounds: discarding TypeBounds($lo1, $hi1)")
     }
 
     /** Type intersection of simple type tp1 with general type tp2.
@@ -1133,10 +1119,8 @@ trait Infer extends Checkable {
       else if (tp2 <:< tp1) tp2
       else {
         val reduced2 = tp2 match {
-          case rtp @ RefinedType(parents2, decls2) =>
-            copyRefinedType(rtp, parents2 filterNot (tp1 <:< _), decls2)
-          case _ =>
-            tp2
+          case rtp @ RefinedType(parents2, decls2) => copyRefinedType(rtp, parents2 filterNot (tp1 <:< _), decls2)
+          case _                                   => tp2
         }
         intersectionType(List(tp1, reduced2))
       }
@@ -1444,7 +1428,6 @@ trait Infer extends Checkable {
         case Nil                                   => fail()
         case alt :: Nil                            => finish(alt, pre memberType alt)
         case alts @ (hd :: _)                      =>
-          log(s"Attaching AntiPolyType-carrying overloaded type to $sym")
           // Multiple alternatives which are within bounds; spin up an
           // overloaded type which carries an "AntiPolyType" as a prefix.
           val tparams = newAsSeenFromMap(pre, hd.owner) mapOver hd.typeParams

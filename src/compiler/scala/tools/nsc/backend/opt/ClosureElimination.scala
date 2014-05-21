@@ -36,7 +36,6 @@ abstract class ClosureElimination extends SubComponent {
       case (STORE_LOCAL(x), LOAD_LOCAL(y)) if (x == y) =>
         var liveOut = liveness.out(bb)
         if (!liveOut(x)) {
-          debuglog("store/load to a dead local? " + x)
           val instrs = bb.getArray
           var idx = instrs.length - 1
           while (idx > 0 && (instrs(idx) ne i2)) {
@@ -101,7 +100,6 @@ abstract class ClosureElimination extends SubComponent {
 
       m.linearizedBlocks() foreach { bb =>
         var info = cpp.in(bb)
-        debuglog("Cpp info at entry to block " + bb + ": " + info)
 
         for (i <- bb) {
           i match {
@@ -110,12 +108,10 @@ abstract class ClosureElimination extends SubComponent {
               t match {
               	case Deref(This) | Const(_) =>
                   bb.replaceInstruction(i, valueToInstruction(t))
-                  debuglog(s"replaced $i with $t")
 
                 case _ =>
                   val t = info.getAlias(l)
                   bb.replaceInstruction(i, LOAD_LOCAL(t))
-                  debuglog(s"replaced $i with $t")
               }
 
             case LOAD_FIELD(f, false) /* if accessible(f, m.symbol) */ =>
@@ -123,7 +119,6 @@ abstract class ClosureElimination extends SubComponent {
                 val Record(cls, _) = r
                 info.getFieldNonRecordValue(r, f) foreach { v =>
                         bb.replaceInstruction(i, DROP(REFERENCE(cls)) :: valueToInstruction(v) :: Nil)
-                        debuglog(s"replaced $i with $v")
                 }
               }
 
@@ -154,14 +149,12 @@ abstract class ClosureElimination extends SubComponent {
                   value match {
                     case Boxed(LocalVar(loc2)) if loc2.kind == boxType =>
                       bb.replaceInstruction(i, DROP(icodes.ObjectReference) :: valueToInstruction(info.getBinding(loc2)) :: Nil)
-                      debuglog("replaced " + i + " with " + info.getBinding(loc2))
                     case _ =>
                       ()
                   }
                 case Boxed(LocalVar(loc1)) :: _ if loc1.kind == boxType =>
                   val loc2 = info.getAlias(loc1)
                   bb.replaceInstruction(i, DROP(icodes.ObjectReference) :: valueToInstruction(Deref(LocalVar(loc2))) :: Nil)
-                  debuglog("replaced " + i + " with " + LocalVar(loc2))
                 case _ =>
               }
 

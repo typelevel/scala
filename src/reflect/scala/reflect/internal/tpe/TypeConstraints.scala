@@ -244,15 +244,8 @@ private[internal] trait TypeConstraints {
       }
     }
 
-    // println("solving "+tvars+"/"+tparams+"/"+(tparams map (_.info)))
     foreach3(tvars, tparams, variances)(solveOne)
-
-    def logBounds(tv: TypeVar) = log {
-      val what = if (!tv.instValid) "is invalid" else s"does not conform to bounds: ${tv.constr}"
-      s"Inferred type for ${tv.originString} (${tv.inst}) $what"
-    }
-
-    tvars forall (tv => tv.instWithinBounds || util.andFalse(logBounds(tv)))
+    tvars forall (_.instWithinBounds)
   }
 }
 

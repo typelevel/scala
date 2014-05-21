@@ -103,9 +103,8 @@ private[internal] trait GlbLubs {
     def isHotForTs(xs: List[Type]) = ts exists (_.typeParams == xs.map(_.typeSymbol))
 
     def elimHigherOrderTypeParam(tp: Type) = tp match {
-      case TypeRef(_, _, args) if args.nonEmpty && isHotForTs(args) =>
-        logResult("Retracting dummies from " + tp + " in lublist")(tp.typeConstructor)
-      case _ => tp
+      case TypeRef(_, _, args) if args.nonEmpty && isHotForTs(args) => tp.typeConstructor
+      case _                                                        => tp
     }
     // pretypes is a tail-recursion-preserving accumulator.
     @tailrec

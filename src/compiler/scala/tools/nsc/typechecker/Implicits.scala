@@ -76,7 +76,6 @@ trait Implicits {
         case dte: DivergentImplicitTypeError => dte
         case ate: AmbiguousImplicitTypeError => ate
       })
-      debuglog("update buffer: " + implicitSearchContext.reportBuffer.errors)
     }
     // SI-7944 undetermined type parameters that result from inference within typedImplicit land in
     //         `implicitSearchContext.undetparams`, *not* in `context.undetparams`
@@ -604,7 +603,6 @@ trait Implicits {
         }
       }
       val itree1 = if (isBlackbox(info.sym)) suppressMacroExpansion(itree0) else itree0
-      typingLog("considering", typeDebug.ptTree(itree1))
 
       def fail(reason: String): SearchResult = failure(itree0, reason)
       def fallback = typed1(itree1, EXPRmode, wildPt)
@@ -636,9 +634,7 @@ trait Implicits {
           case _ => fallback
         }
         context.firstError match { // using match rather than foreach to avoid non local return.
-          case Some(err) =>
-            log("implicit adapt failed: " + err.errMsg)
-            return fail(err.errMsg)
+          case Some(err) => return fail(err.errMsg)
           case None      =>
         }
 
@@ -1395,9 +1391,6 @@ trait Implicits {
           result = SearchFailure
         }
       }
-      if (result.isFailure)
-        debuglog("no implicits found for "+pt+" "+pt.typeSymbol.info.baseClasses+" "+implicitsOfExpectedType)
-
       result
     }
 

@@ -841,13 +841,11 @@ abstract class BCodeHelpers extends BCodeTypes with BytecodeWriters {
      */
     def addForwarders(isRemoteClass: Boolean, jclass: asm.ClassVisitor, jclassName: String, moduleClass: Symbol) {
       assert(moduleClass.isModuleClass, moduleClass)
-      debuglog(s"Dumping mirror class for object: $moduleClass")
 
       val linkedClass  = moduleClass.companionClass
       lazy val conflictingNames: Set[Name] = {
         (linkedClass.info.members collect { case sym if sym.name.isTermName => sym.name }).toSet
       }
-      debuglog(s"Potentially conflicting names for forwarders: $conflictingNames")
 
       for (m <- moduleClass.info.membersBasedOnFlags(ExcludedForwarderFlags, symtab.Flags.METHOD)) {
         if (m.isType || m.isDeferred || (m.owner eq definitions.ObjectClass) || m.isConstructor)
@@ -934,7 +932,6 @@ abstract class BCodeHelpers extends BCodeTypes with BytecodeWriters {
       var res: EnclMethodEntry = null
       val sym = clazz.originalEnclosingMethod
       if (sym.isMethod) {
-        debuglog(s"enclosing method for $clazz is $sym (in ${sym.enclClass})")
         res = newEEE(sym.enclClass, sym)
       } else if (clazz.isAnonymousClass) {
         val enclClass = clazz.rawowner
@@ -943,7 +940,6 @@ abstract class BCodeHelpers extends BCodeTypes with BytecodeWriters {
         if (sym == NoSymbol) {
           log(s"Ran out of room looking for an enclosing method for $clazz: no constructor here: $enclClass.")
         } else {
-          debuglog(s"enclosing method for $clazz is $sym (in $enclClass)")
           res = newEEE(enclClass, sym)
         }
       }
