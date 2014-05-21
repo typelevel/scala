@@ -18,12 +18,14 @@ class Props private (file: File) extends scala.Dynamic {
   def load(): this.type = { IO.load(props, file) ; this }
   def save(): this.type = { IO.write(props, null, file) ; this }
 
-  def updateDynamic(name: String)(value: String): Unit = set(name, value)
-  def selectDynamic(name: String): String              = get(name)
-  def intProp(name: String, alt: => Int): Int          = getOrElseUpdate(name, alt.toString).toInt
+  def applyDynamic(name: String)(alt: => String): String = getOrElseUpdate(name, alt)
+  def updateDynamic(name: String)(value: String): Unit   = set(name, value)
+  def selectDynamic(name: String): String                = get(name)
+  def intProp(name: String, alt: => Int): Int            = getOrElseUpdate(name, alt.toString).toInt
 }
 
 object Props {
+  def buildProps = apply(file("project/build.properties"))
   def apply(file: File): Props = new Props(file) load()
 
   def generateProperties() = Def task {

@@ -18,12 +18,6 @@ trait Partest {
     key -> file
   }
 
-  def bootstrapInstance: Def.Initialize[Task[ScalaInstance]] = Def.task {
-    val toolReport = update.value.configuration("scala-tool").get
-    val j1 :: j2 :: js = toolReport.modules.toList flatMap (_.artifacts map (_._2))
-    ScalaInstance(bootVersion.value, j1, j2, js: _*)(state.value.classLoaderCache.apply)
-  }
-
   def testJavaOptions = Def task {
     val propArgs = for ((k, v) <- Props.testingProperties.value) yield "-D%s=%s".format(k, v)
     "-Xmx1g" :: propArgs

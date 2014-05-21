@@ -8,6 +8,8 @@ trait Runners {
   def forkOptions(f: ForkOptions => ForkOptions = identity): ForkOptions =
     f(ForkOptions(bootJars = Nil, connectInput = true, outputStrategy = Some(StdoutOutput)))
 
+  def scalaInstanceTask: InTaskOf[ScalaInstance] = Def inputTaskDyn scalaInstanceForVersion(scalaVersionParser.parsed)
+
   def runInput(mainClass: String, jvmArgs: String*)(appArgs: String*) = Def.inputTask {
     val args     = spaceDelimited("<arg>").parsed.toList
     val cp       = (fullClasspath in Compile).value.files mkString ":"
@@ -23,7 +25,9 @@ trait Runners {
   }
 
   def generalClasspathString(config: Configuration, join: String) =
-    Def.task[String]((fullClasspath in config).value.files mkString join)
+    Def.task[String](noScalaLangInClasspath((fullClasspath in config).value).files mkString join)
+
+  def noScalaLangInClasspath(cp: Classpath): Classpath = cp filterNot (x => x.toString split "/" contains ScalaOrg)
 
   def classpathString(config: Configuration) =
     Def.task[String](generalClasspathString(config, ":").value)
