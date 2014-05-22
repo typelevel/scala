@@ -8,8 +8,6 @@ import asm._
 import asm.tree._
 import scala.tools.partest.AsmNode._
 
-// import asm.tree.{ClassNode, MethodNode, InsnList, AbstractInsnNode}
-
 /** Makes using ASM from ByteCodeTests more convenient.
  *
  * Wraps ASM instructions in case classes so that equals and toString work
@@ -36,12 +34,10 @@ trait ASMConverters {
     def jopcodes: List[Int]                   = node.instructions.jopcodes
   }
   implicit class ClassNodeOps(val node: ClassNode) {
-    def jfields: List[FieldNode]          = node.fields.asScalaTyped[FieldNode]
-    def jmethods: List[MethodNode]        = node.methods.asScalaTyped[MethodNode]
-    def jinners: List[InnerClassNode]     = node.innerClasses.asScalaTyped[InnerClassNode]
+    def jfields: List[FieldNode]          = if (node eq null) Nil else node.fields.asScalaTyped[FieldNode]
+    def jmethods: List[MethodNode]        = if (node eq null) Nil else node.methods.asScalaTyped[MethodNode]
+    def jinners: List[InnerClassNode]     = if (node eq null) Nil else node.innerClasses.asScalaTyped[InnerClassNode]
     def fieldsAndMethods: List[AsmMember] = (jmethods map AsmNode.apply) ++ (jfields map AsmNode.apply) sortBy (_.characteristics)
-
-    // classNode.methods.asScala.asInstanceOf[List[MethodNode]].find(_.name == name) getOrElse
   }
 
   // wrap ASM's instructions so we get case class-style `equals` and `toString`

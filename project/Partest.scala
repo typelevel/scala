@@ -26,12 +26,15 @@ trait Partest {
 
   def testJavaOptions = Props.testingProperties map ("-Xmx1g" +: _.commandLineArgs)
 
-  def runTestsWithArgs(args: List[String]) = Def task {
+  def runTestsWithArgs(args: List[String]): TaskOf[Int] = Def task {
     logForkJava(logger.value)(("-classpath" +: classpathReadable.value +: testJavaOptions.value :+ PartestRunnerClass) ++ args)
     runForkJava(testClasspathString(":").value, testJavaOptions.value, PartestRunnerClass, args)
   }
 
-  def runAllTests = Def task (packageBin in Compile map (_ => runTestsWithArgs(Nil).value))
+  def runAllTests: TaskOf[Unit] = runTestsWithArgs(Nil) map (_ => ())
+
+  // (packageBin in Compile map (_ => runTestsWithArgs(Nil).value))
+
   def runTests    = Def.inputTask[Int] {
     (packageBin in Compile).value
     // testOnly with no args we'll take to mean --failed

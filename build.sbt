@@ -20,7 +20,7 @@ lazy val library = ( project.sub.mima
 lazy val compiler = ( project.sub
       addSourceDirs ( "compiler", "reflect", "repl" )
           dependsOn ( library )
-   intransitiveDeps ( asm, jline, ant, scalaXml, scalaParsers )
+   intransitiveDeps ( /*asm,*/ jline, ant, scalaXml, scalaParsers )
 )
 
 lazy val compat = ( project.sub
@@ -33,9 +33,9 @@ lazy val partest = ( project.sub
   dependsOn        ( compiler )
   intransitiveDeps ( jline, ant, scalaXml, scalaParsers, scalacheck, diffutils, testInterface )
   settings         (
-       unmanagedBase := baseDirectory.value / "testlib",
-                test := Partest.runAllTests.value,
-            testOnly := Partest.runTests.evaluated
+       unmanagedBase :=  baseDirectory.value / "testlib",
+                test :=  Partest.runAllTests.value,
+            testOnly :=  Partest.runTests.evaluated
   )
   settings         ( noArtifacts )
 )
