@@ -30,7 +30,6 @@ import java.net.URLClassLoader
  *  - `javaccmd`,
  *  - `scalacopts`,
  *  - `debug`,
- *  - `junitreportdir`.
  *
  *  It also takes the following parameters as nested elements:
  *  - `compilationpath`. -- TODO: this parameter is now redundant: it's the same as the classpath used to run the task
@@ -44,7 +43,6 @@ class PartestTask extends Task with CompilationPathProperty with ScalaTask {
   private var classpath: Option[Path] = None
   private var debug = false
   private var errorOnFailed: Boolean = true
-  private var jUnitReportDir: Option[File] = None
   private var javaccmd: Option[File] = None
   private var javacmd: Option[File] = Option(sys.props("java.home")) map (x => new File(x, "bin/java"))
   private var scalacArgs: Option[Seq[Argument]] = None
@@ -107,10 +105,6 @@ class PartestTask extends Task with CompilationPathProperty with ScalaTask {
     debug = input
   }
 
-  def setJUnitReportDir(input: File) {
-    jUnitReportDir = Some(input)
-  }
-
   override def execute() {
     if (debug || propOrFalse("partest.debug")) {
       NestUI.setDebug()
@@ -127,31 +121,11 @@ class PartestTask extends Task with CompilationPathProperty with ScalaTask {
     val summary = new scala.tools.partest.nest.AntRunner(srcDir.getOrElse(null), new URLClassLoader(compilationPath.get.list.map(Path(_).toURL)), javacmd.getOrElse(null), javaccmd.getOrElse(null), scalacArgsFlat) {
       def echo(msg: String): Unit = PartestTask.this.log(msg)
       def log(msg: String): Unit = PartestTask.this.log(msg)
+      def onFinishKind(kind: String, passed: Array[TestState], failed: Array[TestState]) = failureCount += failed.size
 
-      def onFinishKind(kind: String, passed: Array[TestState], failed: Array[TestState]) = {
-        failureCount += failed.size
-
-        def oneResult(res: TestState) =
-          <testcase name={ res.testIdent }>{
-            if (res.isOk) scala.xml.NodeSeq.Empty
-            else <failure message="Test failed"/>
-          }</testcase>
-
-        // create JUnit Report xml files if directory was specified
-        jUnitReportDir foreach { d =>
-          d.mkdir
-          val report =
-            <testsuite name={ kind } tests={ (passed.size + failed.size) toString } failures={ failed.size.toString }>
-              <properties/>{ passed map oneResult }{ failed map oneResult }
-            </testsuite>
-
-          scala.xml.XML.save(d.getAbsolutePath + "/" + kind + ".xml", report)
-        }
-      }
     } execute (kinds)
 
     if (errorOnFailed && failureCount > 0) buildError(summary)
     else log(summary)
-
   }
 }

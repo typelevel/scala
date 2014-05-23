@@ -56,5 +56,13 @@ trait Constants {
   def spaceDelimited(label: String = "<arg>"): Parser[Seq[String]] = DefaultParsers spaceDelimited label
   def tokenDisplay[T](t: Parser[T], display: String): Parser[T] = DefaultParsers.tokenDisplay(t, display)
   def NotSpace = DefaultParsers.NotSpace
+
+  def filesIn(dir: File, extension: String): Seq[File]   = dir * s"*.$extension" get
+  def filesIn(dir: File, extensions: String*): Seq[File] = extensions flatMap (ext => filesIn(dir, ext))
+  def sbtFilesIn(dir: File): Seq[File]                   = filesIn(dir, "sbt")
+  def sourceFilesIn(dir: File): Seq[File]                = filesIn(dir, "scala", "java")
+
+  def sbtFilesInBuild      = buildBase map sbtFilesIn
+  def sourceFilesInProject = buildBase map (_ / "project") map sourceFilesIn
 }
 
