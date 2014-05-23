@@ -1,5 +1,4 @@
-/* NSC -- new Scala compiler
- * Copyright 2005-2013 LAMP/EPFL
+/* NSC -- new Scala compiler * Copyright 2005-2013 LAMP/EPFL
  * @author  Martin Odersky
  */
 
@@ -47,6 +46,8 @@ class Global(var currentSettings: Settings, var reporter: Reporter)
     with Positions { self =>
 
   // the mirror --------------------------------------------------
+
+  // println("policy compiler (%s) starting up".format(Properties.versionString))
 
   override def isCompilerUniverse = true
   override val useOffsetPositions = !currentSettings.Yrangepos

@@ -1,14 +1,19 @@
 package policy
-package build
+package building
 
 import sbt._, Keys._
 
 trait Runners {
+  def allTaskAndSettingKeys = Def task (BuiltinCommands allTaskAndSettingKeys state.value sortBy (_.label))
+
+  def settingsData: TaskOf[Settings[Scope]]                            = sbt.std.FullInstance.settingsData
+  def settingsDataData: Def.Initialize[Task[Map[Scope, AttributeMap]]] = settingsData map (_.data)
+
   // envVars, workingDirectory, javaHome
   def forkOptions(f: ForkOptions => ForkOptions = identity): ForkOptions =
     f(ForkOptions(bootJars = Nil, connectInput = true, outputStrategy = Some(StdoutOutput)))
 
-  def scalaInstanceTask: InTaskOf[ScalaInstance] = Def inputTaskDyn scalaInstanceForVersion(scalaVersionParser.parsed)
+  // def scalaInstanceTask: InputTaskOf[ScalaInstance] = Def inputTaskDyn scalaInstanceForVersion(scalaVersionParser.parsed)
 
   def runInput(mainClass: String, jvmArgs: String*)(appArgs: String*) = Def.inputTask {
     val args     = spaceDelimited("<arg>").parsed.toList

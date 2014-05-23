@@ -1,5 +1,5 @@
 package policy
-package build
+package building
 
 import sbt._, Keys._
 import com.typesafe.tools.mima.core._

@@ -19,10 +19,12 @@ class ConsoleRunner(argstr: String) extends {
 } with ConsoleRunnerSpec with Instance {
 
   val suiteRunner = new SuiteRunner (
-    testSourcePath = optSourcePath getOrElse PartestDefaults.sourcePath,
-    fileManager = new FileManager(ClassPath split PathResolver.Environment.javaUserClassPath map (Path(_))), // the script sets up our classpath for us via ant
-    updateCheck = optUpdateCheck,
-    failed = optFailed)
+    testSourcePath  = optSourcePath getOrElse PartestDefaults.sourcePath,
+    fileManager     = new FileManager(ClassPath split PathResolver.Environment.javaUserClassPath map (Path(_))), // the script sets up our classpath for us via ant
+    updateCheck     = optUpdateCheck,
+    failed          = optFailed,
+    scalacExtraArgs = words(PartestDefaults.scalacOpts)
+  )
   import suiteRunner._
   import NestUI._
   import NestUI.color._
@@ -185,7 +187,7 @@ class ConsoleRunner(argstr: String) extends {
     issueSummaryReport()
     System exit ( if (isSuccess) 0 else 1 )
   }
-  
+
   run()
 }
 

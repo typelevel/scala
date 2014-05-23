@@ -604,7 +604,15 @@ class SuiteRunner(
   // TODO: make this immutable
   PathSettings.testSourcePath = testSourcePath
 
-  def banner = "\n" + {
+  def propStr = {
+    val keys = sys.props.keys.toList.sorted filter (_ startsWith "partest.")
+    val width = keys.map(_.length).max
+    val fmt = "%" + width + "s  %s"
+    keys map (k => fmt.format(k, sys.props(k))) mkString "\n"
+  }
+  def classpathStr = fileManager.testClassPath mkString "\n  "
+
+  def banner = {
     val baseDir = sys.props("partest.basedir")
     val vmBin   = javaHome + fileSeparator + "bin"
     val vmName  = "%s (build %s, %s)".format(javaVmName, javaVmVersion, javaVmInfo)
@@ -616,11 +624,40 @@ class SuiteRunner(
         |Scalac options:        ${join(scalacExtraArgs: _*)}
         |Java options:          ${PartestDefaults.javaOpts}
         |Java binaries/runtime: $vmBin  $vmName
-        |Compilation Path:      ${fileManager.testClassPath mkString ("\n  ", "\n  ", "\n")}
+        |Compilation Path {
+        |  $classpathStr
+        |}
+        |System properties {
+        |$propStr
+        |}
       """.stripMargin
-    // |Available processors:       ${Runtime.getRuntime().availableProcessors()}
-    // |Java Classpath:             ${sys.props("java.class.path")}
   }
+
+  // def banner = {
+  //   val baseDir       = sys.props("basedir")
+  //   val policyVersion = sys.props("policy.version")
+
+  //   def relativize(path: String) = path.replace(baseDir, "$baseDir").replace(PathSettings.srcDir.toString, "$sourceDir")
+  //   val vmBin  = javaHome + fileSeparator + "bin"
+  //   val vmName = "%s (build %s, %s)".format(javaVmName, javaVmVersion, javaVmInfo)
+
+  // s"""|Partest version:     ${Properties.versionNumberString}
+  //     |Compiler under test: $policyVersion
+  //     |Scala version is:    $versionMsg
+  //     |Scalac options are:  ${scalacExtraArgs.mkString(" ")}
+  //     |Compilation Path:    ${relativize(joinPaths(fileManager.testClassPath))}
+  //     |Java binaries in:    $vmBin
+  //     |Java runtime is:     $vmName
+  //     |Java options are:    ${PartestDefaults.javaOpts}
+  //     |baseDir:             $baseDir
+  //     |sourceDir:           ${PathSettings.srcDir}
+  //     |Partest system properties {
+  //     |$propStr
+  //     |}
+  //   """.stripMargin
+  //   // |Available processors:       ${Runtime.getRuntime().availableProcessors()}
+  //   // |Java Classpath:             ${sys.props("java.class.path")}
+  // }
 
   def onFinishTest(testFile: File, result: TestState): TestState = result
 

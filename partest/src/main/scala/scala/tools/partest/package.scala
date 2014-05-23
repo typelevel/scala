@@ -175,8 +175,8 @@ package object partest extends scala.tools.partest.ASMConverters {
   )
 
   def allPropertiesString = {
-    import scala.collection.JavaConversions._
-    System.getProperties.toList.sorted map { case (k, v) => "%s -> %s\n".format(k, v) } mkString ""
+    import scala.collection.JavaConverters._
+    System.getProperties.asScala.toList.sorted map { case (k, v) => "%s -> %s\n".format(k, v) } mkString ""
   }
 
   def showAllJVMInfo() {

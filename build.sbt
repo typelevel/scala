@@ -1,19 +1,31 @@
-import policy._, build._
+import policy.building._
 
-// There is an unmanaged asm-debug-all jar - should be able to use the standard
-// asm-all artifact if/when the fixes against 5.0.2 enter the mainline.
+// See project/BuildSettings for all the details - here we attempt to
+// retain a high level view.
 buildLevelSettings
 
+bootstrapModuleId in ThisBuild := printResult("bootstrap")(chooseBootstrap)
+
+//lazy val asm = RootProject(file("/mirror/forks/asm"))
+//   ProjectRef(file("/mirror/forks/asm"), "asm")
+//RootProject(uri("https://github.com/paulp/asm/tree/scala-fixes"))
+
 lazy val root = (
-  project.setup.noArtifacts in file(".")
+  project.setup in file(".")
     dependsOn ( library, compiler, partest )
     aggregate ( library, compiler, partest, compat )
-)
+    settings  (
+      commands += Command.command("publishBootstrapCompiler")(s => publishBootstrapScript ::: s),
+      commands += Command.args("renameProjects", "<from> <to>") { case (state, Seq(from, to)) => transformEveryKey(name)(_.replaceAllLiterally(from, to))(state) },
+      commands += Command.args("removeScalacOption", "<option>")((state, opt) => transformInEveryScope(scalacOptions, state, (xs: Seq[String]) => xs filterNot (_ == opt))),
+      commands += Command.args("appendScalacOption", "<option>")(appendInEveryScope(scalacOptions, _, _))
+    )
+).noArtifacts
 
-lazy val library = project.setup.addToolJars addMima scalaLibraryId
+lazy val library = project.setup addMima scalaLibrary
 
-lazy val compiler = project.setup.addToolJars dependsOn library intransitiveDeps ( jline, ant )
+lazy val compiler = project.setup dependsOn (library) deps ( jline, ant, "org.improving" % "asm" % "5.0.3-SNAPSHOT" )
 
-lazy val partest = project.setup dependsOn compiler intransitiveDeps ( jline, ant, scalacheck, diffutils, testInterface )
+lazy val partest = project.setup dependsOn compiler deps ( jline, ant, diffutils) intransitiveDeps ( scalacheck, testInterface, scalaParsers, scalaXml )
 
-lazy val compat = project.setup.noArtifacts dependsOn compiler sbtDeps ( "interface", "compiler-interface" )
+lazy val compat = project.setup dependsOn compiler sbtDeps ( "interface", "compiler-interface" ) noArtifacts
