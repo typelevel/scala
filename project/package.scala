@@ -5,6 +5,9 @@ import Configurations.ScalaTool
 import Opts.resolver._
 import scala.sys.process.Process
 import Classpaths.{ packaged, publishConfig }
+// scalacOptions in Compile ++= strings("-sourcepath", (scalaSource in Compile).value),
+//         previousArtifact :=  Some(scalaModuleId("library")),
+//       binaryIssueFilters ++= MimaPolicy.filters
 
 
 // A fully-qualified reference to a setting or task looks like:
@@ -59,7 +62,7 @@ import Classpaths.{ packaged, publishConfig }
 package object build extends policy.build.Constants with policy.build.Bootstrap {
   lazy val newBuildVersion = Process("bin/unique-version").lines.mkString
 
-  def newProps(in: (String, Any)*): BetterProperties = new BetterProperties(in.toMap map { case (k, v) => (k, "" + v) })
+  def newProps(in: (String, String)*): BetterProperties = new BetterProperties(in.toMap)
 
   class BetterProperties(in: Map[String, String]) extends java.util.Properties {
     locally {
@@ -88,7 +91,10 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   def strings(xs: Any*): List[String] = xs.toList map ("" + _)
   def join(xs: Seq[String]): String   = xs filterNot (_ == "") mkString " "
   def wordSet(s: String): Set[String] = (s.trim split "\\s+").toSet
-  def wordSeq(s: String): Seq[String] = (s.trim split "\\s+").toSeq.sorted
+  def wordSeq(s: String): Seq[String] = s.trim match {
+    case "" => Nil
+    case s  => (s split "\\s+").toSeq.sorted
+  }
 
   def printResult[A](msg: String)(res: A): A = try res finally println(s"$msg: $res")
 
@@ -105,12 +111,11 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   def scalacheck    = "org.scalacheck"                 %%        "scalacheck"        % "1.11.3"
   def testInterface = SbtOrg                           %       "test-interface"      %  "1.0"
 
-  def buildBase = baseDirectory in ThisBuild
-  def testBase  = buildBase map (_ / "test")
-
   def sbtModuleId(name: String)    = SbtOrg    %          name          %    SbtFixedVersion
   def scalaModuleId(name: String)  = ScalaOrg  % dash(ScalaName, name)  %   ScalaFixedVersion
   def policyModuleId(name: String) = PolicyOrg % dash(PolicyName, name) % PolicyBootstrapVersion
+
+  def scalaLibraryId = scalaModuleId("library")
 
   def globally(xs: Setting[_]*)     = inScope(Global)(xs.toList)
   def thisally(xs: Setting[_]*)     = inScope(ThisScope)(xs.toList)
@@ -125,8 +130,8 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
 
   def policyThisBuildSettings = thisally(
     initialCommands in console :=  """import policy.build._""",
-                  watchSources ++= (buildBase.value * "*.sbt").get,
-                  watchSources ++= (buildBase.value / "project" * "*.sbt").get
+                  watchSources +=  fromBuild(_ / "build.sbt").value,
+                  watchSources ++= (fromBuild(_ / "project").value * "*.sbt").get
   )
 
   // Global settings.
@@ -139,8 +144,7 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
                 version :=  PolicyBuildVersion,
        autoScalaLibrary :=  false,
              crossPaths :=  false,
-             incOptions ~=  (_ withRecompileOnMacroDef false)
-//             incOptions ~=  (_ withAntStyle true withRecompileOnMacroDef false)
+             incOptions ~=  (_ withRecompileOnMacroDef false) // withAntStyle true
   )
   private val Root     = "root"
   private val Partest  = "partest"
@@ -148,68 +152,83 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   private val Compiler = "compiler"
   private val Library  = "library"
 
-  private def mainSources(p: Project) = p.id match {
-    case Partest => Nil
-    case _         =>
-      List(
-        scalaSource in Compile := (baseDirectory in ThisBuild).value / "src" / p.id,
-         javaSource in Compile <<= scalaSource in Compile
-      )
-  }
+  def buildBase   = baseDirectory in ThisBuild
+  def testBase    = Def setting ((baseDirectory in ThisBuild).value / "test")
+  def srcBase     = Def setting ((baseDirectory in ThisBuild).value / "src")
+  // fromBuild(_ / "src")
 
-  private def addSettings(p: Project) = p.id match {
-    case Root     => p settings (rootProjectSettings: _*)
-    case Compat   => p settings (sourceGenerators in Compile <+= build.Partest.createUnzipTask, noArtifacts)
-    case Partest  => p deps bootstrapCompilerId settings (scopedSubProjectSettings: _*)
-    case Compiler => p deps bootstrapLibraryId  settings (mainSources(p) ++ scopedSubProjectSettings: _*) settings (unmanagedJars in Compile ++= bootstrapJars.value)
-    case Library  => p deps bootstrapCompilerId settings (mainSources(p) ++ scopedSubProjectSettings: _*)
-  }
+  def fromSrc(f: File => File)     = Def setting f((baseDirectory in ThisBuild).value / "src") //   buildBase map (_ / "src") map f
+  def fromBuild(f: File => File)   = Def setting f((baseDirectory in ThisBuild).value)
+  def fromProject(f: File => File) = Def setting f((baseDirectory in ThisProject).value)
 
-  // private def partestProjectSettings = List(
-  // )
+  private def compilerProjectSettings = codeProject("compiler reflect repl")(addToolJars, libraryDependencies += bootstrapLibraryId)
 
-  def noArtifacts = packagedArtifacts <<= packaged(Nil)
+  private def libraryProjectSettings = codeProject("forkjoin library")(addToolJars,
+    scalacOptions in Compile ++= Seq("-sourcepath", fromSrc(_ / "library").value.getPath),
+         libraryDependencies +=  bootstrapCompilerId,
+            previousArtifact :=  Some(scalaLibraryId),
+          binaryIssueFilters ++= MimaPolicy.filters
+  )
 
+  private def partestProjectSettings = codeProject("")(
+      unmanagedBase <<= fromProject(_ / "testlib"),
+       fork in Test :=  true,
+               test :=  build.Partest.runAllTests.value,
+           testOnly :=  build.Partest.runTests.evaluated
+  )
+
+  def noArtifacts   = packagedArtifacts <<= packaged(Nil)
+  def addToolJars   = unmanagedJars in Compile <++= bootstrapJars
+
+  private def compatProjectSettings = List(
+    sourceGenerators in Compile <+= build.Partest.createUnzipTask
+  )
   private def rootProjectSettings = List(
-                 name :=  PolicyName,
-      fork in Runtime :=  true,
-                  run :=  Runners.runInput(CompilerRunnerClass)("-usejavacp").evaluated,
-                 repl :=  Runners.runInput(ReplRunnerClass, Props.unsuppressTraces)("-usejavacp").evaluated
+                 name := PolicyName,
+             getScala := scalaInstanceTask.evaluated,
+                  run := Runners.runInput(CompilerRunnerClass)("-usejavacp").evaluated,
+                 repl := Runners.runInput(ReplRunnerClass, Props.unsuppressTraces)("-usejavacp").evaluated,
+      fork in Runtime := true
   )
 
-  private def subProjectSettings: List[Setting[_]] = List(
-                       name ~=  (dash(PolicyName, _)),
-          ivyConfigurations +=  ScalaTool,
-                  resolvers +=  Classpaths.typesafeResolver,
-                 traceLevel :=  50,
-              sourcesInBase :=  false,
-                logBuffered :=  false,
-                showSuccess :=  false,
-       pomIncludeRepository :=  (_ => false),
-                  publishTo :=  Some(mavenLocalFile),
-       managedScalaInstance :=  false,
-              scalaInstance <<= bootstrapInstance
-  )
-  private def scopedSubProjectSettings = subProjectSettings ++ List(
-                             packagedArtifacts <<= packaged(Seq(packageBin in Compile)),
-                     publishLocalConfiguration ~=  (p => publishConfig(p.artifacts, p.ivyFile, p.checksums, p.resolverName, logging = UpdateLogging.Quiet, overwrite = false)),
-                       javacOptions in Compile ++= javacArgs,
-           scalacOptions in (Compile, compile) ++= scalacArgs,
-                 resourceGenerators in Compile <+= Props.generateProperties(),
-               javacOptions in (Test, compile) :=  wordSeq("-nowarn"),
-              scalacOptions in (Test, compile) :=  wordSeq("-Xlint"),
-                       publishArtifact in Test :=  false,
-      publishArtifact in (Compile, packageDoc) :=  false,
-      publishArtifact in (Compile, packageSrc) :=  false
+  private def addSourceDirs(where: String) = unmanagedSourceDirectories in Compile ++= wordSeq(where) map ((baseDirectory in ThisBuild).value / "src" / _)
+  private def codeProject(sourceDirs: String)(others: Setting[_]*) = addSourceDirs(sourceDirs) +: (codeProjectInitialSettings ++ others)
+
+  private def codeProjectInitialSettings = List(
+                                    name ~=  (dash(PolicyName, _)),
+                       ivyConfigurations +=  ScalaTool,
+                               resolvers +=  Classpaths.typesafeResolver,
+                              traceLevel :=  50,
+                           sourcesInBase :=  false,
+                             logBuffered :=  false,
+                             showSuccess :=  false,
+                    managedScalaInstance :=  false,
+                    pomIncludeRepository :=  (_ => false),
+                               publishTo :=  Some(mavenLocalFile),
+                           scalaInstance <<= bootstrapInstance,
+                       packagedArtifacts <<= packaged(Seq(packageBin in Compile)),
+               publishLocalConfiguration ~=  (p => publishConfig(p.artifacts, p.ivyFile, p.checksums, p.resolverName, logging = UpdateLogging.Quiet, overwrite = false)),
+                 javacOptions in Compile ++= javacArgs,
+     scalacOptions in (Compile, compile) ++= scalacArgs,
+           resourceGenerators in Compile <+= Props.generateProperties(),
+         javacOptions in (Test, compile) :=  wordSeq("-nowarn"),
+        scalacOptions in (Test, compile) :=  wordSeq("-Xlint")
   )
 
   implicit class ProjectOps(val p: Project) {
-    def sub                             = addSettings(p)
-    def mima                            = p settings (mimaDefaultSettings: _*)
-    def deps(ms: ModuleID*)             = p settings (libraryDependencies ++= ms.toSeq)
-    def addSourceDirs(dirs: String*)    = p settings (unmanagedSourceDirectories in Compile ++= dirs map (buildBase.value / "src" / _))
-    def intransitiveDeps(ms: ModuleID*) = p settings (libraryDependencies ++= intransitively(ms: _*))
-    def sbtDeps(ids: String*)           = p settings (libraryDependencies ++= intransitively(ids map sbtModuleId: _*))
-    def scalaDeps(ids: String*)         = p settings (libraryDependencies ++= intransitively(ids map scalaModuleId: _*))
+    private def projectSettings = p.id match {
+      case Root     => rootProjectSettings
+      case Compat   => compatProjectSettings
+      case Partest  => partestProjectSettings
+      case Compiler => compilerProjectSettings
+      case Library  => libraryProjectSettings
+    }
+
+    def configured                                 = p also projectSettings
+    def also(ss: Traversable[Setting[_]]): Project = p settings (ss.toSeq: _*)
+    def deps(ms: ModuleID*)                        = p settings (libraryDependencies ++= ms.toSeq)
+    def intransitiveDeps(ms: ModuleID*)            = deps(intransitively(ms: _*): _*)
+    def sbtDeps(ids: String*)                      = intransitiveDeps(ids map sbtModuleId: _*)
+    def scalaDeps(ids: String*)                    = intransitiveDeps(ids map scalaModuleId: _*)
   }
 }

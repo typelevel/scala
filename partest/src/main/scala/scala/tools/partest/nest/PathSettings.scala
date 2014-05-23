@@ -58,7 +58,9 @@ object PathSettings {
     dirs.headOption getOrElse sys.error("Neither 'build' nor 'target' dir found under test root " + testRoot + ".")
   }
 
-  def srcSpecLib     = findJar("instrumented", Directory(srcDir / "speclib"))
+  private def inTestLib(name: String): File = File(sys.props("partest.testlib")) / name toFile;
+
+  def srcSpecLib     = Right(inTestLib("instrumented.jar"))
   def srcCodeLib     = findJar("code",  Directory(srcDir / "codelib"), Directory(testRoot / "files" / "codelib") /* work with --srcpath pending */)
   def agentLib       = findJar("scala-partest-javaagent", buildPackLibDir)
   def scalaCheck     = findJar("scalacheck", buildPackLibDir, srcLibDir)

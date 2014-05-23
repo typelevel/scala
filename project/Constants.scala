@@ -48,7 +48,6 @@ trait Constants {
   def partestArgs      = wordSeq("-deprecation -unchecked") //-Xlint")
   def javacArgs        = wordSeq("-nowarn -XDignore.symbol.file")
 
-  def mimaDefaultSettings = com.typesafe.tools.mima.plugin.MimaPlugin.mimaDefaultSettings
   def previousArtifact    = com.typesafe.tools.mima.plugin.MimaKeys.previousArtifact
   def binaryIssueFilters  = com.typesafe.tools.mima.plugin.MimaKeys.binaryIssueFilters
   def ScalaTool           = sbt.Configurations.ScalaTool

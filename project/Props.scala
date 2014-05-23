@@ -47,7 +47,16 @@ object Props {
     "partest.colors"           -> "256",
     "partest.threads"          -> (numCores / 2).toString,
     "partest.git_diff_options" -> "--word-diff",
-    "partest.basedir"          -> buildBase.value,
-    "partest.root"             -> testBase.value
+    "partest.basedir"          -> buildBase.value.getPath,
+    "partest.root"             -> testBase.value.getPath,
+    "partest.testlib"          -> fromBuild(_ / "partest" / "testlib").value.getPath
   )
+
+
+  // def srcSpecLib     = findJar("instrumented", Directory(srcDir / "speclib"))
+  // def srcCodeLib     = findJar("code",  Directory(srcDir / "codelib"), Directory(testRoot / "files" / "codelib") /* work with --srcpath pending */)
+  // def agentLib       = findJar("scala-partest-javaagent", buildPackLibDir)
+  // def scalaCheck     = findJar("scalacheck", buildPackLibDir, srcLibDir)
+  // def testInterface  = findJar("test-interface", buildPackLibDir, srcLibDir)
+  // def diffUtils      = findJar("diffutils", buildPackLibDir)
 }

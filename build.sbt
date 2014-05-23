@@ -1,41 +1,22 @@
 import policy._, build._
 
+// There is an unmanaged asm-debug-all jar - should be able to use the standard
+// asm-all artifact if/when the fixes against 5.0.2 enter the mainline.
 seq(policyThisBuildSettings ++ policyGlobalSettings: _*)
 
-lazy val root = ( project.sub in file(".")
-      dependsOn ( library, compiler, partest )
-      aggregate ( library, compiler, partest, compat )
-      settings  ( getScala := scalaInstanceTask.evaluated )
+lazy val root = (
+  project.configured in file(".")
+    dependsOn ( library, compiler, partest )
+    aggregate ( library, compiler, partest, compat )
+    settings  ( noArtifacts )
 )
 
-lazy val library = ( project.sub.mima
-     addSourceDirs ( "forkjoin" )
-          settings (
-         scalacOptions in Compile ++= strings("-sourcepath", (scalaSource in Compile).value),
-                 previousArtifact :=  Some(scalaModuleId("library")),
-               binaryIssueFilters ++= MimaPolicy.filters
-  )
-)
+def partestDeps = Seq(jline, ant, scalaXml, scalaParsers, scalacheck, diffutils, testInterface)
 
-lazy val compiler = ( project.sub
-      addSourceDirs ( "compiler", "reflect", "repl" )
-          dependsOn ( library )
-   intransitiveDeps ( /*asm,*/ jline, ant, scalaXml, scalaParsers )
-)
+lazy val library = project.configured also mimaDefaultSettings
 
-lazy val compat = ( project.sub
-        dependsOn ( compiler )
-          sbtDeps ( "interface", "compiler-interface" )
-         settings ( noArtifacts )
-)
+lazy val compiler = project.configured dependsOn library intransitiveDeps ( /*asm,*/ jline, ant, scalaXml, scalaParsers )
 
-lazy val partest = ( project.sub
-  dependsOn        ( compiler )
-  intransitiveDeps ( jline, ant, scalaXml, scalaParsers, scalacheck, diffutils, testInterface )
-  settings         (
-       unmanagedBase :=  baseDirectory.value / "testlib",
-                test :=  Partest.runAllTests.value,
-            testOnly :=  Partest.runTests.evaluated
-  )
-  settings         ( noArtifacts )
-)
+lazy val partest = project.configured dependsOn compiler intransitiveDeps (partestDeps: _*)
+
+lazy val compat = project.configured dependsOn compiler sbtDeps ( "interface", "compiler-interface" )
