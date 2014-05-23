@@ -36,7 +36,6 @@ trait Partest {
   // (packageBin in Compile map (_ => runTestsWithArgs(Nil).value))
 
   def runTests    = Def.inputTask[Int] {
-    (packageBin in Compile).value
     // testOnly with no args we'll take to mean --failed
     val args = spaceDelimited("<arg>").parsed.toList match {
       case Nil  => List("--failed", "--show-diff")

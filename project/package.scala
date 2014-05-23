@@ -98,7 +98,7 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
 
   def printResult[A](msg: String)(res: A): A = try res finally println(s"$msg: $res")
 
-  def logger      = Def task (streams in Compile).value.log
+  def logger      = streams in Compile map (_.log)
   def javaRuntime = java.lang.Runtime.getRuntime
   def numCores    = javaRuntime.availableProcessors
 
@@ -129,7 +129,7 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   def scalaInstanceTask: InTaskOf[ScalaInstance] = Def inputTaskDyn scalaInstanceForVersion(scalaVersionParser.parsed)
 
   def policyThisBuildSettings = thisally(
-    initialCommands in console :=  """import policy.build._""",
+    initialCommands in console :=  "import policy.build._",
                   watchSources +=  fromBuild(_ / "build.sbt").value,
                   watchSources ++= (fromBuild(_ / "project").value * "*.sbt").get
   )
@@ -153,28 +153,29 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
   private val Library  = "library"
 
   def buildBase   = baseDirectory in ThisBuild
+  def projectBase = baseDirectory in ThisProject
   def testBase    = Def setting ((baseDirectory in ThisBuild).value / "test")
   def srcBase     = Def setting ((baseDirectory in ThisBuild).value / "src")
-  // fromBuild(_ / "src")
 
-  def fromSrc(f: File => File)     = Def setting f((baseDirectory in ThisBuild).value / "src") //   buildBase map (_ / "src") map f
-  def fromBuild(f: File => File)   = Def setting f((baseDirectory in ThisBuild).value)
-  def fromProject(f: File => File) = Def setting f((baseDirectory in ThisProject).value)
+  def allInSrc(words: String)      = Def setting (wordSeq(words) map (buildBase.value / "src" / _))
+  def inSrc(name: String)          = Def setting (buildBase.value / "src" / name)
+  def fromSrc(f: File => File)     = Def setting f(buildBase.value / "src")
+  def fromBuild(f: File => File)   = Def setting f(buildBase.value)
 
   private def compilerProjectSettings = codeProject("compiler reflect repl")(addToolJars, libraryDependencies += bootstrapLibraryId)
 
   private def libraryProjectSettings = codeProject("forkjoin library")(addToolJars,
-    scalacOptions in Compile ++= Seq("-sourcepath", fromSrc(_ / "library").value.getPath),
+    scalacOptions in Compile ++= Seq("-sourcepath", inSrc("library").value.getPath),
          libraryDependencies +=  bootstrapCompilerId,
             previousArtifact :=  Some(scalaLibraryId),
           binaryIssueFilters ++= MimaPolicy.filters
   )
 
   private def partestProjectSettings = codeProject("")(
-      unmanagedBase <<= fromProject(_ / "testlib"),
-       fork in Test :=  true,
-               test :=  build.Partest.runAllTests.value,
-           testOnly :=  build.Partest.runTests.evaluated
+     fork in Test := true,
+    unmanagedBase := baseDirectory.value / "testlib",
+             test := build.Partest.runAllTests.value,
+         testOnly := build.Partest.runTests.evaluated
   )
 
   def noArtifacts   = packagedArtifacts <<= packaged(Nil)
@@ -191,8 +192,10 @@ package object build extends policy.build.Constants with policy.build.Bootstrap 
       fork in Runtime := true
   )
 
-  private def addSourceDirs(where: String) = unmanagedSourceDirectories in Compile ++= wordSeq(where) map ((baseDirectory in ThisBuild).value / "src" / _)
-  private def codeProject(sourceDirs: String)(others: Setting[_]*) = addSourceDirs(sourceDirs) +: (codeProjectInitialSettings ++ others)
+  private def codeProject(sourceDirs: String)(others: Setting[_]*) = {
+    val add = unmanagedSourceDirectories in Compile <++= allInSrc(sourceDirs)
+    add +: (codeProjectInitialSettings ++ others)
+  }
 
   private def codeProjectInitialSettings = List(
                                     name ~=  (dash(PolicyName, _)),
