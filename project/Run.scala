@@ -4,39 +4,67 @@ package building
 import sbt._, Keys._
 
 trait Runners {
-  def allTaskAndSettingKeys = Def task (BuiltinCommands allTaskAndSettingKeys state.value sortBy (_.label))
+  def partestProperties = Def task ImmutableProperties(
+    "partest.scalac_opts"      -> join((scalacOptions in Test).value),
+    "partest.java_opts"        -> join((javaOptions in Test).value),
+    "partest.colors"           -> "256",
+    "partest.threads"          -> (numCores - 1).toString,
+    "partest.git_diff_options" -> "--word-diff",
+    "partest.basedir"          -> buildBase.value.getPath,
+    "partest.root"             -> testBase.value.getPath,
+    "partest.testlib"          -> unmanagedBase.value.getPath
+  )
 
-  def settingsData: TaskOf[Settings[Scope]]                            = sbt.std.FullInstance.settingsData
-  def settingsDataData: Def.Initialize[Task[Map[Scope, AttributeMap]]] = settingsData map (_.data)
+  def forkPartest  = Def task { ForkConfig(PartestRunnerClass, props = partestProperties.value) addJvmOptions ("-Xmx1g", "-cp", testClasspathString.value) }
+  def forkRepl     = Def task { ForkConfig(ReplRunnerClass, props = newProps(NoTraceSuppression -> ""), programArgs = Seq("-usejavacp")) addJvmOptions ("-cp", compilerClasspathString.value) }
+  def forkCompiler = Def task { ForkConfig(CompilerRunnerClass, programArgs = Seq("-usejavacp")) addJvmOptions ("-cp", compilerClasspathString.value) }
 
-  // envVars, workingDirectory, javaHome
-  def forkOptions(f: ForkOptions => ForkOptions = identity): ForkOptions =
-    f(ForkOptions(bootJars = Nil, connectInput = true, outputStrategy = Some(StdoutOutput)))
+  def asInputTask(task: TaskOf[ForkConfig]): InputTaskOf[Int] = Def inputTask task.value(spaceDelimited("<arg>").parsed: _*)
 
-  // def scalaInstanceTask: InputTaskOf[ScalaInstance] = Def inputTaskDyn scalaInstanceForVersion(scalaVersionParser.parsed)
+  def classpathFiles(config: Configuration, project: Reference): TaskOf[Seq[File]] = fullClasspath in config in project map (_.files)
 
-  def runInput(mainClass: String, jvmArgs: String*)(appArgs: String*) = Def.inputTask {
-    val args     = spaceDelimited("<arg>").parsed.toList
-    val cp       = (fullClasspath in Compile).value.files mkString ":"
-    def all      = "-cp" :: cp :: jvmArgs.toList ::: (mainClass :: appArgs.toList ::: args)
-    logger.value.info("java" :: all mkString " ")
-    Fork.java(forkOptions(), all)
-  }
+  def testClasspathFiles: TaskOf[Seq[File]]     = classpathFiles(Test, 'partest) map (_ filterNot isScalaJar)
+  def compilerClasspathFiles: TaskOf[Seq[File]] = classpathFiles(Compile, 'compiler)
+  def compilerClasspathString: TaskOf[String]   = compilerClasspathFiles map (_ mkString pathSeparator)
+  def testClasspathString: TaskOf[String]       = testClasspathFiles map (_ mkString pathSeparator)
+  def testClasspathReadable: TaskOf[String]     = testClasspathFiles map (_ mkString ("\n  ", "\n  ", "\n"))
 
-  def runForkJava(classpath: String, jvmArgs: Seq[String], mainClass: String, mainArgs: Seq[String]): Int = {
-    val options = ForkOptions(bootJars = Nil, connectInput = true, outputStrategy = Some(StdoutOutput))
-    val args    = ("-classpath" +: classpath +: jvmArgs) ++ (mainClass +: mainArgs)
-    Fork.java(options, args)
-  }
+  def stdForkOptions = ForkOptions(outputStrategy = Some(StdoutOutput), connectInput = true)
+  def stdIncOptions  = sbtDefaultIncOptions withRecompileOnMacroDef false withAntStyle true
 
-  def testClasspathString(sep: String)       = fullClasspath in Test map (_ filterNot isScalaJar) map (_.files mkString sep)
-  def classpathString(config: Configuration) = testClasspathString(":")
-  def classpathReadable                      = testClasspathString("\n  ") map ("\n  " + _ + "\n")
+  def sbtDefaultForkOptions = Def task ForkOptions(
+    javaHome         = javaHome.value,
+    outputStrategy   = outputStrategy.value,
+    bootJars         = Nil,
+    workingDirectory = Some(baseDirectory.value),
+    runJVMOptions    = javaOptions.value,
+    connectInput     = connectInput.value,
+    envVars          = envVars.value
+  )
+  def sbtConstructorForkOptions = ForkOptions(
+    javaHome         = None,
+    outputStrategy   = None,
+    bootJars         = Nil,
+    workingDirectory = None,
+    runJVMOptions    = Nil,
+    connectInput     = false,
+    envVars          = Map.empty
+  )
 
-  def isScalaJar(f: Attributed[File]) = f.data.getPath split "/" contains ScalaOrg
-  // def noScalaLang(cp: Classpath): Classpath = cp filterNot (x => x.toString split "/" contains ScalaOrg)
-
-  def logForkJava(logger: Logger)(args: Seq[String]): Unit = logger.info(args filterNot (_ == "") mkString ("java ", " ", ""))
+  //    1. recompile changed sources
+  // 2(3). recompile direct dependencies and transitive public inheritance dependencies of sources with API changes in 1(2).
+  //    4. further changes invalidate all dependencies transitively to avoid too many steps
+  def sbtDefaultIncOptions = sbt.inc.IncOptions.Default
+  // IncOptions(
+  //   transitiveStep       = 3,
+  //   recompileAllFraction = 0.5,
+  //   relationsDebug       = false,
+  //   apiDebug             = false,
+  //   apiDiffContextSize   = 5,
+  //   apiDumpDirectory     = None,
+  //   newClassfileManager  = ClassfileManager.deleteImmediately,
+  //   recompileOnMacroDef  = recompileOnMacroDefDefault,
+  //   nameHashing          = nameHashingDefault,
+  //   antStyle             = false
+  // )
 }
-
-object Runners extends Runners

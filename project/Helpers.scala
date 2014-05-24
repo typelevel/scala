@@ -3,21 +3,7 @@ package building
 
 import sbt._, Keys._
 
-trait Helpers extends IndependentHelpers with SbtHelpers {
-  object NullLogger extends AbstractLogger {
-    def getLevel: Level.Value                                  = Level.Error
-    def setLevel(newLevel: Level.Value)                        = ()
-    def getTrace                                               = 0
-    def setTrace(flag: Int)                                    = ()
-    def successEnabled                                         = false
-    def setSuccessEnabled(flag: Boolean)                       = ()
-    def control(event: ControlEvent.Value, message: => String) = ()
-    def logAll(events: Seq[LogEvent])                          = ()
-    def trace(t: => Throwable)                                 = ()
-    def success(message: => String)                            = ()
-    def log(level: Level.Value, message: => String)            = ()
-  }
-}
+trait Helpers extends IndependentHelpers with SbtHelpers
 
 /** Helper functions independent of sbt.
  */
@@ -28,20 +14,24 @@ trait IndependentHelpers {
   def isSourceName(name: String)                = hasExtension(name)("java", "scala")
   def isSource(file: jFile)                     = isSourceName(file.getName)
   def isJar(file: jFile)                        = isJarName(file.getName)
+  def isScalaJar(f: File)                       = f.getPath split "/" contains ScalaOrg
 
   // Strings
-  def dash(elems: Any*): String       = elems mkString "-"
-  def strings(xs: Any*): List[String] = xs.toList map ("" + _)
-  def join(xs: Seq[String]): String   = xs filterNot (_ == "") mkString " "
-  def wordSet(s: String): Set[String] = (s.trim split "\\s+").toSet
-  def wordSeq(s: String): Seq[String] = s.trim match {
-    case "" => Nil
-    case s  => (s split "\\s+").toSeq.sorted
-  }
+  def oempty(xs: String*): Seq[String] = xs.toSeq map (_.trim) filterNot (_ == "")
+  def strings(xs: Any*): Seq[String]   = oempty(xs.toList map ("" + _): _*)
+  def wordSeq(s: String): Seq[String]  = oempty(s split "\\s+": _*)
+  def wordSet(s: String): Set[String]  = wordSeq(s).toSet
+  def asLines(s: String): Seq[String]  = augmentString(s.trim).lines.toSeq map (_.trim)
+
+  def dash(elems: Any*): String = join(strings(elems: _*), sep = "-")
+  def join(xs: Seq[String], sep: String = " "): String = oempty(xs: _*) mkString sep
 
   // System
-  def javaRuntime = java.lang.Runtime.getRuntime
-  def numCores    = javaRuntime.availableProcessors
+  def javaRuntime                     = java.lang.Runtime.getRuntime
+  def numCores                        = javaRuntime.availableProcessors
+  def runSlurp(cmd: String): String   = Process(cmd).lines.mkString
+  def fail(msg: String)               = throw new RuntimeException(msg)
+  def newProps(in: (String, String)*) = ImmutableProperties(in: _*)
 
   // Debug
   def printResult[A](msg: String)(res: A): A = try res finally println(s"$msg: $res")
@@ -55,6 +45,12 @@ trait SbtHelpers {
   import DefaultParsers._
 
   def ScalaTool = sbt.Configurations.ScalaTool
+
+  // metadata keys on Classpath elems
+  // analysis, artifact, moduleId, configuration
+  type CpElem = Attributed[File]
+  def newCpElem(file: File, art: Artifact, id: ModuleID, config: Configuration): CpElem =
+    Attributed(file)(AttributeMap.empty.put(artifact.key, art).put(moduleID.key, id).put(configuration.key, config))
 
   // Files
   def filesIn(dir: File, extension: String): Seq[File]   = dir * s"*.$extension" get
@@ -82,4 +78,78 @@ trait SbtHelpers {
   def spaceDelimited(label: String = "<arg>"): Parser[Seq[String]] = DefaultParsers spaceDelimited label
   def tokenDisplay[T](t: Parser[T], display: String): Parser[T] = DefaultParsers.tokenDisplay(t, display)
   def NotSpace = DefaultParsers.NotSpace
+
+  // String in a:b:c form to ModuleID
+  def moduleId(s: String): ModuleID = (s.trim split ':').toList match {
+    case org :: artifact :: Nil                => org % artifact % "latest.release"
+    case org :: artifact :: rev :: Nil         => org % artifact % rev
+    case org :: artifact :: rev :: classifiers => classifiers.foldLeft(org % artifact % rev)(_ classifier _)
+    case _                                     => sys.error(s"Cannot determine module id from: $s")
+  }
+
+  // Hairier sbt-internal stuff.
+
+  def sysOrBuild(name: String): Option[String] = (sys.props get name) orElse (buildProps get name)
+  private def bootstrapId = PolicyOrg % "bootstrap-compiler" % (sysOrBuild(BootstrapVersionProperty) getOrElse "latest.release")
+
+  def buildLevelJars = Def setting (buildBase.value / "lib" * "*.jar").get
+  def localIvy: File = Path.userHome / ".ivy2" / "local" / "org.improving"
+  def localBootstrapArtifacts: Seq[File] = localIvy / "bootstrap-compiler" ** "*.jar" get
+  def chooseBootstrap = sysOrBuild(BootstrapModuleProperty) match {
+    case Some(m)                              => moduleId(m)
+    case _ if localBootstrapArtifacts.isEmpty => scalaModuleId("compiler")
+    case _                                    => bootstrapId
+  }
+
+  def scalaInstanceForVersion(version: String): TaskOf[ScalaInstance] =
+    Def task scalaInstanceFromAppConfiguration(appConfiguration.value)(version)
+
+  def scalaInstanceTask: InputTaskOf[ScalaInstance] =
+    Def inputTask scalaInstanceFromAppConfiguration(appConfiguration.value)(scalaVersionParser.parsed)
+
+  def scalaInstanceFromAppConfiguration(appConf: xsbti.AppConfiguration): String => ScalaInstance =
+    version => ScalaInstance(version, appConf.provider.scalaProvider.launcher getScala version)
+
+  def scalaInstanceFromModuleIDTask: TaskOf[ScalaInstance] = Def task {
+    val report = update.value configuration ScalaTool.name getOrElse sys.error("No update report")
+    val modReports = report.modules.toList
+    val pairs = modReports flatMap (_.artifacts)
+    val files = pairs map (_._2)
+    def firstRevision = modReports.head.module.revision
+
+    files match {
+      case lib :: comp :: others => ScalaInstance(firstRevision, lib, comp, others ++ buildLevelJars.value: _*)(state.value.classLoaderCache.apply)
+      case _                     => ScalaInstance(scalaVersion.value, appConfiguration.value.provider.scalaProvider.launcher getScala scalaVersion.value)
+    }
+  }
+
+  def twoWords = token(StringBasic <~ Space) ~ token(StringBasic)
+  def transformInEveryScope[A](taskKey: TaskKey[A], s: State, transformer: A => A): State = {
+    val extracted = Project extract s
+    import extracted._
+    val r            = Project.relation(extracted.structure, true)
+    val allDefs      = r._1s.toSeq
+    val projectScope = Load projectScope currentRef
+    val scopes       = allDefs filter (_.key == taskKey.key) map (_.scope) distinct
+    val redefined    = scopes map (scope => taskKey in scope ~= transformer)
+    val session      = extracted.session appendRaw redefined
+
+    s"show ${taskKey.key.label}" :: BuiltinCommands.reapply(session, structure, s)
+  }
+
+  def appendInEveryScope[A](taskKey: TaskKey[Seq[A]], s: State, args: Seq[A]): State =
+    transformInEveryScope[Seq[A]](taskKey, s, xs => (xs filterNot args.contains) ++ args)
+
+  def transformEveryKey[A](settingKey: SettingKey[A])(f: A => A)(s: State): State = {
+    val extracted = Project extract s
+    import extracted._
+    val newSettings = structure.allProjectRefs map { project =>
+      val scoped = settingKey in project
+      val value  = extracted get scoped
+      val key    = scoped.key
+      val scope  = scoped.scope
+      scoped ~= f
+    }
+    extracted.append(newSettings, s)
+  }
 }

@@ -6,6 +6,13 @@ import sbt.complete._
 import DefaultParsers._
 
 trait Constants {
+  lazy val PolicyBuildVersion = "1.0.0-" + runSlurp("bin/unique-version")
+  lazy val buildProps         = MutableProperties(file("project/build.properties"))
+
+  lazy val SbtKnownVersion       = (buildProps ? "sbt.version"      ) | "0.13.2"
+  lazy val ScalaKnownVersion     = (buildProps ? "scala.version"    ) | "2.11.1"
+  lazy val BootstrapKnownVersion = (buildProps ? "bootstrap.version") | "latest.release"
+
   type ParserOf[A]          = Def.Initialize[State => Parser[A]]
   type SettingOf[A]         = Def.Initialize[A]
   type TaskOf[A]            = Def.Initialize[Task[A]]
@@ -15,20 +22,20 @@ trait Constants {
   type jMap[K, V]           = java.util.Map[K, V]
   type jFile                = java.io.File
 
-  val buildProps              = DynamicProperties(file("project/build.properties"))
-  val PartestRunnerClass      = "scala.tools.partest.nest.ConsoleRunner"
-  val ReplRunnerClass         = "scala.tools.nsc.MainGenericRunner"
-  val CompilerRunnerClass     = "scala.tools.nsc.Main"
-  val SbtFixedVersion         = buildProps.`sbt.version`("0.13.2")
-  val ScalaFixedVersion       = buildProps.`scala.version`("2.11.1")
-  val SbtFixedBinaryVersion   = SbtFixedVersion split "[.]" take 2 mkString "."
-  val ScalaFixedBinaryVersion = ScalaFixedVersion split "[.]" take 2 mkString "."
-  val PolicyDynamicVersion    = "latest.release"
-  val PolicyOrg               = "org.improving"
-  val ScalaOrg                = "org.scala-lang"
-  val SbtOrg                  = "org.scala-sbt"
-  val PolicyName              = "policy"
-  val ScalaName               = "scala"
-  val UnknownVersion          = "<unknown>"
-  val NoFiles: Seq[File]      = Nil
+  def BootstrapModuleProperty  = "bootstrap.module"
+  def BootstrapVersionProperty = "bootstrap.version"
+  def PartestRunnerClass       = "scala.tools.partest.nest.ConsoleRunner"
+  def ReplRunnerClass          = "scala.tools.nsc.MainGenericRunner"
+  def CompilerRunnerClass      = "scala.tools.nsc.Main"
+  def PolicyOrg                = "org.improving"
+  def ScalaOrg                 = "org.scala-lang"
+  def SbtOrg                   = "org.scala-sbt"
+  def PolicyName               = "policy"
+  def ScalaName                = "scala"
+  def NoTraceSuppression       = scala.sys.SystemProperties.noTraceSupression.key
+
+  def stdScalacArgs  = wordSeq("-Ywarn-unused -Ywarn-unused-import -Xdev")
+  def stdPartestArgs = wordSeq("-deprecation -unchecked -Xlint")
+  def stdJavacArgs   = wordSeq("-nowarn -XDignore.symbol.file")
+  def pathSeparator  = java.io.File.pathSeparator
 }

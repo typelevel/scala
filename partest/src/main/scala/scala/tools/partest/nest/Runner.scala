@@ -605,10 +605,13 @@ class SuiteRunner(
   PathSettings.testSourcePath = testSourcePath
 
   def propStr = {
-    val keys = sys.props.keys.toList.sorted filter (_ startsWith "partest.")
-    val width = keys.map(_.length).max
-    val fmt = "%" + width + "s  %s"
-    keys map (k => fmt.format(k, sys.props(k))) mkString "\n"
+    sys.props.keys.toList.sorted filter (_ startsWith "partest.") match {
+      case Nil => ""
+      case keys =>
+        val width = keys.map(_.length).max
+        val fmt = "%" + width + "s  %s"
+        keys map (k => fmt.format(k, sys.props(k))) mkString "\n"
+    }
   }
   def classpathStr = fileManager.testClassPath mkString "\n  "
 
