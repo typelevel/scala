@@ -40,4 +40,5 @@ trait Constants {
   def stdPartestArgs = wordSeq("-deprecation -unchecked -Xlint")
   def stdJavacArgs   = wordSeq("-nowarn -XDignore.symbol.file")
   def pathSeparator  = java.io.File.pathSeparator
+  def separator      = java.io.File.separator
 }

@@ -12,7 +12,7 @@ import scala.tools.nsc.Properties.{ versionMsg, propOrFalse, setProp }
 import scala.collection.{ mutable, immutable }
 import TestKinds._
 import scala.reflect.internal.util.Collections.distinctBy
-import scala.tools.cmd.{ CommandLine, CommandLineParser, Instance }
+import scala.tools.cmd.{ CommandLine, CommandLineParser, CommandLineException, Instance }
 
 class ConsoleRunner(argstr: String) extends {
   val parsed = ConsoleRunnerSpec.creator(CommandLineParser tokenize argstr)
@@ -138,12 +138,7 @@ class ConsoleRunner(argstr: String) extends {
     val rerunTests = if (isRerun) TestKinds.failedTests else Nil
     def miscTests = partestTests ++ individualTests ++ greppedTests ++ rerunTests
 
-    val givenKinds = standardKinds filter parsed.isSet
-    val kinds = (
-      if (givenKinds.nonEmpty) givenKinds
-      else if (miscTests.isEmpty) standardKinds // If no kinds, --grep, or individual tests were given, assume --all
-      else Nil
-    )
+    val kinds      = if (optAll) standardKinds else standardKinds filter parsed.isSet
     val kindsTests = kinds flatMap testsFor
 
     def testContributors = {

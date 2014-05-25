@@ -25,6 +25,7 @@ trait ConsoleRunnerSpec extends Spec with Meta.StdOpts with Interpolation {
   val optPresentation = "presentation" / "run presentation compiler tests"   --?
 
   heading("Test runner options:")
+  val optAll          = "all"          / "run all tests"                                                                  --?
   val optFailed       = "failed"       / "run only those tests that failed during the last run"                           --?
   val optTimeout      = "timeout"      / "aborts the test suite after the given amount of time"                           --|
   val optPack         = "pack"         / "pick compiler/reflect/library in build/pack, and run all tests"                 --?
@@ -39,7 +40,7 @@ trait ConsoleRunnerSpec extends Spec with Meta.StdOpts with Interpolation {
   val optVerbose      = "verbose"      / "show verbose progress information" --?
   val optTerse        = "terse"        / "show terse progress information"   --?
   val optDebug        = "debug"        / "enable debugging output"           --?
-  
+
   heading("Other options:")
   val optVersion      = "version"      / "show Scala version and exit"  --?
   val optSelfTest     = "self-test"    / "run tests for partest itself" --?

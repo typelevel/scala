@@ -6,7 +6,7 @@ genBuildSbt () {
   printf "%s\n\n" 'resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"'
 
   for arg in "$@"; do
-    IFS=';%' read org artifact revision <<<"$arg"
+    IFS=':;%' read org artifact revision <<<"$arg"
     [[ -n "$revision" ]] || revision="latest.release"
     echo "libraryDependencies += \"$org\" % \"$artifact\" % \"$revision\""
     echo ""

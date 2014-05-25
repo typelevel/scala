@@ -3,6 +3,10 @@ package building
 
 import sbt._, Keys._
 
+final class SequenceOps[A](val xs: Seq[A]) extends AnyVal {
+  def preferring(p: A => Boolean): Seq[A] = xs sortWith ((x, y) => p(x) && !p(y))
+}
+
 final case class ForkConfig(mainClass: String, props: ImmutableProperties = ImmutableProperties(), programArgs: Seq[String] = Seq(), options: ForkOptions = stdForkOptions) {
   val forker      = new Fork("java", Some(mainClass))
   val fullOptions = if (props.isEmpty) options else copyOptions(props.commandLineArgs)

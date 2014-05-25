@@ -23,7 +23,7 @@ trait Runners {
 
   def classpathFiles(config: Configuration, project: Reference): TaskOf[Seq[File]] = fullClasspath in config in project map (_.files)
 
-  def testClasspathFiles: TaskOf[Seq[File]]     = classpathFiles(Test, 'partest) map (_ filterNot isScalaJar)
+  def testClasspathFiles: TaskOf[Seq[File]]     = classpathFiles(Test, 'compiler) map (_ filterNot isScalaJar) map (_ preferring (_.getPath contains "testlib"))
   def compilerClasspathFiles: TaskOf[Seq[File]] = classpathFiles(Compile, 'compiler)
   def compilerClasspathString: TaskOf[String]   = compilerClasspathFiles map (_ mkString pathSeparator)
   def testClasspathString: TaskOf[String]       = testClasspathFiles map (_ mkString pathSeparator)
