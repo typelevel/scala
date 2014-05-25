@@ -1,6 +1,11 @@
 package policy
 package building
 
+// def buildCommands = List[Command](
+//   Command.args("removeScalacOption", "<option>")((state, opt) => transformInEveryScope(scalacOptions, state, (xs: Seq[String]) => xs filterNot (_ == opt))),
+//   Command.args("appendScalacOption", "<option>")(appendInEveryScope(scalacOptions, _, _))
+// )
+
 // def allTaskAndSettingKeys = Def task (BuiltinCommands allTaskAndSettingKeys state.value sortBy (_.label))
 
 // def settingsData: TaskOf[Settings[Scope]]                            = sbt.std.FullInstance.settingsData

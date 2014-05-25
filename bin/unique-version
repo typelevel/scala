@@ -11,5 +11,7 @@ hash=${hash:0:10}
 lastcommitdate=$(git log --format="%ci" HEAD | head -n 1 | cut -d ' ' -f 1)
 lastcommithours=$(git log --format="%ci" HEAD | head -n 1 | cut -d ' ' -f 2)
 datestr="${lastcommitdate//-/}-${lastcommithours//:/}"
+# need a disambiguator for snapshots built against same apparent rev
+now="$(date +'%H%M%S')"
 
-echo "$datestr-$hash"
+echo "$datestr-$hash-$now"

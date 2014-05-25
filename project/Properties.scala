@@ -30,14 +30,16 @@ final class ImmutableProperties private (in: Map[String, String]) extends java.u
 }
 
 final class MutableProperties private (file: File) {
+  import scala.collection.JavaConverters._
   private[this] val props = new java.util.Properties
-
-  private def updateAndReturn(name: String, value: String): String  = try value finally set(name, value)
-  private def set(key: String, value: String): String = props.setProperty(key, value) match {
+  private def objectToString(s: Object): String = s match {
     case null      => null
     case s: String => s
     case x         => "" + x
   }
+
+  private def updateAndReturn(name: String, value: String): String  = try value finally set(name, value)
+  private def set(key: String, value: String): String = objectToString(props.setProperty(key, value))
 
   def load(): this.type = { IO.load(props, file) ; this }
   def save(): this.type = { IO.write(props, null, file) ; this }
@@ -50,6 +52,11 @@ final class MutableProperties private (file: File) {
   def get(key: String): Option[String]                   = Option(apply(key))
   def get(key: String, alt: => String): String           = get(key) | updateAndReturn(key, alt)
   def getInt(name: String, alt: => Int): Int             = get(name).fold(alt)(_.toInt)
+  def toMap: Map[String, String]                         = toSeq.toMap
+  def toSeq: Seq[(String, String)]                       = keys map (k => (k, apply(k)))
+  def keys: Seq[String]                                  = props.keys.asScala.toSeq map objectToString
+
+  override def toString = ( for ((k, v) <- toSeq) yield s"$k -> $v" ) mkString("MutableProperties(", ", ", ")")
 }
 
 object ImmutableProperties {

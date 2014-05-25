@@ -140,6 +140,7 @@ class Random(val self: java.util.Random) extends AnyRef with Serializable {
  *  @since 2.8
  */
 object Random extends Random {
+  override def toString = "bippy"
 
   implicit def javaRandomToRandom(r: java.util.Random): Random = new Random(r)
 

@@ -54,16 +54,6 @@ sealed trait ProjectSettings {
   final val Partest  = "partest"
   final val Compat   = "compat"
 
-  private def publishBootstrapScript: Seq[String] = asLines("""
-    show name
-    package
-    renameProjects policy bootstrap
-    show name
-    publishLocal
-    saveProps
-    reboot full
-  """)
-
   protected object sets {
     // Boilerplate to get the prebuilt asm jar attached to the compiler metadata.
     val asmJarKey     = taskKey[File]("asm jar")
@@ -72,8 +62,6 @@ sealed trait ProjectSettings {
     def asmSettings   = Seq(asmJarKey <<= asmJarTask) ++ addArtifact(Artifact("asm"), asmJarKey).settings
     def asmAttributed = Def task newCpElem(asmJarTask.value, Artifact("asm"), asm, ScalaTool)
 
-    // 9:final case class Artifact(name: String, `type`: String, extension: String, classifier: Option[String], configurations: Iterable[Configuration], url: Option[URL], extraAttributes: Map[String, String]) {
-
     // Assembled settings for projects which produce an artifact.
     def codeProject(others: Setting[_]*) = compiling ++ publishing ++ others
 
@@ -81,7 +69,7 @@ sealed trait ProjectSettings {
     def universal = List(
                              name ~=  (dash(PolicyName, _)),
                      organization :=  PolicyOrg,
-                          version :=  PolicyBuildVersion,
+                          version :=  "1.0.1-SNAPSHOT",
                      scalaVersion :=  ScalaKnownVersion,
                scalaBinaryVersion :=  "2.11",
                  autoScalaLibrary :=  false,
@@ -92,12 +80,14 @@ sealed trait ProjectSettings {
                       showSuccess :=  false,
                        traceLevel :=  25,
                 ivyConfigurations +=  ScalaTool,
-              libraryDependencies +=  (bootstrapModuleId in ThisBuild).value % ScalaTool.name,
          unmanagedJars in Compile ++= buildLevelJars.value,
                     scalaInstance <<= scalaInstance in ThisBuild
     )
 
-    def compiler = codeProject(unmanagedSourceDirectories in Compile <++= allInSrc("compiler reflect repl"))
+    def compiler = codeProject(
+      unmanagedSourceDirectories in Compile <++= allInSrc("compiler reflect repl")
+    )
+
     def compat   = List(sourceGenerators in Compile <+= createUnzipTask)
 
     def library = codeProject(
@@ -114,31 +104,24 @@ sealed trait ProjectSettings {
            testOnly :=  runTests.evaluated
     )
     def root = publishing ++ List(
-                                       name :=  PolicyName,
-                                   getScala :=  scalaInstanceTask.evaluated,
-                                        run :=  asInputTask(forkCompiler).evaluated,
-                                       repl :=  asInputTask(forkRepl).evaluated,
-                            fork in Runtime :=  true,
-                 initialCommands in console :=  "import scala.reflect.runtime.universe._",
-          initialCommands in consoleProject :=  "import policy.building._",
-                               watchSources ++= sbtFilesInBuild.value ++ sourceFilesInProject.value,
-             bootstrapModuleId in ThisBuild :=  printResult("bootstrap")(chooseBootstrap),
-                 scalaInstance in ThisBuild <<= scalaInstanceFromModuleIDTask,
-                                   commands ++= buildCommands
-    )
-    def buildCommands = List[Command](
-      Command.command("publishBootstrap")(s => publishBootstrapScript ::: s),
-      Command.command("saveProps")(s => try s finally buildProps.write("bootstrap.version", PolicyBuildVersion)),
-      Command.args("renameProjects", "<from> <to>") { case (state, Seq(from, to)) => transformEveryKey(name)(_.replaceAllLiterally(from, to))(state) },
-      Command.args("removeScalacOption", "<option>")((state, opt) => transformInEveryScope(scalacOptions, state, (xs: Seq[String]) => xs filterNot (_ == opt))),
-      Command.args("appendScalacOption", "<option>")(appendInEveryScope(scalacOptions, _, _))
+                                     name :=  PolicyName,
+                                 getScala :=  scalaInstanceTask.evaluated,
+                                      run :=  asInputTask(forkCompiler).evaluated,
+                                     repl :=  asInputTask(forkRepl).evaluated,
+                          fork in Runtime :=  true,
+               initialCommands in console :=  "import scala.reflect.runtime.universe._",
+        initialCommands in consoleProject :=  "import policy.building._",
+                             watchSources ++= sbtFilesInBuild.value ++ sourceFilesInProject.value,
+           bootstrapModuleId in ThisBuild :=  printResult("bootstrap")(chooseBootstrap),
+                      libraryDependencies +=  bootstrapModuleId.value % ScalaTool.name,
+               scalaInstance in ThisBuild <<= scalaInstanceFromModuleIDTask
     )
     def publishing = List(
-       checksums in publishLocal :=  Nil,
-            pomIncludeRepository :=  (_ => false),
-               packagedArtifacts <<= packaged(Seq(packageBin in Compile)),
-       publishLocalConfiguration ~=  (p => publishConfig(p.artifacts, p.ivyFile, p.checksums, p.resolverName, logging = UpdateLogging.Quiet, overwrite = false)),
-             updateConfiguration ~=  (uc => new UpdateConfiguration(uc.retrieve, uc.missingOk, logging = UpdateLogging.Quiet))
+      checksums in publishLocal :=  Nil,
+           pomIncludeRepository :=  (_ => false),
+              packagedArtifacts <<= packaged(Seq(packageBin in Compile)),
+      publishLocalConfiguration ~=  (p => publishConfig(p.artifacts, p.ivyFile, p.checksums, p.resolverName, logging = UpdateLogging.Quiet, overwrite = false)),
+            updateConfiguration ~=  (uc => new UpdateConfiguration(uc.retrieve, uc.missingOk, logging = UpdateLogging.Quiet))
     )
     def compiling = List(
              resourceGenerators in Compile <+= generateProperties(),

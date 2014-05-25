@@ -22,7 +22,7 @@ trait BuildTasks {
     props("version.number")              = version.value
     props("scala.version.number")        = scalaVersion.value
     props("scala.binary.version.number") = scalaBinaryVersion.value
-    props("bootstrap.moduleid")          = bootstrapModuleId.value.toString
+    props("bootstrap.moduleid")          = (bootstrapModuleId in ThisBuild).value.toString
     props.save()
     Seq(file)
   }

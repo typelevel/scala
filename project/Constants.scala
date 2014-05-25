@@ -6,12 +6,11 @@ import sbt.complete._
 import DefaultParsers._
 
 trait Constants {
-  lazy val PolicyBuildVersion = "1.0.0-" + runSlurp("bin/unique-version")
-  lazy val buildProps         = MutableProperties(file("project/build.properties"))
+  lazy val buildProps = MutableProperties(file("project/build.properties"))
 
-  lazy val SbtKnownVersion       = (buildProps ? "sbt.version"      ) | "0.13.2"
-  lazy val ScalaKnownVersion     = (buildProps ? "scala.version"    ) | "2.11.1"
-  lazy val BootstrapKnownVersion = (buildProps ? "bootstrap.version") | "latest.release"
+  def SbtKnownVersion       = (buildProps ? "sbt.version"      ) | "0.13.2"
+  def ScalaKnownVersion     = (buildProps ? "scala.version"    ) | "2.11.1"
+  def BootstrapKnownVersion = (buildProps ? BootstrapVersionProperty) | "latest.release"
 
   type ParserOf[A]          = Def.Initialize[State => Parser[A]]
   type SettingOf[A]         = Def.Initialize[A]
@@ -22,6 +21,8 @@ trait Constants {
   type jMap[K, V]           = java.util.Map[K, V]
   type jFile                = java.io.File
 
+  def PolicyBaseVersion        = "1.0.0"
+  def PolicyBuildVersion       = dash(PolicyBaseVersion, "SNAPSHOT")
   def BootstrapModuleProperty  = "bootstrap.module"
   def BootstrapVersionProperty = "bootstrap.version"
   def PartestRunnerClass       = "scala.tools.partest.nest.ConsoleRunner"
@@ -31,6 +32,7 @@ trait Constants {
   def ScalaOrg                 = "org.scala-lang"
   def SbtOrg                   = "org.scala-sbt"
   def PolicyName               = "policy"
+  def BootstrapName            = "bootstrap"
   def ScalaName                = "scala"
   def NoTraceSuppression       = scala.sys.SystemProperties.noTraceSupression.key
 
