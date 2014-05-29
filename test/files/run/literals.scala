@@ -46,6 +46,28 @@ object Test {
 
     println
 
+    // byte
+    check_success[Byte]("1z == 1", 1z, 1.toByte)
+    check_success[Byte]("-1z == -1", -1z, -1.toByte)
+    check_success[Byte]("1Z == 1", 1Z, 1.toByte)
+    check_success[Byte]("-1Z == -1", -1Z, -1.toByte)
+    check_success[Byte]("0xffZ == -1", 0xffZ, -1.toByte)
+    check_success[Byte]("0xFFz == -1", 0xFFz, -1.toByte)
+    check_success[Byte]("0x0aZ == 0xAz", 0x0aZ, 0xAz)
+
+    println
+
+    // short
+    check_success[Short]("1s == 1", 1s, 1.toShort)
+    check_success[Short]("-1s == -1", -1s, -1.toShort)
+    check_success[Short]("1S == 1", 1S, 1.toShort)
+    check_success[Short]("-1S == -1", -1S, -1.toShort)
+    check_success[Short]("0xffffS == -1", 0xffffS, -1.toShort)
+    check_success[Short]("0xFFFFs == -1", 0xFFFFs, -1.toShort)
+    check_success[Short]("0x0aS == 0xAs", 0x0aS, 0xAs)
+
+    println
+
     // int
     check_success("0X01 == 1", 0X01, 1)
     check_success("0x01 == 1", 0x01, 1)
