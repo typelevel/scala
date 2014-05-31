@@ -131,6 +131,6 @@ private object projectSettings {
      scalacOptions in (Compile, compile) ++= stdScalacArgs,
          javacOptions in (Test, compile) :=  wordSeq("-nowarn"),
         scalacOptions in (Test, compile) :=  wordSeq("-Xlint"),
-                              incOptions ~=  (_ withRecompileOnMacroDef false) // withAntStyle true
+                              incOptions :=  stdIncOptions
   )
 }

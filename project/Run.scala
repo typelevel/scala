@@ -30,7 +30,7 @@ trait Runners {
   def testClasspathReadable: TaskOf[String]     = testClasspathFiles map (_ mkString ("\n  ", "\n  ", "\n"))
 
   def stdForkOptions = ForkOptions(outputStrategy = Some(StdoutOutput), connectInput = true)
-  def stdIncOptions  = sbtDefaultIncOptions withRecompileOnMacroDef false withAntStyle true
+  def stdIncOptions  = sbtDefaultIncOptions withRecompileOnMacroDef false //withAntStyle true
 
   def sbtDefaultForkOptions = Def task ForkOptions(
     javaHome         = javaHome.value,
