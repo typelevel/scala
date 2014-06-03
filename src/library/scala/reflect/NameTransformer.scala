@@ -54,6 +54,7 @@ object NameTransformer {
   enterOp('\\', "$bslash")
   enterOp('?', "$qmark")
   enterOp('@', "$at")
+  enterOp('\'', "$prime")
 
   /** Replace operator symbols by corresponding `\$opname`.
    *
