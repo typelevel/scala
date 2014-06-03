@@ -17,14 +17,15 @@ trait Depends {
   // lazy val asm = RootProject(uri("git://github.com/paulp/asm.git#scala-fixes"))
   // def asm = "org.ow2.asm" % "asm-debug-all" % "5.0.3"
 
-  def ant           = "org.apache.ant"                 %            "ant"            %     "1.9.4"
-  def diffutils     = "com.googlecode.java-diff-utils" %         "diffutils"         %     "1.3.0"
-  def jline         = "jline"                          %           "jline"           %      "2.11"
-  def logback       = "ch.qos.logback"                 %      "logback-classic"      %     "1.1.2"
-  def scalaParsers  = "org.scala-lang.modules"         %% "scala-parser-combinators" %     "1.0.1"
-  def scalaXml      = "org.scala-lang.modules"         %%        "scala-xml"         %     "1.0.2"
-  def scalacheck    = "org.scalacheck"                 %%        "scalacheck"        %     "1.11.4"
-  def testInterface = SbtOrg                           %       "test-interface"      %      "1.0"
+  def ant           = "org.apache.ant"                 %            "ant"            % "1.9.4"
+  def diffutils     = "com.googlecode.java-diff-utils" %         "diffutils"         % "1.3.0"
+  def jline         = "jline"                          %           "jline"           %  "2.11"
+  def slf4jApi      = "org.slf4j"                      %         "slf4j-api"         % "1.7.7"
+  def logback       = "ch.qos.logback"                 %      "logback-classic"      % "1.1.2"
+  def scalaParsers  = "org.scala-lang.modules"         %% "scala-parser-combinators" % "1.0.1"
+  def scalaXml      = "org.scala-lang.modules"         %%        "scala-xml"         % "1.0.2"
+  def scalacheck    = "org.scalacheck"                 %%        "scalacheck"        % "1.11.4"
+  def testInterface = SbtOrg                           %       "test-interface"      %  "1.0"
 }
 
 final class ProjectOps(val p: Project) {

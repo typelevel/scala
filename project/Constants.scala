@@ -8,7 +8,7 @@ import DefaultParsers._
 trait Constants {
   lazy val buildProps = MutableProperties(file("project/build.properties"))
 
-  def SbtKnownVersion   = (buildProps ? "sbt.version"      ) | "0.13.2"
+  def SbtKnownVersion   = (buildProps ? "sbt.version"      ) | "0.13.5"
   def ScalaKnownVersion = (buildProps ? "scala.version"    ) | "2.11.1"
 
   type ParserOf[A]          = Def.Initialize[State => Parser[A]]
@@ -20,19 +20,18 @@ trait Constants {
   type jMap[K, V]           = java.util.Map[K, V]
   type jFile                = java.io.File
 
-  def PolicyBaseVersion        = "1.0.0"
-  def PolicyBuildVersion       = dash(PolicyBaseVersion, "SNAPSHOT")
-  def BootstrapModuleProperty  = "bootstrap.module"
-  def PartestRunnerClass       = "scala.tools.partest.nest.ConsoleRunner"
-  def ReplRunnerClass          = "scala.tools.nsc.MainGenericRunner"
-  def CompilerRunnerClass      = "scala.tools.nsc.Main"
-  def PolicyOrg                = "org.improving"
-  def ScalaOrg                 = "org.scala-lang"
-  def SbtOrg                   = "org.scala-sbt"
-  def PolicyName               = "policy"
-  def BootstrapName            = "bootstrap"
-  def ScalaName                = "scala"
-  def NoTraceSuppression       = scala.sys.SystemProperties.noTraceSupression.key
+  def PolicyBaseVersion       = "1.0.0"
+  def PolicyBuildVersion      = dash(PolicyBaseVersion, "SNAPSHOT")
+  def BootstrapModuleProperty = "bootstrap.module"
+  def PartestRunnerClass      = "scala.tools.partest.nest.ConsoleRunner"
+  def ReplRunnerClass         = "scala.tools.nsc.MainGenericRunner"
+  def CompilerRunnerClass     = "scala.tools.nsc.Main"
+  def PolicyOrg               = "org.improving"
+  def ScalaOrg                = "org.scala-lang"
+  def SbtOrg                  = "org.scala-sbt"
+  def PolicyName              = "policy"
+  def ScalaName               = "scala"
+  def NoTraceSuppression      = scala.sys.SystemProperties.noTraceSupression.key
 
   def stdScalacArgs  = Nil //wordSeq("-Ywarn-unused -Ywarn-unused-import -Xdev")
   def stdPartestArgs = wordSeq("-deprecation -unchecked -Xlint")
