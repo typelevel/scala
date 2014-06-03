@@ -91,8 +91,6 @@ trait SbtHelpers {
 
   def sysOrBuild(name: String): Option[String] = (sys.props get name) orElse (buildProps get name)
   def buildLevelJars = Def setting (buildBase.value / "lib" * "*.jar").get
-  def localIvy: File = Path.userHome / ".ivy2" / "local" / "org.improving"
-  def localBootstrapArtifacts: Seq[File] = localIvy / "bootstrap-compiler" ** "*.jar" get
   def chooseBootstrap = sysOrBuild(BootstrapModuleProperty).fold(scalaModuleId("compiler"))(moduleId)
 
   def scalaInstanceForVersion(version: String): TaskOf[ScalaInstance] =
