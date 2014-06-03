@@ -78,7 +78,8 @@ private object projectSettings {
                   sourcesInBase :=  false,
                     logBuffered :=  false,
                     showSuccess :=  false,
-                     traceLevel :=  25,
+                     showTiming :=  true,
+                     traceLevel :=  20,
               ivyConfigurations +=  ScalaTool,
        unmanagedJars in Compile ++= buildLevelJars.value,
                   scalaInstance <<= scalaInstance in ThisBuild

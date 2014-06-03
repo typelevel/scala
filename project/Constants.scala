@@ -8,9 +8,8 @@ import DefaultParsers._
 trait Constants {
   lazy val buildProps = MutableProperties(file("project/build.properties"))
 
-  def SbtKnownVersion       = (buildProps ? "sbt.version"      ) | "0.13.2"
-  def ScalaKnownVersion     = (buildProps ? "scala.version"    ) | "2.11.1"
-  def BootstrapKnownVersion = (buildProps ? BootstrapVersionProperty) | "latest.release"
+  def SbtKnownVersion   = (buildProps ? "sbt.version"      ) | "0.13.2"
+  def ScalaKnownVersion = (buildProps ? "scala.version"    ) | "2.11.1"
 
   type ParserOf[A]          = Def.Initialize[State => Parser[A]]
   type SettingOf[A]         = Def.Initialize[A]
@@ -24,7 +23,6 @@ trait Constants {
   def PolicyBaseVersion        = "1.0.0"
   def PolicyBuildVersion       = dash(PolicyBaseVersion, "SNAPSHOT")
   def BootstrapModuleProperty  = "bootstrap.module"
-  def BootstrapVersionProperty = "bootstrap.version"
   def PartestRunnerClass       = "scala.tools.partest.nest.ConsoleRunner"
   def ReplRunnerClass          = "scala.tools.nsc.MainGenericRunner"
   def CompilerRunnerClass      = "scala.tools.nsc.Main"
@@ -36,7 +34,7 @@ trait Constants {
   def ScalaName                = "scala"
   def NoTraceSuppression       = scala.sys.SystemProperties.noTraceSupression.key
 
-  def stdScalacArgs  = wordSeq("-Ywarn-unused -Ywarn-unused-import -Xdev")
+  def stdScalacArgs  = Nil //wordSeq("-Ywarn-unused -Ywarn-unused-import -Xdev")
   def stdPartestArgs = wordSeq("-deprecation -unchecked -Xlint")
   def stdJavacArgs   = wordSeq("-nowarn -XDignore.symbol.file")
   def pathSeparator  = java.io.File.pathSeparator

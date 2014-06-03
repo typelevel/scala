@@ -15,9 +15,10 @@ package object building extends PolicyPackage {
 
   def saveBootstrapVersion(state: State, args: Seq[String]): State = {
     val newVersion = args.head
-    state.log.info(s"Updating $BootstrapVersionProperty to $newVersion in build.properties")
-    buildProps.write(BootstrapVersionProperty, newVersion)
-    sys.props(BootstrapVersionProperty) = newVersion
+    val newModule = (PolicyOrg % "bootstrap-compiler" % newVersion).toString
+    state.log.info(s"Updating $BootstrapModuleProperty to $newModule in build.properties")
+    buildProps.write(BootstrapModuleProperty, newModule)
+    sys.props(BootstrapModuleProperty) = newModule
     state
   }
 

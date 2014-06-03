@@ -90,16 +90,10 @@ trait SbtHelpers {
   // Hairier sbt-internal stuff.
 
   def sysOrBuild(name: String): Option[String] = (sys.props get name) orElse (buildProps get name)
-  private def bootstrapId = PolicyOrg % "bootstrap-compiler" % (sysOrBuild(BootstrapVersionProperty) getOrElse "latest.release")
-
   def buildLevelJars = Def setting (buildBase.value / "lib" * "*.jar").get
   def localIvy: File = Path.userHome / ".ivy2" / "local" / "org.improving"
   def localBootstrapArtifacts: Seq[File] = localIvy / "bootstrap-compiler" ** "*.jar" get
-  def chooseBootstrap = sysOrBuild(BootstrapModuleProperty) match {
-    case Some(m)                              => moduleId(m)
-    case _ if localBootstrapArtifacts.isEmpty => scalaModuleId("compiler")
-    case _                                    => bootstrapId
-  }
+  def chooseBootstrap = sysOrBuild(BootstrapModuleProperty).fold(scalaModuleId("compiler"))(moduleId)
 
   def scalaInstanceForVersion(version: String): TaskOf[ScalaInstance] =
     Def task scalaInstanceFromAppConfiguration(appConfiguration.value)(version)
