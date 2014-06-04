@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 #
 
+unset mainClass
+set -- $(gnu_getopt --option m: --longoptions main -- "$@")
+
+for opt; do
+  case "$1" in
+           --) shift && eval set -- $@ && break ;;
+    -m|--main) mainClass="$(echo "$2" | tr -d "'")" && shift 2 ;;
+            *) die "Unrecognized argument: $1" ;;
+  esac
+done
+
 shopt -s globstar
 
 export IVY="$HOME/.ivy2/cache"
-# $IVY/org.ow2.asm/asm-all/jars/asm-all-5.0.2.jar
 cps () {
   ls -1d **/classes
   cat <<EOM
@@ -30,9 +40,8 @@ run java -cp "$classpath" \
   -d "$out" \
   "$@"
 
-[[ -n "$RUN" ]] && \
+[[ -n $mainClass ]] && \
   run java -cp "$out:$classpath" \
     scala.tools.nsc.MainGenericRunner \
     -usejavacp \
-    $RUN
-
+    $mainClass
