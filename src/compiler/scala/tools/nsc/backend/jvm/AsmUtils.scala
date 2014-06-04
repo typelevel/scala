@@ -5,9 +5,11 @@
 
 package scala.tools.nsc.backend.jvm
 
-import org.objectweb.asm.tree.{ClassNode, MethodNode}
 import java.io.PrintWriter
-import org.objectweb.asm.util.{TraceClassVisitor, TraceMethodVisitor, Textifier}
+import org.objectweb.asm
+import asm.tree.{ClassNode, MethodNode}
+import asm.util.{TraceClassVisitor, TraceMethodVisitor, Textifier}
+import asm.ClassReader
 
 object AsmUtils {
 
@@ -50,4 +52,11 @@ object AsmUtils {
     w.flush()
   }
 
+  def traceClass(bytes: Array[Byte]): Unit = traceClass(readClass(bytes))
+
+  def readClass(bytes: Array[Byte]): ClassNode = {
+    val node = new ClassNode()
+    new ClassReader(bytes).accept(node, 0)
+    node
+  }
 }
