@@ -766,6 +766,18 @@ self =>
       }
       ts.toList
     }
+    @inline final def commaSeparatedOrTrailing[T](part: => T): List[T] = {
+      val ts = ListBuffer[T](part)
+      while (in.token == COMMA) {
+        accept(COMMA)
+        if (in.token == RPAREN) // that was a trailing comma
+          return ts.toList
+        else
+          ts += part
+      }
+
+      ts.toList
+    }
     @inline final def commaSeparated[T](part: => T): List[T] = tokenSeparated(COMMA, sepFirst = false, part)
     @inline final def caseSeparated[T](part: => T): List[T] = tokenSeparated(CASE, sepFirst = true, part)
     def readAnnots(part: => Tree): List[Tree] = tokenSeparated(AT, sepFirst = true, part)
@@ -1603,7 +1615,7 @@ self =>
           case USCORE =>
             freshPlaceholder()
           case LPAREN =>
-            atPos(in.offset)(makeParens(commaSeparated(expr())))
+            atPos(in.offset)(makeParens(commaSeparatedOrTrailing(expr())))
           case LBRACE =>
             canApply = false
             blockExpr()
@@ -1667,7 +1679,7 @@ self =>
      *  }}}
      */
     def argumentExprs(): List[Tree] = {
-      def args(): List[Tree] = commaSeparated(
+      def args(): List[Tree] = commaSeparatedOrTrailing(
         if (isIdent) treeInfo.assignmentToMaybeNamedArg(expr()) else expr()
       )
       in.token match {
@@ -2168,7 +2180,7 @@ self =>
           in.nextToken()
           implicitmod = Flags.IMPLICIT
         }
-        commaSeparated(param(owner, implicitmod, caseParam  ))
+        commaSeparated(param(owner, implicitmod, caseParam))
       }
       val vds = new ListBuffer[List[ValDef]]
       val start = in.offset
