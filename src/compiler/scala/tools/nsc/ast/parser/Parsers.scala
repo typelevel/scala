@@ -2946,9 +2946,11 @@ self =>
       case x: RefTree => atPos(start, pkg.pos.point)(PackageDef(x, stats))
     }
 
-    def makeEmptyPackage(start: Offset, stats: List[Tree]): PackageDef = (
-      makePackaging(start, atPos(start, start, start)(Ident(nme.EMPTY_PACKAGE_NAME)), stats)
-    )
+    def makeEmptyPackage(start: Offset, stats: List[Tree]): PackageDef = {
+      def customName = "emptyPackage_%s_%s".format(source.file.name.split("[.]").head.filter(_.isLetter), math.abs(scala.util.Random.nextInt()))
+      val pid = if (settings.noEmptyPackage) Ident(TermName(customName)) else Ident(nme.EMPTY_PACKAGE_NAME)
+      makePackaging(start, atPos(start, start, start)(pid), stats)
+    }
 
     def statSeq(stat: PartialFunction[Token, List[Tree]], errorMsg: String = "illegal start of definition"): List[Tree] = {
       val stats = new ListBuffer[Tree]

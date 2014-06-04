@@ -7,8 +7,8 @@ export IVY="$HOME/.ivy2/cache"
 # $IVY/org.ow2.asm/asm-all/jars/asm-all-5.0.2.jar
 cps () {
   ls -1d **/classes
-  ls -1d ./compiler/lib/*.jar
   cat <<EOM
+./lib/asm-5.0.4-SNAPSHOT.jar
 $IVY/jline/jline/jars/jline-2.11.jar
 $IVY/org.apache.ant/ant/jars/ant-1.9.4.jar
 $IVY/org.scala-lang.modules/scala-xml_2.11/bundles/scala-xml_2.11-1.0.1.jar
