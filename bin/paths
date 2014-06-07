@@ -9,7 +9,7 @@ cd "$(dirname "$0")/.."
 
 # We have to enumerate good test dirs since partest chokes and fails
 # on continuations, bench, etc. tests
-pathRegex="test/files/(pos|neg|jvm|run)/[^/.]+([.]scala)?\$"
+pathRegex="test[/]+files[/]+(pos|neg|jvm|run|scalacheck|specialized)[/]+[^/.]+([.]scala)?\$"
 
 # Echo the argument only if it matches our idea of a test and exists.
 isPath () { [[ "$1" =~ $pathRegex ]] && [[ -e "$1" ]]; }
