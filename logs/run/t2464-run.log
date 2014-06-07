@@ -1,4 +1,0 @@
-Test.scala:5: error: ';' expected but '.' found.
-import scala.tools.partest._.modifyClassFile
-                            ^
-one error found

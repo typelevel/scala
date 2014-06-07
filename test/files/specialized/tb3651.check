@@ -1,4 +1,0 @@
-tb3651.scala:8: warning: a pure expression does nothing in statement position; you may be omitting necessary parentheses
-    lk.a
-       ^
-0
