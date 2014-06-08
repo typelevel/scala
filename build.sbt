@@ -7,13 +7,13 @@ lazy val root = (
     aggregate ( library, compilerProject )
 )
 
-lazy val library = project.setup addMima scalaLibrary deps ( slf4jApi, logback )
+lazy val library = project.setup addMima scalaLibrary
 
 lazy val compilerProject = (
   Project(id = "compiler", base = file("compiler")).setup
     dependsOn library
     intransitiveDeps ( ant, jline )
-    intransitiveTestDeps ( diffutils, scalacheck, testInterface )
+    intransitiveTestDeps ( diffutils, testInterface )
 )
 
 lazy val compat = project.setup.noArtifacts dependsOn compilerProject sbtDeps ( "interface", "compiler-interface" )
