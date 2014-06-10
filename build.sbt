@@ -5,6 +5,7 @@ lazy val root = (
   (project in file(".")).setup.noArtifacts
     dependsOn ( library, compilerProject )
     aggregate ( library, compilerProject )
+    settings  ( publish := (), publishLocal := () )
 )
 
 lazy val library = project.setup addMima scalaLibrary
@@ -18,4 +19,3 @@ lazy val compilerProject = (
 
 lazy val compat = project.setup.noArtifacts dependsOn compilerProject sbtDeps ( "interface", "compiler-interface" )
 
-bintraySettings

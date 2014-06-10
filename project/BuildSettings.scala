@@ -4,8 +4,11 @@ package building
 import sbt._, Keys._
 import Opts.resolver._
 import Classpaths.{ packaged, publishConfig }
+import bintray.Plugin.{ bintraySettings, bintrayPublishSettings }
 
 trait Depends {
+  def bintrayPaulpResolver = "bintray/paulp" at "https://dl.bintray.com/paulp/maven"
+
   def sbtModuleId(name: String)   = SbtOrg    %          name          %  SbtKnownVersion
   def scalaModuleId(name: String) = ScalaOrg  % dash(ScalaName, name)  % ScalaKnownVersion
 
@@ -66,13 +69,21 @@ private object projectSettings {
   // Assembled settings for projects which produce an artifact.
   def codeProject(others: Setting[_]*) = compiling ++ publishing ++ others
 
+  // Interactive commands
+  def interactiveCommands = Seq(
+    Command.args("bootstrap", "<version>")(bootstrap),
+    Command.command("publishBootstrap")(publishBootstrap),
+    Command.args("saveBootstrapVersion", "<version>")(saveBootstrapVersion)
+  )
+
   // Settings added to every project.
-  def universal = List(
+  def universal = bintraySettings ++ List(
                            name ~=  (dash(PolicyName, _)),
                    organization :=  PolicyOrg,
-                        version :=  "1.0.1-SNAPSHOT",
+                        version :=  "1.0.0-M1",
                    scalaVersion :=  ScalaKnownVersion,
              scalaBinaryVersion :=  "2.11",
+                       licenses :=  Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
                autoScalaLibrary :=  false,
                      crossPaths :=  false,
            managedScalaInstance :=  false,
@@ -108,24 +119,24 @@ private object projectSettings {
   )
   def root = publishing ++ List(
                                  name :=  PolicyName,
+                            resolvers +=  bintrayPaulpResolver,
                              getScala :=  scalaInstanceTask.evaluated,
                                   run :=  asInputTask(forkCompiler).evaluated,
                                  repl :=  asInputTask(forkRepl).evaluated,
            initialCommands in console :=  "import scala.reflect.runtime.universe._",
     initialCommands in consoleProject :=  "import policy.building._",
                          watchSources ++= sbtFilesInBuild.value ++ sourceFilesInProject.value,
-       bootstrapModuleId in ThisBuild :=  printResult("bootstrap")(chooseBootstrap),
+       bootstrapModuleId in ThisBuild :=  chooseBootstrap,
                   libraryDependencies +=  bootstrapModuleId.value % ScalaTool.name,
            scalaInstance in ThisBuild <<= scalaInstanceFromModuleIDTask,
-                             commands ++= Seq(Command.command("bootstrap")(bootstrap), Command.args("saveBootstrapVersion", "<version>")(saveBootstrapVersion))
+                             commands ++= interactiveCommands
 
   )
   def publishing = List(
-    checksums in publishLocal :=  Nil,
-         pomIncludeRepository :=  (_ => false),
-            packagedArtifacts <<= packaged(Seq(packageBin in Compile)),
-    publishLocalConfiguration ~=  (p => publishConfig(p.artifacts, p.ivyFile, p.checksums, p.resolverName, logging = UpdateLogging.Quiet, overwrite = false)),
-          updateConfiguration ~=  (uc => new UpdateConfiguration(uc.retrieve, uc.missingOk, logging = UpdateLogging.Quiet))
+                     checksums in publishLocal := Nil,
+                             publishMavenStyle := true,
+      publishArtifact in (Compile, packageDoc) := false,
+      publishArtifact in (Compile, packageSrc) := false
   )
   def compiling = List(
            resourceGenerators in Compile <+= generateProperties(),
