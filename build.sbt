@@ -13,7 +13,7 @@ lazy val library = project.setup addMima scalaLibrary
 lazy val compilerProject = (
   Project(id = "compiler", base = file("compiler")).setup
     dependsOn library
-    intransitiveDeps ( ant, jline )
+    intransitiveDeps ( jline )
     intransitiveTestDeps ( diffutils, testInterface )
 )
 

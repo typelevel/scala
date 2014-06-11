@@ -97,7 +97,7 @@ private object projectSettings {
        unmanagedSourceDirectories in Test  +=  buildBase.value / "partest" / "src",
                     unmanagedBase in Test  :=  buildBase.value / "partest" / "testlib",
                              fork in Test  :=  true,
-                                     test  :=  runTests.fullInput(" --all").value,
+                                     test  :=  runAllTests.value, //runTests.fullInput(" --all").value,
                                  testOnly <<=  runTests
   )
 
