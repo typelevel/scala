@@ -215,6 +215,7 @@ managedScalaInstance         compiler     *            *               false
 managedScalaInstance         library      *            *               false
 managedScalaInstance         root         *            *               false
 maxErrors                    *            *            *               100
+mimaFailOnProblem            library      *            *               true
 mimaPreviousArtifact         library      *            *               ModuleID("org.scala-lang", "scala-library", "2.11.1", -, false, true, false, -, -, -, disabled)
 moduleName                   compat       *            *               "policy-compat"
 moduleName                   compiler     *            *               "policy-compiler"

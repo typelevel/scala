@@ -35,7 +35,13 @@ trait Depends {
 final class ProjectOps(val p: Project) {
   def useSourcePath        = p settings (scalacOptions in Compile <++= sourcePathOpts)
   def noArtifacts          = p settings (publish := (), publishLocal := (), unmanagedSourceDirectories := Nil)
-  def addMima(m: ModuleID) = p also mimaDefaultSettings also (previousArtifact := Some(m))
+  def addMima(m: ModuleID) = p also fullMimaSettings(m)
+
+  def fullMimaSettings(m: ModuleID) = mimaDefaultSettings ++ Seq(
+    binaryIssueFilters ++= MimaPolicy.filters,
+                  test :=  MimaKeys.reportBinaryIssues.value,
+      previousArtifact :=  Some(m)
+  )
 
   def setup                                      = p also projectSettings(p.id)
   def also(ss: Traversable[Setting[_]]): Project = p settings (ss.toSeq: _*)
@@ -106,9 +112,7 @@ private object projectSettings {
                    scalaSource in Compile <<=  inSrc(Library),
     unmanagedSourceDirectories in Compile <++= allInSrc("forkjoin library"),
                  scalacOptions in Compile ++=  Seq("-sourcepath", inSrc(Library).value.getPath),
-                         previousArtifact  :=  Some(scalaLibrary),
-                       binaryIssueFilters ++=  MimaPolicy.filters,
-                                     test  :=  MimaKeys.reportBinaryIssues.value
+                         previousArtifact  :=  Some(scalaLibrary)
   )
   def root = List(
                                  name :=  PolicyName,
@@ -120,15 +124,11 @@ private object projectSettings {
     initialCommands in consoleProject :=  "import policy.building._",
                          watchSources ++= sbtFilesInBuild.value ++ sourceFilesInProject.value,
        bootstrapModuleId in ThisBuild :=  chooseBootstrap,
-        settingsDumpFile in ThisBuild :=  buildBase.value / "settings.dump",
                   libraryDependencies +=  bootstrapModuleId.value % ScalaTool.name,
            scalaInstance in ThisBuild <<= scalaInstanceFromModuleIDTask,
                              commands ++= bootstrapCommands,
                               publish :=  (),
-                         publishLocal :=  (),
-                     onLoad in Global ~=  (_ andThen ScopedShow.dump)
-
-
+                         publishLocal :=  ()
   )
   def publishing = List(
                      checksums in publishLocal := Nil,

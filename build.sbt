@@ -1,10 +1,13 @@
 import policy.building._
 
+onLoad in Global ~=  (_ andThen ScopedShow.dump)
+
+settingsDumpFile in ThisBuild :=  buildBase.value / "settings.dump"
+
 // See project/BuildSettings for all the details - here we retain a high level view.
 lazy val root = (
   (project in file(".")).setup.noArtifacts
-    dependsOn ( library, compilerProject )
-    aggregate ( library, compilerProject, compat )
+    dependsOn ( library, compilerProject ) aggregate ( library, compilerProject, compat )
 )
 
 lazy val library = project.setup addMima scalaLibrary
@@ -17,6 +20,7 @@ lazy val compilerProject = (
 )
 
 lazy val compat = (
-  project.setup.noArtifacts dependsOn compilerProject
+  project.setup.noArtifacts
+    dependsOn compilerProject
     sbtDeps ( "interface", "compiler-interface" )
 )

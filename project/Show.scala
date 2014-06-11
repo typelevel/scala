@@ -5,7 +5,7 @@ import sbt._, Keys._
 
 // Encapsulation of sbt state transformations.
 object WState {
-  // def look(f: WState => Unit): StateMap    = apply(s => doto(s)(f))
+  def look(f: WState => Unit): StateMap    = apply(s => doto(s)(f))
   def apply(f: WState => WState): StateMap = s => f(new WState(s)).state
 }
 final class WState(val state: State) {
