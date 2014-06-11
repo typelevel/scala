@@ -26,8 +26,6 @@ trait Constants {
   type jMap[K, V]           = java.util.Map[K, V]
   type jFile                = java.io.File
 
-  def PolicyBaseVersion       = "1.0.0"
-  def PolicyBuildVersion      = dash(PolicyBaseVersion, "SNAPSHOT")
   def BootstrapModuleProperty = "bootstrap.module"
   def PartestRunnerClass      = "scala.tools.partest.nest.ConsoleRunner"
   def ReplRunnerClass         = "scala.tools.nsc.MainGenericRunner"

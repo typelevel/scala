@@ -38,7 +38,10 @@ trait Bootstrap {
   )
 
   private def commonBootstrap(isLocal: Boolean, commands: Seq[String]): StateMap = WState { ws =>
-    val newVersion  = if (isLocal) dash(PolicyBaseVersion, runSlurp("bin/unique-version")) else ws(version)
+    val newVersion = ws(version) match {
+      case v if isLocal => dash(v takeWhile (_ != '-'), runSlurp("bin/unique-version"))
+      case v            => v
+    }
     val saveCommand = "saveBootstrapVersion %s %s".format( if (isLocal) "local" else "remote" , newVersion )
     val newCommands = "publishLocal" +: commands :+ saveCommand :+ "reboot full"
 
