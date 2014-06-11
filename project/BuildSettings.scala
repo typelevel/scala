@@ -120,9 +120,14 @@ private object projectSettings {
     initialCommands in consoleProject :=  "import policy.building._",
                          watchSources ++= sbtFilesInBuild.value ++ sourceFilesInProject.value,
        bootstrapModuleId in ThisBuild :=  chooseBootstrap,
+        settingsDumpFile in ThisBuild :=  buildBase.value / "settings.dump",
                   libraryDependencies +=  bootstrapModuleId.value % ScalaTool.name,
            scalaInstance in ThisBuild <<= scalaInstanceFromModuleIDTask,
-                             commands ++= bootstrapCommands
+                             commands ++= bootstrapCommands,
+                              publish :=  (),
+                         publishLocal :=  (),
+                     onLoad in Global ~=  (_ andThen ScopedShow.dump)
+
 
   )
   def publishing = List(

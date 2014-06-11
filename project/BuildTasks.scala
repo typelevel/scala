@@ -7,6 +7,7 @@ import complete.DefaultParsers._
 trait BuildTasks {
   val repl              = inputKey[Unit]("run policy repl")
   val getScala          = inputKey[ScalaInstance]("download scala version, if not in ivy cache")
+  val settingsDumpFile  = settingKey[File]("file into which to record all sbt settings")
   val bootstrapModuleId = settingKey[ModuleID]("module id of bootstrap compiler")
 
   private def testJavaOptions  = partestProperties map ("-Xmx1g" +: _.commandLineArgs)

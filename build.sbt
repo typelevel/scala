@@ -4,8 +4,7 @@ import policy.building._
 lazy val root = (
   (project in file(".")).setup.noArtifacts
     dependsOn ( library, compilerProject )
-    aggregate ( library, compilerProject )
-    settings  ( publish := (), publishLocal := (), onLoad in Global := onLoadHook )
+    aggregate ( library, compilerProject, compat )
 )
 
 lazy val library = project.setup addMima scalaLibrary
@@ -17,5 +16,7 @@ lazy val compilerProject = (
     intransitiveTestDeps ( diffutils, testInterface )
 )
 
-lazy val compat = project.setup.noArtifacts dependsOn compilerProject sbtDeps ( "interface", "compiler-interface" )
-
+lazy val compat = (
+  project.setup.noArtifacts dependsOn compilerProject
+    sbtDeps ( "interface", "compiler-interface" )
+)
