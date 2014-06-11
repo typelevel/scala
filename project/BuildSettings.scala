@@ -80,23 +80,23 @@ private object projectSettings {
 
   // Settings added to every project.
   def universal = List(
-                           name ~=  (dash(PolicyName, _)),
-                        version :=  "1.0.0-SNAPSHOT",
-                   scalaVersion :=  ScalaKnownVersion,
-             scalaBinaryVersion :=  "2.11",
-                       licenses :=  Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
-               autoScalaLibrary :=  false,
-                     crossPaths :=  false,
-           managedScalaInstance :=  false,
-                  sourcesInBase :=  false,
-                    logBuffered :=  false,
-                    showSuccess :=  false,
-                     showTiming :=  true,
-                     traceLevel :=  20,
-              ivyConfigurations +=  ScalaTool,
-                      resolvers +=  bintrayPaulpResolver,
+                           name  ~=  (dash(PolicyName, _)),
+                        version  :=  "1.0.0-SNAPSHOT",
+                   scalaVersion  :=  ScalaKnownVersion,
+             scalaBinaryVersion  :=  "2.11",
+                       licenses  :=  Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
+               autoScalaLibrary  :=  false,
+                     crossPaths  :=  false,
+           managedScalaInstance  :=  false,
+                  sourcesInBase  :=  false,
+                    logBuffered  :=  false,
+                    showSuccess  :=  false,
+                     showTiming  :=  true,
+                     traceLevel  :=  20,
+              ivyConfigurations  +=  ScalaTool,
+                      resolvers  +=  bintrayPaulpResolver,
        unmanagedJars in Compile <++= buildLevelJars.task,
-                  scalaInstance <<= scalaInstance in ThisBuild
+                  scalaInstance <<=  scalaInstance in ThisBuild
   )
 
   def compiler = codeProject(
@@ -126,7 +126,7 @@ private object projectSettings {
                                   run <<=  asInputTask(forkCompiler),
            initialCommands in console  :=  "import scala.reflect.runtime.universe._",
     initialCommands in consoleProject  :=  "import policy.building._",
-                         watchSources <++= sbtFilesInBuild,
+                         watchSources <++= sbtFilesInBuild.task,
                          watchSources <++= sourceFilesInProject.task,
                     bootstrapModuleId  :=  chooseBootstrap,
                   libraryDependencies <+=  bootstrapModuleId |> (_ % ScalaTool.name),
@@ -147,8 +147,8 @@ private object projectSettings {
            resourceGenerators in Compile <+= generateProperties(),
       javacOptions in (Compile, compile) ++= stdJavacArgs,
      scalacOptions in (Compile, compile) ++= stdScalacArgs,
-         javacOptions in (Test, compile) :=  wordSeq("-nowarn"),
-        scalacOptions in (Test, compile) :=  wordSeq("-Xlint"),
+         javacOptions in (Test, compile) :=  Seq("-nowarn"),
+        scalacOptions in (Test, compile) :=  Seq("-Xlint"),
                               incOptions :=  stdIncOptions
   )
 }

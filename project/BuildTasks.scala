@@ -22,9 +22,10 @@ object PolicyKeys {
 trait BuildTasks {
   private def testJavaOptions  = partestProperties map ("-Xmx1g" +: _.commandLineArgs)
 
-  def createUnzipTask: TaskOf[Seq[File]] = Def task (
-    (dependencyClasspath in Compile).value.files filter isJar flatMap (IO.unzip(_, sourceManaged.value / "compat", isSourceName _).toSeq)
-  )
+  private def compilePath: TaskOf[Seq[File]] = (dependencyClasspath in Compile) |> (_.files filter isJar)
+  private def explode(f: File, d: File) = IO.unzip(f, d, isSourceName _).toSeq
+
+  val createUnzipTask: TaskOf[Seq[File]] = Def task (compilePath.value flatMap (f => explode(f, sourceManaged.value / "compat")))
 
   def generateProperties(): TaskOf[Seq[File]] = Def task {
     val id    = name.value split "[-]" last;

@@ -11,7 +11,6 @@ package object building extends PolicyPackage {
   }
 
   def chain[A](g: A => A)(f: A => A): A => A = f andThen g
-
   def doto[A](x: A)(f: A => Unit): A = { f(x) ; x }
 
   // All interesting implicits should be in one place.
@@ -20,6 +19,12 @@ package object building extends PolicyPackage {
   implicit def optionToOptionOps[A](opt: Option[A]): ScalaOptionOps[A]            = new ScalaOptionOps(opt)
   implicit def inputTaskValueDiscarding[A](in: InputTaskOf[A]): InputTaskOf[Unit] = in map (_ => ())
   implicit def sequenceOps[A](xs: Seq[A]): SequenceOps[A]                         = new SequenceOps[A](xs)
+
+  // It's the same as "map" but lets us map keys uniformly, something
+  // the actual "map" doesn't allow since it turns settings into tasks.
+  implicit class InitTaskOps[A](val key: TaskOf[A]) {
+    def |> [B](f: A => B): TaskOf[B] = key map f
+  }
 
   implicit class InitSettingOps[A](val key: SettingOf[A]) {
     def |> [B](f: A => B): SettingOf[B] = Def setting f(key.value)

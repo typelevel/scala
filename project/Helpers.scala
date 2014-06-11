@@ -62,15 +62,14 @@ trait SbtHelpers {
   def sourceFilesInProject: SettingOf[Seq[File]] = fromBase("project") |> sourceFilesIn
 
   // Settings
-  def sbtFilesInBuild           = buildBase map sbtFilesIn
-  def logger                    = streams in Compile map (_.log)
-  def testBase: SettingOf[File] = fromBase("test")
-  def srcBase: SettingOf[File]  = fromBase("src")
+  def sbtFilesInBuild: SettingOf[Seq[File]] = buildBase |> sbtFilesIn
+  def logger                                = (streams in Compile) |> (_.log)
+  def testBase: SettingOf[File]             = fromBase("test")
+  def srcBase: SettingOf[File]              = fromBase("src")
 
-  def allInSrc(words: String)                     = Def setting (wordSeq(words) map (srcBase.value / _))
-  def inSrc(name: String)                         = Def setting (srcBase.value / name)
-  def fromSrc(f: File => File): SettingOf[File]   = Def setting f(srcBase.value)
-  def fromBuild(f: File => File): SettingOf[File] = buildBase |> f
+  def allInSrc(words: String): SettingOf[Seq[File]] = srcBase |> (wordSeq(words) map _./)
+  def inSrc(name: String): SettingOf[File]          = srcBase |> (_ / name)
+  def fromBuild(f: File => File): SettingOf[File]   = buildBase |> f
 
   // Parsers
   def scalaVersionParser: Parser[String] = token(Space) ~> token(NotSpace, "a scala version")
