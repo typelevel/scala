@@ -5,68 +5,68 @@ aggregate                    *            *            consoleQuick    false
 aggregate                    *            *            run             false
 aggregate                    *            *            runMain         false
 appConfiguration             *            *            *               <xsbt.boot.AppConfiguration>
-artifact                     compat       *            *               Artifact("compat", "jar", "jar", -, -, -, -)
-artifact                     compat       *            makePom         Artifact("compat", "pom", "pom", -, -, -, -)
-artifact                     compat       compile      packageBin      Artifact("compat", "jar", "jar", -, -, -, -)
-artifact                     compat       compile      packageDoc      Artifact("compat", "doc", "jar", "javadoc", -, -, -)
-artifact                     compat       compile      packageSrc      Artifact("compat", "src", "jar", "sources", -, -, -)
-artifact                     compat       test         packageBin      Artifact("compat", "jar", "jar", "tests", -, -, -)
-artifact                     compat       test         packageDoc      Artifact("compat", "doc", "jar", "tests-javadoc", -, -, -)
-artifact                     compat       test         packageSrc      Artifact("compat", "src", "jar", "tests-sources", -, -, -)
-artifact                     compiler     *            *               Artifact("compiler", "jar", "jar", -, -, -, -)
-artifact                     compiler     *            makePom         Artifact("compiler", "pom", "pom", -, -, -, -)
-artifact                     compiler     compile      packageBin      Artifact("compiler", "jar", "jar", -, -, -, -)
-artifact                     compiler     compile      packageDoc      Artifact("compiler", "doc", "jar", "javadoc", -, -, -)
-artifact                     compiler     compile      packageSrc      Artifact("compiler", "src", "jar", "sources", -, -, -)
-artifact                     compiler     test         packageBin      Artifact("compiler", "jar", "jar", "tests", -, -, -)
-artifact                     compiler     test         packageDoc      Artifact("compiler", "doc", "jar", "tests-javadoc", -, -, -)
-artifact                     compiler     test         packageSrc      Artifact("compiler", "src", "jar", "tests-sources", -, -, -)
-artifact                     library      *            *               Artifact("library", "jar", "jar", -, -, -, -)
-artifact                     library      *            makePom         Artifact("library", "pom", "pom", -, -, -, -)
-artifact                     library      compile      packageBin      Artifact("library", "jar", "jar", -, -, -, -)
-artifact                     library      compile      packageDoc      Artifact("library", "doc", "jar", "javadoc", -, -, -)
-artifact                     library      compile      packageSrc      Artifact("library", "src", "jar", "sources", -, -, -)
-artifact                     library      test         packageBin      Artifact("library", "jar", "jar", "tests", -, -, -)
-artifact                     library      test         packageDoc      Artifact("library", "doc", "jar", "tests-javadoc", -, -, -)
-artifact                     library      test         packageSrc      Artifact("library", "src", "jar", "tests-sources", -, -, -)
-artifact                     root         *            *               Artifact("root", "jar", "jar", -, -, -, -)
-artifact                     root         *            makePom         Artifact("root", "pom", "pom", -, -, -, -)
-artifact                     root         compile      packageBin      Artifact("root", "jar", "jar", -, -, -, -)
-artifact                     root         compile      packageDoc      Artifact("root", "doc", "jar", "javadoc", -, -, -)
-artifact                     root         compile      packageSrc      Artifact("root", "src", "jar", "sources", -, -, -)
-artifact                     root         test         packageBin      Artifact("root", "jar", "jar", "tests", -, -, -)
-artifact                     root         test         packageDoc      Artifact("root", "doc", "jar", "tests-javadoc", -, -, -)
-artifact                     root         test         packageSrc      Artifact("root", "src", "jar", "tests-sources", -, -, -)
+artifact                     compat       *            *               Artifact("policy-compat", "jar", "jar", -, -, -, -)
+artifact                     compat       *            makePom         Artifact("policy-compat", "pom", "pom", -, -, -, -)
+artifact                     compat       compile      packageBin      Artifact("policy-compat", "jar", "jar", -, -, -, -)
+artifact                     compat       compile      packageDoc      Artifact("policy-compat", "doc", "jar", "javadoc", -, -, -)
+artifact                     compat       compile      packageSrc      Artifact("policy-compat", "src", "jar", "sources", -, -, -)
+artifact                     compat       test         packageBin      Artifact("policy-compat", "jar", "jar", "tests", -, -, -)
+artifact                     compat       test         packageDoc      Artifact("policy-compat", "doc", "jar", "tests-javadoc", -, -, -)
+artifact                     compat       test         packageSrc      Artifact("policy-compat", "src", "jar", "tests-sources", -, -, -)
+artifact                     compiler     *            *               Artifact("policy-compiler", "jar", "jar", -, -, -, -)
+artifact                     compiler     *            makePom         Artifact("policy-compiler", "pom", "pom", -, -, -, -)
+artifact                     compiler     compile      packageBin      Artifact("policy-compiler", "jar", "jar", -, -, -, -)
+artifact                     compiler     compile      packageDoc      Artifact("policy-compiler", "doc", "jar", "javadoc", -, -, -)
+artifact                     compiler     compile      packageSrc      Artifact("policy-compiler", "src", "jar", "sources", -, -, -)
+artifact                     compiler     test         packageBin      Artifact("policy-compiler", "jar", "jar", "tests", -, -, -)
+artifact                     compiler     test         packageDoc      Artifact("policy-compiler", "doc", "jar", "tests-javadoc", -, -, -)
+artifact                     compiler     test         packageSrc      Artifact("policy-compiler", "src", "jar", "tests-sources", -, -, -)
+artifact                     library      *            *               Artifact("policy-library", "jar", "jar", -, -, -, -)
+artifact                     library      *            makePom         Artifact("policy-library", "pom", "pom", -, -, -, -)
+artifact                     library      compile      packageBin      Artifact("policy-library", "jar", "jar", -, -, -, -)
+artifact                     library      compile      packageDoc      Artifact("policy-library", "doc", "jar", "javadoc", -, -, -)
+artifact                     library      compile      packageSrc      Artifact("policy-library", "src", "jar", "sources", -, -, -)
+artifact                     library      test         packageBin      Artifact("policy-library", "jar", "jar", "tests", -, -, -)
+artifact                     library      test         packageDoc      Artifact("policy-library", "doc", "jar", "tests-javadoc", -, -, -)
+artifact                     library      test         packageSrc      Artifact("policy-library", "src", "jar", "tests-sources", -, -, -)
+artifact                     root         *            *               Artifact("policy-root", "jar", "jar", -, -, -, -)
+artifact                     root         *            makePom         Artifact("policy-root", "pom", "pom", -, -, -, -)
+artifact                     root         compile      packageBin      Artifact("policy-root", "jar", "jar", -, -, -, -)
+artifact                     root         compile      packageDoc      Artifact("policy-root", "doc", "jar", "javadoc", -, -, -)
+artifact                     root         compile      packageSrc      Artifact("policy-root", "src", "jar", "sources", -, -, -)
+artifact                     root         test         packageBin      Artifact("policy-root", "jar", "jar", "tests", -, -, -)
+artifact                     root         test         packageDoc      Artifact("policy-root", "doc", "jar", "tests-javadoc", -, -, -)
+artifact                     root         test         packageSrc      Artifact("policy-root", "src", "jar", "tests-sources", -, -, -)
 artifactClassifier           *            *            packageDoc      "javadoc"
 artifactClassifier           *            *            packageSrc      "sources"
-artifactPath                 compat       *            makePom         /mirror/r/policy/compat/target/scala-2.10/compat_2.10-0.1-SNAPSHOT.pom
-artifactPath                 compat       compile      packageBin      /mirror/r/policy/compat/target/scala-2.10/compat_2.10-0.1-SNAPSHOT.jar
-artifactPath                 compat       compile      packageDoc      /mirror/r/policy/compat/target/scala-2.10/compat_2.10-0.1-SNAPSHOT-javadoc.jar
-artifactPath                 compat       compile      packageSrc      /mirror/r/policy/compat/target/scala-2.10/compat_2.10-0.1-SNAPSHOT-sources.jar
-artifactPath                 compat       test         packageBin      /mirror/r/policy/compat/target/scala-2.10/compat_2.10-0.1-SNAPSHOT-tests.jar
-artifactPath                 compat       test         packageDoc      /mirror/r/policy/compat/target/scala-2.10/compat_2.10-0.1-SNAPSHOT-tests-javadoc.jar
-artifactPath                 compat       test         packageSrc      /mirror/r/policy/compat/target/scala-2.10/compat_2.10-0.1-SNAPSHOT-tests-sources.jar
-artifactPath                 compiler     *            makePom         /mirror/r/policy/compiler/target/scala-2.10/compiler_2.10-0.1-SNAPSHOT.pom
-artifactPath                 compiler     compile      packageBin      /mirror/r/policy/compiler/target/scala-2.10/compiler_2.10-0.1-SNAPSHOT.jar
-artifactPath                 compiler     compile      packageDoc      /mirror/r/policy/compiler/target/scala-2.10/compiler_2.10-0.1-SNAPSHOT-javadoc.jar
-artifactPath                 compiler     compile      packageSrc      /mirror/r/policy/compiler/target/scala-2.10/compiler_2.10-0.1-SNAPSHOT-sources.jar
-artifactPath                 compiler     test         packageBin      /mirror/r/policy/compiler/target/scala-2.10/compiler_2.10-0.1-SNAPSHOT-tests.jar
-artifactPath                 compiler     test         packageDoc      /mirror/r/policy/compiler/target/scala-2.10/compiler_2.10-0.1-SNAPSHOT-tests-javadoc.jar
-artifactPath                 compiler     test         packageSrc      /mirror/r/policy/compiler/target/scala-2.10/compiler_2.10-0.1-SNAPSHOT-tests-sources.jar
-artifactPath                 library      *            makePom         /mirror/r/policy/library/target/scala-2.10/library_2.10-0.1-SNAPSHOT.pom
-artifactPath                 library      compile      packageBin      /mirror/r/policy/library/target/scala-2.10/library_2.10-0.1-SNAPSHOT.jar
-artifactPath                 library      compile      packageDoc      /mirror/r/policy/library/target/scala-2.10/library_2.10-0.1-SNAPSHOT-javadoc.jar
-artifactPath                 library      compile      packageSrc      /mirror/r/policy/library/target/scala-2.10/library_2.10-0.1-SNAPSHOT-sources.jar
-artifactPath                 library      test         packageBin      /mirror/r/policy/library/target/scala-2.10/library_2.10-0.1-SNAPSHOT-tests.jar
-artifactPath                 library      test         packageDoc      /mirror/r/policy/library/target/scala-2.10/library_2.10-0.1-SNAPSHOT-tests-javadoc.jar
-artifactPath                 library      test         packageSrc      /mirror/r/policy/library/target/scala-2.10/library_2.10-0.1-SNAPSHOT-tests-sources.jar
-artifactPath                 root         *            makePom         /mirror/r/policy/target/scala-2.10/root_2.10-0.1-SNAPSHOT.pom
-artifactPath                 root         compile      packageBin      /mirror/r/policy/target/scala-2.10/root_2.10-0.1-SNAPSHOT.jar
-artifactPath                 root         compile      packageDoc      /mirror/r/policy/target/scala-2.10/root_2.10-0.1-SNAPSHOT-javadoc.jar
-artifactPath                 root         compile      packageSrc      /mirror/r/policy/target/scala-2.10/root_2.10-0.1-SNAPSHOT-sources.jar
-artifactPath                 root         test         packageBin      /mirror/r/policy/target/scala-2.10/root_2.10-0.1-SNAPSHOT-tests.jar
-artifactPath                 root         test         packageDoc      /mirror/r/policy/target/scala-2.10/root_2.10-0.1-SNAPSHOT-tests-javadoc.jar
-artifactPath                 root         test         packageSrc      /mirror/r/policy/target/scala-2.10/root_2.10-0.1-SNAPSHOT-tests-sources.jar
+artifactPath                 compat       *            makePom         /mirror/r/policy/compat/target/scala-2.11/policy-compat_2.11-1.0.0-SNAPSHOT.pom
+artifactPath                 compat       compile      packageBin      /mirror/r/policy/compat/target/scala-2.11/policy-compat_2.11-1.0.0-SNAPSHOT.jar
+artifactPath                 compat       compile      packageDoc      /mirror/r/policy/compat/target/scala-2.11/policy-compat_2.11-1.0.0-SNAPSHOT-javadoc.jar
+artifactPath                 compat       compile      packageSrc      /mirror/r/policy/compat/target/scala-2.11/policy-compat_2.11-1.0.0-SNAPSHOT-sources.jar
+artifactPath                 compat       test         packageBin      /mirror/r/policy/compat/target/scala-2.11/policy-compat_2.11-1.0.0-SNAPSHOT-tests.jar
+artifactPath                 compat       test         packageDoc      /mirror/r/policy/compat/target/scala-2.11/policy-compat_2.11-1.0.0-SNAPSHOT-tests-javadoc.jar
+artifactPath                 compat       test         packageSrc      /mirror/r/policy/compat/target/scala-2.11/policy-compat_2.11-1.0.0-SNAPSHOT-tests-sources.jar
+artifactPath                 compiler     *            makePom         /mirror/r/policy/compiler/target/scala-2.11/policy-compiler_2.11-1.0.0-SNAPSHOT.pom
+artifactPath                 compiler     compile      packageBin      /mirror/r/policy/compiler/target/scala-2.11/policy-compiler_2.11-1.0.0-SNAPSHOT.jar
+artifactPath                 compiler     compile      packageDoc      /mirror/r/policy/compiler/target/scala-2.11/policy-compiler_2.11-1.0.0-SNAPSHOT-javadoc.jar
+artifactPath                 compiler     compile      packageSrc      /mirror/r/policy/compiler/target/scala-2.11/policy-compiler_2.11-1.0.0-SNAPSHOT-sources.jar
+artifactPath                 compiler     test         packageBin      /mirror/r/policy/compiler/target/scala-2.11/policy-compiler_2.11-1.0.0-SNAPSHOT-tests.jar
+artifactPath                 compiler     test         packageDoc      /mirror/r/policy/compiler/target/scala-2.11/policy-compiler_2.11-1.0.0-SNAPSHOT-tests-javadoc.jar
+artifactPath                 compiler     test         packageSrc      /mirror/r/policy/compiler/target/scala-2.11/policy-compiler_2.11-1.0.0-SNAPSHOT-tests-sources.jar
+artifactPath                 library      *            makePom         /mirror/r/policy/library/target/scala-2.11/policy-library_2.11-1.0.0-SNAPSHOT.pom
+artifactPath                 library      compile      packageBin      /mirror/r/policy/library/target/scala-2.11/policy-library_2.11-1.0.0-SNAPSHOT.jar
+artifactPath                 library      compile      packageDoc      /mirror/r/policy/library/target/scala-2.11/policy-library_2.11-1.0.0-SNAPSHOT-javadoc.jar
+artifactPath                 library      compile      packageSrc      /mirror/r/policy/library/target/scala-2.11/policy-library_2.11-1.0.0-SNAPSHOT-sources.jar
+artifactPath                 library      test         packageBin      /mirror/r/policy/library/target/scala-2.11/policy-library_2.11-1.0.0-SNAPSHOT-tests.jar
+artifactPath                 library      test         packageDoc      /mirror/r/policy/library/target/scala-2.11/policy-library_2.11-1.0.0-SNAPSHOT-tests-javadoc.jar
+artifactPath                 library      test         packageSrc      /mirror/r/policy/library/target/scala-2.11/policy-library_2.11-1.0.0-SNAPSHOT-tests-sources.jar
+artifactPath                 root         *            makePom         /mirror/r/policy/target/scala-2.11/policy-root_2.11-1.0.0-SNAPSHOT.pom
+artifactPath                 root         compile      packageBin      /mirror/r/policy/target/scala-2.11/policy-root_2.11-1.0.0-SNAPSHOT.jar
+artifactPath                 root         compile      packageDoc      /mirror/r/policy/target/scala-2.11/policy-root_2.11-1.0.0-SNAPSHOT-javadoc.jar
+artifactPath                 root         compile      packageSrc      /mirror/r/policy/target/scala-2.11/policy-root_2.11-1.0.0-SNAPSHOT-sources.jar
+artifactPath                 root         test         packageBin      /mirror/r/policy/target/scala-2.11/policy-root_2.11-1.0.0-SNAPSHOT-tests.jar
+artifactPath                 root         test         packageDoc      /mirror/r/policy/target/scala-2.11/policy-root_2.11-1.0.0-SNAPSHOT-tests-javadoc.jar
+artifactPath                 root         test         packageSrc      /mirror/r/policy/target/scala-2.11/policy-root_2.11-1.0.0-SNAPSHOT-tests-sources.jar
 autoApiMappings              *            *            *               false
 autoCompilerPlugins          *            *            *               true
 autoScalaLibrary             *            *            *               true
@@ -76,27 +76,27 @@ baseDirectory                compiler     *            *               /mirror/r
 baseDirectory                library      *            *               /mirror/r/policy/library
 baseDirectory                root         *            *               /mirror/r/policy
 buildDependencies            *            *            *               <sbt.BuildDependencies>
-cacheDirectory               compat       *            *               /mirror/r/policy/compat/target/scala-2.10/cache/compat/global
-cacheDirectory               compat       compile      *               /mirror/r/policy/compat/target/scala-2.10/cache/compat/compile
-cacheDirectory               compat       test         *               /mirror/r/policy/compat/target/scala-2.10/cache/compat/test
-cacheDirectory               compiler     *            *               /mirror/r/policy/compiler/target/scala-2.10/cache/compiler/global
-cacheDirectory               compiler     compile      *               /mirror/r/policy/compiler/target/scala-2.10/cache/compiler/compile
-cacheDirectory               compiler     test         *               /mirror/r/policy/compiler/target/scala-2.10/cache/compiler/test
-cacheDirectory               library      *            *               /mirror/r/policy/library/target/scala-2.10/cache/library/global
-cacheDirectory               library      compile      *               /mirror/r/policy/library/target/scala-2.10/cache/library/compile
-cacheDirectory               library      test         *               /mirror/r/policy/library/target/scala-2.10/cache/library/test
-cacheDirectory               root         *            *               /mirror/r/policy/target/scala-2.10/cache/root/global
-cacheDirectory               root         compile      *               /mirror/r/policy/target/scala-2.10/cache/root/compile
-cacheDirectory               root         test         *               /mirror/r/policy/target/scala-2.10/cache/root/test
+cacheDirectory               compat       *            *               /mirror/r/policy/compat/target/scala-2.11/cache/compat/global
+cacheDirectory               compat       compile      *               /mirror/r/policy/compat/target/scala-2.11/cache/compat/compile
+cacheDirectory               compat       test         *               /mirror/r/policy/compat/target/scala-2.11/cache/compat/test
+cacheDirectory               compiler     *            *               /mirror/r/policy/compiler/target/scala-2.11/cache/compiler/global
+cacheDirectory               compiler     compile      *               /mirror/r/policy/compiler/target/scala-2.11/cache/compiler/compile
+cacheDirectory               compiler     test         *               /mirror/r/policy/compiler/target/scala-2.11/cache/compiler/test
+cacheDirectory               library      *            *               /mirror/r/policy/library/target/scala-2.11/cache/library/global
+cacheDirectory               library      compile      *               /mirror/r/policy/library/target/scala-2.11/cache/library/compile
+cacheDirectory               library      test         *               /mirror/r/policy/library/target/scala-2.11/cache/library/test
+cacheDirectory               root         *            *               /mirror/r/policy/target/scala-2.11/cache/root/global
+cacheDirectory               root         compile      *               /mirror/r/policy/target/scala-2.11/cache/root/compile
+cacheDirectory               root         test         *               /mirror/r/policy/target/scala-2.11/cache/root/test
 cancelable                   *            *            *               false
-classDirectory               compat       compile      *               /mirror/r/policy/compat/target/scala-2.10/classes
-classDirectory               compat       test         *               /mirror/r/policy/compat/target/scala-2.10/test-classes
-classDirectory               compiler     compile      *               /mirror/r/policy/compiler/target/scala-2.10/classes
-classDirectory               compiler     test         *               /mirror/r/policy/compiler/target/scala-2.10/test-classes
-classDirectory               library      compile      *               /mirror/r/policy/library/target/scala-2.10/classes
-classDirectory               library      test         *               /mirror/r/policy/library/target/scala-2.10/test-classes
-classDirectory               root         compile      *               /mirror/r/policy/target/scala-2.10/classes
-classDirectory               root         test         *               /mirror/r/policy/target/scala-2.10/test-classes
+classDirectory               compat       compile      *               /mirror/r/policy/compat/target/scala-2.11/classes
+classDirectory               compat       test         *               /mirror/r/policy/compat/target/scala-2.11/test-classes
+classDirectory               compiler     compile      *               /mirror/r/policy/compiler/target/scala-2.11/classes
+classDirectory               compiler     test         *               /mirror/r/policy/compiler/target/scala-2.11/test-classes
+classDirectory               library      compile      *               /mirror/r/policy/library/target/scala-2.11/classes
+classDirectory               library      test         *               /mirror/r/policy/library/target/scala-2.11/test-classes
+classDirectory               root         compile      *               /mirror/r/policy/target/scala-2.11/classes
+classDirectory               root         test         *               /mirror/r/policy/target/scala-2.11/test-classes
 classpathOptions             *            *            *               ClasspathOptions(true, false, false, true, true)
 classpathOptions             *            *            console         ClasspathOptions(true, true, true, true, true)
 compileOrder                 *            *            *               Mixed
@@ -128,10 +128,10 @@ conflictWarning              library      *            *               ConflictW
 conflictWarning              root         *            *               ConflictWarning("{file:/mirror/r/policy/}root", error, true)
 connectInput                 *            *            *               false
 crossPaths                   *            *            *               true
-crossTarget                  compat       *            *               /mirror/r/policy/compat/target/scala-2.10
-crossTarget                  compiler     *            *               /mirror/r/policy/compiler/target/scala-2.10
-crossTarget                  library      *            *               /mirror/r/policy/library/target/scala-2.10
-crossTarget                  root         *            *               /mirror/r/policy/target/scala-2.10
+crossTarget                  compat       *            *               /mirror/r/policy/compat/target/scala-2.11
+crossTarget                  compiler     *            *               /mirror/r/policy/compiler/target/scala-2.11
+crossTarget                  library      *            *               /mirror/r/policy/library/target/scala-2.11
+crossTarget                  root         *            *               /mirror/r/policy/target/scala-2.11
 crossVersion                 *            *            *               disabled
 crossVersion                 compat       *            *               Binary
 crossVersion                 compiler     *            *               Binary
@@ -142,10 +142,10 @@ dependencyUpdatesReportFile  compat       *            *               /mirror/r
 dependencyUpdatesReportFile  compiler     *            *               /mirror/r/policy/compiler/target/dependency-updates.txt
 dependencyUpdatesReportFile  library      *            *               /mirror/r/policy/library/target/dependency-updates.txt
 dependencyUpdatesReportFile  root         *            *               /mirror/r/policy/target/dependency-updates.txt
-description                  compat       *            *               "compat"
-description                  compiler     *            *               "compiler"
-description                  library      *            *               "library"
-description                  root         *            *               "root"
+description                  compat       *            *               "policy-compat"
+description                  compiler     *            *               "policy-compiler"
+description                  library      *            *               "policy-library"
+description                  root         *            *               "policy-root"
 exportJars                   *            *            *               false
 fork                         *            *            *               false
 gpgCommand                   *            *            *               "gpg"
@@ -162,10 +162,10 @@ ivyPaths                     compat       *            *               <sbt.IvyP
 ivyPaths                     compiler     *            *               <sbt.IvyPaths>
 ivyPaths                     library      *            *               <sbt.IvyPaths>
 ivyPaths                     root         *            *               <sbt.IvyPaths>
-ivyScala                     compat       *            *               IvyScala("2.10.4", "2.10", -, true, false, false, "org.scala-lang")
-ivyScala                     compiler     *            *               IvyScala("2.10.4", "2.10", -, true, false, false, "org.scala-lang")
-ivyScala                     library      *            *               IvyScala("2.10.4", "2.10", -, true, false, false, "org.scala-lang")
-ivyScala                     root         *            *               IvyScala("2.10.4", "2.10", -, true, false, false, "org.scala-lang")
+ivyScala                     compat       *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
+ivyScala                     compiler     *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
+ivyScala                     library      *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
+ivyScala                     root         *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
 ivyValidate                  *            *            *               false
 javaSource                   compat       compile      *               /mirror/r/policy/compat/src/main/java
 javaSource                   compat       test         *               /mirror/r/policy/compat/src/test/java
@@ -180,38 +180,38 @@ logBuffered                  *            *            *               false
 logBuffered                  *            *            test            true
 logBuffered                  *            *            testOnly        true
 logBuffered                  *            *            testQuick       true
-makePomConfiguration         compat       *            *               MakePomConfiguration(/mirror/r/policy/compat/target/scala-2.10/compat_2.10-0.1-SNAPSHOT.pom, ModuleInfo("compat", "compat", -, -, -, "compat", -, -), -, -, -, -, false, -)
-makePomConfiguration         compiler     *            *               MakePomConfiguration(/mirror/r/policy/compiler/target/scala-2.10/compiler_2.10-0.1-SNAPSHOT.pom, ModuleInfo("compiler", "compiler", -, -, -, "compiler", -, -), -, -, -, -, false, -)
-makePomConfiguration         library      *            *               MakePomConfiguration(/mirror/r/policy/library/target/scala-2.10/library_2.10-0.1-SNAPSHOT.pom, ModuleInfo("library", "library", -, -, -, "library", -, -), -, -, -, -, false, -)
-makePomConfiguration         root         *            *               MakePomConfiguration(/mirror/r/policy/target/scala-2.10/root_2.10-0.1-SNAPSHOT.pom, ModuleInfo("root", "root", -, -, -, "root", -, -), -, -, -, -, false, -)
+makePomConfiguration         compat       *            *               MakePomConfiguration(/mirror/r/policy/compat/target/scala-2.11/policy-compat_2.11-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-compat", "policy-compat", -, -, -, "policy-compat", -, -), -, -, -, -, false, -)
+makePomConfiguration         compiler     *            *               MakePomConfiguration(/mirror/r/policy/compiler/target/scala-2.11/policy-compiler_2.11-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-compiler", "policy-compiler", -, -, -, "policy-compiler", -, -), -, -, -, -, false, -)
+makePomConfiguration         library      *            *               MakePomConfiguration(/mirror/r/policy/library/target/scala-2.11/policy-library_2.11-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-library", "policy-library", -, -, -, "policy-library", -, -), -, -, -, -, false, -)
+makePomConfiguration         root         *            *               MakePomConfiguration(/mirror/r/policy/target/scala-2.11/policy-root_2.11-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-root", "policy-root", -, -, -, "policy-root", -, -), -, -, -, -, false, -)
 managedDirectory             {.}          *            *               /mirror/r/policy/lib_managed
 managedScalaInstance         *            *            *               true
 maxErrors                    *            *            *               100
-moduleName                   compat       *            *               "compat"
-moduleName                   compiler     *            *               "compiler"
-moduleName                   library      *            *               "library"
-moduleName                   root         *            *               "root"
-name                         compat       *            *               "compat"
-name                         compiler     *            *               "compiler"
-name                         library      *            *               "library"
-name                         root         *            *               "root"
-normalizedName               compat       *            *               "compat"
-normalizedName               compiler     *            *               "compiler"
-normalizedName               library      *            *               "library"
-normalizedName               root         *            *               "root"
+moduleName                   compat       *            *               "policy-compat"
+moduleName                   compiler     *            *               "policy-compiler"
+moduleName                   library      *            *               "policy-library"
+moduleName                   root         *            *               "policy-root"
+name                         compat       *            *               "policy-compat"
+name                         compiler     *            *               "policy-compiler"
+name                         library      *            *               "policy-library"
+name                         root         *            *               "policy-root"
+normalizedName               compat       *            *               "policy-compat"
+normalizedName               compiler     *            *               "policy-compiler"
+normalizedName               library      *            *               "policy-library"
+normalizedName               root         *            *               "policy-root"
 offline                      *            *            *               false
-onLoadMessage                compat       *            *               "Set current project to compat (in build file:/mirror/r/policy/)"
-onLoadMessage                compiler     *            *               "Set current project to compiler (in build file:/mirror/r/policy/)"
-onLoadMessage                library      *            *               "Set current project to library (in build file:/mirror/r/policy/)"
-onLoadMessage                root         *            *               "Set current project to root (in build file:/mirror/r/policy/)"
-organization                 compat       *            *               "compat"
-organization                 compiler     *            *               "compiler"
-organization                 library      *            *               "library"
-organization                 root         *            *               "root"
-organizationName             compat       *            *               "compat"
-organizationName             compiler     *            *               "compiler"
-organizationName             library      *            *               "library"
-organizationName             root         *            *               "root"
+onLoadMessage                compat       *            *               "Set current project to policy-compat (in build file:/mirror/r/policy/)"
+onLoadMessage                compiler     *            *               "Set current project to policy-compiler (in build file:/mirror/r/policy/)"
+onLoadMessage                library      *            *               "Set current project to policy-library (in build file:/mirror/r/policy/)"
+onLoadMessage                root         *            *               "Set current project to policy-root (in build file:/mirror/r/policy/)"
+organization                 compat       *            *               "policy-compat"
+organization                 compiler     *            *               "policy-compiler"
+organization                 library      *            *               "policy-library"
+organization                 root         *            *               "policy-root"
+organizationName             compat       *            *               "policy-compat"
+organizationName             compiler     *            *               "policy-compiler"
+organizationName             library      *            *               "policy-library"
+organizationName             root         *            *               "policy-root"
 overrideBuildResolvers       compat       *            *               false
 overrideBuildResolvers       compiler     *            *               false
 overrideBuildResolvers       library      *            *               false
@@ -220,14 +220,14 @@ parallelExecution            *            *            *               true
 pollInterval                 *            *            *               500
 pomAllRepositories           *            *            *               false
 previousReferences           *            *            *               <sbt.Previous$References>
-projectId                    compat       *            *               ModuleID("compat", "compat", "0.1-SNAPSHOT", -, false, true, false, -, -, -, Binary)
-projectId                    compiler     *            *               ModuleID("compiler", "compiler", "0.1-SNAPSHOT", -, false, true, false, -, -, -, Binary)
-projectId                    library      *            *               ModuleID("library", "library", "0.1-SNAPSHOT", -, false, true, false, -, -, -, Binary)
-projectId                    root         *            *               ModuleID("root", "root", "0.1-SNAPSHOT", -, false, true, false, -, -, -, Binary)
-projectInfo                  compat       *            *               ModuleInfo("compat", "compat", -, -, -, "compat", -, -)
-projectInfo                  compiler     *            *               ModuleInfo("compiler", "compiler", -, -, -, "compiler", -, -)
-projectInfo                  library      *            *               ModuleInfo("library", "library", -, -, -, "library", -, -)
-projectInfo                  root         *            *               ModuleInfo("root", "root", -, -, -, "root", -, -)
+projectId                    compat       *            *               ModuleID("policy-compat", "policy-compat", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, Binary)
+projectId                    compiler     *            *               ModuleID("policy-compiler", "policy-compiler", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, Binary)
+projectId                    library      *            *               ModuleID("policy-library", "policy-library", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, Binary)
+projectId                    root         *            *               ModuleID("policy-root", "policy-root", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, Binary)
+projectInfo                  compat       *            *               ModuleInfo("policy-compat", "policy-compat", -, -, -, "policy-compat", -, -)
+projectInfo                  compiler     *            *               ModuleInfo("policy-compiler", "policy-compiler", -, -, -, "policy-compiler", -, -)
+projectInfo                  library      *            *               ModuleInfo("policy-library", "policy-library", -, -, -, "policy-library", -, -)
+projectInfo                  root         *            *               ModuleInfo("policy-root", "policy-root", -, -, -, "policy-root", -, -)
 publishArtifact              *            *            *               true
 publishArtifact              *            test         *               false
 publishArtifact              compat       *            makePom         true
@@ -243,18 +243,18 @@ resourceDirectory            library      compile      *               /mirror/r
 resourceDirectory            library      test         *               /mirror/r/policy/library/src/test/resources
 resourceDirectory            root         compile      *               /mirror/r/policy/src/main/resources
 resourceDirectory            root         test         *               /mirror/r/policy/src/test/resources
-resourceManaged              compat       *            *               /mirror/r/policy/compat/target/scala-2.10/resource_managed
-resourceManaged              compat       compile      *               /mirror/r/policy/compat/target/scala-2.10/resource_managed/main
-resourceManaged              compat       test         *               /mirror/r/policy/compat/target/scala-2.10/resource_managed/test
-resourceManaged              compiler     *            *               /mirror/r/policy/compiler/target/scala-2.10/resource_managed
-resourceManaged              compiler     compile      *               /mirror/r/policy/compiler/target/scala-2.10/resource_managed/main
-resourceManaged              compiler     test         *               /mirror/r/policy/compiler/target/scala-2.10/resource_managed/test
-resourceManaged              library      *            *               /mirror/r/policy/library/target/scala-2.10/resource_managed
-resourceManaged              library      compile      *               /mirror/r/policy/library/target/scala-2.10/resource_managed/main
-resourceManaged              library      test         *               /mirror/r/policy/library/target/scala-2.10/resource_managed/test
-resourceManaged              root         *            *               /mirror/r/policy/target/scala-2.10/resource_managed
-resourceManaged              root         compile      *               /mirror/r/policy/target/scala-2.10/resource_managed/main
-resourceManaged              root         test         *               /mirror/r/policy/target/scala-2.10/resource_managed/test
+resourceManaged              compat       *            *               /mirror/r/policy/compat/target/scala-2.11/resource_managed
+resourceManaged              compat       compile      *               /mirror/r/policy/compat/target/scala-2.11/resource_managed/main
+resourceManaged              compat       test         *               /mirror/r/policy/compat/target/scala-2.11/resource_managed/test
+resourceManaged              compiler     *            *               /mirror/r/policy/compiler/target/scala-2.11/resource_managed
+resourceManaged              compiler     compile      *               /mirror/r/policy/compiler/target/scala-2.11/resource_managed/main
+resourceManaged              compiler     test         *               /mirror/r/policy/compiler/target/scala-2.11/resource_managed/test
+resourceManaged              library      *            *               /mirror/r/policy/library/target/scala-2.11/resource_managed
+resourceManaged              library      compile      *               /mirror/r/policy/library/target/scala-2.11/resource_managed/main
+resourceManaged              library      test         *               /mirror/r/policy/library/target/scala-2.11/resource_managed/test
+resourceManaged              root         *            *               /mirror/r/policy/target/scala-2.11/resource_managed
+resourceManaged              root         compile      *               /mirror/r/policy/target/scala-2.11/resource_managed/main
+resourceManaged              root         test         *               /mirror/r/policy/target/scala-2.11/resource_managed/test
 retrieveManaged              *            *            *               false
 retrievePattern              *            *            *               "[type]s/[organisation]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[artifact](-[revision])(-[classifier]).[ext]"
 sbtBinaryVersion             *            *            *               "0.13"
@@ -262,10 +262,10 @@ sbtDependency                *            *            *               ModuleID(
 sbtPlugin                    *            *            *               false
 sbtResolver                  *            *            *               URLRepository("typesafe-ivy-releases", <sbt.Patterns>)
 sbtVersion                   *            *            *               "0.13.5"
-scalaBinaryVersion           compat       *            *               "2.10"
-scalaBinaryVersion           compiler     *            *               "2.10"
-scalaBinaryVersion           library      *            *               "2.10"
-scalaBinaryVersion           root         *            *               "2.10"
+scalaBinaryVersion           compat       *            *               "2.11"
+scalaBinaryVersion           compiler     *            *               "2.11"
+scalaBinaryVersion           library      *            *               "2.11"
+scalaBinaryVersion           root         *            *               "2.11"
 scalaOrganization            *            *            *               "org.scala-lang"
 scalaSource                  compat       compile      *               /mirror/r/policy/compat/src/main/scala
 scalaSource                  compat       test         *               /mirror/r/policy/compat/src/test/scala
@@ -276,6 +276,10 @@ scalaSource                  library      test         *               /mirror/r
 scalaSource                  root         compile      *               /mirror/r/policy/src/main/scala
 scalaSource                  root         test         *               /mirror/r/policy/src/test/scala
 scalaVersion                 *            *            *               "2.10.4"
+scalaVersion                 compat       *            *               "2.11.1"
+scalaVersion                 compiler     *            *               "2.11.1"
+scalaVersion                 library      *            *               "2.11.1"
+scalaVersion                 root         *            *               "2.11.1"
 settingsDumpFile             {.}          *            *               /mirror/r/policy/settings.dump
 showSuccess                  *            *            *               true
 showTiming                   *            *            *               true
@@ -291,31 +295,31 @@ sourceDirectory              library      test         *               /mirror/r
 sourceDirectory              root         *            *               /mirror/r/policy/src
 sourceDirectory              root         compile      *               /mirror/r/policy/src/main
 sourceDirectory              root         test         *               /mirror/r/policy/src/test
-sourceManaged                compat       *            *               /mirror/r/policy/compat/target/scala-2.10/src_managed
-sourceManaged                compat       compile      *               /mirror/r/policy/compat/target/scala-2.10/src_managed/main
-sourceManaged                compat       test         *               /mirror/r/policy/compat/target/scala-2.10/src_managed/test
-sourceManaged                compiler     *            *               /mirror/r/policy/compiler/target/scala-2.10/src_managed
-sourceManaged                compiler     compile      *               /mirror/r/policy/compiler/target/scala-2.10/src_managed/main
-sourceManaged                compiler     test         *               /mirror/r/policy/compiler/target/scala-2.10/src_managed/test
-sourceManaged                library      *            *               /mirror/r/policy/library/target/scala-2.10/src_managed
-sourceManaged                library      compile      *               /mirror/r/policy/library/target/scala-2.10/src_managed/main
-sourceManaged                library      test         *               /mirror/r/policy/library/target/scala-2.10/src_managed/test
-sourceManaged                root         *            *               /mirror/r/policy/target/scala-2.10/src_managed
-sourceManaged                root         compile      *               /mirror/r/policy/target/scala-2.10/src_managed/main
-sourceManaged                root         test         *               /mirror/r/policy/target/scala-2.10/src_managed/test
+sourceManaged                compat       *            *               /mirror/r/policy/compat/target/scala-2.11/src_managed
+sourceManaged                compat       compile      *               /mirror/r/policy/compat/target/scala-2.11/src_managed/main
+sourceManaged                compat       test         *               /mirror/r/policy/compat/target/scala-2.11/src_managed/test
+sourceManaged                compiler     *            *               /mirror/r/policy/compiler/target/scala-2.11/src_managed
+sourceManaged                compiler     compile      *               /mirror/r/policy/compiler/target/scala-2.11/src_managed/main
+sourceManaged                compiler     test         *               /mirror/r/policy/compiler/target/scala-2.11/src_managed/test
+sourceManaged                library      *            *               /mirror/r/policy/library/target/scala-2.11/src_managed
+sourceManaged                library      compile      *               /mirror/r/policy/library/target/scala-2.11/src_managed/main
+sourceManaged                library      test         *               /mirror/r/policy/library/target/scala-2.11/src_managed/test
+sourceManaged                root         *            *               /mirror/r/policy/target/scala-2.11/src_managed
+sourceManaged                root         compile      *               /mirror/r/policy/target/scala-2.11/src_managed/main
+sourceManaged                root         test         *               /mirror/r/policy/target/scala-2.11/src_managed/test
 sourcesInBase                *            *            *               true
 target                       compat       *            *               /mirror/r/policy/compat/target
-target                       compat       compile      doc             /mirror/r/policy/compat/target/scala-2.10/api
-target                       compat       test         doc             /mirror/r/policy/compat/target/scala-2.10/test-api
+target                       compat       compile      doc             /mirror/r/policy/compat/target/scala-2.11/api
+target                       compat       test         doc             /mirror/r/policy/compat/target/scala-2.11/test-api
 target                       compiler     *            *               /mirror/r/policy/compiler/target
-target                       compiler     compile      doc             /mirror/r/policy/compiler/target/scala-2.10/api
-target                       compiler     test         doc             /mirror/r/policy/compiler/target/scala-2.10/test-api
+target                       compiler     compile      doc             /mirror/r/policy/compiler/target/scala-2.11/api
+target                       compiler     test         doc             /mirror/r/policy/compiler/target/scala-2.11/test-api
 target                       library      *            *               /mirror/r/policy/library/target
-target                       library      compile      doc             /mirror/r/policy/library/target/scala-2.10/api
-target                       library      test         doc             /mirror/r/policy/library/target/scala-2.10/test-api
+target                       library      compile      doc             /mirror/r/policy/library/target/scala-2.11/api
+target                       library      test         doc             /mirror/r/policy/library/target/scala-2.11/test-api
 target                       root         *            *               /mirror/r/policy/target
-target                       root         compile      doc             /mirror/r/policy/target/scala-2.10/api
-target                       root         test         doc             /mirror/r/policy/target/scala-2.10/test-api
+target                       root         compile      doc             /mirror/r/policy/target/scala-2.11/api
+target                       root         test         doc             /mirror/r/policy/target/scala-2.11/test-api
 testForkedParallel           *            *            *               false
 thisProject                  compat       *            *               <sbt.Project$$anon$1>
 thisProject                  compiler     *            *               <sbt.Project$$anon$1>
@@ -342,3 +346,7 @@ updateConfiguration          root         *            *               <sbt.Upda
 useGpg                       *            *            *               false
 useGpgAgent                  *            *            *               false
 version                      *            *            *               "0.1-SNAPSHOT"
+version                      compat       *            *               "1.0.0-SNAPSHOT"
+version                      compiler     *            *               "1.0.0-SNAPSHOT"
+version                      library      *            *               "1.0.0-SNAPSHOT"
+version                      root         *            *               "1.0.0-SNAPSHOT"
