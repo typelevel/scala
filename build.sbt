@@ -1,13 +1,18 @@
 import policy.building._
 
-onLoad in Global ~=  (_ andThen ScopedShow.dump)
+def policyGlobalSettings = Seq(
+    organization in ThisBuild :=  PolicyOrg,
+             onLoad in Global ~=  chain(ScopedShow.dump),
+  PolicyKeys.settingsDumpFile <<= fromBase("settings.dump")
+)
 
-PolicyKeys.settingsDumpFile <<= topDir("settings.dump")
+policyGlobalSettings
 
 // See project/BuildSettings for all the details - here we retain a high level view.
 lazy val root = (
-  (project in file(".")).setup.noArtifacts
-    dependsOn ( library, compilerProject ) aggregate ( library, compilerProject, compat )
+  project.rootSetup
+    dependsOn ( library, compilerProject )
+    aggregate ( library, compilerProject, compat )
 )
 
 lazy val library = project.setup addMima scalaLibrary
@@ -15,14 +20,16 @@ lazy val library = project.setup addMima scalaLibrary
 lazy val compilerProject = (
   Project(id = "compiler", base = file("compiler")).setup
     dependsOn library
+    deps jline
     intransitiveTestDeps ( diffutils, testInterface )
 )
 
-lazy val repl = project.setup dependsOn compilerProject deps jline
+// sbt compiler-interface depends on repl classes.
+// lazy val repl = project.setup dependsOn compilerProject deps jline
 
 lazy val compat = (
   project.setup.noArtifacts
-    dependsOn compilerProject
+    dependsOn ( compilerProject )
     sbtDeps ( "interface", "compiler-interface" )
 )
 

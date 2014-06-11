@@ -10,6 +10,8 @@ package object building extends PolicyPackage {
     LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME).asInstanceOf[classic.Logger] setLevel classic.Level.INFO
   }
 
+  def chain[A](g: A => A)(f: A => A): A => A = f andThen g
+
   def doto[A](x: A)(f: A => Unit): A = { f(x) ; x }
 
   // All interesting implicits should be in one place.
@@ -20,7 +22,8 @@ package object building extends PolicyPackage {
   implicit def sequenceOps[A](xs: Seq[A]): SequenceOps[A]                         = new SequenceOps[A](xs)
 
   implicit class InitSettingOps[A](val key: SettingOf[A]) {
-    def andThen[B](f: A => B): SettingOf[B] = Def setting f(key.value)
+    def |> [B](f: A => B): SettingOf[B] = Def setting f(key.value)
+    def task: TaskOf[A]                 = Def task key.value
   }
 
   implicit class SettingKeyOps[A](val key: SettingKey[A])(implicit state: State) {

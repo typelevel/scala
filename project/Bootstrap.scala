@@ -34,7 +34,7 @@ trait Bootstrap {
   // Records the version in project/local.properties where it has precedence over build.properties.
   // Reboots sbt under the new jars.
   private val publishLocalBootstrap: StateMap = commonBootstrap(isLocal = true, Nil)
-  private val publishBootstrap: StateMap      = commonBootstrap(isLocal = false, Seq("publish"))
+  private val publishBootstrap: StateMap      = commonBootstrap(isLocal = false, applyProjects(_ + "/publish"))
 
   private def saveBootstrapVersion(args: Seq[String]): StateMap = WState { ws =>
     val (props, newModule) = args.toList match {
@@ -54,12 +54,12 @@ trait Bootstrap {
     sys.props(BootstrapModuleProperty) = m
   }
 
-  private def bootstrapSettings(newVersion: String) = Seq(
-        name in 'library := "bootstrap-library",
-       name in 'compiler := "bootstrap-compiler",
-     version in 'library := newVersion,
-    version in 'compiler := newVersion
+  private def bootstrapSettings(newVersion: String) = (
+       applyProjects(s => name in LocalProject(s) := s"bootstrap-$s")
+    ++ applyProjects(s => version in LocalProject(s) := newVersion)
   )
+
+  private def applyProjects[A](f: String => A): Seq[A] = Seq("library", "compiler") map f
 
   private def commonBootstrap(isLocal: Boolean, commands: Seq[String]): StateMap = WState { ws =>
     val newVersion = ws(version) match {
@@ -67,7 +67,7 @@ trait Bootstrap {
       case v            => v
     }
     val saveCommand = "saveBootstrapVersion %s %s".format( if (isLocal) "local" else "remote" , newVersion )
-    val newCommands = "publishLocal" +: commands :+ saveCommand :+ "reboot full"
+    val newCommands = applyProjects(_ + "/publishLocal") ++ commands :+ saveCommand :+ "reboot full"
 
     ws set bootstrapSettings(newVersion) run newCommands
   }

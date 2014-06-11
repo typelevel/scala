@@ -58,23 +58,19 @@ trait SbtHelpers {
   def sbtFilesIn(dir: File): Seq[File]                   = filesIn(dir, "sbt")
   def sourceFilesIn(dir: File): Seq[File]                = filesIn(dir, "scala", "java")
 
-  def topDir(name: String): SettingOf[File]      = buildBase andThen (_ / name)
-  def sourceFilesInProject: SettingOf[Seq[File]] = topDir("project") andThen sourceFilesIn
-
-  // def buildBase: SettingKey[File]   = baseDirectory in ThisBuild
-  // def projectBase: SettingKey[File] = baseDirectory in ThisProject
+  def fromBase(path: String): SettingOf[File]    = buildBase |> (_ / path)
+  def sourceFilesInProject: SettingOf[Seq[File]] = fromBase("project") |> sourceFilesIn
 
   // Settings
   def sbtFilesInBuild           = buildBase map sbtFilesIn
-  def sourcePathOpts            = scalaSource in Compile map (p => Seq("-sourcepath", p.getPath))
   def logger                    = streams in Compile map (_.log)
-  def testBase: SettingOf[File] = topDir("test")
-  def srcBase: SettingOf[File]  = topDir("src")
+  def testBase: SettingOf[File] = fromBase("test")
+  def srcBase: SettingOf[File]  = fromBase("src")
 
   def allInSrc(words: String)                     = Def setting (wordSeq(words) map (srcBase.value / _))
   def inSrc(name: String)                         = Def setting (srcBase.value / name)
   def fromSrc(f: File => File): SettingOf[File]   = Def setting f(srcBase.value)
-  def fromBuild(f: File => File): SettingOf[File] = buildBase andThen f //transform (x => f(x))
+  def fromBuild(f: File => File): SettingOf[File] = buildBase |> f
 
   // Parsers
   def scalaVersionParser: Parser[String] = token(Space) ~> token(NotSpace, "a scala version")
@@ -92,7 +88,8 @@ trait SbtHelpers {
 
   // Hairier sbt-internal stuff.
 
-  def buildLevelJars = Def setting (buildBase.value / "lib" * "*.jar").get
+  def buildLevelJars: SettingOf[Seq[File]] = fromBase("lib") |> (filesIn(_, "jar"))
+
   def chooseBootstrap = sysOrBuild(BootstrapModuleProperty).fold(scalaModuleId("compiler"))(moduleId)
 
   def scalaInstanceForVersion(version: String): TaskOf[ScalaInstance] =

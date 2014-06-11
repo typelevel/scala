@@ -44,11 +44,11 @@ object ScopedShow {
 
 // Making sense of sbt's scoped key clusterfuck.
 class ScopedShow[A](ws: WState, set: Setting[A]) {
-  val ThisBuildUri = ws(baseDirectory in ThisBuild).toURI
-  val skey = set.key
-  val key   = skey.scopedKey
-  def attrKey = key.key
-  val scope = key.scope
+  val ThisBuildUri = ws(PolicyKeys.buildBase).toURI
+  val skey         = set.key
+  val key          = skey.scopedKey
+  def attrKey      = key.key
+  val scope        = key.scope
   import scope._
   def label   = attrKey.label
   def axes    = List(project, config, task, extra)

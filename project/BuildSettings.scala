@@ -1,7 +1,7 @@
 package policy
 package building
 
-import sbt._, Keys._
+import sbt._, Keys._, PolicyKeys._
 import Opts.resolver._
 import Classpaths.{ packaged, publishConfig }
 import bintray.Plugin.{ bintraySettings, bintrayPublishSettings }
@@ -33,16 +33,16 @@ trait Depends {
 }
 
 final class ProjectOps(val p: Project) {
-  def useSourcePath        = p settings (scalacOptions in Compile <++= sourcePathOpts)
-  def noArtifacts          = p settings (publish := (), publishLocal := (), unmanagedSourceDirectories := Nil)
+  def noArtifacts          = p settings (publish := (), publishLocal := ())
   def addMima(m: ModuleID) = p also fullMimaSettings(m)
 
   def fullMimaSettings(m: ModuleID) = mimaDefaultSettings ++ Seq(
     binaryIssueFilters ++= MimaPolicy.filters,
-                  test :=  MimaKeys.reportBinaryIssues.value,
+                  test <<= MimaKeys.reportBinaryIssues,
       previousArtifact :=  Some(m)
   )
 
+  def rootSetup                                  = (p in file(".")).setup.noArtifacts
   def setup                                      = p also projectSettings(p.id)
   def also(ss: Traversable[Setting[_]]): Project = p settings (ss.toSeq: _*)
   def deps(ms: ModuleID*)                        = p settings (libraryDependencies ++= ms.toSeq)
@@ -54,14 +54,14 @@ final class ProjectOps(val p: Project) {
 
 private object projectSettings {
   final val Root     = "root"
-  final val Repl     = "repl"
+  // final val Repl     = "repl"
   final val Compiler = "compiler"
   final val Library  = "library"
   final val Compat   = "compat"
 
   def apply(id: String): SettingSeq = universal ++ (id match {
     case Root     => root
-    case Repl     => repl
+    // case Repl     => repl
     case Compat   => compat
     case Compiler => compiler
     case Library  => library
@@ -71,9 +71,9 @@ private object projectSettings {
   val asmJarKey     = taskKey[File]("asm jar")
   def asm           = PolicyOrg % "asm" % asmVersion
   def asmVersion    = "5.0.4-SNAPSHOT"
-  def asmJarTask    = topDir("lib") map (_ / s"asm-$asmVersion.jar")
-  def asmSettings   = Seq(asmJarKey <<= asmJarTask) ++ addArtifact(Artifact("asm"), asmJarKey).settings
-  def asmAttributed = Def task newCpElem(asmJarTask.value, Artifact("asm"), asm, ScalaTool)
+  def asmJarSetting = fromBase(s"lib/asm-$asmVersion.jar")
+  def asmSettings   = Seq(asmJarKey <<= asmJarSetting.task) ++ addArtifact(Artifact("asm"), asmJarKey).settings
+  def asmAttributed = asmJarSetting |> (newCpElem(_, Artifact("asm"), asm, ScalaTool))
 
   // Assembled settings for projects which produce an artifact.
   def codeProject(others: Setting[_]*) = compiling ++ publishing ++ others
@@ -95,44 +95,45 @@ private object projectSettings {
                      traceLevel :=  20,
               ivyConfigurations +=  ScalaTool,
                       resolvers +=  bintrayPaulpResolver,
-       unmanagedJars in Compile ++= buildLevelJars.value,
+       unmanagedJars in Compile <++= buildLevelJars.task,
                   scalaInstance <<= scalaInstance in ThisBuild
   )
 
   def compiler = codeProject(
-    unmanagedSourceDirectories in Compile <++= allInSrc("compiler reflect repl"),
-       unmanagedSourceDirectories in Test  +=  topDir("partest").value / "src",
-                    unmanagedBase in Test  :=  topDir("partest").value / "testlib",
-                             fork in Test  :=  true,
-                                     test <<=  runAllTests,
-                                 testOnly <<=  runTests
+           mainSourceDirs <++= allInSrc("compiler reflect repl"),
+             mainTestDirs <+=  fromBase("partest/src"),
+    unmanagedBase in Test <<=  fromBase("partest/testlib"),
+             fork in Test  :=  true,
+                     test <<=  runAllTests,
+                 testOnly <<=  runTests
   )
 
-  def repl = codeProject(scalaSource in Compile <<= inSrc(Repl))
+  // def repl = codeProject(mainSource <<= inSrc(Repl))
 
   def compat   = List(sourceGenerators in Compile <+= createUnzipTask)
 
   def library = codeProject(
-                   scalaSource in Compile <<=  inSrc(Library),
-    unmanagedSourceDirectories in Compile <++= allInSrc("forkjoin library"),
-                 scalacOptions in Compile ++=  Seq("-sourcepath", inSrc(Library).value.getPath),
-                         previousArtifact  :=  Some(scalaLibrary)
+            mainSource <<=  inSrc(Library),
+        mainSourceDirs <++= allInSrc("forkjoin library"),
+           mainOptions ++=  Seq("-sourcepath", mainSource.value.getPath),
+      previousArtifact  :=  Some(scalaLibrary)
   )
+
   def root = List(
-                                 name :=  PolicyName,
-            organization in ThisBuild :=  PolicyOrg,
-                  PolicyKeys.getScala :=  scalaInstanceTask.evaluated,
-                      PolicyKeys.repl :=  asInputTask(forkRepl).evaluated,
-                                  run :=  asInputTask(forkCompiler).evaluated,
-           initialCommands in console :=  "import scala.reflect.runtime.universe._",
-    initialCommands in consoleProject :=  "import policy.building._",
-                         watchSources ++= sbtFilesInBuild.value ++ sourceFilesInProject.value,
-         PolicyKeys.bootstrapModuleId :=  chooseBootstrap,
-                  libraryDependencies +=  PolicyKeys.bootstrapModuleId.value % ScalaTool.name,
-           scalaInstance in ThisBuild <<= scalaInstanceFromModuleIDTask,
-                             commands ++= bootstrapCommands,
-                              publish :=  (),
-                         publishLocal :=  ()
+                                 name  :=  PolicyName,
+                             getScala <<=  scalaInstanceTask,
+                      PolicyKeys.repl <<=  asInputTask(forkRepl),
+                                  run <<=  asInputTask(forkCompiler),
+           initialCommands in console  :=  "import scala.reflect.runtime.universe._",
+    initialCommands in consoleProject  :=  "import policy.building._",
+                         watchSources <++= sbtFilesInBuild,
+                         watchSources <++= sourceFilesInProject.task,
+                    bootstrapModuleId  :=  chooseBootstrap,
+                  libraryDependencies <+=  bootstrapModuleId |> (_ % ScalaTool.name),
+           scalaInstance in ThisBuild <<=  scalaInstanceFromModuleIDTask,
+                             commands ++=  bootstrapCommands,
+                              publish  :=  (),
+                         publishLocal  :=  ()
   )
   def publishing = List(
                      checksums in publishLocal := Nil,

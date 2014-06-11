@@ -10,8 +10,13 @@ object PolicyKeys {
   val settingsDumpFile  = settingKey[File]("file into which to record all sbt settings") in ThisBuild
   val bootstrapModuleId = settingKey[ModuleID]("module id of bootstrap compiler") in ThisBuild
 
-  val buildBase: SettingKey[File]   = baseDirectory in ThisBuild
-  val projectBase: SettingKey[File] = baseDirectory in ThisProject
+  val buildBase: FileKey   = baseDirectory in ThisBuild
+  val projectBase: FileKey = baseDirectory in ThisProject
+  val mainSource: FileKey  = scalaSource in Compile
+
+  val mainOptions: TaskKey[Seq[String]] = scalacOptions in Compile
+  val mainSourceDirs                    = unmanagedSourceDirectories in Compile
+  val mainTestDirs                      = unmanagedSourceDirectories in Test
 }
 
 trait BuildTasks {
@@ -34,8 +39,8 @@ trait BuildTasks {
   }
 
   def runTestsWithArgs(args: List[String]): TaskOf[Int] = forkPartest map (_ apply (args: _*))
-  def runAllTests: TaskOf[Unit] = Def task forkPartest.value("--all")
-  def runTests = Def inputTask {
+  def runAllTests: TaskOf[Unit] = forkPartest map (_ apply "--all")
+  def runTests: InputTaskOf[Unit] = Def inputTask {
     spaceDelimited("<arg>").parsed match {
       case Nil  => forkPartest.value("--failed", "--show-diff") // testOnly with no args we'll take to mean --failed
       case args => forkPartest.value(args: _*)
