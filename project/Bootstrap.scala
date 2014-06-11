@@ -6,13 +6,19 @@ import sbt._, Keys._
 trait Bootstrap {
   self: PolicyPackage =>
 
+  def bootstrapCommands = Seq(
+    Command.command("publishLocalBootstrap")(publishLocalBootstrap),
+    Command.command("publishBootstrap")(publishBootstrap),
+    Command.args("saveBootstrapVersion", "<version>")((state, args) => saveBootstrapVersion(args)(state))
+  )
+
   // Creates a fresh version number, publishes bootstrap jars with that number to the local repository.
   // Records the version in project/local.properties where it has precedence over build.properties.
   // Reboots sbt under the new jars.
-  val publishLocalBootstrap: StateMap = commonBootstrap(isLocal = true, Nil)
-  val publishBootstrap: StateMap      = commonBootstrap(isLocal = false, Seq("publish"))
+  private val publishLocalBootstrap: StateMap = commonBootstrap(isLocal = true, Nil)
+  private val publishBootstrap: StateMap      = commonBootstrap(isLocal = false, Seq("publish"))
 
-  def saveBootstrapVersion(args: Seq[String]): StateMap = WState { ws =>
+  private def saveBootstrapVersion(args: Seq[String]): StateMap = WState { ws =>
     val (props, newModule) = args.toList match {
       case Nil                  => localProps -> ws(bootstrapModuleId in ThisBuild)
       case "local" :: v :: Nil  => localProps -> (PolicyOrg % "bootstrap-compiler" % v)

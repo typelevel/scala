@@ -70,13 +70,6 @@ private object projectSettings {
   // Assembled settings for projects which produce an artifact.
   def codeProject(others: Setting[_]*) = compiling ++ publishing ++ others
 
-  // Interactive commands
-  def interactiveCommands = Seq(
-    Command.command("publishLocalBootstrap")(publishLocalBootstrap),
-    Command.command("publishBootstrap")(publishBootstrap),
-    Command.args("saveBootstrapVersion", "<version>")((state, args) => saveBootstrapVersion(args)(state))
-  )
-
   // Settings added to every project.
   def universal = bintraySettings ++ List(
                            name ~=  (dash(PolicyName, _)),
@@ -129,7 +122,7 @@ private object projectSettings {
        bootstrapModuleId in ThisBuild :=  chooseBootstrap,
                   libraryDependencies +=  bootstrapModuleId.value % ScalaTool.name,
            scalaInstance in ThisBuild <<= scalaInstanceFromModuleIDTask,
-                             commands ++= interactiveCommands
+                             commands ++= bootstrapCommands
 
   )
   def publishing = List(
