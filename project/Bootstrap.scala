@@ -2,6 +2,23 @@ package policy
 package building
 
 import sbt._, Keys._
+import java.lang.reflect.Method
+
+trait ReflectiveCommands {
+  private val StringClass = classOf[String]
+  private val StateClass  = classOf[State]
+  private def isCommand(m: Method) = m.getParameterTypes contains StateClass
+  private def methods = this.getClass.getDeclaredMethods.toList filter isCommand
+  private def call(m: Method)(args: Object*): State = m.invoke(this, args: _*).asInstanceOf[State]
+
+  def commands: List[Command] = methods map { m =>
+    m.getParameterTypes.toList match {
+      case StateClass :: Nil                => Command.command(m.getName)(s => call(m)(s))
+      case StateClass :: StringClass :: Nil => Command.single(m.getName)((s, a) => call(m)(s, a))
+      case StateClass :: args :: Nil        => Command.args(m.getName, m.getName)((s, as) => call(m)(s, as))
+    }
+  }
+}
 
 trait Bootstrap {
   self: PolicyPackage =>
