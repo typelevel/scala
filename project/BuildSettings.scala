@@ -74,7 +74,7 @@ private object projectSettings {
   def universal = bintraySettings ++ List(
                            name ~=  (dash(PolicyName, _)),
                    organization :=  PolicyOrg,
-                        version :=  "1.0.0-M2",
+                        version :=  "1.0.0-SNAPSHOT",
                    scalaVersion :=  ScalaKnownVersion,
              scalaBinaryVersion :=  "2.11",
                        licenses :=  Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),

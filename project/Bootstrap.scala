@@ -11,11 +11,12 @@ trait ReflectiveCommands {
   private def methods = this.getClass.getDeclaredMethods.toList filter isCommand
   private def call(m: Method)(args: Object*): State = m.invoke(this, args: _*).asInstanceOf[State]
 
-  def commands: List[Command] = methods map { m =>
+  def commands: List[Command] = methods flatMap { m =>
     m.getParameterTypes.toList match {
-      case StateClass :: Nil                => Command.command(m.getName)(s => call(m)(s))
-      case StateClass :: StringClass :: Nil => Command.single(m.getName)((s, a) => call(m)(s, a))
-      case StateClass :: args :: Nil        => Command.args(m.getName, m.getName)((s, as) => call(m)(s, as))
+      case StateClass :: Nil                => Some(Command.command(m.getName)(s => call(m)(s)))
+      case StateClass :: StringClass :: Nil => Some(Command.single(m.getName)((s, a) => call(m)(s, a)))
+      case StateClass :: args :: Nil        => Some(Command.args(m.getName, m.getName)((s, as) => call(m)(s, as)))
+      case _                                => None
     }
   }
 }
