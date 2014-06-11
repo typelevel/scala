@@ -9,6 +9,7 @@ object PolicyKeys {
   val getScala          = inputKey[ScalaInstance]("download scala version, if not in ivy cache")
   val settingsDumpFile  = settingKey[File]("file into which to record all sbt settings") in ThisBuild
   val bootstrapModuleId = settingKey[ModuleID]("module id of bootstrap compiler") in ThisBuild
+  val jarPaths          = inputKey[Classpath]("jars in given configuration")
 
   val buildBase: FileKey   = baseDirectory in ThisBuild
   val projectBase: FileKey = baseDirectory in ThisProject

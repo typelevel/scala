@@ -23,7 +23,7 @@ trait Depends {
 
   def ant           = "org.apache.ant"                 %            "ant"            % "1.9.4"
   def diffutils     = "com.googlecode.java-diff-utils" %         "diffutils"         % "1.3.0"
-  def jline         = "jline"                          %           "jline"           %  "2.11"
+  def jline         = "jline"                          %           "jline"           %  "2.12"
   def slf4jApi      = "org.slf4j"                      %         "slf4j-api"         % "1.7.7"
   def logback       = "ch.qos.logback"                 %      "logback-classic"      % "1.1.2"
   def scalaParsers  = "org.scala-lang.modules"         %% "scala-parser-combinators" % "1.0.1"
@@ -119,8 +119,11 @@ private object projectSettings {
       previousArtifact  :=  Some(scalaLibrary)
   )
 
+  private def replJar = (artifactPath in (Compile, packageBin) in 'repl) |> Attributed.blank
+
   def root = List(
                                  name  :=  PolicyName,
+                             jarPaths  :=  printResult("jars")(jarPathsTask.evaluated),
                              getScala <<=  scalaInstanceTask,
                       PolicyKeys.repl <<=  asInputTask(forkRepl),
                                   run <<=  asInputTask(forkCompiler),
@@ -131,9 +134,7 @@ private object projectSettings {
                     bootstrapModuleId  :=  chooseBootstrap,
                   libraryDependencies <+=  bootstrapModuleId |> (_ % ScalaTool.name),
            scalaInstance in ThisBuild <<=  scalaInstanceFromModuleIDTask,
-                             commands ++=  bootstrapCommands,
-                              publish  :=  (),
-                         publishLocal  :=  ()
+                             commands ++=  bootstrapCommands
   )
   def publishing = List(
                      checksums in publishLocal := Nil,

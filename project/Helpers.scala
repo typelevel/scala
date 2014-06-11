@@ -71,6 +71,14 @@ trait SbtHelpers {
   def inSrc(name: String): SettingOf[File]          = srcBase |> (_ / name)
   def fromBuild(f: File => File): SettingOf[File]   = buildBase |> f
 
+  def chooseClasspath(config: String): TaskKey[Classpath] = config match {
+    case "compile" => fullClasspath in Compile
+    case "runtime" => fullClasspath in Runtime
+    case "test"    => fullClasspath in Test
+  }
+
+  def jarPathsTask: InputTaskOf[Classpath] = Def inputTaskDyn chooseClasspath((Space ~> token(ID).examples("compile", "runtime", "test")).parsed)
+
   // Parsers
   def scalaVersionParser: Parser[String] = token(Space) ~> token(NotSpace, "a scala version")
   def spaceDelimited(label: String = "<arg>"): Parser[Seq[String]] = DefaultParsers spaceDelimited label
