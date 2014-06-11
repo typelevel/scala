@@ -39,34 +39,34 @@ artifact                     root         test         packageDoc      Artifact(
 artifact                     root         test         packageSrc      Artifact("policy", "src", "jar", "tests-sources", -, -, -)
 artifactClassifier           *            *            packageDoc      "javadoc"
 artifactClassifier           *            *            packageSrc      "sources"
-artifactPath                 compat       *            makePom         /mirror/r/policy/compat/target/policy-compat-1.0.0-SNAPSHOT.pom
-artifactPath                 compat       compile      packageBin      /mirror/r/policy/compat/target/policy-compat-1.0.0-SNAPSHOT.jar
-artifactPath                 compat       compile      packageDoc      /mirror/r/policy/compat/target/policy-compat-1.0.0-SNAPSHOT-javadoc.jar
-artifactPath                 compat       compile      packageSrc      /mirror/r/policy/compat/target/policy-compat-1.0.0-SNAPSHOT-sources.jar
-artifactPath                 compat       test         packageBin      /mirror/r/policy/compat/target/policy-compat-1.0.0-SNAPSHOT-tests.jar
-artifactPath                 compat       test         packageDoc      /mirror/r/policy/compat/target/policy-compat-1.0.0-SNAPSHOT-tests-javadoc.jar
-artifactPath                 compat       test         packageSrc      /mirror/r/policy/compat/target/policy-compat-1.0.0-SNAPSHOT-tests-sources.jar
-artifactPath                 compiler     *            makePom         /mirror/r/policy/compiler/target/policy-compiler-1.0.0-SNAPSHOT.pom
-artifactPath                 compiler     compile      packageBin      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-SNAPSHOT.jar
-artifactPath                 compiler     compile      packageDoc      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-SNAPSHOT-javadoc.jar
-artifactPath                 compiler     compile      packageSrc      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-SNAPSHOT-sources.jar
-artifactPath                 compiler     test         packageBin      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-SNAPSHOT-tests.jar
-artifactPath                 compiler     test         packageDoc      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-SNAPSHOT-tests-javadoc.jar
-artifactPath                 compiler     test         packageSrc      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-SNAPSHOT-tests-sources.jar
-artifactPath                 library      *            makePom         /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT.pom
-artifactPath                 library      compile      packageBin      /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT.jar
-artifactPath                 library      compile      packageDoc      /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT-javadoc.jar
-artifactPath                 library      compile      packageSrc      /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT-sources.jar
-artifactPath                 library      test         packageBin      /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT-tests.jar
-artifactPath                 library      test         packageDoc      /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT-tests-javadoc.jar
-artifactPath                 library      test         packageSrc      /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT-tests-sources.jar
-artifactPath                 root         *            makePom         /mirror/r/policy/target/policy-1.0.0-SNAPSHOT.pom
-artifactPath                 root         compile      packageBin      /mirror/r/policy/target/policy-1.0.0-SNAPSHOT.jar
-artifactPath                 root         compile      packageDoc      /mirror/r/policy/target/policy-1.0.0-SNAPSHOT-javadoc.jar
-artifactPath                 root         compile      packageSrc      /mirror/r/policy/target/policy-1.0.0-SNAPSHOT-sources.jar
-artifactPath                 root         test         packageBin      /mirror/r/policy/target/policy-1.0.0-SNAPSHOT-tests.jar
-artifactPath                 root         test         packageDoc      /mirror/r/policy/target/policy-1.0.0-SNAPSHOT-tests-javadoc.jar
-artifactPath                 root         test         packageSrc      /mirror/r/policy/target/policy-1.0.0-SNAPSHOT-tests-sources.jar
+artifactPath                 compat       *            makePom         /mirror/r/policy/compat/target/policy-compat-1.0.0-M3.pom
+artifactPath                 compat       compile      packageBin      /mirror/r/policy/compat/target/policy-compat-1.0.0-M3.jar
+artifactPath                 compat       compile      packageDoc      /mirror/r/policy/compat/target/policy-compat-1.0.0-M3-javadoc.jar
+artifactPath                 compat       compile      packageSrc      /mirror/r/policy/compat/target/policy-compat-1.0.0-M3-sources.jar
+artifactPath                 compat       test         packageBin      /mirror/r/policy/compat/target/policy-compat-1.0.0-M3-tests.jar
+artifactPath                 compat       test         packageDoc      /mirror/r/policy/compat/target/policy-compat-1.0.0-M3-tests-javadoc.jar
+artifactPath                 compat       test         packageSrc      /mirror/r/policy/compat/target/policy-compat-1.0.0-M3-tests-sources.jar
+artifactPath                 compiler     *            makePom         /mirror/r/policy/compiler/target/policy-compiler-1.0.0-M3.pom
+artifactPath                 compiler     compile      packageBin      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-M3.jar
+artifactPath                 compiler     compile      packageDoc      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-M3-javadoc.jar
+artifactPath                 compiler     compile      packageSrc      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-M3-sources.jar
+artifactPath                 compiler     test         packageBin      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-M3-tests.jar
+artifactPath                 compiler     test         packageDoc      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-M3-tests-javadoc.jar
+artifactPath                 compiler     test         packageSrc      /mirror/r/policy/compiler/target/policy-compiler-1.0.0-M3-tests-sources.jar
+artifactPath                 library      *            makePom         /mirror/r/policy/library/target/policy-library-1.0.0-M3.pom
+artifactPath                 library      compile      packageBin      /mirror/r/policy/library/target/policy-library-1.0.0-M3.jar
+artifactPath                 library      compile      packageDoc      /mirror/r/policy/library/target/policy-library-1.0.0-M3-javadoc.jar
+artifactPath                 library      compile      packageSrc      /mirror/r/policy/library/target/policy-library-1.0.0-M3-sources.jar
+artifactPath                 library      test         packageBin      /mirror/r/policy/library/target/policy-library-1.0.0-M3-tests.jar
+artifactPath                 library      test         packageDoc      /mirror/r/policy/library/target/policy-library-1.0.0-M3-tests-javadoc.jar
+artifactPath                 library      test         packageSrc      /mirror/r/policy/library/target/policy-library-1.0.0-M3-tests-sources.jar
+artifactPath                 root         *            makePom         /mirror/r/policy/target/policy-1.0.0-M3.pom
+artifactPath                 root         compile      packageBin      /mirror/r/policy/target/policy-1.0.0-M3.jar
+artifactPath                 root         compile      packageDoc      /mirror/r/policy/target/policy-1.0.0-M3-javadoc.jar
+artifactPath                 root         compile      packageSrc      /mirror/r/policy/target/policy-1.0.0-M3-sources.jar
+artifactPath                 root         test         packageBin      /mirror/r/policy/target/policy-1.0.0-M3-tests.jar
+artifactPath                 root         test         packageDoc      /mirror/r/policy/target/policy-1.0.0-M3-tests-javadoc.jar
+artifactPath                 root         test         packageSrc      /mirror/r/policy/target/policy-1.0.0-M3-tests-sources.jar
 autoApiMappings              *            *            *               false
 autoCompilerPlugins          *            *            *               true
 autoScalaLibrary             *            *            *               true
@@ -79,7 +79,7 @@ baseDirectory                compat       *            *               /mirror/r
 baseDirectory                compiler     *            *               /mirror/r/policy/compiler
 baseDirectory                library      *            *               /mirror/r/policy/library
 baseDirectory                root         *            *               /mirror/r/policy
-bootstrapModuleId            {.}          *            *               ModuleID("org.improving", "bootstrap-compiler", "1.0.0-M2", -, false, true, false, -, -, -, disabled)
+bootstrapModuleId            {.}          *            *               ModuleID("org.improving", "bootstrap-compiler", "1.0.0-M3", -, false, true, false, -, -, -, disabled)
 buildDependencies            *            *            *               <sbt.BuildDependencies>
 cacheDirectory               compat       *            *               /mirror/r/policy/compat/target/cache/compat/global
 cacheDirectory               compat       compile      *               /mirror/r/policy/compat/target/cache/compat/compile
@@ -132,6 +132,9 @@ conflictWarning              compiler     *            *               ConflictW
 conflictWarning              library      *            *               ConflictWarning("{file:/mirror/r/policy/}library", error, true)
 conflictWarning              root         *            *               ConflictWarning("{file:/mirror/r/policy/}root", error, true)
 connectInput                 *            *            *               false
+credentialsFile              compat       *            bintray         /Users/paulp/.bintray/.credentials
+credentialsFile              compiler     *            bintray         /Users/paulp/.bintray/.credentials
+credentialsFile              library      *            bintray         /Users/paulp/.bintray/.credentials
 credentialsFile              root         *            bintray         /Users/paulp/.bintray/.credentials
 crossPaths                   *            *            *               true
 crossPaths                   compat       *            *               false
@@ -153,8 +156,11 @@ dependencyUpdatesReportFile  compiler     *            *               /mirror/r
 dependencyUpdatesReportFile  library      *            *               /mirror/r/policy/library/target/dependency-updates.txt
 dependencyUpdatesReportFile  root         *            *               /mirror/r/policy/target/dependency-updates.txt
 description                  compat       *            *               "policy-compat"
+description                  compat       *            bintray         "policy-compat"
 description                  compiler     *            *               "policy-compiler"
+description                  compiler     *            bintray         "policy-compiler"
 description                  library      *            *               "policy-library"
+description                  library      *            bintray         "policy-library"
 description                  root         *            *               "policy"
 description                  root         *            bintray         "policy"
 exportJars                   *            *            *               false
@@ -167,10 +173,10 @@ history                      library      *            *               /mirror/r
 history                      root         *            *               /mirror/r/policy/target/.history
 initialCommands              root         *            console         "import scala.reflect.runtime.universe._"
 initialCommands              root         *            consoleProject  "import policy.building._"
-isSnapshot                   compat       *            *               true
-isSnapshot                   compiler     *            *               true
-isSnapshot                   library      *            *               true
-isSnapshot                   root         *            *               true
+isSnapshot                   compat       *            *               false
+isSnapshot                   compiler     *            *               false
+isSnapshot                   library      *            *               false
+isSnapshot                   root         *            *               false
 ivyLoggingLevel              *            *            *               DownloadOnly
 ivyPaths                     compat       *            *               <sbt.IvyPaths>
 ivyPaths                     compiler     *            *               <sbt.IvyPaths>
@@ -198,10 +204,10 @@ logBuffered                  compat       *            *               false
 logBuffered                  compiler     *            *               false
 logBuffered                  library      *            *               false
 logBuffered                  root         *            *               false
-makePomConfiguration         compat       *            *               MakePomConfiguration(/mirror/r/policy/compat/target/policy-compat-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-compat", "policy-compat", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
-makePomConfiguration         compiler     *            *               MakePomConfiguration(/mirror/r/policy/compiler/target/policy-compiler-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-compiler", "policy-compiler", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
-makePomConfiguration         library      *            *               MakePomConfiguration(/mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-library", "policy-library", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
-makePomConfiguration         root         *            *               MakePomConfiguration(/mirror/r/policy/target/policy-1.0.0-SNAPSHOT.pom, ModuleInfo("policy", "policy", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
+makePomConfiguration         compat       *            *               MakePomConfiguration(/mirror/r/policy/compat/target/policy-compat-1.0.0-M3.pom, ModuleInfo("policy-compat", "policy-compat", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
+makePomConfiguration         compiler     *            *               MakePomConfiguration(/mirror/r/policy/compiler/target/policy-compiler-1.0.0-M3.pom, ModuleInfo("policy-compiler", "policy-compiler", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
+makePomConfiguration         library      *            *               MakePomConfiguration(/mirror/r/policy/library/target/policy-library-1.0.0-M3.pom, ModuleInfo("policy-library", "policy-library", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
+makePomConfiguration         root         *            *               MakePomConfiguration(/mirror/r/policy/target/policy-1.0.0-M3.pom, ModuleInfo("policy", "policy", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
 managedDirectory             {.}          *            *               /mirror/r/policy/lib_managed
 managedScalaInstance         *            *            *               true
 managedScalaInstance         compat       *            *               false
@@ -245,10 +251,10 @@ parallelExecution            *            *            *               true
 pollInterval                 *            *            *               500
 pomAllRepositories           *            *            *               false
 previousReferences           *            *            *               <sbt.Previous$References>
-projectId                    compat       *            *               ModuleID("org.improving", "policy-compat", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, disabled)
-projectId                    compiler     *            *               ModuleID("org.improving", "policy-compiler", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, disabled)
-projectId                    library      *            *               ModuleID("org.improving", "policy-library", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, disabled)
-projectId                    root         *            *               ModuleID("org.improving", "policy", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, disabled)
+projectId                    compat       *            *               ModuleID("org.improving", "policy-compat", "1.0.0-M3", -, false, true, false, -, -, -, disabled)
+projectId                    compiler     *            *               ModuleID("org.improving", "policy-compiler", "1.0.0-M3", -, false, true, false, -, -, -, disabled)
+projectId                    library      *            *               ModuleID("org.improving", "policy-library", "1.0.0-M3", -, false, true, false, -, -, -, disabled)
+projectId                    root         *            *               ModuleID("org.improving", "policy", "1.0.0-M3", -, false, true, false, -, -, -, disabled)
 projectInfo                  compat       *            *               ModuleInfo("policy-compat", "policy-compat", -, -, -, "org.improving", -, -)
 projectInfo                  compiler     *            *               ModuleInfo("policy-compiler", "policy-compiler", -, -, -, "org.improving", -, -)
 projectInfo                  library      *            *               ModuleInfo("policy-library", "policy-library", -, -, -, "org.improving", -, -)
@@ -264,11 +270,21 @@ publishArtifact              library      compile      packageDoc      false
 publishArtifact              library      compile      packageSrc      false
 publishArtifact              root         *            makePom         true
 publishMavenStyle            *            *            *               true
+publishMavenStyle            compat       *            *               true
 publishMavenStyle            compiler     *            *               true
 publishMavenStyle            library      *            *               true
 publishMavenStyle            root         *            *               true
+publishTo                    compat       *            *               Raw(Bintray-Maven-Publish-paulp-maven-policy-compat)
+publishTo                    compat       *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy-compat)
+publishTo                    compiler     *            *               Raw(Bintray-Maven-Publish-paulp-maven-policy-compiler)
+publishTo                    compiler     *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy-compiler)
+publishTo                    library      *            *               Raw(Bintray-Maven-Publish-paulp-maven-policy-library)
+publishTo                    library      *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy-library)
 publishTo                    root         *            *               Raw(Bintray-Maven-Publish-paulp-maven-policy)
 publishTo                    root         *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy)
+repository                   compat       *            bintray         "maven"
+repository                   compiler     *            bintray         "maven"
+repository                   library      *            bintray         "maven"
 repository                   root         *            bintray         "maven"
 resourceDirectory            compat       compile      *               /mirror/r/policy/compat/src/main/resources
 resourceDirectory            compat       test         *               /mirror/r/policy/compat/src/test/resources
@@ -398,7 +414,7 @@ updateConfiguration          root         *            *               <sbt.Upda
 useGpg                       *            *            *               false
 useGpgAgent                  *            *            *               false
 version                      *            *            *               "0.1-SNAPSHOT"
-version                      compat       *            *               "1.0.0-SNAPSHOT"
-version                      compiler     *            *               "1.0.0-SNAPSHOT"
-version                      library      *            *               "1.0.0-SNAPSHOT"
-version                      root         *            *               "1.0.0-SNAPSHOT"
+version                      compat       *            *               "1.0.0-M3"
+version                      compiler     *            *               "1.0.0-M3"
+version                      library      *            *               "1.0.0-M3"
+version                      root         *            *               "1.0.0-M3"

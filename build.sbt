@@ -32,5 +32,3 @@ lazy val compat = (
     dependsOn ( compilerProject )
     sbtDeps ( "interface", "compiler-interface" )
 )
-
-bintraySettings

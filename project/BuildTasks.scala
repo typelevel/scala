@@ -25,7 +25,7 @@ trait BuildTasks {
   private def compilePath: TaskOf[Seq[File]] = (dependencyClasspath in Compile) |> (_.files filter isJar)
   private def explode(f: File, d: File) = IO.unzip(f, d, isSourceName _).toSeq
 
-  val createUnzipTask: TaskOf[Seq[File]] = Def task (compilePath.value flatMap (f => explode(f, sourceManaged.value / "compat")))
+  def createUnzipTask: TaskOf[Seq[File]] = Def task (compilePath.value flatMap (f => explode(f, sourceManaged.value / "compat")))
 
   def generateProperties(): TaskOf[Seq[File]] = Def task {
     val id    = name.value split "[-]" last;
