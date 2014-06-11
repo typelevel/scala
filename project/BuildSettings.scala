@@ -52,7 +52,7 @@ private object projectSettings {
   final val Library  = "library"
   final val Compat   = "compat"
 
-  def apply(id: String): Seq[Setting[_]] = universal ++ (id match {
+  def apply(id: String): SettingSeq = universal ++ (id match {
     case Root     => root
     case Compat   => compat
     case Compiler => compiler
@@ -74,7 +74,7 @@ private object projectSettings {
   def interactiveCommands = Seq(
     Command.command("publishLocalBootstrap")(publishLocalBootstrap),
     Command.command("publishBootstrap")(publishBootstrap),
-    Command.args("saveBootstrapVersion", "<version>")(saveBootstrapVersion)
+    Command.args("saveBootstrapVersion", "<version>")((state, args) => saveBootstrapVersion(args)(state))
   )
 
   // Settings added to every project.

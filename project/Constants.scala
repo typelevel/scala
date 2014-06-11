@@ -19,6 +19,8 @@ trait Constants {
   type SettingOf[A]         = Def.Initialize[A]
   type TaskOf[A]            = Def.Initialize[Task[A]]
   type InputTaskOf[A]       = Def.Initialize[InputTask[A]]
+  type SettingSeq           = Seq[Setting[_]]
+  type StateMap             = State => State
   type InputStream          = java.io.InputStream
   type ByteArrayInputStream = java.io.ByteArrayInputStream
   type jMap[K, V]           = java.util.Map[K, V]

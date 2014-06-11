@@ -56,6 +56,7 @@ final class MutableProperties private (val file: File) {
   def toSeq: Seq[(String, String)]                       = keys map (k => (k, apply(k)))
   def keys: Seq[String]                                  = props.keys.asScala.toSeq map objectToString
 
+  def filename = file.getName
   override def toString = ( for ((k, v) <- toSeq) yield s"$k -> $v" ) mkString("MutableProperties(", ", ", ")")
 }
 
