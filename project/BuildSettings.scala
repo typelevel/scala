@@ -73,7 +73,6 @@ private object projectSettings {
   // Settings added to every project.
   def universal = bintraySettings ++ List(
                            name ~=  (dash(PolicyName, _)),
-                   organization :=  PolicyOrg,
                         version :=  "1.0.0-SNAPSHOT",
                    scalaVersion :=  ScalaKnownVersion,
              scalaBinaryVersion :=  "2.11",
@@ -97,7 +96,7 @@ private object projectSettings {
        unmanagedSourceDirectories in Test  +=  buildBase.value / "partest" / "src",
                     unmanagedBase in Test  :=  buildBase.value / "partest" / "testlib",
                              fork in Test  :=  true,
-                                     test <<= runAllTests,
+                                     test <<=  runAllTests,
                                  testOnly <<=  runTests
   )
 
@@ -113,6 +112,7 @@ private object projectSettings {
   )
   def root = List(
                                  name :=  PolicyName,
+            organization in ThisBuild :=  PolicyOrg,
                              getScala :=  scalaInstanceTask.evaluated,
                                   run :=  asInputTask(forkCompiler).evaluated,
                                  repl :=  asInputTask(forkRepl).evaluated,

@@ -5,7 +5,7 @@ lazy val root = (
   (project in file(".")).setup.noArtifacts
     dependsOn ( library, compilerProject )
     aggregate ( library, compilerProject )
-    settings  ( publish := (), publishLocal := () )
+    settings  ( publish := (), publishLocal := (), onLoad in Global := onLoadHook )
 )
 
 lazy val library = project.setup addMima scalaLibrary
