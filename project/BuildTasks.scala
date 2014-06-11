@@ -28,7 +28,7 @@ trait BuildTasks {
   }
 
   def runTestsWithArgs(args: List[String]): TaskOf[Int] = forkPartest map (_ apply (args: _*))
-  def runAllTests: TaskOf[Unit] = forkPartest map (f => f())
+  def runAllTests: TaskOf[Unit] = Def task forkPartest.value("--all")
   def runTests = Def inputTask {
     spaceDelimited("<arg>").parsed match {
       case Nil  => forkPartest.value("--failed", "--show-diff") // testOnly with no args we'll take to mean --failed
