@@ -29,6 +29,14 @@ artifact                     library      compile      packageSrc      Artifact(
 artifact                     library      test         packageBin      Artifact("policy-library", "jar", "jar", "tests", -, -, -)
 artifact                     library      test         packageDoc      Artifact("policy-library", "doc", "jar", "tests-javadoc", -, -, -)
 artifact                     library      test         packageSrc      Artifact("policy-library", "src", "jar", "tests-sources", -, -, -)
+artifact                     repl         *            *               Artifact("policy-repl", "jar", "jar", -, -, -, -)
+artifact                     repl         *            makePom         Artifact("policy-repl", "pom", "pom", -, -, -, -)
+artifact                     repl         compile      packageBin      Artifact("policy-repl", "jar", "jar", -, -, -, -)
+artifact                     repl         compile      packageDoc      Artifact("policy-repl", "doc", "jar", "javadoc", -, -, -)
+artifact                     repl         compile      packageSrc      Artifact("policy-repl", "src", "jar", "sources", -, -, -)
+artifact                     repl         test         packageBin      Artifact("policy-repl", "jar", "jar", "tests", -, -, -)
+artifact                     repl         test         packageDoc      Artifact("policy-repl", "doc", "jar", "tests-javadoc", -, -, -)
+artifact                     repl         test         packageSrc      Artifact("policy-repl", "src", "jar", "tests-sources", -, -, -)
 artifact                     root         *            *               Artifact("policy", "jar", "jar", -, -, -, -)
 artifact                     root         *            makePom         Artifact("policy", "pom", "pom", -, -, -, -)
 artifact                     root         compile      packageBin      Artifact("policy", "jar", "jar", -, -, -, -)
@@ -60,6 +68,13 @@ artifactPath                 library      compile      packageSrc      /mirror/r
 artifactPath                 library      test         packageBin      /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT-tests.jar
 artifactPath                 library      test         packageDoc      /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT-tests-javadoc.jar
 artifactPath                 library      test         packageSrc      /mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT-tests-sources.jar
+artifactPath                 repl         *            makePom         /mirror/r/policy/repl/target/policy-repl-1.0.0-SNAPSHOT.pom
+artifactPath                 repl         compile      packageBin      /mirror/r/policy/repl/target/policy-repl-1.0.0-SNAPSHOT.jar
+artifactPath                 repl         compile      packageDoc      /mirror/r/policy/repl/target/policy-repl-1.0.0-SNAPSHOT-javadoc.jar
+artifactPath                 repl         compile      packageSrc      /mirror/r/policy/repl/target/policy-repl-1.0.0-SNAPSHOT-sources.jar
+artifactPath                 repl         test         packageBin      /mirror/r/policy/repl/target/policy-repl-1.0.0-SNAPSHOT-tests.jar
+artifactPath                 repl         test         packageDoc      /mirror/r/policy/repl/target/policy-repl-1.0.0-SNAPSHOT-tests-javadoc.jar
+artifactPath                 repl         test         packageSrc      /mirror/r/policy/repl/target/policy-repl-1.0.0-SNAPSHOT-tests-sources.jar
 artifactPath                 root         *            makePom         /mirror/r/policy/target/policy-1.0.0-SNAPSHOT.pom
 artifactPath                 root         compile      packageBin      /mirror/r/policy/target/policy-1.0.0-SNAPSHOT.jar
 artifactPath                 root         compile      packageDoc      /mirror/r/policy/target/policy-1.0.0-SNAPSHOT-javadoc.jar
@@ -73,13 +88,15 @@ autoScalaLibrary             *            *            *               true
 autoScalaLibrary             compat       *            *               false
 autoScalaLibrary             compiler     *            *               false
 autoScalaLibrary             library      *            *               false
+autoScalaLibrary             repl         *            *               false
 autoScalaLibrary             root         *            *               false
 baseDirectory                {.}          *            *               /mirror/r/policy
 baseDirectory                compat       *            *               /mirror/r/policy/compat
 baseDirectory                compiler     *            *               /mirror/r/policy/compiler
 baseDirectory                library      *            *               /mirror/r/policy/library
+baseDirectory                repl         *            *               /mirror/r/policy/repl
 baseDirectory                root         *            *               /mirror/r/policy
-bootstrapModuleId            {.}          *            *               ModuleID("org.improving", "bootstrap-compiler", "1.0.0-20140611-091457-a243166711-091559", -, false, true, false, -, -, -, disabled)
+bootstrapModuleId            {.}          *            *               ModuleID("org.improving", "bootstrap-compiler", "1.0.0-20140611-115507-66bc2c9982-120921", -, false, true, false, -, -, -, disabled)
 buildDependencies            *            *            *               <sbt.BuildDependencies>
 cacheDirectory               compat       *            *               /mirror/r/policy/compat/target/cache/compat/global
 cacheDirectory               compat       compile      *               /mirror/r/policy/compat/target/cache/compat/compile
@@ -90,6 +107,9 @@ cacheDirectory               compiler     test         *               /mirror/r
 cacheDirectory               library      *            *               /mirror/r/policy/library/target/cache/library/global
 cacheDirectory               library      compile      *               /mirror/r/policy/library/target/cache/library/compile
 cacheDirectory               library      test         *               /mirror/r/policy/library/target/cache/library/test
+cacheDirectory               repl         *            *               /mirror/r/policy/repl/target/cache/repl/global
+cacheDirectory               repl         compile      *               /mirror/r/policy/repl/target/cache/repl/compile
+cacheDirectory               repl         test         *               /mirror/r/policy/repl/target/cache/repl/test
 cacheDirectory               root         *            *               /mirror/r/policy/target/cache/root/global
 cacheDirectory               root         compile      *               /mirror/r/policy/target/cache/root/compile
 cacheDirectory               root         test         *               /mirror/r/policy/target/cache/root/test
@@ -100,6 +120,8 @@ classDirectory               compiler     compile      *               /mirror/r
 classDirectory               compiler     test         *               /mirror/r/policy/compiler/target/test-classes
 classDirectory               library      compile      *               /mirror/r/policy/library/target/classes
 classDirectory               library      test         *               /mirror/r/policy/library/target/test-classes
+classDirectory               repl         compile      *               /mirror/r/policy/repl/target/classes
+classDirectory               repl         test         *               /mirror/r/policy/repl/target/test-classes
 classDirectory               root         compile      *               /mirror/r/policy/target/classes
 classDirectory               root         test         *               /mirror/r/policy/target/test-classes
 classpathOptions             *            *            *               ClasspathOptions(true, false, false, true, true)
@@ -120,6 +142,11 @@ configuration                library      optional     *               Configura
 configuration                library      provided     *               Configuration("provided", -, true, -, true)
 configuration                library      runtime      *               Configuration("runtime", -, true, -, true)
 configuration                library      test         *               Configuration("test", -, true, -, true)
+configuration                repl         compile      *               Configuration("compile", -, true, -, true)
+configuration                repl         optional     *               Configuration("optional", -, true, -, true)
+configuration                repl         provided     *               Configuration("provided", -, true, -, true)
+configuration                repl         runtime      *               Configuration("runtime", -, true, -, true)
+configuration                repl         test         *               Configuration("test", -, true, -, true)
 configuration                root         compile      *               Configuration("compile", -, true, -, true)
 configuration                root         optional     *               Configuration("optional", -, true, -, true)
 configuration                root         provided     *               Configuration("provided", -, true, -, true)
@@ -130,37 +157,37 @@ conflictWarning              *            *            *               ConflictW
 conflictWarning              compat       *            *               ConflictWarning("{file:/mirror/r/policy/}compat", error, true)
 conflictWarning              compiler     *            *               ConflictWarning("{file:/mirror/r/policy/}compiler", error, true)
 conflictWarning              library      *            *               ConflictWarning("{file:/mirror/r/policy/}library", error, true)
+conflictWarning              repl         *            *               ConflictWarning("{file:/mirror/r/policy/}repl", error, true)
 conflictWarning              root         *            *               ConflictWarning("{file:/mirror/r/policy/}root", error, true)
 connectInput                 *            *            *               false
-credentialsFile              compat       *            bintray         /Users/paulp/.bintray/.credentials
-credentialsFile              compiler     *            bintray         /Users/paulp/.bintray/.credentials
-credentialsFile              library      *            bintray         /Users/paulp/.bintray/.credentials
 credentialsFile              root         *            bintray         /Users/paulp/.bintray/.credentials
 crossPaths                   *            *            *               true
 crossPaths                   compat       *            *               false
 crossPaths                   compiler     *            *               false
 crossPaths                   library      *            *               false
+crossPaths                   repl         *            *               false
 crossPaths                   root         *            *               false
 crossTarget                  compat       *            *               /mirror/r/policy/compat/target
 crossTarget                  compiler     *            *               /mirror/r/policy/compiler/target
 crossTarget                  library      *            *               /mirror/r/policy/library/target
+crossTarget                  repl         *            *               /mirror/r/policy/repl/target
 crossTarget                  root         *            *               /mirror/r/policy/target
 crossVersion                 *            *            *               disabled
 crossVersion                 compat       *            *               disabled
 crossVersion                 compiler     *            *               disabled
 crossVersion                 library      *            *               disabled
+crossVersion                 repl         *            *               disabled
 crossVersion                 root         *            *               disabled
 defaultConfiguration         *            *            *               Configuration("compile", -, true, -, true)
 dependencyUpdatesReportFile  compat       *            *               /mirror/r/policy/compat/target/dependency-updates.txt
 dependencyUpdatesReportFile  compiler     *            *               /mirror/r/policy/compiler/target/dependency-updates.txt
 dependencyUpdatesReportFile  library      *            *               /mirror/r/policy/library/target/dependency-updates.txt
+dependencyUpdatesReportFile  repl         *            *               /mirror/r/policy/repl/target/dependency-updates.txt
 dependencyUpdatesReportFile  root         *            *               /mirror/r/policy/target/dependency-updates.txt
 description                  compat       *            *               "policy-compat"
-description                  compat       *            bintray         "policy-compat"
 description                  compiler     *            *               "policy-compiler"
-description                  compiler     *            bintray         "policy-compiler"
 description                  library      *            *               "policy-library"
-description                  library      *            bintray         "policy-library"
+description                  repl         *            *               "policy-repl"
 description                  root         *            *               "policy"
 description                  root         *            bintray         "policy"
 exportJars                   *            *            *               false
@@ -170,21 +197,25 @@ gpgCommand                   *            *            *               "gpg"
 history                      compat       *            *               /mirror/r/policy/compat/target/.history
 history                      compiler     *            *               /mirror/r/policy/compiler/target/.history
 history                      library      *            *               /mirror/r/policy/library/target/.history
+history                      repl         *            *               /mirror/r/policy/repl/target/.history
 history                      root         *            *               /mirror/r/policy/target/.history
 initialCommands              root         *            console         "import scala.reflect.runtime.universe._"
 initialCommands              root         *            consoleProject  "import policy.building._"
 isSnapshot                   compat       *            *               true
 isSnapshot                   compiler     *            *               true
 isSnapshot                   library      *            *               true
+isSnapshot                   repl         *            *               true
 isSnapshot                   root         *            *               true
 ivyLoggingLevel              *            *            *               DownloadOnly
 ivyPaths                     compat       *            *               <sbt.IvyPaths>
 ivyPaths                     compiler     *            *               <sbt.IvyPaths>
 ivyPaths                     library      *            *               <sbt.IvyPaths>
+ivyPaths                     repl         *            *               <sbt.IvyPaths>
 ivyPaths                     root         *            *               <sbt.IvyPaths>
 ivyScala                     compat       *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
 ivyScala                     compiler     *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
 ivyScala                     library      *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
+ivyScala                     repl         *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
 ivyScala                     root         *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
 ivyValidate                  *            *            *               false
 javaSource                   compat       compile      *               /mirror/r/policy/compat/src/main/java
@@ -193,6 +224,8 @@ javaSource                   compiler     compile      *               /mirror/r
 javaSource                   compiler     test         *               /mirror/r/policy/compiler/src/test/java
 javaSource                   library      compile      *               /mirror/r/policy/library/src/main/java
 javaSource                   library      test         *               /mirror/r/policy/library/src/test/java
+javaSource                   repl         compile      *               /mirror/r/policy/repl/src/main/java
+javaSource                   repl         test         *               /mirror/r/policy/repl/src/test/java
 javaSource                   root         compile      *               /mirror/r/policy/src/main/java
 javaSource                   root         test         *               /mirror/r/policy/src/test/java
 loadedBuild                  *            *            *               <sbt.LoadedBuild>
@@ -203,16 +236,19 @@ logBuffered                  *            *            testQuick       true
 logBuffered                  compat       *            *               false
 logBuffered                  compiler     *            *               false
 logBuffered                  library      *            *               false
+logBuffered                  repl         *            *               false
 logBuffered                  root         *            *               false
 makePomConfiguration         compat       *            *               MakePomConfiguration(/mirror/r/policy/compat/target/policy-compat-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-compat", "policy-compat", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
 makePomConfiguration         compiler     *            *               MakePomConfiguration(/mirror/r/policy/compiler/target/policy-compiler-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-compiler", "policy-compiler", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
 makePomConfiguration         library      *            *               MakePomConfiguration(/mirror/r/policy/library/target/policy-library-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-library", "policy-library", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
+makePomConfiguration         repl         *            *               MakePomConfiguration(/mirror/r/policy/repl/target/policy-repl-1.0.0-SNAPSHOT.pom, ModuleInfo("policy-repl", "policy-repl", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
 makePomConfiguration         root         *            *               MakePomConfiguration(/mirror/r/policy/target/policy-1.0.0-SNAPSHOT.pom, ModuleInfo("policy", "policy", -, -, -, "org.improving", -, -), -, -, -, -, false, -)
 managedDirectory             {.}          *            *               /mirror/r/policy/lib_managed
 managedScalaInstance         *            *            *               true
 managedScalaInstance         compat       *            *               false
 managedScalaInstance         compiler     *            *               false
 managedScalaInstance         library      *            *               false
+managedScalaInstance         repl         *            *               false
 managedScalaInstance         root         *            *               false
 maxErrors                    *            *            *               100
 mimaFailOnProblem            library      *            *               true
@@ -220,32 +256,39 @@ mimaPreviousArtifact         library      *            *               ModuleID(
 moduleName                   compat       *            *               "policy-compat"
 moduleName                   compiler     *            *               "policy-compiler"
 moduleName                   library      *            *               "policy-library"
+moduleName                   repl         *            *               "policy-repl"
 moduleName                   root         *            *               "policy"
 name                         compat       *            *               "policy-compat"
 name                         compiler     *            *               "policy-compiler"
 name                         library      *            *               "policy-library"
+name                         repl         *            *               "policy-repl"
 name                         root         *            *               "policy"
 normalizedName               compat       *            *               "policy-compat"
 normalizedName               compiler     *            *               "policy-compiler"
 normalizedName               library      *            *               "policy-library"
+normalizedName               repl         *            *               "policy-repl"
 normalizedName               root         *            *               "policy"
 offline                      *            *            *               false
 onLoadMessage                compat       *            *               "Set current project to policy-compat (in build file:/mirror/r/policy/)"
 onLoadMessage                compiler     *            *               "Set current project to policy-compiler (in build file:/mirror/r/policy/)"
 onLoadMessage                library      *            *               "Set current project to policy-library (in build file:/mirror/r/policy/)"
+onLoadMessage                repl         *            *               "Set current project to policy-repl (in build file:/mirror/r/policy/)"
 onLoadMessage                root         *            *               "Set current project to policy (in build file:/mirror/r/policy/)"
 organization                 {.}          *            *               "org.improving"
 organization                 compat       *            *               "org.improving"
 organization                 compiler     *            *               "org.improving"
 organization                 library      *            *               "org.improving"
+organization                 repl         *            *               "org.improving"
 organization                 root         *            *               "org.improving"
 organizationName             compat       *            *               "org.improving"
 organizationName             compiler     *            *               "org.improving"
 organizationName             library      *            *               "org.improving"
+organizationName             repl         *            *               "org.improving"
 organizationName             root         *            *               "org.improving"
 overrideBuildResolvers       compat       *            *               false
 overrideBuildResolvers       compiler     *            *               false
 overrideBuildResolvers       library      *            *               false
+overrideBuildResolvers       repl         *            *               false
 overrideBuildResolvers       root         *            *               false
 parallelExecution            *            *            *               true
 pollInterval                 *            *            *               500
@@ -254,10 +297,12 @@ previousReferences           *            *            *               <sbt.Prev
 projectId                    compat       *            *               ModuleID("org.improving", "policy-compat", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, disabled)
 projectId                    compiler     *            *               ModuleID("org.improving", "policy-compiler", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, disabled)
 projectId                    library      *            *               ModuleID("org.improving", "policy-library", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, disabled)
+projectId                    repl         *            *               ModuleID("org.improving", "policy-repl", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, disabled)
 projectId                    root         *            *               ModuleID("org.improving", "policy", "1.0.0-SNAPSHOT", -, false, true, false, -, -, -, disabled)
 projectInfo                  compat       *            *               ModuleInfo("policy-compat", "policy-compat", -, -, -, "org.improving", -, -)
 projectInfo                  compiler     *            *               ModuleInfo("policy-compiler", "policy-compiler", -, -, -, "org.improving", -, -)
 projectInfo                  library      *            *               ModuleInfo("policy-library", "policy-library", -, -, -, "org.improving", -, -)
+projectInfo                  repl         *            *               ModuleInfo("policy-repl", "policy-repl", -, -, -, "org.improving", -, -)
 projectInfo                  root         *            *               ModuleInfo("policy", "policy", -, -, -, "org.improving", -, -)
 publishArtifact              *            *            *               true
 publishArtifact              *            test         *               false
@@ -268,23 +313,17 @@ publishArtifact              compiler     compile      packageSrc      false
 publishArtifact              library      *            makePom         true
 publishArtifact              library      compile      packageDoc      false
 publishArtifact              library      compile      packageSrc      false
+publishArtifact              repl         *            makePom         true
+publishArtifact              repl         compile      packageDoc      false
+publishArtifact              repl         compile      packageSrc      false
 publishArtifact              root         *            makePom         true
 publishMavenStyle            *            *            *               true
-publishMavenStyle            compat       *            *               true
 publishMavenStyle            compiler     *            *               true
 publishMavenStyle            library      *            *               true
+publishMavenStyle            repl         *            *               true
 publishMavenStyle            root         *            *               true
-publishTo                    compat       *            *               Raw(Bintray-Maven-Publish-paulp-maven-policy-compat)
-publishTo                    compat       *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy-compat)
-publishTo                    compiler     *            *               Raw(Bintray-Maven-Publish-paulp-maven-policy-compiler)
-publishTo                    compiler     *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy-compiler)
-publishTo                    library      *            *               Raw(Bintray-Maven-Publish-paulp-maven-policy-library)
-publishTo                    library      *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy-library)
 publishTo                    root         *            *               Raw(Bintray-Maven-Publish-paulp-maven-policy)
 publishTo                    root         *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy)
-repository                   compat       *            bintray         "maven"
-repository                   compiler     *            bintray         "maven"
-repository                   library      *            bintray         "maven"
 repository                   root         *            bintray         "maven"
 resourceDirectory            compat       compile      *               /mirror/r/policy/compat/src/main/resources
 resourceDirectory            compat       test         *               /mirror/r/policy/compat/src/test/resources
@@ -292,6 +331,8 @@ resourceDirectory            compiler     compile      *               /mirror/r
 resourceDirectory            compiler     test         *               /mirror/r/policy/compiler/src/test/resources
 resourceDirectory            library      compile      *               /mirror/r/policy/library/src/main/resources
 resourceDirectory            library      test         *               /mirror/r/policy/library/src/test/resources
+resourceDirectory            repl         compile      *               /mirror/r/policy/repl/src/main/resources
+resourceDirectory            repl         test         *               /mirror/r/policy/repl/src/test/resources
 resourceDirectory            root         compile      *               /mirror/r/policy/src/main/resources
 resourceDirectory            root         test         *               /mirror/r/policy/src/test/resources
 resourceManaged              compat       *            *               /mirror/r/policy/compat/target/resource_managed
@@ -303,6 +344,9 @@ resourceManaged              compiler     test         *               /mirror/r
 resourceManaged              library      *            *               /mirror/r/policy/library/target/resource_managed
 resourceManaged              library      compile      *               /mirror/r/policy/library/target/resource_managed/main
 resourceManaged              library      test         *               /mirror/r/policy/library/target/resource_managed/test
+resourceManaged              repl         *            *               /mirror/r/policy/repl/target/resource_managed
+resourceManaged              repl         compile      *               /mirror/r/policy/repl/target/resource_managed/main
+resourceManaged              repl         test         *               /mirror/r/policy/repl/target/resource_managed/test
 resourceManaged              root         *            *               /mirror/r/policy/target/resource_managed
 resourceManaged              root         compile      *               /mirror/r/policy/target/resource_managed/main
 resourceManaged              root         test         *               /mirror/r/policy/target/resource_managed/test
@@ -316,6 +360,7 @@ sbtVersion                   *            *            *               "0.13.5"
 scalaBinaryVersion           compat       *            *               "2.11"
 scalaBinaryVersion           compiler     *            *               "2.11"
 scalaBinaryVersion           library      *            *               "2.11"
+scalaBinaryVersion           repl         *            *               "2.11"
 scalaBinaryVersion           root         *            *               "2.11"
 scalaOrganization            *            *            *               "org.scala-lang"
 scalaSource                  compat       compile      *               /mirror/r/policy/compat/src/main/scala
@@ -324,23 +369,28 @@ scalaSource                  compiler     compile      *               /mirror/r
 scalaSource                  compiler     test         *               /mirror/r/policy/compiler/src/test/scala
 scalaSource                  library      compile      *               /mirror/r/policy/src/library
 scalaSource                  library      test         *               /mirror/r/policy/library/src/test/scala
+scalaSource                  repl         compile      *               /mirror/r/policy/src/repl
+scalaSource                  repl         test         *               /mirror/r/policy/repl/src/test/scala
 scalaSource                  root         compile      *               /mirror/r/policy/src/main/scala
 scalaSource                  root         test         *               /mirror/r/policy/src/test/scala
 scalaVersion                 *            *            *               "2.10.4"
 scalaVersion                 compat       *            *               "2.11.1"
 scalaVersion                 compiler     *            *               "2.11.1"
 scalaVersion                 library      *            *               "2.11.1"
+scalaVersion                 repl         *            *               "2.11.1"
 scalaVersion                 root         *            *               "2.11.1"
 settingsDumpFile             {.}          *            *               /mirror/r/policy/settings.dump
 showSuccess                  *            *            *               true
 showSuccess                  compat       *            *               false
 showSuccess                  compiler     *            *               false
 showSuccess                  library      *            *               false
+showSuccess                  repl         *            *               false
 showSuccess                  root         *            *               false
 showTiming                   *            *            *               true
 showTiming                   compat       *            *               true
 showTiming                   compiler     *            *               true
 showTiming                   library      *            *               true
+showTiming                   repl         *            *               true
 showTiming                   root         *            *               true
 sourceDirectory              compat       *            *               /mirror/r/policy/compat/src
 sourceDirectory              compat       compile      *               /mirror/r/policy/compat/src/main
@@ -351,6 +401,9 @@ sourceDirectory              compiler     test         *               /mirror/r
 sourceDirectory              library      *            *               /mirror/r/policy/library/src
 sourceDirectory              library      compile      *               /mirror/r/policy/library/src/main
 sourceDirectory              library      test         *               /mirror/r/policy/library/src/test
+sourceDirectory              repl         *            *               /mirror/r/policy/repl/src
+sourceDirectory              repl         compile      *               /mirror/r/policy/repl/src/main
+sourceDirectory              repl         test         *               /mirror/r/policy/repl/src/test
 sourceDirectory              root         *            *               /mirror/r/policy/src
 sourceDirectory              root         compile      *               /mirror/r/policy/src/main
 sourceDirectory              root         test         *               /mirror/r/policy/src/test
@@ -363,6 +416,9 @@ sourceManaged                compiler     test         *               /mirror/r
 sourceManaged                library      *            *               /mirror/r/policy/library/target/src_managed
 sourceManaged                library      compile      *               /mirror/r/policy/library/target/src_managed/main
 sourceManaged                library      test         *               /mirror/r/policy/library/target/src_managed/test
+sourceManaged                repl         *            *               /mirror/r/policy/repl/target/src_managed
+sourceManaged                repl         compile      *               /mirror/r/policy/repl/target/src_managed/main
+sourceManaged                repl         test         *               /mirror/r/policy/repl/target/src_managed/test
 sourceManaged                root         *            *               /mirror/r/policy/target/src_managed
 sourceManaged                root         compile      *               /mirror/r/policy/target/src_managed/main
 sourceManaged                root         test         *               /mirror/r/policy/target/src_managed/test
@@ -370,6 +426,7 @@ sourcesInBase                *            *            *               true
 sourcesInBase                compat       *            *               false
 sourcesInBase                compiler     *            *               false
 sourcesInBase                library      *            *               false
+sourcesInBase                repl         *            *               false
 sourcesInBase                root         *            *               false
 target                       compat       *            *               /mirror/r/policy/compat/target
 target                       compat       compile      doc             /mirror/r/policy/compat/target/api
@@ -380,6 +437,9 @@ target                       compiler     test         doc             /mirror/r
 target                       library      *            *               /mirror/r/policy/library/target
 target                       library      compile      doc             /mirror/r/policy/library/target/api
 target                       library      test         doc             /mirror/r/policy/library/target/test-api
+target                       repl         *            *               /mirror/r/policy/repl/target
+target                       repl         compile      doc             /mirror/r/policy/repl/target/api
+target                       repl         test         doc             /mirror/r/policy/repl/target/test-api
 target                       root         *            *               /mirror/r/policy/target
 target                       root         compile      doc             /mirror/r/policy/target/api
 target                       root         test         doc             /mirror/r/policy/target/test-api
@@ -387,10 +447,12 @@ testForkedParallel           *            *            *               false
 thisProject                  compat       *            *               <sbt.Project$$anon$1>
 thisProject                  compiler     *            *               <sbt.Project$$anon$1>
 thisProject                  library      *            *               <sbt.Project$$anon$1>
+thisProject                  repl         *            *               <sbt.Project$$anon$1>
 thisProject                  root         *            *               <sbt.Project$$anon$1>
 thisProjectRef               compat       *            *               ProjectRef(file:/mirror/r/policy/, "compat")
 thisProjectRef               compiler     *            *               ProjectRef(file:/mirror/r/policy/, "compiler")
 thisProjectRef               library      *            *               ProjectRef(file:/mirror/r/policy/, "library")
+thisProjectRef               repl         *            *               ProjectRef(file:/mirror/r/policy/, "repl")
 thisProjectRef               root         *            *               ProjectRef(file:/mirror/r/policy/, "root")
 timingFormat                 *            *            *               <java.text.SimpleDateFormat>
 traceLevel                   *            *            console         Int.MaxValue
@@ -400,16 +462,19 @@ traceLevel                   *            *            runMain         0
 traceLevel                   compat       *            *               20
 traceLevel                   compiler     *            *               20
 traceLevel                   library      *            *               20
+traceLevel                   repl         *            *               20
 traceLevel                   root         *            *               20
 trapExit                     *            *            *               true
 unmanagedBase                compat       *            *               /mirror/r/policy/compat/lib
 unmanagedBase                compiler     *            *               /mirror/r/policy/compiler/lib
 unmanagedBase                compiler     test         *               /mirror/r/policy/partest/testlib
 unmanagedBase                library      *            *               /mirror/r/policy/library/lib
+unmanagedBase                repl         *            *               /mirror/r/policy/repl/lib
 unmanagedBase                root         *            *               /mirror/r/policy/lib
 updateConfiguration          compat       *            *               <sbt.UpdateConfiguration>
 updateConfiguration          compiler     *            *               <sbt.UpdateConfiguration>
 updateConfiguration          library      *            *               <sbt.UpdateConfiguration>
+updateConfiguration          repl         *            *               <sbt.UpdateConfiguration>
 updateConfiguration          root         *            *               <sbt.UpdateConfiguration>
 useGpg                       *            *            *               false
 useGpgAgent                  *            *            *               false
@@ -417,4 +482,5 @@ version                      *            *            *               "0.1-SNAP
 version                      compat       *            *               "1.0.0-SNAPSHOT"
 version                      compiler     *            *               "1.0.0-SNAPSHOT"
 version                      library      *            *               "1.0.0-SNAPSHOT"
+version                      repl         *            *               "1.0.0-SNAPSHOT"
 version                      root         *            *               "1.0.0-SNAPSHOT"

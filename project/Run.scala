@@ -10,7 +10,7 @@ trait Runners {
     "partest.colors"           -> "256",
     "partest.threads"          -> (numCores - 1).toString,
     "partest.git_diff_options" -> "--word-diff",
-    "partest.basedir"          -> buildBase.value.getPath,
+    "partest.basedir"          -> PolicyKeys.buildBase.value.getPath,
     "partest.root"             -> testBase.value.getPath,
     "partest.testlib"          -> unmanagedBase.value.getPath
   )

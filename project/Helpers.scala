@@ -1,7 +1,7 @@
 package policy
 package building
 
-import sbt._, Keys._
+import sbt._, Keys._, PolicyKeys._
 
 trait Helpers extends IndependentHelpers with SbtHelpers
 
@@ -58,20 +58,23 @@ trait SbtHelpers {
   def sbtFilesIn(dir: File): Seq[File]                   = filesIn(dir, "sbt")
   def sourceFilesIn(dir: File): Seq[File]                = filesIn(dir, "scala", "java")
 
-  // Settings
-  def sbtFilesInBuild      = buildBase map sbtFilesIn
-  def sourceFilesInProject = buildBase map (_ / "project") map sourceFilesIn
-  def sourcePathOpts       = scalaSource in Compile map (p => Seq("-sourcepath", p.getPath))
-  def logger               = streams in Compile map (_.log)
-  def buildBase            = baseDirectory in ThisBuild
-  def projectBase          = baseDirectory in ThisProject
-  def testBase             = Def setting (buildBase.value / "test")
-  def srcBase              = Def setting (buildBase.value / "src")
+  def topDir(name: String): SettingOf[File]      = buildBase andThen (_ / name)
+  def sourceFilesInProject: SettingOf[Seq[File]] = topDir("project") andThen sourceFilesIn
 
-  def allInSrc(words: String)      = Def setting (wordSeq(words) map (buildBase.value / "src" / _))
-  def inSrc(name: String)          = Def setting (buildBase.value / "src" / name)
-  def fromSrc(f: File => File)     = Def setting f(buildBase.value / "src")
-  def fromBuild(f: File => File)   = Def setting f(buildBase.value)
+  // def buildBase: SettingKey[File]   = baseDirectory in ThisBuild
+  // def projectBase: SettingKey[File] = baseDirectory in ThisProject
+
+  // Settings
+  def sbtFilesInBuild           = buildBase map sbtFilesIn
+  def sourcePathOpts            = scalaSource in Compile map (p => Seq("-sourcepath", p.getPath))
+  def logger                    = streams in Compile map (_.log)
+  def testBase: SettingOf[File] = topDir("test")
+  def srcBase: SettingOf[File]  = topDir("src")
+
+  def allInSrc(words: String)                     = Def setting (wordSeq(words) map (srcBase.value / _))
+  def inSrc(name: String)                         = Def setting (srcBase.value / name)
+  def fromSrc(f: File => File): SettingOf[File]   = Def setting f(srcBase.value)
+  def fromBuild(f: File => File): SettingOf[File] = buildBase andThen f //transform (x => f(x))
 
   // Parsers
   def scalaVersionParser: Parser[String] = token(Space) ~> token(NotSpace, "a scala version")

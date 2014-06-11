@@ -4,12 +4,17 @@ package building
 import sbt._, Keys._
 import complete.DefaultParsers._
 
-trait BuildTasks {
+object PolicyKeys {
   val repl              = inputKey[Unit]("run policy repl")
   val getScala          = inputKey[ScalaInstance]("download scala version, if not in ivy cache")
-  val settingsDumpFile  = settingKey[File]("file into which to record all sbt settings")
-  val bootstrapModuleId = settingKey[ModuleID]("module id of bootstrap compiler")
+  val settingsDumpFile  = settingKey[File]("file into which to record all sbt settings") in ThisBuild
+  val bootstrapModuleId = settingKey[ModuleID]("module id of bootstrap compiler") in ThisBuild
 
+  val buildBase: SettingKey[File]   = baseDirectory in ThisBuild
+  val projectBase: SettingKey[File] = baseDirectory in ThisProject
+}
+
+trait BuildTasks {
   private def testJavaOptions  = partestProperties map ("-Xmx1g" +: _.commandLineArgs)
 
   def createUnzipTask: TaskOf[Seq[File]] = Def task (
@@ -23,7 +28,7 @@ trait BuildTasks {
     props("version.number")              = version.value
     props("scala.version.number")        = scalaVersion.value
     props("scala.binary.version.number") = scalaBinaryVersion.value
-    props("bootstrap.moduleid")          = (bootstrapModuleId in ThisBuild).value.toString
+    props("bootstrap.moduleid")          = PolicyKeys.bootstrapModuleId.value.toString
     props.save()
     Seq(file)
   }

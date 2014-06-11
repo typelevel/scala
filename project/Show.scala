@@ -36,7 +36,7 @@ final class WState(val state: State) {
 
 object ScopedShow {
   val dump: StateMap = WState look { ws =>
-    val file  = ws(settingsDumpFile)
+    val file  = ws(PolicyKeys.settingsDumpFile)
     val shows = ws.settings map (k => new ScopedShow(ws, k)) filter (_.hasPrintableValue) sortBy (_.score)
     IO.write(file, shows.map(_.toString).distinct.mkString("\n") + "\n")
   }

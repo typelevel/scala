@@ -54,12 +54,14 @@ final class ProjectOps(val p: Project) {
 
 private object projectSettings {
   final val Root     = "root"
+  final val Repl     = "repl"
   final val Compiler = "compiler"
   final val Library  = "library"
   final val Compat   = "compat"
 
   def apply(id: String): SettingSeq = universal ++ (id match {
     case Root     => root
+    case Repl     => repl
     case Compat   => compat
     case Compiler => compiler
     case Library  => library
@@ -69,7 +71,7 @@ private object projectSettings {
   val asmJarKey     = taskKey[File]("asm jar")
   def asm           = PolicyOrg % "asm" % asmVersion
   def asmVersion    = "5.0.4-SNAPSHOT"
-  def asmJarTask    = Def task buildBase.value / "lib" / s"asm-$asmVersion.jar"
+  def asmJarTask    = topDir("lib") map (_ / s"asm-$asmVersion.jar")
   def asmSettings   = Seq(asmJarKey <<= asmJarTask) ++ addArtifact(Artifact("asm"), asmJarKey).settings
   def asmAttributed = Def task newCpElem(asmJarTask.value, Artifact("asm"), asm, ScalaTool)
 
@@ -77,7 +79,7 @@ private object projectSettings {
   def codeProject(others: Setting[_]*) = compiling ++ publishing ++ others
 
   // Settings added to every project.
-  def universal = bintraySettings ++ List(
+  def universal = List(
                            name ~=  (dash(PolicyName, _)),
                         version :=  "1.0.0-SNAPSHOT",
                    scalaVersion :=  ScalaKnownVersion,
@@ -99,12 +101,14 @@ private object projectSettings {
 
   def compiler = codeProject(
     unmanagedSourceDirectories in Compile <++= allInSrc("compiler reflect repl"),
-       unmanagedSourceDirectories in Test  +=  buildBase.value / "partest" / "src",
-                    unmanagedBase in Test  :=  buildBase.value / "partest" / "testlib",
+       unmanagedSourceDirectories in Test  +=  topDir("partest").value / "src",
+                    unmanagedBase in Test  :=  topDir("partest").value / "testlib",
                              fork in Test  :=  true,
                                      test <<=  runAllTests,
                                  testOnly <<=  runTests
   )
+
+  def repl = codeProject(scalaSource in Compile <<= inSrc(Repl))
 
   def compat   = List(sourceGenerators in Compile <+= createUnzipTask)
 
@@ -117,14 +121,14 @@ private object projectSettings {
   def root = List(
                                  name :=  PolicyName,
             organization in ThisBuild :=  PolicyOrg,
-                             getScala :=  scalaInstanceTask.evaluated,
+                  PolicyKeys.getScala :=  scalaInstanceTask.evaluated,
+                      PolicyKeys.repl :=  asInputTask(forkRepl).evaluated,
                                   run :=  asInputTask(forkCompiler).evaluated,
-                                 repl :=  asInputTask(forkRepl).evaluated,
            initialCommands in console :=  "import scala.reflect.runtime.universe._",
     initialCommands in consoleProject :=  "import policy.building._",
                          watchSources ++= sbtFilesInBuild.value ++ sourceFilesInProject.value,
-       bootstrapModuleId in ThisBuild :=  chooseBootstrap,
-                  libraryDependencies +=  bootstrapModuleId.value % ScalaTool.name,
+         PolicyKeys.bootstrapModuleId :=  chooseBootstrap,
+                  libraryDependencies +=  PolicyKeys.bootstrapModuleId.value % ScalaTool.name,
            scalaInstance in ThisBuild <<= scalaInstanceFromModuleIDTask,
                              commands ++= bootstrapCommands,
                               publish :=  (),

@@ -38,7 +38,7 @@ trait Bootstrap {
 
   private def saveBootstrapVersion(args: Seq[String]): StateMap = WState { ws =>
     val (props, newModule) = args.toList match {
-      case Nil                  => localProps -> ws(bootstrapModuleId in ThisBuild)
+      case Nil                  => localProps -> ws(PolicyKeys.bootstrapModuleId)
       case "local" :: v :: Nil  => localProps -> (PolicyOrg % "bootstrap-compiler" % v)
       case "remote" :: v :: Nil => buildProps -> (PolicyOrg % "bootstrap-compiler" % v)
       case _                    => return _.fail

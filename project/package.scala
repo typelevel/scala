@@ -19,6 +19,10 @@ package object building extends PolicyPackage {
   implicit def inputTaskValueDiscarding[A](in: InputTaskOf[A]): InputTaskOf[Unit] = in map (_ => ())
   implicit def sequenceOps[A](xs: Seq[A]): SequenceOps[A]                         = new SequenceOps[A](xs)
 
+  implicit class InitSettingOps[A](val key: SettingOf[A]) {
+    def andThen[B](f: A => B): SettingOf[B] = Def setting f(key.value)
+  }
+
   implicit class SettingKeyOps[A](val key: SettingKey[A])(implicit state: State) {
     def is: A = Project extract state get key
   }
