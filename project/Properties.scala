@@ -29,7 +29,7 @@ final class ImmutableProperties private (in: Map[String, String]) extends java.u
   def commandLineArgs: Seq[String] = joined("=") map ("-D" + _)
 }
 
-final class MutableProperties private (file: File) {
+final class MutableProperties private (val file: File) {
   import scala.collection.JavaConverters._
   private[this] val props = new java.util.Properties
   private def objectToString(s: Object): String = s match {

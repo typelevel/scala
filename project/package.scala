@@ -5,6 +5,25 @@ import bintray.Plugin.{ bintraySettings, bintrayPublishSettings }
 
 sealed abstract class PolicyPackage extends Constants with PluginRelatedCode with BuildTasks with Helpers with Depends with Runners
 
+// Append some settings and run commands while under their thrall.
+case class CommandContext(settings: Seq[Setting[_]], commands: Seq[String]) {
+  def apply(state: State): State            = commands ::: (Project extract state).append(settings, state)
+  def set (xs: Setting[_]*): CommandContext = copy(settings = settings ++ xs)
+  def add (xs: String*): CommandContext     = copy(commands = commands ++ xs)
+}
+
+class WState(val state: State) {
+  val extracted            = Project extract state
+  def info(msg: => String) = state.log.info(msg)
+
+  def runWith(settings: Seq[Setting[_]], commands: Seq[String]): WState =
+    new WState(CommandContext(settings, commands)(state))
+}
+
+object WState {
+  def apply(f: WState => WState): State => State = s => f(new WState(s)).state
+}
+
 package object building extends PolicyPackage {
   locally {
     import org.slf4j.{ LoggerFactory, Logger }, ch.qos.logback.classic
@@ -24,57 +43,32 @@ package object building extends PolicyPackage {
       case Nil    => lookupBootstrapId(state)
       case v :: _ => PolicyOrg % "bootstrap-compiler" % v
     }).toString
-    state.log.info(s"Updating $BootstrapModuleProperty to $newModule in build.properties")
-    buildProps.write(BootstrapModuleProperty, newModule)
+    state.log.info(s"Updating $BootstrapModuleProperty to $newModule in " + localProps.file.getName)
+    localProps.write(BootstrapModuleProperty, newModule)
     sys.props(BootstrapModuleProperty) = newModule
     state
   }
 
   def lookupBootstrapId(state: State): ModuleID = (Project extract state) get (bootstrapModuleId in ThisBuild)
 
-  def bootstrap(state: State, args: Seq[String]): State = {
-    val (newVersion, nextCommands) = args.toList match {
-      case Nil       => dash(PolicyBaseVersion, runSlurp("bin/unique-version")) -> Nil
-      case v :: Nil  => v -> Nil
-      case v :: cmds => v -> cmds
-    }
-    def next = List("publishLocal", s"saveBootstrapVersion $newVersion") ++ nextCommands ++ List("reboot full")
-    bootstrap(state, newVersion, next)
+  def bootstrapNames = Seq(
+     name in LocalProject("library") := "bootstrap-library",
+    name in LocalProject("compiler") := "bootstrap-compiler"
+  )
+  def bootstrapVersions(newVersion: String) = Seq(
+     version in LocalProject("library") := newVersion,
+    version in LocalProject("compiler") := newVersion
+  )
+  // Creates a fresh version number, publishes bootstrap jars with that number to the local repository.
+  // Records the version in project/local.properties where it has precedence over build.properties.
+  // Reboots sbt under the new jars.
+  val publishLocalBootstrap = WState { ws =>
+    val newVersion  = dash(PolicyBaseVersion, runSlurp("bin/unique-version"))
+    val newSettings = bootstrapNames ++ bootstrapVersions(newVersion)
+    ws.runWith(newSettings, List("publishLocal", s"saveBootstrapVersion $newVersion", "reboot full"))
   }
-
-  def bootstrap(state: State, newVersion: String, nextCommands: Seq[String]): State = {
-    val extracted        = Project extract state
-    val currentBootstrap = lookupBootstrapId(state)
-
-    if (newVersion == currentBootstrap.revision)
-      state.log.info(s"Bootstrap compiler is already $newVersion, skipping to commands.")
-    else
-      state.log.info(s"Building $newVersion to replace bootstrap compiler $currentBootstrap.")
-
-    def perProject(p: String) = bintray.Plugin.bintrayPublishSettings ++ Seq(
-         name in LocalProject(p) := s"bootstrap-$p",
-                    organization := "org.improving",
-      version in LocalProject(p) := newVersion
-    )
-
-    val newSettings = wordSeq("library compiler") flatMap perProject
-    nextCommands ::: extracted.append(newSettings, state)
-  }
-
-  def publishBootstrap(state: State): State = {
-    // import bintray.Keys._
-    // ++ bintrayPublishSettings
-
-    val newSettings = (List("library", "compiler") flatMap (p => Seq(name in LocalProject(p) := s"bootstrap-$p")))
-    state.log.info(s"publishing bootstrap compiler with temporary settings:\n  " + newSettings.mkString("\n  "))
-    CommandContext(newSettings, List("publishLocal", "publish", "reboot full"))(state)
-  }
-
-  case class CommandContext(settings: Seq[Setting[_]], commands: Seq[String]) {
-    def apply(state: State): State            = commands ::: (Project extract state).append(settings, state)
-    def set (xs: Setting[_]*): CommandContext = copy(settings = settings ++ xs)
-    def add (xs: String*): CommandContext     = copy(commands = commands ++ xs)
-  }
+  val publishBootstrap = WState(_.runWith(bootstrapNames, List("publishLocal", "publish", "reboot full")))
 
   def runWith(xs: Setting[_]*): CommandContext = CommandContext(xs.toSeq, Nil)
 }
+

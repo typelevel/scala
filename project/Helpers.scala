@@ -89,7 +89,6 @@ trait SbtHelpers {
 
   // Hairier sbt-internal stuff.
 
-  def sysOrBuild(name: String): Option[String] = (sys.props get name) orElse (buildProps get name)
   def buildLevelJars = Def setting (buildBase.value / "lib" * "*.jar").get
   def chooseBootstrap = sysOrBuild(BootstrapModuleProperty).fold(scalaModuleId("compiler"))(moduleId)
 
@@ -103,15 +102,25 @@ trait SbtHelpers {
     version => ScalaInstance(version, appConf.provider.scalaProvider.launcher getScala version)
 
   def scalaInstanceFromModuleIDTask: TaskOf[ScalaInstance] = Def task {
-    val report = update.value configuration ScalaTool.name getOrElse sys.error("No update report")
+
+    def isLib(f: File)  = f.getName contains "-library"
+    def isComp(f: File) = f.getName contains "-compiler"
+    def sorter(f: File) = if (isLib(f)) 1 else if (isComp(f)) 2 else 3
+
+    val report     = update.value configuration ScalaTool.name getOrElse sys.error("No update report")
     val modReports = report.modules.toList
-    val pairs = modReports flatMap (_.artifacts)
-    val files = pairs map (_._2)
+    val pairs      = modReports flatMap (_.artifacts)
+    val files      = (pairs map (_._2) sortBy sorter).toList
     def firstRevision = modReports.head.module.revision
 
-    files match {
-      case lib :: comp :: others => ScalaInstance(firstRevision, lib, comp, others ++ buildLevelJars.value: _*)(state.value.classLoaderCache.apply)
-      case _                     => ScalaInstance(scalaVersion.value, appConfiguration.value.provider.scalaProvider.launcher getScala scalaVersion.value)
+    files ::: buildLevelJars.value.toList match {
+      case lib :: comp :: extras if isLib(lib) && isComp(comp) =>
+        state.value.log.info(s"scalaInstanceFromModuleIDTask:\n$report" + (lib :: comp :: extras).mkString("\n  ", "\n  ", "\n"))
+        ScalaInstance(firstRevision, lib, comp, extras: _*)(state.value.classLoaderCache.apply)
+      case _                                  =>
+        val v = scalaVersion.value
+        state.value.log.info(s"Couldn't find scala instance: $report\nWill try $v instead")
+        ScalaInstance(v, appConfiguration.value.provider.scalaProvider.launcher getScala v)
     }
   }
 

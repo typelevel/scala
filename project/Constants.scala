@@ -7,9 +7,13 @@ import DefaultParsers._
 
 trait Constants {
   lazy val buildProps = MutableProperties(file("project/build.properties"))
+  lazy val localProps = MutableProperties(file("project/local.properties"))
 
-  def SbtKnownVersion   = (buildProps ? "sbt.version"      ) | "0.13.5"
-  def ScalaKnownVersion = (buildProps ? "scala.version"    ) | "2.11.1"
+  def sysOrBuild(name: String): Option[String] = (
+    (sys.props get name) orElse (localProps get name) orElse (buildProps get name)
+  )
+  def SbtKnownVersion   = sysOrBuild("sbt.version") | "0.13.5"
+  def ScalaKnownVersion = sysOrBuild("scala.version") | "2.11.1"
 
   type ParserOf[A]          = Def.Initialize[State => Parser[A]]
   type SettingOf[A]         = Def.Initialize[A]

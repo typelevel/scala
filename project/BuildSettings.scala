@@ -5,6 +5,7 @@ import sbt._, Keys._
 import Opts.resolver._
 import Classpaths.{ packaged, publishConfig }
 import bintray.Plugin.{ bintraySettings, bintrayPublishSettings }
+import com.typesafe.tools.mima.plugin.MimaKeys
 
 trait Depends {
   def bintrayPaulpResolver = "bintray/paulp" at "https://dl.bintray.com/paulp/maven"
@@ -71,7 +72,7 @@ private object projectSettings {
 
   // Interactive commands
   def interactiveCommands = Seq(
-    Command.args("bootstrap", "<version>")(bootstrap),
+    Command.command("publishLocalBootstrap")(publishLocalBootstrap),
     Command.command("publishBootstrap")(publishBootstrap),
     Command.args("saveBootstrapVersion", "<version>")(saveBootstrapVersion)
   )
@@ -80,7 +81,7 @@ private object projectSettings {
   def universal = bintraySettings ++ List(
                            name ~=  (dash(PolicyName, _)),
                    organization :=  PolicyOrg,
-                        version :=  "1.0.0-M1",
+                        version :=  "1.0.0-M2",
                    scalaVersion :=  ScalaKnownVersion,
              scalaBinaryVersion :=  "2.11",
                        licenses :=  Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
@@ -93,6 +94,7 @@ private object projectSettings {
                      showTiming :=  true,
                      traceLevel :=  20,
               ivyConfigurations +=  ScalaTool,
+                      resolvers +=  bintrayPaulpResolver,
        unmanagedJars in Compile ++= buildLevelJars.value,
                   scalaInstance <<= scalaInstance in ThisBuild
   )
@@ -102,10 +104,8 @@ private object projectSettings {
        unmanagedSourceDirectories in Test  +=  buildBase.value / "partest" / "src",
                     unmanagedBase in Test  :=  buildBase.value / "partest" / "testlib",
                              fork in Test  :=  true,
-                parallelExecution in Test  :=  false,
-                              run in Test <<=  runTests.fullInput(" --all"),
-                                     test  :=  runTests.toTask(""),
-                                 testOnly <<=  runTests // runTests.evaluated
+                                     test  :=  runTests.fullInput(" --all").value,
+                                 testOnly <<=  runTests
   )
 
   def compat   = List(sourceGenerators in Compile <+= createUnzipTask)
@@ -115,11 +115,11 @@ private object projectSettings {
     unmanagedSourceDirectories in Compile <++= allInSrc("forkjoin library"),
                  scalacOptions in Compile ++=  Seq("-sourcepath", inSrc(Library).value.getPath),
                          previousArtifact  :=  Some(scalaLibrary),
-                       binaryIssueFilters ++=  MimaPolicy.filters
+                       binaryIssueFilters ++=  MimaPolicy.filters,
+                                     test  :=  MimaKeys.reportBinaryIssues.value
   )
-  def root = publishing ++ List(
+  def root = List(
                                  name :=  PolicyName,
-                            resolvers +=  bintrayPaulpResolver,
                              getScala :=  scalaInstanceTask.evaluated,
                                   run :=  asInputTask(forkCompiler).evaluated,
                                  repl :=  asInputTask(forkRepl).evaluated,
@@ -136,7 +136,9 @@ private object projectSettings {
                      checksums in publishLocal := Nil,
                              publishMavenStyle := true,
       publishArtifact in (Compile, packageDoc) := false,
-      publishArtifact in (Compile, packageSrc) := false
+      publishArtifact in (Compile, packageSrc) := false,
+                     publishLocalConfiguration ~= (p => publishConfig(p.artifacts, p.ivyFile, p.checksums, p.resolverName, logging = UpdateLogging.Quiet, overwrite = false)),
+                           updateConfiguration ~= (uc => new UpdateConfiguration(uc.retrieve, uc.missingOk, logging = UpdateLogging.Quiet))
   )
   def compiling = List(
            resourceGenerators in Compile <+= generateProperties(),
