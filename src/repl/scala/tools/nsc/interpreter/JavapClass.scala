@@ -302,7 +302,7 @@ class JavapClass(
     ) orFailed null
 
     class JavaReporter extends DiagnosticListener[JavaFileObject] with Clearable {
-      import scala.collection.mutable.{ ArrayBuffer, SynchronizedBuffer }
+      import scala.collection.mutable.ArrayBuffer
       type D = Diagnostic[_ <: JavaFileObject]
       val diagnostics = new ConcurrentLinkedQueue[D]
       override def report(d: Diagnostic[_ <: JavaFileObject]) {
