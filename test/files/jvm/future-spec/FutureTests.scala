@@ -23,7 +23,7 @@ class FutureTests extends MinimalScalaTest {
 
   "A future with custom ExecutionContext" should {
     "shouldHandleThrowables" in {
-      val ms = new mutable.HashSet[Throwable] with mutable.SynchronizedSet[Throwable]
+      val ms = new mutable.HashSet[Throwable]
       implicit val ec = scala.concurrent.ExecutionContext.fromExecutor(new scala.concurrent.forkjoin.ForkJoinPool(), {
         t =>
         ms += t

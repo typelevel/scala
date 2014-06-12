@@ -21,7 +21,7 @@ trait Depends {
   // lazy val asm = RootProject(uri("git://github.com/paulp/asm.git#scala-fixes"))
   // def asm = "org.ow2.asm" % "asm-debug-all" % "5.0.3"
 
-  def ant           = "org.apache.ant"                 %            "ant"            % "1.9.4"
+  def spire         = "org.spire-math"                 %%          "spire"           % "0.7.5"
   def diffutils     = "com.googlecode.java-diff-utils" %         "diffutils"         % "1.3.0"
   def jline         = "jline"                          %           "jline"           %  "2.12"
   def slf4jApi      = "org.slf4j"                      %         "slf4j-api"         % "1.7.7"
