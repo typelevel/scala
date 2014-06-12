@@ -10,15 +10,33 @@ object MimaPolicy {
   """)
 
   private val removedClasses = wordSet("""
+    scala.collection.IterableProxy
+    scala.collection.IterableProxyLike
+    scala.collection.MapProxy
+    scala.collection.MapProxyLike
+    scala.collection.SeqProxy
+    scala.collection.SeqProxyLike
+    scala.collection.SetProxy
+    scala.collection.SetProxyLike
+    scala.collection.TraversableProxy
+    scala.collection.TraversableProxyLike
+    scala.collection.immutable.MapProxy
+    scala.collection.immutable.SetProxy
+    scala.collection.mutable.BufferProxy
+    scala.collection.mutable.MapProxy
     scala.collection.mutable.ObservableBuffer
     scala.collection.mutable.ObservableMap
     scala.collection.mutable.ObservableSet
+    scala.collection.mutable.PriorityQueueProxy
+    scala.collection.mutable.QueueProxy
+    scala.collection.mutable.SetProxy
+    scala.collection.mutable.StackProxy
+    scala.collection.mutable.SynchronizedBuffer
+    scala.collection.mutable.SynchronizedMap
+    scala.collection.mutable.SynchronizedPriorityQueue
     scala.collection.mutable.SynchronizedQueue
     scala.collection.mutable.SynchronizedSet
     scala.collection.mutable.SynchronizedStack
-    scala.collection.mutable.SynchronizedMap
-    scala.collection.mutable.SynchronizedBuffer
-    scala.collection.mutable.SynchronizedPriorityQueue
   """)
 
   private val removedMethods = wordSet("""
