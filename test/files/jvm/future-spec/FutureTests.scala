@@ -21,52 +21,52 @@ class FutureTests extends MinimalScalaTest {
 
   /* future specification */
 
-  "A future with custom ExecutionContext" should {
-    "shouldHandleThrowables" in {
-      val ms = new mutable.HashSet[Throwable]
-      implicit val ec = scala.concurrent.ExecutionContext.fromExecutor(new scala.concurrent.forkjoin.ForkJoinPool(), {
-        t =>
-        ms += t
-      })
+  // "A future with custom ExecutionContext" should {
+  //   "shouldHandleThrowables" in {
+  //     val ms = new mutable.HashSet[Throwable]
+  //     implicit val ec = scala.concurrent.ExecutionContext.fromExecutor(new scala.concurrent.forkjoin.ForkJoinPool(), {
+  //       t =>
+  //       ms += t
+  //     })
 
-      class ThrowableTest(m: String) extends Throwable(m)
+  //     class ThrowableTest(m: String) extends Throwable(m)
 
-      val f1 = Future[Any] {
-        throw new ThrowableTest("test")
-      }
+  //     val f1 = Future[Any] {
+  //       throw new ThrowableTest("test")
+  //     }
 
-      intercept[ThrowableTest] {
-        Await.result(f1, defaultTimeout)
-      }
+  //     intercept[ThrowableTest] {
+  //       Await.result(f1, defaultTimeout)
+  //     }
 
-      val latch = new TestLatch
-      val f2 = Future {
-        Await.ready(latch, 5 seconds)
-        "success"
-      }
-      val f3 = f2 map { s => s.toUpperCase }
+  //     val latch = new TestLatch
+  //     val f2 = Future {
+  //       Await.ready(latch, 5 seconds)
+  //       "success"
+  //     }
+  //     val f3 = f2 map { s => s.toUpperCase }
 
-      f2 foreach { _ => throw new ThrowableTest("dispatcher foreach") }
-      f2 onSuccess { case _ => throw new ThrowableTest("dispatcher receive") }
+  //     f2 foreach { _ => throw new ThrowableTest("dispatcher foreach") }
+  //     f2 onSuccess { case _ => throw new ThrowableTest("dispatcher receive") }
 
-      latch.open()
+  //     latch.open()
 
-      Await.result(f2, defaultTimeout) mustBe ("success")
+  //     Await.result(f2, defaultTimeout) mustBe ("success")
 
-      f2 foreach { _ => throw new ThrowableTest("current thread foreach") }
-      f2 onSuccess { case _ => throw new ThrowableTest("current thread receive") }
+  //     f2 foreach { _ => throw new ThrowableTest("current thread foreach") }
+  //     f2 onSuccess { case _ => throw new ThrowableTest("current thread receive") }
 
-      Await.result(f3, defaultTimeout) mustBe ("SUCCESS")
+  //     Await.result(f3, defaultTimeout) mustBe ("SUCCESS")
 
-      val waiting = Future {
-        Thread.sleep(1000)
-      }
-      Await.ready(waiting, 2000 millis)
+  //     val waiting = Future {
+  //       Thread.sleep(1000)
+  //     }
+  //     Await.ready(waiting, 2000 millis)
 
-      ms.size mustBe (4)
-      //FIXME should check
-    }
-  }
+  //     ms.size mustBe (4)
+  //     //FIXME should check
+  //   }
+  // }
 
   "The Future companion object" should {
     "call ExecutionContext.prepare on apply" in {
