@@ -676,7 +676,7 @@ self =>
 
     def isTypeIntroToken(token: Token): Boolean = isLiteralToken(token) || (token match {
       case IDENTIFIER | BACKQUOTED_IDENT | THIS |
-           SUPER | USCORE | LPAREN | AT => true
+           SUPER | USCORE | LPAREN | AT | NULL => true
       case _ => false
     })
 
@@ -1096,7 +1096,7 @@ self =>
         if (in.token == DOT) t = selectors(t, typeOK, in.skipToken())
       } else {
         val tok = in.token
-        if (tok != BACKQUOTED_IDENT && tok != IDENTIFIER && tok != NULL) {
+        if (tok != BACKQUOTED_IDENT && tok != IDENTIFIER) {
           val lit = literal(false)
           accept(DOT)
           accept(TYPE)

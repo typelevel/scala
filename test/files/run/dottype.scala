@@ -14,6 +14,8 @@ object Test {
 
   type Unt = ().type
 
+  type Null = null.type
+
   var x: 3.type = 3
   /*
     scala> x = 42
@@ -25,6 +27,9 @@ object Test {
    */
 
   val y: 5.type = 5
+
+  final val `( •_•) ( •_•)>⌐■-■ (⌐■_■)` = -10
+  val unicode: `( •_•) ( •_•)>⌐■-■ (⌐■_■)`.type = `( •_•) ( •_•)>⌐■-■ (⌐■_■)`
 
   def g(x: Int) = x match {
     case _: y.type => 0
@@ -70,6 +75,11 @@ object Test {
   val range = new Ranged[10.type, 20.type]
   val integral = new IntegralRanged[Int, 1.type, 50.type]
 
+  def noisyIdentity(x: Any): x.type = {
+    println("got " + x)
+    x
+  }
+
   def main(args: Array[String]): Unit = {
     println(f(1))
     // println(f(5))
@@ -77,39 +87,10 @@ object Test {
     println(Residue[13.type](15) + Residue[13.type](20))
     println(range.value <= 20, range.value >= 10)
     println(integral.value <= 50, integral.value >= 1)
+
+    noisyIdentity(1)
+    noisyIdentity("PANDA!")
   }
-  // Problems with null
-  /*
-scala> val x: null.type = null
-<console>:1: error: identifier expected but 'null' found.
-       val x: null.type = null
-              ^
-
-scala> final val x = null
-x: null.type = null
-
-scala> val y: x.type = 4
-<console>:8: error: type mismatch;
- found   : 4.type (with underlying type Int)
- required: null.type
-       val y: x.type = 4
-                       ^
-
-scala> val y: x.type = null
-y: null.type = null
-
-scala> def tst(x: Int) = x match {
-     | case _: 7.type => 1
-     | case _: y.type => 2
-     | case _ => 3
-     | }
-<console>:11: error: scrutinee is incompatible with pattern type;
- found   : null.type (with underlying type Null)
- required: Int
-       case _: y.type => 2
-                ^
-java.lang.IllegalArgumentException: requirement failed: expandTypes(<notype>, List(Null), <none>)
-   */
 
   // Inlining functions with singleton result type
   /*
@@ -126,5 +107,39 @@ res0: 7.type = 7
 scala> ok()
 PANDA!
 res0: 7.type = 7
+   */
+
+  // Parser problem:
+  /*
+scala> val t: -1.type = -1
+<console>:1: error: ';' expected but integer literal found.
+       val t: -1.type = -1
+               ^
+
+scala> final val t = -1
+t: -1.type = -1
+   */
+
+  // Not sure if this is a problem (I guess it is a special case of (2+3).type):
+  /*
+scala> def test: 5.type = {
+     | val t = 3
+     | val p = 2
+     | t + p
+     | }
+<console>:10: error: type mismatch;
+ found   : Int
+ required: 5.type
+       t + p
+         ^
+   */
+
+  // Recursive weirdness (ConstantType folding?):
+  /*
+scala> val t: 1.type = t
+<console>:9: warning: value t does nothing other than call itself recursively
+       val t: 1.type = t
+                       ^
+t: 1.type = 1
    */
 }

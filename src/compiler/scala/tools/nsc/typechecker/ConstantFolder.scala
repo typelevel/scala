@@ -31,7 +31,7 @@ abstract class ConstantFolder {
    *  the conversion.
    */
   def apply(tree: Tree, pt: Type): Tree = fold(apply(tree), tree.tpe match {
-    case ConstantType(x) => x convertTo pt
+    case t @ ConstantType(x) if !t.isDeclaredSingleton => x convertTo pt
     case _ => null
   })
 
