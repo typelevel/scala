@@ -1098,8 +1098,10 @@ self =>
         val tok = in.token
         if (tok != BACKQUOTED_IDENT && tok != IDENTIFIER) {
           val lit = literal(false)
-          accept(DOT)
-          accept(TYPE)
+          if (in.token == DOT && lookingAhead { in.token == TYPE }) {
+            accept(DOT)
+            accept(TYPE)
+          }
           return atPos(start)(new SingletonTypeTree(lit) { override val isLiteral = true })
         }
         val name = ident()
