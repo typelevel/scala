@@ -1829,10 +1829,6 @@ trait Types
     override def safeToString: String = value.escapedStringValue + ".type"
     override def kind = "ConstantType"
   }
-  abstract class DeclaredSingletonConstantType(value: Constant) extends ConstantType(value) {
-    override def deconst: Type = this
-    override def kind = "DeclaredSingletonConstantType"
-  }
 
   final class UniqueConstantType(value: Constant) extends ConstantType(value)
 
