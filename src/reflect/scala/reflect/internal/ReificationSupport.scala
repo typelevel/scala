@@ -97,6 +97,8 @@ trait ReificationSupport { self: SymbolTable =>
     def toStats(tree: Tree): List[Tree] = tree match {
       case EmptyTree             => Nil
       case SyntacticBlock(stats) => stats
+      case defn if defn.isDef    => defn :: Nil
+      case imp: Import           => imp :: Nil
       case _                     => throw new IllegalArgumentException(s"can't flatten $tree")
     }
 
@@ -864,7 +866,7 @@ trait ReificationSupport { self: SymbolTable =>
 
     protected def mkCases(cases: List[Tree]): List[CaseDef] = cases.map {
       case c: CaseDef => c
-      case tree => throw new IllegalArgumentException("$tree is not valid representation of pattern match case")
+      case tree => throw new IllegalArgumentException(s"$tree is not valid representation of pattern match case")
     }
 
     object SyntacticPartialFunction extends SyntacticPartialFunctionExtractor {

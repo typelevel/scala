@@ -41,9 +41,9 @@ trait TypeDiagnostics {
    *  indicate that the restriction may be lifted in the future.
    */
   def restrictionWarning(pos: Position, unit: CompilationUnit, msg: String): Unit =
-    unit.warning(pos, "Implementation restriction: " + msg)
+    reporter.warning(pos, "Implementation restriction: " + msg)
   def restrictionError(pos: Position, unit: CompilationUnit, msg: String): Unit =
-    unit.error(pos, "Implementation restriction: " + msg)
+    reporter.error(pos, "Implementation restriction: " + msg)
 
   /** A map of Positions to addendums - if an error involves a position in
    *  the map, the addendum should also be printed.
@@ -435,12 +435,8 @@ trait TypeDiagnostics {
   trait TyperDiagnostics {
     self: Typer =>
 
-    private def contextError(context0: Analyzer#Context, pos: Position, msg: String) = context0.error(pos, msg)
-    private def contextError(context0: Analyzer#Context, pos: Position, err: Throwable) = context0.error(pos, err)
-    private def contextWarning(pos: Position, msg: String) = context.unit.warning(pos, msg)
-
     def permanentlyHiddenWarning(pos: Position, hidden: Name, defn: Symbol) =
-      contextWarning(pos, "imported `%s' is permanently hidden by definition of %s".format(hidden, defn.fullLocationString))
+      context.warning(pos, "imported `%s' is permanently hidden by definition of %s".format(hidden, defn.fullLocationString))
 
     object checkUnused {
       val ignoreNames = Set[TermName]("readResolve", "readObject", "writeObject", "writeReplace")
@@ -542,15 +538,15 @@ trait TypeDiagnostics {
             else if (sym.isModule) "object"
             else "term"
           )
-          unit.warning(pos, s"$why $what in ${sym.owner} is never used")
+          reporter.warning(pos, s"$why $what in ${sym.owner} is never used")
         }
         p.unsetVars foreach { v =>
-          unit.warning(v.pos, s"local var ${v.name} in ${v.owner} is never set - it could be a val")
+          reporter.warning(v.pos, s"local var ${v.name} in ${v.owner} is never set - it could be a val")
         }
         p.unusedTypes foreach { t =>
           val sym = t.symbol
           val why = if (sym.isPrivate) "private" else "local"
-          unit.warning(t.pos, s"$why ${sym.fullLocationString} is never used")
+          reporter.warning(t.pos, s"$why ${sym.fullLocationString} is never used")
         }
       }
     }
@@ -576,11 +572,11 @@ trait TypeDiagnostics {
         } else f
       }
       def apply(tree: Tree): Tree = {
-        // Error suppression will squash some of these warnings unless we circumvent it.
+        // Error suppression (in context.warning) would squash some of these warnings.
         // It is presumed if you are using a -Y option you would really like to hear
-        // the warnings you've requested.
+        // the warnings you've requested; thus, use reporter.warning.
         if (settings.warnDeadCode && context.unit.exists && treeOK(tree) && exprOK)
-          context.warning(tree.pos, "dead code following this construct", force = true)
+          reporter.warning(tree.pos, "dead code following this construct")
         tree
       }
 
@@ -602,6 +598,23 @@ trait TypeDiagnostics {
           "\nNote: this is often due in part to a class depending on a definition nested within its companion." +
           "\nIf applicable, you may wish to try moving some members into another object."
         )
+    }
+
+    // warn about class/method/type-members' type parameters that shadow types already in scope
+    def warnTypeParameterShadow(tparams: List[TypeDef], sym: Symbol): Unit =
+      if (settings.warnTypeParameterShadow && !isPastTyper && !sym.isSynthetic) {
+        def enclClassOrMethodOrTypeMember(c: Context): Context =
+          if (!c.owner.exists || c.owner.isClass || c.owner.isMethod || (c.owner.isType && !c.owner.isParameter)) c
+          else enclClassOrMethodOrTypeMember(c.outer)
+
+        val tt = tparams.filter(_.name != typeNames.WILDCARD).foreach { tp =>
+        // we don't care about type params shadowing other type params in the same declaration
+        enclClassOrMethodOrTypeMember(context).outer.lookupSymbol(tp.name, s => s != tp.symbol && s.hasRawInfo && reallyExists(s)) match {
+          case LookupSucceeded(_, sym2) => context.warning(tp.pos,
+            s"type parameter ${tp.name} defined in $sym shadows $sym2 defined in ${sym2.owner}. You may want to rename your type parameter, or possibly remove it.")
+          case _ =>
+        }
+      }
     }
 
     /** Report a type error.
@@ -627,13 +640,13 @@ trait TypeDiagnostics {
               case Import(expr, _)  => expr.pos
               case _                => ex.pos
             }
-            contextError(context0, pos, cyclicReferenceMessage(sym, info.tree) getOrElse ex.getMessage())
+            context0.error(pos, cyclicReferenceMessage(sym, info.tree) getOrElse ex.getMessage())
 
             if (sym == ObjectClass)
               throw new FatalError("cannot redefine root "+sym)
           }
         case _ =>
-          contextError(context0, ex.pos, ex)
+          context0.error(ex.pos, ex.msg)
       }
     }
   }

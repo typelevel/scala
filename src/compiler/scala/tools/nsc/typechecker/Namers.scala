@@ -442,7 +442,7 @@ trait Namers extends MethodSynthesis {
         && clazz.exists
       )
       if (fails) {
-        context.unit.error(tree.pos, (
+        reporter.error(tree.pos, (
             s"Companions '$clazz' and '$module' must be defined in same file:\n"
           + s"  Found in ${clazz.sourceFile.canonicalPath} and ${module.sourceFile.canonicalPath}")
         )
@@ -716,8 +716,8 @@ trait Namers extends MethodSynthesis {
         m.updateAttachment(new ConstructorDefaultsAttachment(tree, null))
       }
       val owner = tree.symbol.owner
-      if (settings.lint && owner.isPackageObjectClass && !mods.isImplicit) {
-        context.unit.warning(tree.pos,
+      if (settings.warnPackageObjectClasses && owner.isPackageObjectClass && !mods.isImplicit) {
+        reporter.warning(tree.pos,
           "it is not recommended to define classes/objects inside of package objects.\n" +
           "If possible, define " + tree.symbol + " in " + owner.skipPackageObject + " instead."
         )
@@ -728,7 +728,7 @@ trait Namers extends MethodSynthesis {
         if (primaryConstructorArity == 1)
           enterImplicitWrapper(tree)
         else
-          context.unit.error(tree.pos, "implicit classes must accept exactly one primary constructor parameter")
+          reporter.error(tree.pos, "implicit classes must accept exactly one primary constructor parameter")
       }
       validateCompanionDefs(tree)
     }
@@ -1487,8 +1487,7 @@ trait Namers extends MethodSynthesis {
           case defn: MemberDef =>
             val ainfos = defn.mods.annotations filterNot (_ eq null) map { ann =>
               val ctx    = typer.context
-              val annCtx = ctx.make(ann)
-              annCtx.setReportErrors()
+              val annCtx = ctx.makeNonSilent(ann)
               // need to be lazy, #1782. beforeTyper to allow inferView in annotation args, SI-5892.
               AnnotationInfo lazily {
                 enteringTyper(newTyper(annCtx) typedAnnotation ann)

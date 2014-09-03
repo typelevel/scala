@@ -22,7 +22,7 @@ import org.objectweb.asm
 abstract class BCodeSyncAndTry extends BCodeBodyBuilder {
   import global._
   import bTypes._
-
+  import coreBTypes._
 
   /*
    * Functionality to lower `synchronized` and `try` expressions.

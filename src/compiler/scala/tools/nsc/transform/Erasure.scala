@@ -451,8 +451,12 @@ abstract class Erasure extends AddInterfaces
       if (!bridgeNeeded)
         return
 
-      val newFlags = (member.flags | BRIDGE | ARTIFACT) & ~(ACCESSOR | DEFERRED | LAZY | lateDEFERRED)
-      val bridge   = other.cloneSymbolImpl(root, newFlags) setPos root.pos
+      var newFlags = (member.flags | BRIDGE | ARTIFACT) & ~(ACCESSOR | DEFERRED | LAZY | lateDEFERRED)
+      // If `member` is a ModuleSymbol, the bridge should not also be a ModuleSymbol. Otherwise we
+      // end up with two module symbols with the same name in the same scope, which is surprising
+      // when implementing later phases.
+      if (member.isModule) newFlags = (newFlags | METHOD) & ~(MODULE | lateMETHOD | STABLE)
+      val bridge = other.cloneSymbolImpl(root, newFlags) setPos root.pos
 
       // the parameter symbols need to have the new owner
       bridge setInfo (otpe cloneInfo bridge)
@@ -465,7 +469,7 @@ abstract class Erasure extends AddInterfaces
         ||  (checkBridgeOverrides(member, other, bridge) match {
               case Nil => true
               case es if member.owner.isAnonymousClass => resolveAnonymousBridgeClash(member, bridge); true
-              case es => for ((pos, msg) <- es) unit.error(pos, msg); false
+              case es => for ((pos, msg) <- es) reporter.error(pos, msg); false
             })
       )
 
@@ -683,7 +687,7 @@ abstract class Erasure extends AddInterfaces
         )
         val when = if (exitingRefchecks(lowType matches highType)) "" else " after erasure: " + exitingPostErasure(highType)
 
-        unit.error(pos,
+        reporter.error(pos,
           s"""|$what:
               |${exitingRefchecks(highString)} and
               |${exitingRefchecks(lowString)}
@@ -823,7 +827,7 @@ abstract class Erasure extends AddInterfaces
           fn match {
             case TypeApply(sel @ Select(qual, name), List(targ)) =>
               if (qual.tpe != null && isPrimitiveValueClass(qual.tpe.typeSymbol) && targ.tpe != null && targ.tpe <:< AnyRefTpe)
-                unit.error(sel.pos, "isInstanceOf cannot test if value types are references.")
+                reporter.error(sel.pos, "isInstanceOf cannot test if value types are references.")
 
               def mkIsInstanceOf(q: () => Tree)(tp: Type): Tree =
                 Apply(
@@ -908,7 +912,7 @@ abstract class Erasure extends AddInterfaces
                     case nme.length => nme.array_length
                     case nme.update => nme.array_update
                     case nme.clone_ => nme.array_clone
-                    case _          => unit.error(tree.pos, "Unexpected array member, no translation exists.") ; nme.NO_NAME
+                    case _          => reporter.error(tree.pos, "Unexpected array member, no translation exists.") ; nme.NO_NAME
                   }
                   gen.mkRuntimeCall(arrayMethodName, qual :: args)
                 }
@@ -1009,7 +1013,7 @@ abstract class Erasure extends AddInterfaces
             qual match {
               case Super(_, _) =>
                 // Insert a cast here at your peril -- see SI-5162.
-                unit.error(tree.pos, s"Unable to access ${tree.symbol.fullLocationString} with a super reference.")
+                reporter.error(tree.pos, s"Unable to access ${tree.symbol.fullLocationString} with a super reference.")
                 tree
               case _ =>
                 // Todo: Figure out how qual.tpe could be null in the check above (it does appear in build where SwingWorker.this
@@ -1082,7 +1086,7 @@ abstract class Erasure extends AddInterfaces
       val tree1 = preTransformer.transform(tree)
       exitingErasure {
         val tree2 = mixinTransformer.transform(tree1)
-        newTyper(rootContext(unit, tree, erasedTypes = true)).typed(tree2)
+        newTyper(rootContextPostTyper(unit, tree)).typed(tree2)
       }
     }
   }

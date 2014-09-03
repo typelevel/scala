@@ -26,6 +26,9 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
   import icodes.opcodes._
   import definitions._
 
+  val bCodeAsmCommon: BCodeAsmCommon[global.type] = new BCodeAsmCommon(global)
+  import bCodeAsmCommon._
+
   // Strangely I can't find this in the asm code
   // 255, but reserving 1 for "this"
   final val MaximumJvmParameters = 254
@@ -112,7 +115,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
 
       // Warn when classes will overwrite one another on case-insensitive systems.
       for ((_, v1 :: v2 :: _) <- sortedClasses groupBy (_.symbol.javaClassName.toString.toLowerCase)) {
-        v1.cunit.warning(v1.symbol.pos,
+        reporter.warning(v1.symbol.pos,
           s"Class ${v1.symbol.javaClassName} differs only in case from ${v2.symbol.javaClassName}. " +
           "Such classes will overwrite one another on case-insensitive filesystems.")
       }
@@ -137,7 +140,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
         try emitFor(c)
         catch {
           case e: FileConflictException =>
-            c.cunit.error(c.symbol.pos, s"error writing ${c.symbol}: ${e.getMessage}")
+            reporter.error(c.symbol.pos, s"error writing ${c.symbol}: ${e.getMessage}")
         }
         sortedClasses = sortedClasses.tail
         classes -= c.symbol // GC opportunity
@@ -377,6 +380,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
     case "jvm-1.5"     => asm.Opcodes.V1_5
     case "jvm-1.6"     => asm.Opcodes.V1_6
     case "jvm-1.7"     => asm.Opcodes.V1_7
+    case "jvm-1.8"     => asm.Opcodes.V1_8
   }
 
   private val majorVersion: Int = (classfileVersion & 0xFF)
@@ -616,7 +620,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
        * That means non-member classes (anonymous). See Section 4.7.5 in the JVMS.
        */
       def outerName(innerSym: Symbol): String = {
-        if (innerSym.originalEnclosingMethod != NoSymbol)
+        if (isAnonymousOrLocalClass(innerSym))
           null
         else {
           val outerName = javaName(innerSym.rawowner)
@@ -631,10 +635,16 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
         else
           innerSym.rawname + innerSym.moduleSuffix
 
-      // add inner classes which might not have been referenced yet
-      exitingErasure {
-        for (sym <- List(csym, csym.linkedClassOfClass); m <- sym.info.decls.map(innerClassSymbolFor) if m.isClass)
-          innerClassBuffer += m
+      // This collects all inner classes of csym, including local and anonymous: lambdalift makes
+      // them members of their enclosing class.
+      innerClassBuffer ++= exitingPhase(currentRun.lambdaliftPhase)(memberClassesOf(csym))
+
+      // Add members of the companion object (if top-level). why, see comment in BTypes.scala.
+      val linkedClass = exitingPickler(csym.linkedClassOfClass) // linkedCoC does not work properly in late phases
+      if (isTopLevelModule(linkedClass)) {
+        // phase travel to exitingPickler: this makes sure that memberClassesOf only sees member classes,
+        // not local classes that were lifted by lambdalift.
+        innerClassBuffer ++= exitingPickler(memberClassesOf(linkedClass))
       }
 
       val allInners: List[Symbol] = innerClassBuffer.toList filterNot deadCode.elidedClosures
@@ -646,7 +656,8 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
         // sort them so inner classes succeed their enclosing class to satisfy the Eclipse Java compiler
         for (innerSym <- allInners sortBy (_.name.length)) { // TODO why not sortBy (_.name.toString()) ??
           val flagsWithFinal: Int = mkFlags(
-            if (innerSym.rawowner.hasModuleFlag) asm.Opcodes.ACC_STATIC else 0,
+            // See comment in BTypes, when is a class marked static in the InnerClass table.
+            if (isOriginallyStaticOwner(innerSym.originalOwner)) asm.Opcodes.ACC_STATIC else 0,
             javaFlags(innerSym),
             if(isDeprecated(innerSym)) asm.Opcodes.ACC_DEPRECATED else 0 // ASM pseudo-access flag
           ) & (INNER_CLASSES_FLAGS | asm.Opcodes.ACC_DEPRECATED)
@@ -1196,10 +1207,10 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
                            null /* SourceDebugExtension */)
       }
 
-      val enclM = getEnclosingMethodAttribute()
-      if(enclM != null) {
-        val EnclMethodEntry(className, methodName, methodType) = enclM
-        jclass.visitOuterClass(className, methodName, methodType.getDescriptor)
+      enclosingMethodAttribute(clasz.symbol, javaName, javaType(_).getDescriptor) match {
+        case Some(EnclosingMethodEntry(className, methodName, methodDescriptor)) =>
+          jclass.visitOuterClass(className, methodName, methodDescriptor)
+        case _ => ()
       }
 
       // typestate: entering mode with valid call sequences:
@@ -1257,41 +1268,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
       writeIfNotTooBig("" + c.symbol.name, thisName, jclass, c.symbol)
     }
 
-    /**
-     * @param owner internal name of the enclosing class of the class.
-     *
-     * @param name the name of the method that contains the class.
-
-     * @param methodType the method that contains the class.
-     */
-    case class EnclMethodEntry(owner: String, name: String, methodType: asm.Type)
-
-    /**
-     * @return null if the current class is not internal to a method
-     *
-     * Quoting from JVMS 4.7.7 The EnclosingMethod Attribute
-     *   A class must have an EnclosingMethod attribute if and only if it is a local class or an anonymous class.
-     *   A class may have no more than one EnclosingMethod attribute.
-     *
-     */
-    private def getEnclosingMethodAttribute(): EnclMethodEntry = { // JVMS 4.7.7
-      var res: EnclMethodEntry = null
-      val clazz = clasz.symbol
-      val sym = clazz.originalEnclosingMethod
-      if (sym.isMethod) {
-        res = EnclMethodEntry(javaName(sym.enclClass), javaName(sym), javaType(sym))
-      }
-      else if (clazz.isAnonymousClass) {
-        val enclClass = clazz.rawowner
-        assert(enclClass.isClass, enclClass)
-        val sym = enclClass.primaryConstructor
-        if (sym != NoSymbol)
-          res = EnclMethodEntry(javaName(enclClass), javaName(sym), javaType(sym))
-      }
-
-      res
-    }
-
     def genField(f: IField) {
       val javagensig = getGenericSignature(f.symbol, clasz.symbol)
 
@@ -1332,7 +1308,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
       if (m.symbol.isStaticConstructor || definitions.isGetClass(m.symbol)) return
 
       if (m.params.size > MaximumJvmParameters) {
-        getCurrentCUnit().error(m.symbol.pos, s"Platform restriction: a parameter list's length cannot exceed $MaximumJvmParameters.")
+        reporter.error(m.symbol.pos, s"Platform restriction: a parameter list's length cannot exceed $MaximumJvmParameters.")
         return
       }
 
@@ -3146,7 +3122,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters with GenJVMASM {
     else
       null
   )
-
   def ubytesToCharArray(bytes: Array[Byte]): Array[Char] = {
     val ca = new Array[Char](bytes.length)
     var idx = 0

@@ -7,7 +7,7 @@ package scala.tools.nsc
 
 import java.io.PrintStream
 import scala.tools.nsc.reporters.{Reporter, ConsoleReporter}
-import scala.reflect.internal.util.FakePos //Position
+import scala.reflect.internal.util.{FakePos, Position}
 import scala.tools.util.SocketServer
 import settings.FscSettings
 
@@ -37,7 +37,7 @@ class StandardCompileServer extends SocketServer {
   /** Create a new compiler instance */
   def newGlobal(settings: Settings, reporter: Reporter) =
     new Global(settings, reporter) {
-      override def inform(msg: String) = out.println(msg)
+      override def inform(pos: Position, msg: String) = out.println(msg)
     }
 
   override def timeout() {
@@ -152,6 +152,7 @@ class StandardCompileServer extends SocketServer {
           clearCompiler()
         case ex: Throwable =>
           warn("Compile server encountered fatal condition: " + ex)
+          reporter.error(null, "Compile server encountered fatal condition: " + ex.getMessage)
           shutdown = true
           throw ex
       }

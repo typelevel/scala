@@ -77,12 +77,13 @@ trait Adaptations {
           val msg = "Adaptation of argument list by inserting () has been deprecated: " + (
           if (isLeakyTarget) "leaky (Object-receiving) target makes this especially dangerous."
           else "this is unlikely to be what you want.")
-          context.unit.deprecationWarning(t.pos, adaptWarningMessage(msg))
+          context.deprecationWarning(t.pos, t.symbol, adaptWarningMessage(msg))
         }
       } else if (settings.warnAdaptedArgs)
         context.warning(t.pos, adaptWarningMessage(s"Adapting argument list by creating a ${args.size}-tuple: this may not be what you want."))
 
-      !settings.noAdaptedArgs || !(args.isEmpty && settings.future)
+      // return `true` if the adaptation should be kept
+      !(settings.noAdaptedArgs || (args.isEmpty && settings.future))
     }
   }
 }

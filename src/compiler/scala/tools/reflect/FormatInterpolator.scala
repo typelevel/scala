@@ -116,7 +116,7 @@ abstract class FormatInterpolator {
               c.error(errPoint, msg("unsupported"))
               s0
             } else {
-              c.enclosingUnit.deprecationWarning(errPoint, msg("deprecated"))
+              currentRun.reporting.deprecationWarning(errPoint, msg("deprecated"))
               try StringContext.treatEscapes(s0) catch escapeHatch
             }
           }
@@ -181,13 +181,23 @@ abstract class FormatInterpolator {
       case (part, n) => copyPart(part, n)
     }
 
-    //q"{..$evals; ${fstring.toString}.format(..$ids)}"
-    locally {
+    //q"{..$evals; new StringOps(${fstring.toString}).format(..$ids)}"
+    val format = fstring.toString
+    if (ids.isEmpty && !format.contains("%")) Literal(Constant(format))
+    else {
+      val scalaPackage = Select(Ident(nme.ROOTPKG), TermName("scala"))
+      val newStringOps = Select(
+        New(Select(Select(Select(scalaPackage,
+          TermName("collection")), TermName("immutable")), TypeName("StringOps"))),
+        termNames.CONSTRUCTOR
+      )
       val expr =
         Apply(
           Select(
-            Literal(Constant(fstring.toString)),
-            newTermName("format")),
+            Apply(
+              newStringOps,
+              List(Literal(Constant(format)))),
+            TermName("format")),
           ids.toList
         )
       val p = c.macroApplication.pos
