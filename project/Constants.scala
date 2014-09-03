@@ -13,7 +13,7 @@ trait Constants {
     (sys.props get name) orElse (localProps get name) orElse (buildProps get name)
   )
   def SbtKnownVersion   = sysOrBuild("sbt.version") | "0.13.5"
-  def ScalaKnownVersion = sysOrBuild("scala.version") | "2.11.1"
+  def ScalaKnownVersion = sysOrBuild("scala.version") | "2.11.2"
 
   type ParserOf[A]          = Def.Initialize[State => Parser[A]]
   type SettingOf[A]         = Def.Initialize[A]
