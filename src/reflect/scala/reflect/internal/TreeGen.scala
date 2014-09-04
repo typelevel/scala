@@ -622,7 +622,7 @@ abstract class TreeGen {
             body) setPos splitpos
         case None =>
           atPos(splitpos) {
-            mkVisitor(List(CaseDef(pat, EmptyTree, body)), checkExhaustive = false)
+            mkVisitor(List(CaseDef(pat, EmptyTree, body)), checkExhaustive = settings.ZirrefutableGeneratorPatterns)
           }
       }
     }
