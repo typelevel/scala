@@ -42,7 +42,7 @@ trait ScalaSettings extends AbsScalaSettings
   def optimiseSettings = List[BooleanSetting](inline, inlineHandlers, Xcloselim, Xdce, YconstOptimization)
 
   /** If any of these settings is enabled, the compiler should print a message and exit.  */
-  def infoSettings = List[Setting](version, help, Xhelp, Yhelp, showPlugins, showPhases, genPhaseGraph)
+  def infoSettings = List[Setting](version, help, Xhelp, Yhelp, Zhelp, showPlugins, showPhases, genPhaseGraph)
 
   /** Any -multichoice:help? Nicer if any option could report that it had help to offer. */
   private def multihelp = allSettings exists { case s: MultiChoiceSetting => s.isHelping case _ => false }
@@ -220,6 +220,7 @@ trait ScalaSettings extends AbsScalaSettings
   /**
    * -Z Typelevel settings
    */
+  val Zhelp                         = BooleanSetting("-Z", "Print a synopsis of Typelevel options.")
   val ZirrefutableGeneratorPatterns = BooleanSetting("-Zirrefutable-generator-patterns", "Treat patterns in for comprehensions as irrefutable. Do not add filter or withFilter calls.")
 
   /** Area-specific debug output.

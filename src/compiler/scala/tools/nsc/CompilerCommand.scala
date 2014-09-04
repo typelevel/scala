@@ -82,6 +82,7 @@ class CompilerCommand(arguments: List[String], val settings: Settings) {
   def usageMsg    = createUsageMsg("where possible standard", shouldExplain = false, _.isStandard)
   def xusageMsg   = createUsageMsg("Possible advanced", shouldExplain = true, _.isAdvanced)
   def yusageMsg   = createUsageMsg("Possible private", shouldExplain = true, _.isPrivate)
+  def zusageMsg   = createUsageMsg("Possible Typelevel", shouldExplain = true, _.isTypelevel)
 
   /** For info settings, compiler should just print a message and quit. */
   def shouldStopWithInfo = settings.isInfo
@@ -95,6 +96,7 @@ class CompilerCommand(arguments: List[String], val settings: Settings) {
     else if (help)          usageMsg + global.pluginOptionsHelp
     else if (Xhelp)         xusageMsg
     else if (Yhelp)         yusageMsg
+    else if (Zhelp)         zusageMsg
     else if (showPlugins)   global.pluginDescriptions
     else if (showPhases)    global.phaseDescriptions + (
       if (debug) "\n" + global.phaseFlagDescriptions else ""
