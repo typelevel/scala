@@ -217,6 +217,11 @@ trait ScalaSettings extends AbsScalaSettings
 
   private def removalIn212 = "This flag is scheduled for removal in 2.12. If you have a case where you need this flag then please report a bug."
 
+  /**
+   * -Z Typelevel settings
+   */
+  val ZirrefutableGeneratorPatterns = BooleanSetting("-Zirrefutable-generator-patterns", "Treat patterns in for comprehensions as irrefutable. Do not add filter or withFilter calls.")
+
   /** Area-specific debug output.
    */
   val Ydocdebug               = BooleanSetting("-Ydoc-debug", "Trace all scaladoc activity.")
