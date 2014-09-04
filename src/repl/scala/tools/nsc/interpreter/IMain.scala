@@ -9,7 +9,6 @@ package interpreter
 
 import PartialFunction.cond
 import scala.language.implicitConversions
-import scala.beans.BeanProperty
 import scala.collection.mutable
 import scala.concurrent.{ Future, ExecutionContext }
 import scala.reflect.runtime.{ universe => ru }
@@ -54,7 +53,7 @@ import javax.script.{AbstractScriptEngine, Bindings, ScriptContext, ScriptEngine
  *  @author Moez A. Abdel-Gawad
  *  @author Lex Spoon
  */
-class IMain(@BeanProperty val factory: ScriptEngineFactory, initialSettings: Settings, protected val out: JPrintWriter) extends AbstractScriptEngine with Compilable with Imports {
+class IMain(val factory: ScriptEngineFactory, initialSettings: Settings, protected val out: JPrintWriter) extends AbstractScriptEngine with Compilable with Imports {
   imain =>
 
   setBindings(createBindings, ScriptContext.ENGINE_SCOPE)
@@ -81,6 +80,8 @@ class IMain(@BeanProperty val factory: ScriptEngineFactory, initialSettings: Set
    */
   private var _classLoader: util.AbstractFileClassLoader = null                              // active classloader
   private val _compiler: ReplGlobal                 = newCompiler(settings, reporter)   // our private compiler
+
+  def getFactory(): ScriptEngineFactory = factory
 
   def compilerClasspath: Seq[java.net.URL] = (
     if (isInitializeComplete) global.classPath.asURLs
@@ -1210,28 +1211,29 @@ object IMain {
   import java.util.Arrays.{ asList => asJavaList }
 
   class Factory extends ScriptEngineFactory {
-    @BeanProperty
     val engineName = "Scala Interpreter"
 
-    @BeanProperty
     val engineVersion = "1.0"
 
-    @BeanProperty
     val extensions: JList[String] = asJavaList("scala")
 
-    @BeanProperty
     val languageName = "Scala"
 
-    @BeanProperty
     val languageVersion = scala.util.Properties.versionString
 
     def getMethodCallSyntax(obj: String, m: String, args: String*): String = null
 
-    @BeanProperty
     val mimeTypes: JList[String] = asJavaList("application/x-scala")
 
-    @BeanProperty
     val names: JList[String] = asJavaList("scala")
+
+    def getEngineName(): String = engineName
+    def getEngineVersion(): String = engineVersion
+    def getExtensions(): JList[String] = extensions
+    def getLanguageName(): String = languageName
+    def getLanguageVersion(): String = languageVersion
+    def getMimeTypes(): java.util.List[String] = mimeTypes
+    def getNames(): java.util.List[String] = names
 
     def getOutputStatement(toDisplay: String): String = null
 

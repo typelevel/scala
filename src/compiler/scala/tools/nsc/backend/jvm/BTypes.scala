@@ -562,7 +562,7 @@ abstract class BTypes {
    * Mirror Classes
    * --------------
    *
-   * TODO: innerclass attributes on mirror class, bean info class
+   * TODO: innerclass attributes on mirror class class
    */
 
   /**

@@ -96,21 +96,6 @@ object Test4 {
     def this() = this("")
   }
   class Foo8(@SourceAnnotation("constructor val") val n: Int) {}
-  class Foo9 {
-    import scala.annotation.meta._
-    import scala.beans.BeanProperty
-    @(SourceAnnotation @getter)("http://apple.com") val x = 0
-    @BeanProperty @(SourceAnnotation @beanSetter)("http://uppla.com") var y = 0
-
-    type myAnn = SourceAnnotation @beanGetter @field
-    @BeanProperty @myAnn("http://eppli.com") var z = 0
-
-    type myAnn2[T] = SourceAnnotation @beanGetter @field
-    @BeanProperty @myAnn2[String]("http://eppli.com") var z2 = 0
-
-    type myAnn3[CC[_]] = SourceAnnotation @beanGetter @field
-    @BeanProperty @myAnn3[List]("http://eppli.com") var z3 = 0
-  }
   class Foo10(@SourceAnnotation("on param 1") val name: String)
   class Foo11(@(SourceAnnotation @scala.annotation.meta.field)("on param 2") val name: String)
   class Foo12(@(SourceAnnotation @scala.annotation.meta.setter)("on param 3") var name: String)
@@ -162,51 +147,6 @@ object Test4 {
     classOf[Foo12].getDeclaredFields.sortWith((x, y) => x.toString < y.toString)  foreach printSourceAnnotations
     classOf[Foo12].getDeclaredMethods.sortWith((x, y) => x.toString < y.toString) foreach printSourceAnnotations
     classOf[Foo12].getDeclaredConstructors foreach printParamSourceAnnotations
-  }
-}
-
-object Test5 {
-  import scala.beans.BeanProperty
-  import java.lang.Integer
-
-  class Count {
-    // we use "Integer" instead of "Int" because of Java reflection
-    @BeanProperty
-    var count: Integer = 0
-
-    private val getter =
-      getClass().getMethod("getCount")
-    private val setter =
-      getClass().getMethod("setCount", classOf[Integer])
-
-    def get = getter.invoke(this).asInstanceOf[Integer].intValue
-    def set(n: Int) = setter.invoke(this, new Integer(n))
-  }
-  def run {
-    val count = new Count
-    println(count.get)
-    count.set(99)
-    println(count.get)
-  }
-}
-
-object Test6 {
-  import scala.beans.BeanProperty
-  import scala.beans.BooleanBeanProperty
-  class C(@BeanProperty var text: String)
-  class D(@BooleanBeanProperty var prop: Boolean) {
-    @BeanProperty val m: Int = if (prop) 1 else 2
-  }
-
-  def run {
-    val c = new C("bob")
-    c.setText("dylan")
-    println(c.getText())
-    val d = new D(true)
-    d.setProp(false)
-    if (!d.isProp()) {
-      println(new D(false).getM())
-    }
   }
 }
 

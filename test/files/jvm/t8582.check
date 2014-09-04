@@ -29,10 +29,6 @@ Because that attribute leads to an entry for B1 in the constant pool, C1 needs a
  className[A1$B1] outerClassName[A1] innerName[B1] access[1]
  className[A1$B1$C1] outerClassName[A1$B1] innerName[C1] access[1]
 
-The BeanInfo class has the same InnerClass attributes as the corresponding bean
- className[A1$B1] outerClassName[A1] innerName[B1] access[1]
- className[A1$B1$C1] outerClassName[A1$B1] innerName[C1] access[1]
-
 Class A2 mentions class C2 in the constant pool (due to method  f), therefore it needs an InnerClass attribute for C1
  className[A2$B2] outerClassName[A2] innerName[B2] access[1]
  className[A2$B2$C2] outerClassName[A2$B2] innerName[C2] access[1]

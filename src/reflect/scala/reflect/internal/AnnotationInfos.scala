@@ -298,7 +298,7 @@ trait AnnotationInfos extends api.Annotations { self: SymbolTable =>
 
     /** The default kind of members to which this annotation is attached.
      *  For instance, for scala.deprecated defaultTargets =
-     *    List(getter, setter, beanGetter, beanSetter).
+     *    List(getter, setter).
      */
     def defaultTargets = symbol.annotations map (_.symbol) filter isMetaAnnotation
     // Test whether the typeSymbol of atp conforms to the given class.

@@ -43,9 +43,6 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
   def this(in0: BufferedReader, out: JPrintWriter) = this(Some(in0), out)
   def this() = this(None, new JPrintWriter(Console.out, true))
 
-  @deprecated("Use `intp` instead.", "2.9.0") def interpreter = intp
-  @deprecated("Use `intp` instead.", "2.9.0") def interpreter_= (i: Interpreter): Unit = intp = i
-
   var in: InteractiveReader = _   // the input stream from which commands come
   var settings: Settings = _
   var intp: IMain = _

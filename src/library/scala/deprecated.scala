@@ -17,5 +17,4 @@ import scala.annotation.meta._
  *  @param  since   a string identifying the first version in which the definition was deprecated
  *  @since  2.3
  */
-@getter @setter @beanGetter @beanSetter
 class deprecated(message: String = "", since: String = "") extends scala.annotation.StaticAnnotation

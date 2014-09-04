@@ -155,8 +155,6 @@ trait MethodSynthesis {
           else enterStrictVal(tree)
         }
       )
-
-      enterBeans(tree)
     }
 
     /** This is called for those ValDefs which addDerivedTrees ignores, but
@@ -223,18 +221,10 @@ trait MethodSynthesis {
       else if (vd.mods.isLazy) List(LazyValGetter(vd))
       else List(Getter(vd))
     )
-    def beanAccessors(vd: ValDef): List[DerivedFromValDef] = {
-      val setter = if (vd.mods.isMutable) List(BeanSetter(vd)) else Nil
-      if (vd.symbol hasAnnotation BeanPropertyAttr)
-        BeanGetter(vd) :: setter
-      else if (vd.symbol hasAnnotation BooleanBeanPropertyAttr)
-        BooleanBeanGetter(vd) :: setter
-      else Nil
-    }
     def allValDefDerived(vd: ValDef) = {
       val field = if (vd.mods.isDeferred || (vd.mods.isLazy && hasUnitType(vd.symbol))) Nil
                   else List(Field(vd))
-      field ::: standardAccessors(vd) ::: beanAccessors(vd)
+      field ::: standardAccessors(vd)
     }
 
     // Take into account annotations so that we keep annotated unit lazy val
@@ -295,11 +285,10 @@ trait MethodSynthesis {
       final def enclClass = basisSym.enclClass
 
       /** Which meta-annotation is associated with this kind of entity.
-       *  Presently one of: field, getter, setter, beanGetter, beanSetter, param.
+       *  Presently one of: field, getter, setter, param.
        */
       def category: Symbol
 
-      /* Explicit isSetter required for bean setters (beanSetterSym.isSetter is false) */
       final def completer(sym: Symbol) = namerOf(sym).accessorTypeCompleter(tree, isSetter)
       final def fieldSelection         = Select(This(enclClass), basisSym)
       final def derivedMods: Modifiers = mods & flagsMask | flagsExtra mapAnnotations (_ => Nil)
@@ -474,72 +463,6 @@ trait MethodSynthesis {
     }
     def validateParam(tree: ValDef) {
       Param(tree).derive(tree.symbol.annotations)
-    }
-
-    sealed abstract class BeanAccessor(bean: String) extends DerivedFromValDef {
-      val name       = newTermName(bean + tree.name.toString.capitalize)
-      def flagsMask  = BeanPropertyFlags
-      def flagsExtra = 0
-      override def derivedSym = enclClass.info decl name
-    }
-    sealed trait AnyBeanGetter extends BeanAccessor with DerivedGetter {
-      def category = BeanGetterTargetClass
-      override def validate() {
-        if (derivedSym == NoSymbol) {
-          // the namer decides whether to generate these symbols or not. at that point, we don't
-          // have symbolic information yet, so we only look for annotations named "BeanProperty".
-          BeanPropertyAnnotationLimitationError(tree)
-        }
-        super.validate()
-      }
-    }
-    trait NoSymbolBeanGetter extends AnyBeanGetter {
-      // Derives a tree without attempting to use the original tree's symbol.
-      override def derivedTree = {
-        atPos(tree.pos.focus) {
-          DefDef(derivedMods, name, Nil, ListOfNil, tree.tpt.duplicate,
-            if (isDeferred) EmptyTree else Select(This(owner), tree.name)
-          )
-        }
-      }
-      override def createAndEnterSymbol(): Symbol = enterSyntheticSym(derivedTree)
-    }
-    case class BooleanBeanGetter(tree: ValDef) extends BeanAccessor("is") with AnyBeanGetter { }
-    case class BeanGetter(tree: ValDef) extends BeanAccessor("get") with AnyBeanGetter { }
-    case class BeanSetter(tree: ValDef) extends BeanAccessor("set") with DerivedSetter {
-      def category = BeanSetterTargetClass
-    }
-
-    // No Symbols available.
-    private def beanAccessorsFromNames(tree: ValDef) = {
-      val ValDef(mods, _, _, _) = tree
-      val hasBP     = mods hasAnnotationNamed tpnme.BeanPropertyAnnot
-      val hasBoolBP = mods hasAnnotationNamed tpnme.BooleanBeanPropertyAnnot
-
-      if (hasBP || hasBoolBP) {
-        val getter = (
-          if (hasBP) new BeanGetter(tree) with NoSymbolBeanGetter
-          else new BooleanBeanGetter(tree) with NoSymbolBeanGetter
-        )
-        getter :: {
-          if (mods.isMutable) List(BeanSetter(tree)) else Nil
-        }
-      }
-      else Nil
-    }
-
-    protected def enterBeans(tree: ValDef) {
-      val ValDef(mods, name, _, _) = tree
-      val beans = beanAccessorsFromNames(tree)
-      if (beans.nonEmpty) {
-        if (!name.charAt(0).isLetter)
-          BeanPropertyAnnotationFieldWithoutLetterError(tree)
-        else if (mods.isPrivate)  // avoids name clashes with private fields in traits
-          BeanPropertyAnnotationPrivateFieldError(tree)
-
-        // Create and enter the symbols here, add the trees in finishGetterSetter.
-        beans foreach (_.createAndEnterSymbol())
-      }
     }
   }
 }

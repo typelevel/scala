@@ -1099,8 +1099,6 @@ trait Definitions extends api.StandardDefinitions {
     lazy val uncheckedStableClass       = requiredClass[scala.annotation.unchecked.uncheckedStable]
     lazy val uncheckedVarianceClass     = requiredClass[scala.annotation.unchecked.uncheckedVariance]
 
-    lazy val BeanPropertyAttr           = requiredClass[scala.beans.BeanProperty]
-    lazy val BooleanBeanPropertyAttr    = requiredClass[scala.beans.BooleanBeanProperty]
     lazy val CompileTimeOnlyAttr        = getClassIfDefined("scala.annotation.compileTimeOnly")
     lazy val DeprecatedAttr             = requiredClass[scala.deprecated]
     lazy val DeprecatedNameAttr         = requiredClass[scala.deprecatedName]
@@ -1121,8 +1119,6 @@ trait Definitions extends api.StandardDefinitions {
     lazy val VolatileAttr               = requiredClass[scala.volatile]
 
     // Meta-annotations
-    lazy val BeanGetterTargetClass      = requiredClass[meta.beanGetter]
-    lazy val BeanSetterTargetClass      = requiredClass[meta.beanSetter]
     lazy val FieldTargetClass           = requiredClass[meta.field]
     lazy val GetterTargetClass          = requiredClass[meta.getter]
     lazy val ParamTargetClass           = requiredClass[meta.param]

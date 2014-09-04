@@ -18,5 +18,5 @@ import scala.annotation.meta._
  *                 after type checking
  * @since  2.11.0
  */
-@getter @setter @beanGetter @beanSetter @companionClass @companionMethod
+@companionClass @companionMethod
 final class compileTimeOnly(message: String) extends scala.annotation.StaticAnnotation
