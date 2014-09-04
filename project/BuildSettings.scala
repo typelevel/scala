@@ -2,6 +2,7 @@ package policy
 package building
 
 import sbt._, Keys._, PolicyKeys._
+import psp.libsbt._
 import Opts.resolver._
 import Classpaths.{ packaged, publishConfig }
 import bintray.Plugin.{ bintraySettings, bintrayPublishSettings }
@@ -33,7 +34,6 @@ trait Depends {
 }
 
 final class ProjectOps(val p: Project) {
-  def noArtifacts          = p settings (publish := (), publishLocal := ())
   def addMima(m: ModuleID) = p also fullMimaSettings(m)
 
   def fullMimaSettings(m: ModuleID) = mimaDefaultSettings ++ Seq(
@@ -42,14 +42,13 @@ final class ProjectOps(val p: Project) {
       previousArtifact :=  Some(m)
   )
 
-  def rootSetup                                  = (p in file(".")).setup.noArtifacts
-  def setup                                      = p also projectSettings(p.id)
-  def also(ss: Traversable[Setting[_]]): Project = p settings (ss.toSeq: _*)
-  def deps(ms: ModuleID*)                        = p settings (libraryDependencies ++= ms.toSeq)
-  def intransitiveDeps(ms: ModuleID*)            = deps(ms map (_.intransitive()): _*)
-  def intransitiveTestDeps(ms: ModuleID*)        = deps(ms map (m => (m % "test").intransitive): _*)
-  def sbtDeps(ids: String*)                      = intransitiveDeps(ids map sbtModuleId: _*)
-  def scalaDeps(ids: String*)                    = intransitiveDeps(ids map scalaModuleId: _*)
+  def rootSetup                           = (p in file(".")).setup.noArtifacts
+  def setup                               = p also projectSettings(p.id)
+  def deps(ms: ModuleID*)                 = p settings (libraryDependencies ++= ms.toSeq)
+  def intransitiveDeps(ms: ModuleID*)     = deps(ms map (_.intransitive()): _*)
+  def intransitiveTestDeps(ms: ModuleID*) = deps(ms map (m => (m % "test").intransitive): _*)
+  def sbtDeps(ids: String*)               = intransitiveDeps(ids map sbtModuleId: _*)
+  def scalaDeps(ids: String*)             = intransitiveDeps(ids map scalaModuleId: _*)
 }
 
 private object projectSettings {

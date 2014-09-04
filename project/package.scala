@@ -5,11 +5,6 @@ import sbt._, Keys._, building._
 sealed abstract class PolicyPackage extends Constants with PluginRelatedCode with BuildTasks with Helpers with Depends with Runners with Bootstrap
 
 package object building extends PolicyPackage {
-  locally {
-    import org.slf4j.{ LoggerFactory, Logger }, ch.qos.logback.classic
-    LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME).asInstanceOf[classic.Logger] setLevel classic.Level.INFO
-  }
-
   def chain[A](g: A => A)(f: A => A): A => A = f andThen g
   def doto[A](x: A)(f: A => Unit): A = { f(x) ; x }
 

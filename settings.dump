@@ -132,10 +132,7 @@ conflictWarning              compiler     *            *               ConflictW
 conflictWarning              library      *            *               ConflictWarning("{file:/mirror/r/policy/}library", error, true)
 conflictWarning              root         *            *               ConflictWarning("{file:/mirror/r/policy/}root", error, true)
 connectInput                 *            *            *               false
-credentialsFile              compat       *            bintray         /Users/paulp/.bintray/.credentials
-credentialsFile              compiler     *            bintray         /Users/paulp/.bintray/.credentials
-credentialsFile              library      *            bintray         /Users/paulp/.bintray/.credentials
-credentialsFile              root         *            bintray         /Users/paulp/.bintray/.credentials
+credentialsFile              *            *            *               /Users/paulp/.bintray/.credentials
 crossPaths                   *            *            *               true
 crossPaths                   compat       *            *               false
 crossPaths                   compiler     *            *               false
@@ -166,11 +163,12 @@ description                  root         *            bintray         "policy"
 exportJars                   *            *            *               false
 fork                         *            *            *               false
 fork                         compiler     test         *               true
-gpgCommand                   *            *            *               "gpg"
 history                      compat       *            *               /mirror/r/policy/compat/target/.history
 history                      compiler     *            *               /mirror/r/policy/compiler/target/.history
 history                      library      *            *               /mirror/r/policy/library/target/.history
 history                      root         *            *               /mirror/r/policy/target/.history
+initialCommands              {.}          *            consoleProject  "
+import psp.libsbt._"
 initialCommands              root         *            console         "import scala.reflect.runtime.universe._"
 initialCommands              root         *            consoleProject  "import policy.building._"
 isSnapshot                   compat       *            *               false
@@ -182,10 +180,10 @@ ivyPaths                     compat       *            *               <sbt.IvyP
 ivyPaths                     compiler     *            *               <sbt.IvyPaths>
 ivyPaths                     library      *            *               <sbt.IvyPaths>
 ivyPaths                     root         *            *               <sbt.IvyPaths>
-ivyScala                     compat       *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
-ivyScala                     compiler     *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
-ivyScala                     library      *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
-ivyScala                     root         *            *               IvyScala("2.11.1", "2.11", -, true, false, false, "org.scala-lang")
+ivyScala                     compat       *            *               IvyScala("2.11.2", "2.11", -, true, false, false, "org.scala-lang")
+ivyScala                     compiler     *            *               IvyScala("2.11.2", "2.11", -, true, false, false, "org.scala-lang")
+ivyScala                     library      *            *               IvyScala("2.11.2", "2.11", -, true, false, false, "org.scala-lang")
+ivyScala                     root         *            *               IvyScala("2.11.2", "2.11", -, true, false, false, "org.scala-lang")
 ivyValidate                  *            *            *               false
 javaSource                   compat       compile      *               /mirror/r/policy/compat/src/main/java
 javaSource                   compat       test         *               /mirror/r/policy/compat/src/test/java
@@ -216,15 +214,19 @@ managedScalaInstance         library      *            *               false
 managedScalaInstance         root         *            *               false
 maxErrors                    *            *            *               100
 mimaFailOnProblem            library      *            *               true
-mimaPreviousArtifact         library      *            *               ModuleID("org.scala-lang", "scala-library", "2.11.1", -, false, true, false, -, -, -, disabled)
+mimaPreviousArtifact         library      *            *               ModuleID("org.scala-lang", "scala-library", "2.11.2", -, false, true, false, -, -, -, disabled)
 moduleName                   compat       *            *               "policy-compat"
 moduleName                   compiler     *            *               "policy-compiler"
 moduleName                   library      *            *               "policy-library"
 moduleName                   root         *            *               "policy"
 name                         compat       *            *               "policy-compat"
+name                         compat       *            bintray         "policy-compat"
 name                         compiler     *            *               "policy-compiler"
+name                         compiler     *            bintray         "policy-compiler"
 name                         library      *            *               "policy-library"
+name                         library      *            bintray         "policy-library"
 name                         root         *            *               "policy"
+name                         root         *            bintray         "policy"
 normalizedName               compat       *            *               "policy-compat"
 normalizedName               compiler     *            *               "policy-compiler"
 normalizedName               library      *            *               "policy-library"
@@ -282,10 +284,7 @@ publishTo                    library      *            *               Raw(Bintr
 publishTo                    library      *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy-library)
 publishTo                    root         *            *               Raw(Bintray-Maven-Publish-paulp-maven-policy)
 publishTo                    root         *            bintray         Raw(Bintray-Maven-Publish-paulp-maven-policy)
-repository                   compat       *            bintray         "maven"
-repository                   compiler     *            bintray         "maven"
-repository                   library      *            bintray         "maven"
-repository                   root         *            bintray         "maven"
+repository                   *            *            *               "maven"
 resourceDirectory            compat       compile      *               /mirror/r/policy/compat/src/main/resources
 resourceDirectory            compat       test         *               /mirror/r/policy/compat/src/test/resources
 resourceDirectory            compiler     compile      *               /mirror/r/policy/compiler/src/main/resources
@@ -327,10 +326,10 @@ scalaSource                  library      test         *               /mirror/r
 scalaSource                  root         compile      *               /mirror/r/policy/src/main/scala
 scalaSource                  root         test         *               /mirror/r/policy/src/test/scala
 scalaVersion                 *            *            *               "2.10.4"
-scalaVersion                 compat       *            *               "2.11.1"
-scalaVersion                 compiler     *            *               "2.11.1"
-scalaVersion                 library      *            *               "2.11.1"
-scalaVersion                 root         *            *               "2.11.1"
+scalaVersion                 compat       *            *               "2.11.2"
+scalaVersion                 compiler     *            *               "2.11.2"
+scalaVersion                 library      *            *               "2.11.2"
+scalaVersion                 root         *            *               "2.11.2"
 settingsDumpFile             {.}          *            *               /mirror/r/policy/settings.dump
 showSuccess                  *            *            *               true
 showSuccess                  compat       *            *               false
@@ -411,8 +410,6 @@ updateConfiguration          compat       *            *               <sbt.Upda
 updateConfiguration          compiler     *            *               <sbt.UpdateConfiguration>
 updateConfiguration          library      *            *               <sbt.UpdateConfiguration>
 updateConfiguration          root         *            *               <sbt.UpdateConfiguration>
-useGpg                       *            *            *               false
-useGpgAgent                  *            *            *               false
 version                      *            *            *               "0.1-SNAPSHOT"
 version                      compat       *            *               "1.0.0-M3"
 version                      compiler     *            *               "1.0.0-M3"
