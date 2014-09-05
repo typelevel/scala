@@ -643,7 +643,7 @@ self =>
     def isDefIntro = isTemplateIntro || isDclIntro
 
     def isNumericLit: Boolean = in.token match {
-      case INTLIT | LONGLIT | FLOATLIT | DOUBLELIT => true
+      case BYTELIT | SHORTLIT | INTLIT | LONGLIT | FLOATLIT | DOUBLELIT => true
       case _ => false
     }
 
@@ -659,7 +659,7 @@ self =>
     def isMacro = in.token == IDENTIFIER && in.name == nme.MACROkw
 
     def isLiteralToken(token: Token) = token match {
-      case CHARLIT | INTLIT | LONGLIT | FLOATLIT | DOUBLELIT |
+      case BYTELIT | SHORTLIT | CHARLIT | INTLIT | LONGLIT | FLOATLIT | DOUBLELIT |
            STRINGLIT | INTERPOLATIONID | SYMBOLLIT | TRUE | FALSE | NULL => true
       case _                                                        => false
     }
@@ -1186,6 +1186,8 @@ self =>
         case LONGLIT                => in.intVal(isNegated)
         case FLOATLIT               => in.floatVal(isNegated).toFloat
         case DOUBLELIT              => in.floatVal(isNegated)
+        case BYTELIT                => in.intVal(isNegated).toByte
+        case SHORTLIT               => in.intVal(isNegated).toShort
         case STRINGLIT | STRINGPART => in.strVal.intern()
         case TRUE                   => true
         case FALSE                  => false
@@ -1958,7 +1960,7 @@ self =>
           case IDENTIFIER | BACKQUOTED_IDENT | THIS =>
             val t = stableId()
             in.token match {
-              case INTLIT | LONGLIT | FLOATLIT | DOUBLELIT =>
+              case BYTELIT | SHORTLIT | INTLIT | LONGLIT | FLOATLIT | DOUBLELIT =>
                 t match {
                   case Ident(nme.MINUS) =>
                     return literal(isNegated = true, inPattern = true, start = start)
@@ -1977,7 +1979,7 @@ self =>
           case USCORE =>
             in.nextToken()
             atPos(start, start) { Ident(nme.WILDCARD) }
-          case CHARLIT | INTLIT | LONGLIT | FLOATLIT | DOUBLELIT |
+          case BYTELIT | SHORTLIT | CHARLIT | INTLIT | LONGLIT | FLOATLIT | DOUBLELIT |
                STRINGLIT | INTERPOLATIONID | SYMBOLLIT | TRUE | FALSE | NULL =>
             literal(inPattern = true)
           case LPAREN =>

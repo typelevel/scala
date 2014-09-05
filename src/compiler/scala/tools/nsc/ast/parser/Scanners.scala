@@ -594,7 +594,7 @@ trait Scanners extends ScannersCommon {
 
     /** Can token end a statement? */
     def inLastOfStat(token: Token) = token match {
-      case CHARLIT | INTLIT | LONGLIT | FLOATLIT | DOUBLELIT | STRINGLIT | SYMBOLLIT |
+      case CHARLIT | BYTELIT | SHORTLIT | INTLIT | LONGLIT | FLOATLIT | DOUBLELIT | STRINGLIT | SYMBOLLIT |
            IDENTIFIER | BACKQUOTED_IDENT | THIS | NULL | TRUE | FALSE | RETURN | USCORE |
            TYPE | XMLSTART | RPAREN | RBRACKET | RBRACE =>
         true
@@ -911,8 +911,12 @@ trait Scanners extends ScannersCommon {
       } else {
         var value: Long = 0
         val divider = if (base == 10) 1 else 2
-        val limit: Long =
-          if (token == LONGLIT) Long.MaxValue else Int.MaxValue
+        val limit: Long = token match {
+          case LONGLIT => Long.MaxValue
+          case BYTELIT => Byte.MaxValue
+          case SHORTLIT => Short.MaxValue
+          case _ => Int.MaxValue
+        }
         var i = 0
         val len = strVal.length
         while (i < len) {
@@ -996,7 +1000,6 @@ trait Scanners extends ScannersCommon {
       }
       def restOfUncertainToken() = {
         def isEfd = ch match { case 'e' | 'E' | 'f' | 'F' | 'd' | 'D' => true ; case _ => false }
-        def isL   = ch match { case 'l' | 'L' => true ; case _ => false }
 
         if (base <= 10 && isEfd)
           getFraction()
@@ -1005,17 +1008,25 @@ trait Scanners extends ScannersCommon {
           // as soon as a 0 is read in `case '0'` of method fetchToken.
           if (base == 8 && notSingleZero) syntaxError("Non-zero integral values may not have a leading zero.")
           setStrVal()
-          if (isL) {
-            nextChar()
-            token = LONGLIT
+          ch match {
+            case 'l' | 'L' =>
+              nextChar()
+              token = LONGLIT
+            case 'z' | 'Z' =>
+              nextChar()
+              token = BYTELIT
+            case 's' | 'S' =>
+              nextChar()
+              token = SHORTLIT
+            case _ =>
+              checkNoLetter()
           }
-          else checkNoLetter()
         }
       }
 
-      if (base > 10 || ch != '.')
+      if (base > 10 || ch != '.') {
         restOfUncertainToken()
-      else {
+      } else {
         val lookahead = lookaheadReader
         val c = lookahead.getc()
 
@@ -1095,6 +1106,10 @@ trait Scanners extends ScannersCommon {
         "int(" + intVal + ")"
       case LONGLIT =>
         "long(" + intVal + ")"
+      case BYTELIT =>
+        "byte(" + intVal + ")"
+      case SHORTLIT =>
+        "short(" + intVal + ")"
       case FLOATLIT =>
         "float(" + floatVal + ")"
       case DOUBLELIT =>
@@ -1212,6 +1227,8 @@ trait Scanners extends ScannersCommon {
     case CHARLIT => "character literal"
     case INTLIT => "integer literal"
     case LONGLIT => "long literal"
+    case BYTELIT => "byte literal"
+    case SHORTLIT => "short literal"
     case FLOATLIT => "float literal"
     case DOUBLELIT => "double literal"
     case STRINGLIT | STRINGPART | INTERPOLATIONID => "string literal"
