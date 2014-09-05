@@ -80,7 +80,7 @@ private object projectSettings {
   // Settings added to every project.
   def universal = bintraySettings ++ List(
                            name  ~=  (dash(PolicyName, _)),
-                        version  :=  "1.0.0-M3",
+                        version  :=  "1.0.0-M4",
                    scalaVersion  :=  ScalaKnownVersion,
              scalaBinaryVersion  :=  "2.11",
                        licenses  :=  Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
