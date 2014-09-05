@@ -42,6 +42,12 @@ trait Product extends Any with Equals {
     def next() = { val result = productElement(c); c += 1; result }
   }
 
+  def productToString: String =
+    productIterator.map(_ match {
+      case x: String => "\"" + x + "\""
+      case x => x
+    }).mkString("(", ", ", ")")
+
   /** A string used in the `toString` methods of derived classes.
    *  Implementations may override this method to prepend a string prefix
    *  to the result of `toString` methods.

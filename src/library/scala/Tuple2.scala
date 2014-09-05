@@ -20,7 +20,7 @@ package scala
 case class Tuple2[@specialized(Int, Long, Double, Char, Boolean/*, AnyRef*/) +T1, @specialized(Int, Long, Double, Char, Boolean/*, AnyRef*/) +T2](_1: T1, _2: T2)
   extends Product2[T1, T2]
 {
-  override def toString() = "(" + _1 + "," + _2 + ")"
+  override def toString() = "(" + tup_to_s(_1) + "," + tup_to_s(_2) + ")"
   
   /** Swaps the elements of this `Tuple`.
    * @return a new Tuple where the first element is the second element of this Tuple and the
@@ -28,4 +28,10 @@ case class Tuple2[@specialized(Int, Long, Double, Char, Boolean/*, AnyRef*/) +T1
    */
   def swap: Tuple2[T2,T1] = Tuple2(_2, _1)
 
+  
+    private def tup_to_s(x: Any): String = x match {
+      case (xx: String) => "\"" + xx + "\""
+      case xx => xx.toString()
+    }
+  
 }

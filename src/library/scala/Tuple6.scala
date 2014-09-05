@@ -24,6 +24,12 @@ package scala
 case class Tuple6[+T1, +T2, +T3, +T4, +T5, +T6](_1: T1, _2: T2, _3: T3, _4: T4, _5: T5, _6: T6)
   extends Product6[T1, T2, T3, T4, T5, T6]
 {
-  override def toString() = "(" + _1 + "," + _2 + "," + _3 + "," + _4 + "," + _5 + "," + _6 + ")"
+  override def toString() = "(" + tup_to_s(_1) + "," + tup_to_s(_2) + "," + tup_to_s(_3) + "," + tup_to_s(_4) + "," + tup_to_s(_5) + "," + tup_to_s(_6) + ")"
+  
+  
+    private def tup_to_s(x: Any): String = x match {
+      case (xx: String) => "\"" + xx + "\""
+      case xx => xx.toString()
+    }
   
 }
