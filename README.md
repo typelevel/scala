@@ -9,7 +9,7 @@ This is a fork of the [scala](https://github.com/scala/scala) compiler. The goal
 Status
 ------
 
-It's still in development, in every imaginable sense. I would prefer not to publish code in this condition, which although way ahead of scala/scala is still far short of anything I'd want to put my name on. However since typelevel has also forked the scala compiler, publishing now and giving them an opportunity to exploit my work seems the lesser evil.
+It's still in development, in every imaginable sense. I would prefer not to publish code in this condition, which although way ahead of scala/scala is still far short of anything I'd want to put my name on. However since typelevel has also [forked](https://github.com/typelevel/scala) the scala compiler, publishing now and giving them an opportunity to exploit my work seems the lesser evil.
 
 So for now please resist reporting bugs if it's something most likely already obvious to me.
 
@@ -28,10 +28,10 @@ The material changes at this point:
 
 [*] Except a necessary one-character fix means we can't use asm 5.0.3, so there is a bundled prebuilt asm-5.0.4-SNAPSHOT built with the fix.
 
-The commits relative to scala/scala 2.11.x can be seen like so:
+The commits relative to scalac can be seen like so:
 ```
 # 48f3957fb5 is the subtree merge of partest, which introduces a lot of
-# noise the commit history if not excluded.
+# noise in the commit history if not excluded.
 % git log --oneline master ^origin/2.1{1,2}.x ^48f3957fb5
 ```
 
