@@ -82,17 +82,9 @@ trait CompilationUnits { global: Global =>
      */
     object synthetics {
       private val map = mutable.HashMap[Symbol, Tree]()
-      def update(sym: Symbol, tree: Tree) {
-        debuglog(s"adding synthetic ($sym, $tree) to $self")
-        map.update(sym, tree)
-      }
-      def -=(sym: Symbol) {
-        debuglog(s"removing synthetic $sym from $self")
-        map -= sym
-      }
-      def get(sym: Symbol): Option[Tree] = debuglogResultIf[Option[Tree]](s"found synthetic for $sym in $self", _.isDefined) {
-        map get sym
-      }
+      def update(sym: Symbol, tree: Tree): Unit = map.update(sym, tree)
+      def -=(sym: Symbol): Unit = map -= sym
+      def get(sym: Symbol): Option[Tree] = map get sym
       def keys: Iterable[Symbol] = map.keys
       def clear(): Unit = map.clear()
       override def toString = map.toString

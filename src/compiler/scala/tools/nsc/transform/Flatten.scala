@@ -28,14 +28,11 @@ abstract class Flatten extends InfoTransform {
     val scope = sym.owner.info.decls
     val old   = (scope lookupUnshadowedEntries sym.name).toList
     old foreach (scope unlink _)
-    def old_s = old map (_.sym) mkString ", "
-    if (old.nonEmpty) debuglog(s"In scope of ${sym.owner}, unlinked $old_s")
   }
 
   private def liftClass(sym: Symbol) {
     if (!sym.isLifted) {
       sym setFlag LIFTED
-      debuglog("re-enter " + sym.fullLocationString)
       replaceSymbolInCurrentScope(sym)
     }
   }

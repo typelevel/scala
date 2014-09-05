@@ -1,0 +1,195 @@
+[0m[[0minfo[0m] [0mUpdating {file:/home/alois/oss/policy/}root...[0m
+[0m[[0mdebug[0m] [0m:: resolving dependencies :: org.improving#policy;1.0.0-M4[0m
+[0m[[0mdebug[0m] [0m	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool][0m
+[0m[[0mdebug[0m] [0m	validate = true[0m
+[0m[[0mdebug[0m] [0m	refresh = false[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'compile'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0minfo[0m] [0mResolving org.improving#policy-library;1.0.0-M4 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.improving#policy-library;1.0.0-M4 {compile=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0m	found org.improving#policy-library;1.0.0-M4 in inter-project[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-compiler;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0minfo[0m] [0mResolving org.improving#policy-compiler;1.0.0-M4 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.improving#policy-compiler;1.0.0-M4 {compile=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0m	found org.improving#policy-compiler;1.0.0-M4 in inter-project[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->default(compile)][0m
+[0m[[0minfo[0m] [0mResolving jline#jline;2.12 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: jline#jline;2.12 {compile=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: jline#jline;2.12[0m
+[0m[[0mdebug[0m] [0m	local: revision in cache: jline#jline;2.12[0m
+[0m[[0mdebug[0m] [0m	found jline#jline;2.12 in sbt-chain[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->master][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-compiler;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->master][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'test'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [test][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-compiler;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->master][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'provided'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [provided][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'optional'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [optional][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'compile-internal'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [compile-internal][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-compiler;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [optional][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [provided][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime-internal'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [runtime-internal][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-compiler;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [optional][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'test-internal'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [test-internal][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [test][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#policy-compiler;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->org.improving#policy-library;1.0.0-M4 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy-compiler;1.0.0-M4->jline#jline;2.12 [compile->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [optional][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [provided][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'plugin'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [plugin][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'sources'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [sources][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'docs'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [docs][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'pom'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [pom][0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'scala-tool'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for org.improving#policy;1.0.0-M4 [scala-tool][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#bootstrap-compiler;1.0.0-M4 [scala-tool->default(compile)][0m
+[0m[[0minfo[0m] [0mResolving org.improving#bootstrap-compiler;1.0.0-M4 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.improving#bootstrap-compiler;1.0.0-M4 {scala-tool=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0m		tried /home/alois/.ivy2/local/org.improving/bootstrap-compiler/1.0.0-M4/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	local: no ivy file found for org.improving#bootstrap-compiler;1.0.0-M4[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	public: no ivy file found for org.improving#bootstrap-compiler;1.0.0-M4[0m
+[0m[[0mdebug[0m] [0m		tried http://jcenter.bintray.com/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://jcenter.bintray.com/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	BintrayJCenter: no ivy file found for org.improving#bootstrap-compiler;1.0.0-M4[0m
+[0m[[0mdebug[0m] [0m		tried https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: found md file for org.improving#bootstrap-compiler;1.0.0-M4[0m
+[0m[[0mdebug[0m] [0m		=> https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom (1.0.0-M4)[0m
+[0m[[0mdebug[0m] [0mdownloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom ...[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: downloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: downloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom.sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	[SUCCESSFUL ] org.improving#bootstrap-compiler;1.0.0-M4!bootstrap-compiler.pom(pom.original) (237ms)[0m
+[0m[[0mdebug[0m] [0m		tried /home/alois/.ivy2/local/org.improving/bootstrap-compiler/1.0.0-M4/jars/bootstrap-compiler.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://jcenter.bintray.com/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://jcenter.bintray.com/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0m		tried https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0m	found org.improving#bootstrap-compiler;1.0.0-M4 in bintray/paulp[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#bootstrap-compiler;1.0.0-M4 [scala-tool->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#bootstrap-compiler;1.0.0-M4 [scala-tool->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->org.improving#bootstrap-library;1.0.0-M4 [compile->master(*)][0m
+[0m[[0minfo[0m] [0mResolving org.improving#bootstrap-library;1.0.0-M4 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.improving#bootstrap-library;1.0.0-M4 {compile=[compile(*), master(*)], runtime=[runtime(*)]}[0m
+[0m[[0mdebug[0m] [0m		tried /home/alois/.ivy2/local/org.improving/bootstrap-library/1.0.0-M4/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	local: no ivy file found for org.improving#bootstrap-library;1.0.0-M4[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	public: no ivy file found for org.improving#bootstrap-library;1.0.0-M4[0m
+[0m[[0mdebug[0m] [0m		tried http://jcenter.bintray.com/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://jcenter.bintray.com/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	BintrayJCenter: no ivy file found for org.improving#bootstrap-library;1.0.0-M4[0m
+[0m[[0mdebug[0m] [0m		tried https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: found md file for org.improving#bootstrap-library;1.0.0-M4[0m
+[0m[[0mdebug[0m] [0m		=> https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom (1.0.0-M4)[0m
+[0m[[0mdebug[0m] [0mdownloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom ...[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: downloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: downloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom.sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom[0m
+[0m[[0mdebug[0m] [0m	[SUCCESSFUL ] org.improving#bootstrap-library;1.0.0-M4!bootstrap-library.pom(pom.original) (306ms)[0m
+[0m[[0mdebug[0m] [0m		tried /home/alois/.ivy2/local/org.improving/bootstrap-library/1.0.0-M4/jars/bootstrap-library.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://jcenter.bintray.com/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://jcenter.bintray.com/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0m		tried https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0m	found org.improving#bootstrap-library;1.0.0-M4 in bintray/paulp[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->org.improving#bootstrap-library;1.0.0-M4 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->org.improving#bootstrap-library;1.0.0-M4 [compile->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->org.improving#bootstrap-library;1.0.0-M4 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->jline#jline;2.12 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->jline#jline;2.12 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->jline#jline;2.12 [compile->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->jline#jline;2.12 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->org.improving#bootstrap-library;1.0.0-M4 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->org.improving#bootstrap-library;1.0.0-M4 [runtime->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->jline#jline;2.12 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#bootstrap-compiler;1.0.0-M4->jline#jline;2.12 [runtime->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.improving#policy;1.0.0-M4->org.improving#bootstrap-compiler;1.0.0-M4 [scala-tool->master][0m
+[0m[[0mdebug[0m] [0m	resolved ivy file produced in cache[0m
+[0m[[0mdebug[0m] [0m:: downloading artifacts ::[0m
+[0m[[0mdebug[0m] [0m	[NOT REQUIRED] jline#jline;2.12!jline.jar[0m
+[0m[[0mdebug[0m] [0m		tried https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar[0m
+[0m[[0minfo[0m] [0mdownloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar ...[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: downloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: downloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar.sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] org.improving#bootstrap-compiler;1.0.0-M4!bootstrap-compiler.jar (23764ms)[0m
+[0m[[0mdebug[0m] [0m		tried https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar[0m
+[0m[[0minfo[0m] [0mdownloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar ...[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: downloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar[0m
+[0m[[0mdebug[0m] [0m	bintray/paulp: downloading https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar.sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] org.improving#bootstrap-library;1.0.0-M4!bootstrap-library.jar (8037ms)[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 3210ms :: artifacts dl 31803ms[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 compile produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-compile.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 runtime produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-runtime.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 test produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-test.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 provided produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-provided.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 optional produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-optional.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 compile-internal produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-compile-internal.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 runtime-internal produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-runtime-internal.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 test-internal produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-test-internal.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 plugin produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-plugin.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 sources produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-sources.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 docs produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-docs.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 pom produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-pom.xml[0m
+[0m[[0mdebug[0m] [0m	report for org.improving#policy;1.0.0-M4 scala-tool produced in /home/alois/oss/policy/target/resolution-cache/reports/org.improving-policy-scala-tool.xml[0m
+[0m[[0mdebug[0m] [0m	resolve done (3210ms resolve - 31803ms download)[0m
+[0m[[0minfo[0m] [0mDone updating.[0m

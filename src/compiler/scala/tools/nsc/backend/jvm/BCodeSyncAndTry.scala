@@ -9,8 +9,9 @@ package tools.nsc
 package backend
 package jvm
 
-import scala.collection.immutable
-import scala.tools.asm
+import scala.collection.{ mutable, immutable }
+import scala.annotation.switch
+import org.objectweb.asm
 
 /*
  *

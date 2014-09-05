@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#
+
+run () { echo "$@" && "$@"; }
+
+[[ $# -lt 2 ]] && echo "Usage: $0 <bootstrap version|scala> <build version> [args]" && exit 0
+
+bootstrap="$1" && shift
+build="$1" && shift
+
+run sbt \
+  -Dpolicy.bootstrap="$bootstrap" \
+  -Dpolicy.build="$build" \
+  "$@"

@@ -18,9 +18,8 @@ private[internal] trait TypeMaps {
     */
   object normalizeAliases extends TypeMap {
     def apply(tp: Type): Type = mapOver(tp match {
-      case TypeRef(_, sym, _) if sym.isAliasType && tp.isHigherKinded => logResult(s"Normalized type alias function $tp")(tp.normalize)
-      case TypeRef(_, sym, _) if sym.isAliasType                      => tp.normalize
-      case tp                                                         => tp
+      case TypeRef(_, sym, _) if sym.isAliasType => tp.normalize
+      case tp                                    => tp
     })
   }
 
@@ -76,19 +75,6 @@ private[internal] trait TypeMaps {
       case _ =>
         if (etaExpandKeepsStar) tp else mapOver(tp)
     }
-  }
-
-  trait AnnotationFilter extends TypeMap {
-    def keepAnnotation(annot: AnnotationInfo): Boolean
-
-    override def mapOver(annot: AnnotationInfo) =
-      if (keepAnnotation(annot)) super.mapOver(annot)
-      else UnmappableAnnotation
-  }
-
-  trait KeepOnlyTypeConstraints extends AnnotationFilter {
-    // filter keeps only type constraint annotations
-    def keepAnnotation(annot: AnnotationInfo) = annot matches TypeConstraintClass
   }
 
   // todo. move these into scala.reflect.api
@@ -175,7 +161,7 @@ private[internal] trait TypeMaps {
         if (constr.instValid) this(constr.inst)
         else tv.applyArgs(mapOverArgs(tv.typeArgs, tv.params))  //@M !args.isEmpty implies !typeParams.isEmpty
       case AnnotatedType(annots, atp) =>
-        val annots1 = mapOverAnnotations(annots)
+        val annots1 = annots mapConserve mapOver
         val atp1 = this(atp)
         if ((annots1 eq annots) && (atp1 eq atp)) tp
         else if (annots1.isEmpty) atp1
@@ -248,30 +234,14 @@ private[internal] trait TypeMaps {
     def mapOver(annot: AnnotationInfo): AnnotationInfo = {
       val AnnotationInfo(atp, args, assocs) = annot
       val atp1  = mapOver(atp)
-      val args1 = mapOverAnnotArgs(args)
+      val args1 = args mapConserve mapOver
       // there is no need to rewrite assocs, as they are constants
 
       if ((args eq args1) && (atp eq atp1)) annot
-      else if (args1.isEmpty && args.nonEmpty) UnmappableAnnotation  // some annotation arg was unmappable
       else AnnotationInfo(atp1, args1, assocs) setPos annot.pos
     }
 
-    def mapOverAnnotations(annots: List[AnnotationInfo]): List[AnnotationInfo] = {
-      val annots1 = annots mapConserve mapOver
-      if (annots1 eq annots) annots
-      else annots1 filterNot (_ eq UnmappableAnnotation)
-    }
-
-    /** Map over a set of annotation arguments.  If any
-      *  of the arguments cannot be mapped, then return Nil.  */
-    def mapOverAnnotArgs(args: List[Tree]): List[Tree] = {
-      val args1 = args mapConserve mapOver
-      if (args1 contains UnmappableTree) Nil
-      else args1
-    }
-
-    def mapOver(tree: Tree): Tree =
-      mapOver(tree, () => return UnmappableTree)
+    def mapOver(tree: Tree): Tree = mapOver(tree, () => return EmptyTree)
 
     /** Map a tree that is part of an annotation argument.
       *  If the tree cannot be mapped, then invoke giveup().
@@ -389,14 +359,7 @@ private[internal] trait TypeMaps {
           val repl = if (variance.isPositive) dropSingletonType(tp1.bounds.hi) else tp1.bounds.lo
           val count = occurCount(sym)
           val containsTypeParam = tparams exists (repl contains _)
-          def msg = {
-            val word = if (variance.isPositive) "upper" else "lower"
-            s"Widened lone occurrence of $tp1 inside existential to $word bound"
-          }
-          if (!repl.typeSymbol.isBottomClass && count == 1 && !containsTypeParam)
-            debuglogResult(msg)(repl)
-          else
-            tp1
+          if (!repl.typeSymbol.isBottomClass && count == 1 && !containsTypeParam) repl else tp1
         case _ =>
           tp1
       }
@@ -438,7 +401,7 @@ private[internal] trait TypeMaps {
 
   /** A map to compute the asSeenFrom method.
     */
-  class AsSeenFromMap(seenFromPrefix: Type, seenFromClass: Symbol) extends TypeMap with KeepOnlyTypeConstraints {
+  class AsSeenFromMap(seenFromPrefix: Type, seenFromClass: Symbol) extends TypeMap {
     // Some example source constructs relevant in asSeenFrom:
     //
     // object CaptureThis {
@@ -502,13 +465,11 @@ private[internal] trait TypeMaps {
         case _       =>
           val qvar = clazz freshExistential nme.SINGLETON_SUFFIX setInfo singletonBounds(pre)
           _capturedParams ::= qvar
-          debuglog(s"Captured This(${clazz.fullNameString}) seen from $seenFromPrefix: ${qvar.defString}")
           qvar.tpe
       }
     }
     protected def captureSkolems(skolems: List[Symbol]) {
       for (p <- skolems; if !(capturedSkolems contains p)) {
-        debuglog(s"Captured $p seen from $seenFromPrefix")
         _capturedSkolems ::= p
       }
     }
@@ -547,16 +508,8 @@ private[internal] trait TypeMaps {
 
         if (argIndex < 0)
           abort(s"Something is wrong: cannot find $lhs in applied type $rhs\n" + explain)
-        else {
-          val targ   = rhsArgs(argIndex)
-          // @M! don't just replace the whole thing, might be followed by type application
-          val result = appliedType(targ, lhsArgs mapConserve this)
-          def msg = s"Created $result, though could not find ${own_s(lhsSym)} among tparams of ${own_s(rhsSym)}"
-          if (!rhsSym.typeParams.contains(lhsSym))
-            devWarning(s"Inconsistent tparam/owner views: had to fall back on names\n$msg\n$explain")
-
-          result
-        }
+        else // @M! don't just replace the whole thing, might be followed by type application
+          appliedType(rhsArgs(argIndex), lhsArgs mapConserve this)
       }
     }
 
@@ -859,7 +812,7 @@ private[internal] trait TypeMaps {
 
   /** Note: This map is needed even for non-dependent method types, despite what the name might imply.
     */
-  class InstantiateDependentMap(params: List[Symbol], actuals0: List[Type]) extends TypeMap with KeepOnlyTypeConstraints {
+  class InstantiateDependentMap(params: List[Symbol], actuals0: List[Type]) extends TypeMap {
     private val actuals      = actuals0.toIndexedSeq
     private val existentials = new Array[Symbol](actuals.size)
     def existentialsNeeded: List[Symbol] = existentials.iterator.filter(_ ne null).toList
@@ -1054,12 +1007,7 @@ private[internal] trait TypeMaps {
         sym
       else if (sym.isModuleClass) {
         val sourceModule1 = adaptToNewRun(pre, sym.sourceModule)
-
-        sourceModule1.moduleClass orElse sourceModule1.initialize.moduleClass orElse {
-          val msg = "Cannot adapt module class; sym = %s, sourceModule = %s, sourceModule.moduleClass = %s => sourceModule1 = %s, sourceModule1.moduleClass = %s"
-          debuglog(msg.format(sym, sym.sourceModule, sym.sourceModule.moduleClass, sourceModule1, sourceModule1.moduleClass))
-          sym
-        }
+        sourceModule1.moduleClass orElse sourceModule1.initialize.moduleClass orElse sym
       }
       else {
         var rebind0 = pre.findMember(sym.name, BRIDGE, 0, stableOnly = true) orElse {
@@ -1071,21 +1019,13 @@ private[internal] trait TypeMaps {
         def corresponds(sym1: Symbol, sym2: Symbol): Boolean =
           sym1.name == sym2.name && (sym1.isPackageClass || corresponds(sym1.owner, sym2.owner))
         if (!corresponds(sym.owner, rebind0.owner)) {
-          debuglog("ADAPT1 pre = "+pre+", sym = "+sym.fullLocationString+", rebind = "+rebind0.fullLocationString)
           val bcs = pre.baseClasses.dropWhile(bc => !corresponds(bc, sym.owner))
           if (bcs.isEmpty)
             assert(pre.typeSymbol.isRefinementClass, pre) // if pre is a refinementclass it might be a structural type => OK to leave it in.
           else
             rebind0 = pre.baseType(bcs.head).member(sym.name)
-          debuglog(
-            "ADAPT2 pre = " + pre +
-              ", bcs.head = " + bcs.head +
-              ", sym = " + sym.fullLocationString +
-              ", rebind = " + rebind0.fullLocationString
-          )
         }
         rebind0.suchThat(sym => sym.isType || sym.isStable) orElse {
-          debuglog("" + phase + " " +phase.flatClasses+sym.owner+sym.name+" "+sym.isType)
           throw new MalformedType(pre, sym.nameString)
         }
       }

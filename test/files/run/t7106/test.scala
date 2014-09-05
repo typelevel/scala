@@ -1,4 +1,4 @@
-import scala.tools.partest.BytecodeTest
+import scala.tools.partest._
 
 object Test extends BytecodeTest {
   def show {

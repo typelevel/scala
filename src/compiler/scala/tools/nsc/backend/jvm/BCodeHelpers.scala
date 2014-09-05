@@ -7,7 +7,7 @@ package scala
 package tools.nsc
 package backend.jvm
 
-import scala.tools.asm
+import org.objectweb.asm
 import scala.collection.mutable
 import scala.tools.nsc.io.AbstractFile
 
@@ -719,13 +719,11 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
      */
     def addForwarders(isRemoteClass: Boolean, jclass: asm.ClassVisitor, jclassName: String, moduleClass: Symbol) {
       assert(moduleClass.isModuleClass, moduleClass)
-      debuglog(s"Dumping mirror class for object: $moduleClass")
 
       val linkedClass  = moduleClass.companionClass
       lazy val conflictingNames: Set[Name] = {
         (linkedClass.info.members collect { case sym if sym.name.isTermName => sym.name }).toSet
       }
-      debuglog(s"Potentially conflicting names for forwarders: $conflictingNames")
 
       for (m <- moduleClass.info.membersBasedOnFlags(ExcludedForwarderFlags, symtab.Flags.METHOD)) {
         if (m.isType || m.isDeferred || (m.owner eq definitions.ObjectClass) || m.isConstructor)

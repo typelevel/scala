@@ -159,10 +159,7 @@ trait Infer extends Checkable {
    *  This method seems to be performance critical.
    */
   def normalize(tp: Type): Type = tp match {
-    case PolyType(_, restpe) =>
-      logResult(sm"""|Normalizing PolyType in infer:
-                     |  was: $restpe
-                     |  now""")(normalize(restpe))
+    case PolyType(_, restpe)                                     => normalize(restpe)
     case mt @ MethodType(_, restpe) if mt.isImplicit             => normalize(restpe)
     case mt @ MethodType(_, restpe) if !mt.isDependentMethodType => functionType(mt.paramTypes, normalize(restpe))
     case NullaryMethodType(restpe)                               => normalize(restpe)
@@ -206,11 +203,6 @@ trait Infer extends Checkable {
 
     // When filtering sym down to the accessible alternatives leaves us empty handed.
     private def checkAccessibleError(tree: Tree, sym: Symbol, pre: Type, site: Tree): Tree = {
-      if (settings.debug) {
-        Console.println(context)
-        Console.println(tree)
-        Console.println("" + pre + " " + sym.owner + " " + context.owner + " " + context.outer.enclClass.owner + " " + sym.owner.thisType + (pre =:= sym.owner.thisType))
-      }
       ErrorUtils.issueTypeError(AccessError(tree, sym, pre, context.enclClass.owner,
         if (settings.check.isDefault)
           analyzer.lastAccessCheckDetails
@@ -1014,8 +1006,6 @@ trait Infer extends Checkable {
       val ctorTp   = tree.tpe
       val resTp    = ctorTp.finalResultType
 
-      debuglog("infer constr inst "+ tree +"/"+ undetparams +"/ pt= "+ pt +" pt0= "+ pt0 +" resTp: "+ resTp)
-
       /* Compute type arguments for undetermined params */
       def inferFor(pt: Type): Option[List[Type]] = {
         val tvars   = undetparams map freshVar
@@ -1023,7 +1013,6 @@ trait Infer extends Checkable {
 
         if (resTpV <:< pt) {
           try {
-            // debuglog("TVARS "+ (tvars map (_.constr)))
             // look at the argument types of the primary constructor corresponding to the pattern
             val variances  =
               if (ctorTp.paramTypes.isEmpty) undetparams map varianceInType(ctorTp)
@@ -1036,13 +1025,12 @@ trait Infer extends Checkable {
             // no checkBounds here. If we enable it, test bug602 fails.
             // TODO: reinstate checkBounds, return params that fail to meet their bounds to undetparams
             Some(targs)
-          } catch ifNoInstance { msg =>
-            debuglog("NO INST "+ ((tvars, tvars map (_.constr))))
+          }
+          catch ifNoInstance { msg =>
             NoConstructorInstanceError(tree, resTp, pt, msg)
             None
           }
         } else {
-          debuglog("not a subtype: "+ resTpV +" </:< "+ pt)
           None
         }
       }
@@ -1065,7 +1053,6 @@ trait Infer extends Checkable {
 
             if (isPopulated(resTpInst, ptV)) {
               ptvars foreach instantiateTypeVar
-              debuglog("isPopulated "+ resTpInst +", "+ ptV +" vars= "+ ptvars)
               Some(targs)
             } else None
           }
@@ -1111,26 +1098,15 @@ trait Infer extends Checkable {
       val TypeBounds(lo0, hi0)      = tparam.info.bounds
       val tb @ TypeBounds(lo1, hi1) = instBounds(tvar)
       val enclCase                  = context.enclosingCaseDef
-      def enclCase_s                = enclCase.toString.replaceAll("\\n", " ").take(60)
-
-      if (enclCase.savedTypeBounds.nonEmpty) log(
-        sm"""|instantiateTypeVar with nonEmpty saved type bounds {
-             |  enclosing  $enclCase_s
-             |      saved  ${enclCase.savedTypeBounds}
-             |     tparam  ${tparam.shortSymbolClass} ${tparam.defString}
-             |}""")
 
       if (lo1 <:< hi1) {
-        if (lo1 <:< lo0 && hi0 <:< hi1) // bounds unimproved
-          log(s"redundant bounds: discarding TypeBounds($lo1, $hi1) for $tparam, no improvement on TypeBounds($lo0, $hi0)")
-        else if (tparam == lo1.typeSymbolDirect || tparam == hi1.typeSymbolDirect)
-          log(s"cyclical bounds: discarding TypeBounds($lo1, $hi1) for $tparam because $tparam appears as bounds")
+        if (lo1 <:< lo0 && hi0 <:< hi1) () // bounds unimproved
+        else if (tparam == lo1.typeSymbolDirect || tparam == hi1.typeSymbolDirect) () // cyclical
         else {
           enclCase pushTypeBounds tparam
-          tparam setInfo logResult(s"updated bounds: $tparam from ${tparam.info} to")(tb)
+          tparam setInfo tb
         }
       }
-      else log(s"inconsistent bounds: discarding TypeBounds($lo1, $hi1)")
     }
 
     /** Type intersection of simple type tp1 with general type tp2.
@@ -1141,10 +1117,8 @@ trait Infer extends Checkable {
       else if (tp2 <:< tp1) tp2
       else {
         val reduced2 = tp2 match {
-          case rtp @ RefinedType(parents2, decls2) =>
-            copyRefinedType(rtp, parents2 filterNot (tp1 <:< _), decls2)
-          case _ =>
-            tp2
+          case rtp @ RefinedType(parents2, decls2) => copyRefinedType(rtp, parents2 filterNot (tp1 <:< _), decls2)
+          case _                                   => tp2
         }
         intersectionType(List(tp1, reduced2))
       }
@@ -1170,7 +1144,6 @@ trait Infer extends Checkable {
       checkCheckable(tree0, pattp, pt, inPattern = true, canRemedy)
       if (pattp <:< pt) ()
       else {
-        debuglog("free type params (1) = " + tpparams)
 
         var tvars = tpparams map freshVar
         var tp    = pattp.instantiateTypeParams(tpparams, tvars)
@@ -1179,8 +1152,6 @@ trait Infer extends Checkable {
         else {
           tvars = tpparams map freshVar
           tp    = pattp.instantiateTypeParams(tpparams, tvars)
-
-          debuglog("free type params (2) = " + ptparams)
 
           val ptvars = ptparams map freshVar
           val pt1    = pt.instantiateTypeParams(ptparams, ptvars)
@@ -1207,7 +1178,6 @@ trait Infer extends Checkable {
     def inferModulePattern(pat: Tree, pt: Type) =
       if (!(pat.tpe <:< pt)) {
         val ptparams = freeTypeParamsOfTerms(pt)
-        debuglog("free type params (2) = " + ptparams)
         val ptvars = ptparams map freshVar
         val pt1 = pt.instantiateTypeParams(ptparams, ptvars)
         if (pat.tpe <:< pt1)
@@ -1431,7 +1401,6 @@ trait Infer extends Checkable {
         case Nil                                   => fail()
         case alt :: Nil                            => finish(alt, pre memberType alt)
         case alts @ (hd :: _)                      =>
-          log(s"Attaching AntiPolyType-carrying overloaded type to $sym")
           // Multiple alternatives which are within bounds; spin up an
           // overloaded type which carries an "AntiPolyType" as a prefix.
           val tparams = newAsSeenFromMap(pre, hd.owner) mapOver hd.typeParams

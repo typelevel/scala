@@ -203,7 +203,7 @@ quant)
    *  on access by executing `initValue`.
    */
   class QuantMap[K, V <% Ordered[V]](val prefix: String, val phases: Seq[String], initValue: => V)
-      extends mutable.HashMap[K, V] with mutable.SynchronizedMap[K, V] with Quantity {
+      extends mutable.HashMap[K, V] with Quantity {
     override def default(key: K) = {
       val elem = initValue
       this(key) = elem

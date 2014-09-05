@@ -15,7 +15,6 @@ import mutable.ListBuffer
 trait Linearizers {
   self: ICodes =>
 
-  import global.debuglog
   import opcodes._
 
   abstract class Linearizer {
@@ -181,8 +180,6 @@ trait Linearizers {
      * @return Returns true if the block was added.
      */
     def add(b: BasicBlock) = {
-      debuglog("Linearizer adding block " + b.label)
-
       if (!added(b.label)) {
         added += b.label
         blocks = b :: blocks

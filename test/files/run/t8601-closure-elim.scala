@@ -1,6 +1,6 @@
-import scala.tools.partest.BytecodeTest
-import scala.tools.asm
-import scala.tools.asm.util._
+import scala.tools.partest._
+import org.objectweb.asm
+import org.objectweb.asm.util._
 import scala.collection.JavaConverters._
 
 object Test extends BytecodeTest {
@@ -10,7 +10,7 @@ object Test extends BytecodeTest {
     def test(methodName: String) {
       val classNode = loadClassNode("Foo")
       val methodNode = getMethod(classNode, "b")
-      val ops = methodNode.instructions.iterator.asScala.map(_.getOpcode).toList
+      val ops = methodNode.jopcodes
       assert(!ops.contains(asm.Opcodes.NEW), ops)// should be allocation free if the closure is eliminiated
     }
     test("b")

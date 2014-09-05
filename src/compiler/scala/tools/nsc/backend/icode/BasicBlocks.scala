@@ -328,19 +328,7 @@ trait BasicBlocks {
     def emit(instr: Instruction, pos: Position) {
       assert(!closed || ignore, this)
 
-      if (ignore) {
-        if (settings.debug) {
-          /* Trying to pin down what it's likely to see after a block has been
-           * put into ignore mode so we hear about it if there's a problem.
-           */
-          instr match {
-            case JUMP(_) | RETURN(_) | THROW(_) | SCOPE_EXIT(_)                  => // ok
-            case STORE_LOCAL(local) if nme.isExceptionResultName(local.sym.name) => // ok
-            case x                                                               => log("Ignoring instruction, possibly at our peril, at " + pos + ": " + x)
-          }
-        }
-      }
-      else {
+      if (!ignore) {
         instr.setPos(pos)
         instructionList ::= instr
       }
@@ -390,10 +378,8 @@ trait BasicBlocks {
         setFlag(DIRTYSUCCS)
         instructionList = instructionList.reverse
         instrs = instructionList.toArray
-        if (instructionList.isEmpty) {
-          debuglog(s"Removing empty block $this")
+        if (instructionList.isEmpty)
           code removeBlock this
-        }
       }
     }
 
@@ -404,12 +390,7 @@ trait BasicBlocks {
      */
     def killIf(cond: Boolean) {
       if (!settings.YdisableUnreachablePrevention && cond) {
-        debuglog(s"Killing block $this")
         assert(instructionList.isEmpty, s"Killing a non empty block $this")
-        // only checked under debug because fetching predecessor list is moderately expensive
-        if (settings.debug)
-          assert(predecessors.isEmpty, s"Killing block $this which is referred to from ${predecessors.mkString}")
-
         close()
         enterIgnoreMode()
       }
@@ -475,13 +456,7 @@ trait BasicBlocks {
         case CJUMP(succ, fail, _, _)  => fail :: succ :: Nil
         case CZJUMP(succ, fail, _, _) => fail :: succ :: Nil
         case SWITCH(_, labels)        => labels
-        case RETURN(_)                => Nil
-        case THROW(_)                 => Nil
-        case _                        =>
-          if (closed)
-            devWarning(s"$lastInstruction/${lastInstruction.getClass.getName} is not a control flow instruction")
-
-          Nil
+        case _                        => Nil
       }
 
     /** Returns the predecessors of this block.     */

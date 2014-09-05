@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="org.improving"
+		module="policy-compat"
+		revision="1.0.0-M4"
+		conf="test"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
+		date="20140905225652"/>
+	<dependencies>
+		<module organisation="org.scala-sbt" name="compiler-interface">
+			<revision name="0.13.5" status="release" pubdate="20140527094306" resolver="sbt-chain" artresolver="sbt-chain" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="4">
+				<metadata-artifact status="no" details="" size="1860" time="0" location="/home/alois/.ivy2/cache/org.scala-sbt/compiler-interface/ivy-0.13.5.xml" searched="false" origin-is-local="false" origin-location="http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/compiler-interface/0.13.5/ivys/ivy.xml"/>
+				<caller organisation="org.improving" name="policy-compat" conf="test, compile, runtime" rev="0.13.5" rev-constraint-default="0.13.5" rev-constraint-dynamic="0.13.5" callerrev="1.0.0-M4"/>
+				<artifacts>
+					<artifact name="compiler-interface-bin" type="jar" ext="jar" extra-component="compiler-interface-bin_2.10.4" status="no" details="" size="240824" time="0" location="/home/alois/.ivy2/cache/org.scala-sbt/compiler-interface/jars/compiler-interface-bin-0.13.5.jar">
+						<origin-location is-local="false" location="http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/compiler-interface/0.13.5/jars/compiler-interface-bin.jar"/>
+					</artifact>
+					<artifact name="compiler-interface-src" type="jar" ext="jar" extra-component="compiler-interface-src" status="no" details="" size="30056" time="0" location="/home/alois/.ivy2/cache/org.scala-sbt/compiler-interface/jars/compiler-interface-src-0.13.5.jar">
+						<origin-location is-local="false" location="http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/compiler-interface/0.13.5/jars/compiler-interface-src.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-sbt" name="interface">
+			<revision name="0.13.5" status="release" pubdate="20140527094257" resolver="sbt-chain" artresolver="sbt-chain" extra-component="xsbti" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="3">
+				<metadata-artifact status="no" details="" size="1225" time="0" location="/home/alois/.ivy2/cache/org.scala-sbt/interface/ivy-0.13.5.xml" searched="false" origin-is-local="false" origin-location="http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/interface/0.13.5/ivys/ivy.xml"/>
+				<caller organisation="org.improving" name="policy-compat" conf="test, compile, runtime" rev="0.13.5" rev-constraint-default="0.13.5" rev-constraint-dynamic="0.13.5" callerrev="1.0.0-M4"/>
+				<artifacts>
+					<artifact name="interface" type="jar" ext="jar" status="no" details="" size="52012" time="0" location="/home/alois/.ivy2/cache/org.scala-sbt/interface/jars/interface-0.13.5.jar">
+						<origin-location is-local="false" location="http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/interface/0.13.5/jars/interface.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.improving" name="policy-compiler">
+			<revision name="1.0.0-M4" status="integration" pubdate="20140905225651" resolver="inter-project" artresolver="inter-project" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="0">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
+				<caller organisation="org.improving" name="policy-compat" conf="test, compile, runtime" rev="1.0.0-M4" rev-constraint-default="1.0.0-M4" rev-constraint-dynamic="1.0.0-M4" callerrev="1.0.0-M4"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="jline" name="jline">
+			<revision name="2.12" status="release" pubdate="20140606222408" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="2">
+				<license name="The BSD License" url="http://www.opensource.org/licenses/bsd-license.php"/>
+				<metadata-artifact status="no" details="" size="3767" time="0" location="/home/alois/.ivy2/cache/jline/jline/ivy-2.12.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.pom"/>
+				<caller organisation="org.improving" name="policy-compiler" conf="compile" rev="2.12" rev-constraint-default="2.12" rev-constraint-dynamic="2.12" callerrev="1.0.0-M4"/>
+				<artifacts>
+					<artifact name="jline" type="jar" ext="jar" status="no" details="" size="213854" time="0" location="/home/alois/.ivy2/cache/jline/jline/jars/jline-2.12.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.improving" name="policy-library">
+			<revision name="1.0.0-M4" status="integration" pubdate="20140905225651" resolver="inter-project" artresolver="inter-project" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="1">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
+				<caller organisation="org.improving" name="policy-compiler" conf="compile" rev="1.0.0-M4" rev-constraint-default="1.0.0-M4" rev-constraint-dynamic="1.0.0-M4" callerrev="1.0.0-M4"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>

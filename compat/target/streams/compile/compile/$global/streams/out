@@ -1,0 +1,106 @@
+[0m[[0mdebug[0m] [0m[0m
+[0m[[0mdebug[0m] [0mInitial source changes: [0m
+[0m[[0mdebug[0m] [0m	removed:Set()[0m
+[0m[[0mdebug[0m] [0m	added: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Log.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ConsoleInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Command.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Message.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/DelegatingReporter.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ScaladocInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractUsedNames.scala)[0m
+[0m[[0mdebug[0m] [0m	modified: Set()[0m
+[0m[[0mdebug[0m] [0mRemoved products: Set()[0m
+[0m[[0mdebug[0m] [0mExternal API changes: API Changes: Set()[0m
+[0m[[0mdebug[0m] [0mModified binary dependencies: Set()[0m
+[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Log.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ConsoleInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Command.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Message.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/DelegatingReporter.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ScaladocInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractUsedNames.scala)[0m
+[0m[[0mdebug[0m] [0m[0m
+[0m[[0mdebug[0m] [0mSources indirectly invalidated by:[0m
+[0m[[0mdebug[0m] [0m	product: Set()[0m
+[0m[[0mdebug[0m] [0m	binary dep: Set()[0m
+[0m[[0mdebug[0m] [0m	external source: Set()[0m
+[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Log.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ConsoleInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Command.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Message.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/DelegatingReporter.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ScaladocInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractUsedNames.scala)[0m
+[0m[[0mdebug[0m] [0mRecompiling all 14 sources: invalidated sources (14) exceeded 50.0% of all sources[0m
+[0m[[0minfo[0m] [0mCompiling 14 Scala sources to /home/alois/oss/policy/compat/target/classes...[0m
+[0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 1.0.0-M4[0m
+[0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 1.0.0-M4[0m
+[0m[[0mdebug[0m] [0mRunning cached compiler 4e6df1bc, interfacing (CompilerInterface) with Scala compiler version 1.0.0-M4[0m
+[0m[[0mdebug[0m] [0mCalling Scala compiler with arguments  (CompilerInterface):[0m
+[0m[[0mdebug[0m] [0m	-bootclasspath[0m
+[0m[[0mdebug[0m] [0m	/opt/java/jre/lib/resources.jar:/opt/java/jre/lib/rt.jar:/opt/java/jre/lib/sunrsasign.jar:/opt/java/jre/lib/jsse.jar:/opt/java/jre/lib/jce.jar:/opt/java/jre/lib/charsets.jar:/opt/java/jre/lib/jfr.jar:/opt/java/jre/classes[0m
+[0m[[0mdebug[0m] [0m	-classpath[0m
+[0m[[0mdebug[0m] [0m	/home/alois/oss/policy/compat/target/classes:/home/alois/oss/policy/compiler/target/classes:/home/alois/oss/policy/library/target/classes:/home/alois/oss/policy/lib/asm-5.0.4-SNAPSHOT.jar:/home/alois/.ivy2/cache/jline/jline/jars/jline-2.12.jar:/home/alois/.ivy2/cache/org.scala-sbt/interface/jars/interface-0.13.5.jar:/home/alois/.ivy2/cache/org.scala-sbt/compiler-interface/jars/compiler-interface-bin-0.13.5.jar:/home/alois/.ivy2/cache/org.scala-sbt/compiler-interface/jars/compiler-interface-src-0.13.5.jar[0m
+[0m[[33mwarn[0m] [0mClass xsbt.Runner$forScope not found - continuing with a stub.[0m
+[0m[[33mwarn[0m] [0mClass xsbt.Runner$forScope$DocFactory$compiler not found - continuing with a stub.[0m
+[0m[[33mwarn[0m] [0mClass xsbt.Runner$forScope not found - continuing with a stub.[0m
+[0m[[33mwarn[0m] [0mClass xsbt.Runner$forScope not found - continuing with a stub.[0m
+[0m[[33mwarn[0m] [0mClass xsbt.Runner$forScope not found - continuing with a stub.[0m
+[0m[[33mwarn[0m] [0mClass xsbt.Runner$forScope not found - continuing with a stub.[0m
+[0m[[33mwarn[0m] [0mClass xsbt.Runner$forScope not found - continuing with a stub.[0m
+[0m[[33mwarn[0m] [0mthere were 37 deprecation warnings; re-run with -deprecation for details[0m
+[0m[[33mwarn[0m] [0mthere were 9 feature warnings; re-run with -feature for details[0m
+[0m[[33mwarn[0m] [0m9 warnings found[0m
+[0m[[0mdebug[0m] [0mScala compilation took 8.493371012 s[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractUsedNames.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractUsedNames.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Command.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Command.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/DelegatingReporter.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ScaladocInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala)[0m
+[0m[[0mdebug[0m] [0mIncluding /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala by /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala[0m
+[0m[[0mdebug[0m] [0mIncluding /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala by /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ConsoleInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ConsoleInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set()[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Message.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Message.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ConsoleInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Log.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Log.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Log.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ScaladocInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala)[0m
+[0m[[0mdebug[0m] [0mIncluding /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala by /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala[0m
+[0m[[0mdebug[0m] [0mIncluding /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala by /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala[0m
+[0m[[0mdebug[0m] [0mIncluding /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala by /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala[0m
+[0m[[0mdebug[0m] [0mIncluding /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala by /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala[0m
+[0m[[0mdebug[0m] [0mIncluding /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala by /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala[0m
+[0m[[0mdebug[0m] [0mIncluding /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractUsedNames.scala by /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Compat.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractUsedNames.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractUsedNames.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractAPI.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ConsoleInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Analyzer.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/API.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/LocateClassFile.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ScaladocInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ExtractUsedNames.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/Dependency.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ScaladocInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ScaladocInterface.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set()[0m
+[0m[[0mdebug[0m] [0mInvalidating by inheritance (transitively)...[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/DelegatingReporter.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/DelegatingReporter.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/alois/oss/policy/compat/target/src_managed/compat/xsbt/CompilerInterface.scala, /home/alois/oss/policy/compat/target/src_managed/compat/xsbt/ScaladocInterface.scala)[0m
+[0m[[0mdebug[0m] [0mNew invalidations:[0m
+[0m[[0mdebug[0m] [0m	Set()[0m
+[0m[[0mdebug[0m] [0mInitial set of included nodes: Set()[0m
+[0m[[0mdebug[0m] [0mPreviously invalidated, but (transitively) depend on new invalidations:[0m
+[0m[[0mdebug[0m] [0m	Set()[0m
+[0m[[0mdebug[0m] [0mAll newly invalidated sources after taking into account (previously) recompiled sources:Set()[0m

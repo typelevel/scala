@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="org.improving"
+		module="policy"
+		revision="1.0.0-M4"
+		conf="scala-tool"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
+		date="20140905225653"/>
+	<dependencies>
+		<module organisation="org.improving" name="bootstrap-compiler">
+			<revision name="1.0.0-M4" status="release" pubdate="20140905183356" resolver="bintray/paulp" artresolver="bintray/paulp" homepage="" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="0">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="successful" details="" size="2329" time="237" location="/home/alois/.ivy2/cache/org.improving/bootstrap-compiler/ivy-1.0.0-M4.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/org.improving/bootstrap-compiler/ivy-1.0.0-M4.xml.original" origin-is-local="false" origin-location="https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.pom"/>
+				<caller organisation="org.improving" name="policy" conf="scala-tool" rev="1.0.0-M4" rev-constraint-default="1.0.0-M4" rev-constraint-dynamic="1.0.0-M4" callerrev="1.0.0-M4"/>
+				<artifacts>
+					<artifact name="bootstrap-compiler" type="jar" ext="jar" status="successful" details="" size="16074055" time="23764" location="/home/alois/.ivy2/cache/org.improving/bootstrap-compiler/jars/bootstrap-compiler-1.0.0-M4.jar">
+						<origin-location is-local="false" location="https://dl.bintray.com/paulp/maven/org/improving/bootstrap-compiler/1.0.0-M4/bootstrap-compiler-1.0.0-M4.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="jline" name="jline">
+			<revision name="2.12" status="release" pubdate="20140606222408" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="2">
+				<license name="The BSD License" url="http://www.opensource.org/licenses/bsd-license.php"/>
+				<metadata-artifact status="no" details="" size="3767" time="0" location="/home/alois/.ivy2/cache/jline/jline/ivy-2.12.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.pom"/>
+				<caller organisation="org.improving" name="bootstrap-compiler" conf="default, compile, runtime, master" rev="2.12" rev-constraint-default="2.12" rev-constraint-dynamic="2.12" callerrev="1.0.0-M4"/>
+				<artifacts>
+					<artifact name="jline" type="jar" ext="jar" status="no" details="" size="213854" time="0" location="/home/alois/.ivy2/cache/jline/jline/jars/jline-2.12.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.improving" name="bootstrap-library">
+			<revision name="1.0.0-M4" status="release" pubdate="20140905183242" resolver="bintray/paulp" artresolver="bintray/paulp" homepage="" downloaded="true" searched="true" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="1">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="successful" details="" size="1517" time="306" location="/home/alois/.ivy2/cache/org.improving/bootstrap-library/ivy-1.0.0-M4.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/org.improving/bootstrap-library/ivy-1.0.0-M4.xml.original" origin-is-local="false" origin-location="https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.pom"/>
+				<caller organisation="org.improving" name="bootstrap-compiler" conf="default, compile, runtime, master" rev="1.0.0-M4" rev-constraint-default="1.0.0-M4" rev-constraint-dynamic="1.0.0-M4" callerrev="1.0.0-M4"/>
+				<artifacts>
+					<artifact name="bootstrap-library" type="jar" ext="jar" status="successful" details="" size="5358540" time="8037" location="/home/alois/.ivy2/cache/org.improving/bootstrap-library/jars/bootstrap-library-1.0.0-M4.jar">
+						<origin-location is-local="false" location="https://dl.bintray.com/paulp/maven/org/improving/bootstrap-library/1.0.0-M4/bootstrap-library-1.0.0-M4.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>

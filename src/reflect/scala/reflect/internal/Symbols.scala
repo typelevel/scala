@@ -190,12 +190,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
     // with the proper specific type.
     def rawname: NameType
     def name: NameType
-    def name_=(n: Name): Unit = {
-      if (shouldLogAtThisPhase) {
-        def msg = s"In $owner, renaming $name -> $n"
-        if (isSpecialized) debuglog(msg) else log(msg)
-      }
-    }
+    def name_=(n: Name): Unit = ()
     def asNameType(n: Name): NameType
 
     // Syncnote: need not be protected, as only assignment happens in owner_=, which is not exposed to api
@@ -1491,9 +1486,11 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
     }
     catch {
       case ex: CyclicReference =>
-        devWarning("... hit cycle trying to complete " + this.fullLocationString)
+        devWarning("... hit cycle trying to complete " + ownerChainString)
         throw ex
     }
+
+    private def ownerChainString = ownerChain takeWhile (s => !s.isPackageClass) mkString " -> "
 
     def info_=(info: Type) {
       assert(info ne null)
@@ -2626,7 +2623,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
       case s    => " in " + s
     }
     def fullLocationString: String = toString + locationString
-    def signatureString: String    = if (hasRawInfo) infoString(rawInfo) else "<_>"
+    def signatureString: String    = if (hasCompleteInfo) infoString(info) else "<_>"
 
     /** String representation of symbol's definition following its name */
     final def infoString(tp: Type): String = {
@@ -2689,7 +2686,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
 
     /** String representation of existentially bound variable */
     def existentialToString =
-      if (isSingletonExistential && !settings.debug.value)
+      if (isSingletonExistential)
         "val " + tpnme.dropSingletonName(name) + ": " + dropSingletonType(info.bounds.hi)
       else defString
   }
@@ -3396,10 +3393,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
 
   class RefinementClassSymbol protected[Symbols] (owner0: Symbol, pos0: Position)
   extends ClassSymbol(owner0, pos0, tpnme.REFINE_CLASS_NAME) {
-    override def name_=(name: Name) {
-      abort("Cannot set name of RefinementClassSymbol to " + name)
-      super.name_=(name)
-    }
+    override def name_=(name: Name): Unit = abort("Cannot set name of RefinementClassSymbol to " + name)
     override def isRefinementClass       = true
     override def isAnonOrRefinementClass = true
     override def isLocalClass            = true

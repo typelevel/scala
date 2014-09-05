@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="default"
+		module="policy-build"
+		revision="0.1-SNAPSHOT"
+		extra-scalaVersion="2.10"
+		extra-sbtVersion="0.13"
+		conf="test"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
+		date="20140905225524"/>
+	<dependencies>
+		<module organisation="org.improving" name="psp-libsbt">
+			<revision name="0.3.1-M3" status="release" pubdate="20140903235114" resolver="paulp/sbt-plugins" artresolver="paulp/sbt-plugins" extra-scalaVersion="2.10" extra-sbtVersion="0.13" downloaded="true" searched="true" default="false" conf="compile, default(compile)" position="24">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="successful" details="" size="1999" time="297" location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/org.improving/psp-libsbt/ivy-0.3.1-M3.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/org.improving/psp-libsbt/ivy-0.3.1-M3.xml.original" origin-is-local="false" origin-location="https://dl.bintray.com/paulp/sbt-plugins/org.improving/psp-libsbt/scala_2.10/sbt_0.13/0.3.1-M3/ivys/ivy.xml"/>
+				<caller organisation="default" name="policy-build" conf="test, compile, runtime" rev="0.3.1-M3" rev-constraint-default="0.3.1-M3" rev-constraint-dynamic="0.3.1-M3" callerrev="0.1-SNAPSHOT" extra-scalaVersion="2.10" extra-sbtVersion="0.13"/>
+				<artifacts>
+					<artifact name="psp-libsbt" type="jar" ext="jar" status="successful" details="" size="429405" time="1093" location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/org.improving/psp-libsbt/jars/psp-libsbt-0.3.1-M3.jar">
+						<origin-location is-local="false" location="https://dl.bintray.com/paulp/sbt-plugins/org.improving/psp-libsbt/scala_2.10/sbt_0.13/0.3.1-M3/jars/psp-libsbt.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.improving" name="psp-api_2.10">
+			<revision name="0.3.1-M3" status="release" pubdate="20140904072522" resolver="paulp/maven" artresolver="paulp/maven" homepage="" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="25">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="successful" details="" size="1745" time="245" location="/home/alois/.ivy2/cache/org.improving/psp-api_2.10/ivy-0.3.1-M3.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/org.improving/psp-api_2.10/ivy-0.3.1-M3.xml.original" origin-is-local="false" origin-location="https://dl.bintray.com/paulp/maven/org/improving/psp-api_2.10/0.3.1-M3/psp-api_2.10-0.3.1-M3.pom"/>
+				<caller organisation="org.improving" name="psp-libsbt" conf="compile" rev="0.3.1-M3" rev-constraint-default="0.3.1-M3" rev-constraint-dynamic="0.3.1-M3" callerrev="0.3.1-M3"/>
+				<artifacts>
+					<artifact name="psp-api_2.10" type="jar" ext="jar" status="successful" details="" size="142855" time="1014" location="/home/alois/.ivy2/cache/org.improving/psp-api_2.10/jars/psp-api_2.10-0.3.1-M3.jar">
+						<origin-location is-local="false" location="https://dl.bintray.com/paulp/maven/org/improving/psp-api_2.10/0.3.1-M3/psp-api_2.10-0.3.1-M3.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.timushev.sbt" name="sbt-updates">
+			<revision name="0.1.6" status="release" pubdate="20140504141035" resolver="sbt-plugin-releases" artresolver="sbt-plugin-releases" extra-scalaVersion="2.10" extra-sbtVersion="0.13" downloaded="true" searched="true" default="false" conf="compile, default(compile)" position="23">
+				<metadata-artifact status="successful" details="" size="1549" time="937" location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/com.timushev.sbt/sbt-updates/ivy-0.1.6.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/com.timushev.sbt/sbt-updates/ivy-0.1.6.xml.original" origin-is-local="false" origin-location="http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.timushev.sbt/sbt-updates/scala_2.10/sbt_0.13/0.1.6/ivys/ivy.xml"/>
+				<caller organisation="default" name="policy-build" conf="test, compile, runtime" rev="0.1.6" rev-constraint-default="0.1.6" rev-constraint-dynamic="0.1.6" callerrev="0.1-SNAPSHOT" extra-scalaVersion="2.10" extra-sbtVersion="0.13"/>
+				<artifacts>
+					<artifact name="sbt-updates" type="jar" ext="jar" status="successful" details="" size="4475158" time="7889" location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/com.timushev.sbt/sbt-updates/jars/sbt-updates-0.1.6.jar">
+						<origin-location is-local="false" location="http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.timushev.sbt/sbt-updates/scala_2.10/sbt_0.13/0.1.6/jars/sbt-updates.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe" name="sbt-mima-plugin">
+			<revision name="0.1.6" status="release" pubdate="20130924114919" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/typesafehub/migration-manager" extra-scalaVersion="2.10" extra-sbtVersion="0.13" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="15">
+				<license name="Apache License v2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="1692" time="0" location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/com.typesafe/sbt-mima-plugin/ivy-0.1.6.xml" searched="false" origin-is-local="false" origin-location="http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.typesafe/sbt-mima-plugin/scala_2.10/sbt_0.13/0.1.6/ivys/ivy.xml"/>
+				<caller organisation="default" name="policy-build" conf="test, compile, runtime" rev="0.1.6" rev-constraint-default="0.1.6" rev-constraint-dynamic="0.1.6" callerrev="0.1-SNAPSHOT" extra-scalaVersion="2.10" extra-sbtVersion="0.13"/>
+				<artifacts>
+					<artifact name="sbt-mima-plugin" type="jar" ext="jar" status="no" details="" size="43854" time="0" location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/com.typesafe/sbt-mima-plugin/jars/sbt-mima-plugin-0.1.6.jar">
+						<origin-location is-local="false" location="http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.typesafe/sbt-mima-plugin/scala_2.10/sbt_0.13/0.1.6/jars/sbt-mima-plugin.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe" name="mima-reporter_2.10">
+			<revision name="0.1.6" status="release" pubdate="20130924105319" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/typesafehub/migration-manager" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="16">
+				<license name="Apache License v2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3100" time="0" location="/home/alois/.ivy2/cache/com.typesafe/mima-reporter_2.10/ivy-0.1.6.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/typesafe/mima-reporter_2.10/0.1.6/mima-reporter_2.10-0.1.6.pom"/>
+				<caller organisation="com.typesafe" name="sbt-mima-plugin" conf="compile" rev="0.1.6" rev-constraint-default="0.1.6" rev-constraint-dynamic="0.1.6" callerrev="0.1.6"/>
+				<artifacts>
+					<artifact name="mima-reporter_2.10" type="jar" ext="jar" status="no" details="" size="162648" time="0" location="/home/alois/.ivy2/cache/com.typesafe/mima-reporter_2.10/jars/mima-reporter_2.10-0.1.6.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/mima-reporter_2.10/0.1.6/mima-reporter_2.10-0.1.6.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe" name="config">
+			<revision name="1.0.0" status="release" pubdate="20121015140115" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/typesafehub/config" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="22">
+				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="2725" time="0" location="/home/alois/.ivy2/cache/com.typesafe/config/ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="http://oss.sonatype.org/content/repositories/releases/com/typesafe/config/1.0.0/config-1.0.0.pom"/>
+				<caller organisation="com.typesafe" name="mima-reporter_2.10" conf="default, compile, runtime, master" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="0.1.6"/>
+				<artifacts>
+					<artifact name="config" type="bundle" ext="jar" status="no" details="" size="185676" time="0" location="/home/alois/.ivy2/cache/com.typesafe/config/bundles/config-1.0.0.jar">
+						<origin-location is-local="false" location="http://oss.sonatype.org/content/repositories/releases/com/typesafe/config/1.0.0/config-1.0.0.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-swing">
+			<revision name="2.10.2" status="release" pubdate="20130606190638" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.10.2/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="21">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html          "/>
+				<metadata-artifact status="no" details="" size="2803" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-swing/ivy-2.10.2.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-lang/scala-swing/2.10.2/scala-swing-2.10.2.pom"/>
+				<caller organisation="com.typesafe" name="mima-reporter_2.10" conf="default, compile, runtime, master" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="0.1.6"/>
+				<artifacts>
+					<artifact name="scala-swing" type="jar" ext="jar" status="no" details="" size="707644" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-swing/jars/scala-swing-2.10.2.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/scala-lang/scala-swing/2.10.2/scala-swing-2.10.2.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-actors">
+			<revision name="2.10.2" status="release" pubdate="20130606190651" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.10.2/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="20">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html          "/>
+				<metadata-artifact status="no" details="" size="2741" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-actors/ivy-2.10.2.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-lang/scala-actors/2.10.2/scala-actors-2.10.2.pom"/>
+				<caller organisation="com.typesafe" name="mima-reporter_2.10" conf="default, compile, runtime, master" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="0.1.6"/>
+				<artifacts>
+					<artifact name="scala-actors" type="jar" ext="jar" status="no" details="" size="477112" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-actors/jars/scala-actors-2.10.2.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/scala-lang/scala-actors/2.10.2/scala-actors-2.10.2.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe" name="mima-core_2.10">
+			<revision name="0.1.6" status="release" pubdate="20130924105000" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/typesafehub/migration-manager" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="17">
+				<license name="Apache License v2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3002" time="0" location="/home/alois/.ivy2/cache/com.typesafe/mima-core_2.10/ivy-0.1.6.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/typesafe/mima-core_2.10/0.1.6/mima-core_2.10-0.1.6.pom"/>
+				<caller organisation="com.typesafe" name="mima-reporter_2.10" conf="default, compile, runtime, master" rev="0.1.6" rev-constraint-default="0.1.6" rev-constraint-dynamic="0.1.6" callerrev="0.1.6"/>
+				<artifacts>
+					<artifact name="mima-core_2.10" type="jar" ext="jar" status="no" details="" size="270453" time="0" location="/home/alois/.ivy2/cache/com.typesafe/mima-core_2.10/jars/mima-core_2.10-0.1.6.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/mima-core_2.10/0.1.6/mima-core_2.10-0.1.6.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-compiler">
+			<revision name="2.10.2" status="release" pubdate="20130606190625" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="18">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html    "/>
+				<metadata-artifact status="no" details="" size="2809" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.10.2.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.10.2/scala-compiler-2.10.2.pom"/>
+				<caller organisation="com.typesafe" name="mima-core_2.10" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="0.1.6"/>
+				<caller organisation="org.scala-lang" name="scalap" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="2.10.0"/>
+				<artifacts>
+					<artifact name="scala-compiler" type="jar" ext="jar" status="no" details="" size="14411577" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-compiler/jars/scala-compiler-2.10.2.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.10.2/scala-compiler-2.10.2.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+			<revision name="2.10.0" status="release" pubdate="20121220072948" resolver="sbt-chain" artresolver="sbt-chain" evicted="latest-revision" evicted-reason="" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="-1">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html    "/>
+				<metadata-artifact status="no" details="" size="2809" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.10.0.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.10.0/scala-compiler-2.10.0.pom"/>
+				<evicted-by rev="2.10.2"/>
+				<caller organisation="org.scala-lang" name="scalap" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="2.10.0"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-reflect">
+			<revision name="2.10.2" status="release" pubdate="20130606190608" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.10.2/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="19">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html    "/>
+				<metadata-artifact status="no" details="" size="2647" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-reflect/ivy-2.10.2.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.10.2/scala-reflect-2.10.2.pom"/>
+				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="2.10.0"/>
+				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="2.10.2"/>
+				<artifacts>
+					<artifact name="scala-reflect" type="jar" ext="jar" status="no" details="" size="3171168" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.2.jar">
+						<origin-location is-local="false" location="UNKNOWN"/>
+					</artifact>
+				</artifacts>
+			</revision>
+			<revision name="2.10.0" status="release" pubdate="20121220072932" resolver="sbt-chain" artresolver="sbt-chain" evicted="latest-revision" evicted-reason="" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="-1">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html    "/>
+				<metadata-artifact status="no" details="" size="2552" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-reflect/ivy-2.10.0.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.10.0/scala-reflect-2.10.0.pom"/>
+				<evicted-by rev="2.10.2"/>
+				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="2.10.0"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="me.lessis" name="bintray-sbt">
+			<revision name="0.1.2" status="release" pubdate="20140708003022" resolver="sbt-plugin-releases" artresolver="sbt-plugin-releases" extra-scalaVersion="2.10" extra-sbtVersion="0.13" downloaded="true" searched="true" default="false" conf="compile, default(compile)" position="2">
+				<license name="MIT" url="https://github.com/softprops/bintray-sbt/blob/0.1.2/LICENSE"/>
+				<metadata-artifact status="successful" details="" size="1717" time="2039" location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/me.lessis/bintray-sbt/ivy-0.1.2.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/me.lessis/bintray-sbt/ivy-0.1.2.xml.original" origin-is-local="false" origin-location="http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/me.lessis/bintray-sbt/scala_2.10/sbt_0.13/0.1.2/ivys/ivy.xml"/>
+				<caller organisation="default" name="policy-build" conf="test, compile, runtime" rev="0.1.2" rev-constraint-default="0.1.2" rev-constraint-dynamic="0.1.2" callerrev="0.1-SNAPSHOT" extra-scalaVersion="2.10" extra-sbtVersion="0.13"/>
+				<artifacts>
+					<artifact name="bintray-sbt" type="jar" ext="jar" status="successful" details="" size="173779" time="2014" location="/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/me.lessis/bintray-sbt/jars/bintray-sbt-0.1.2.jar">
+						<origin-location is-local="false" location="http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/me.lessis/bintray-sbt/scala_2.10/sbt_0.13/0.1.2/jars/bintray-sbt.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.slf4j" name="slf4j-nop">
+			<revision name="1.7.7" status="release" pubdate="20140404121304" resolver="public" artresolver="public" homepage="http://www.slf4j.org" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="13">
+				<metadata-artifact status="successful" details="" size="1480" time="342" location="/home/alois/.ivy2/cache/org.slf4j/slf4j-nop/ivy-1.7.7.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/org.slf4j/slf4j-nop/ivy-1.7.7.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/slf4j/slf4j-nop/1.7.7/slf4j-nop-1.7.7.pom"/>
+				<caller organisation="me.lessis" name="bintray-sbt" conf="compile" rev="1.7.7" rev-constraint-default="1.7.7" rev-constraint-dynamic="1.7.7" callerrev="0.1.2"/>
+				<artifacts>
+					<artifact name="slf4j-nop" type="jar" ext="jar" status="successful" details="" size="4090" time="332" location="/home/alois/.ivy2/cache/org.slf4j/slf4j-nop/jars/slf4j-nop-1.7.7.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/slf4j/slf4j-nop/1.7.7/slf4j-nop-1.7.7.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.slf4j" name="slf4j-api">
+			<revision name="1.7.7" status="release" pubdate="20140404121248" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="14">
+				<metadata-artifact status="no" details="" size="4567" time="0" location="/home/alois/.ivy2/cache/org.slf4j/slf4j-api/ivy-1.7.7.xml" searched="false" origin-is-local="false" origin-location="http://uk.maven.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.pom"/>
+				<caller organisation="org.slf4j" name="slf4j-nop" conf="default, compile, runtime, master" rev="1.7.7" rev-constraint-default="1.7.7" rev-constraint-dynamic="1.7.7" callerrev="1.7.7"/>
+				<caller organisation="com.ning" name="async-http-client" conf="compile, runtime" rev="1.7.5" rev-constraint-default="1.7.5" rev-constraint-dynamic="1.7.5" callerrev="1.8.8"/>
+				<artifacts>
+					<artifact name="slf4j-api" type="jar" ext="jar" status="no" details="" size="29257" time="0" location="/home/alois/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.7.jar">
+						<origin-location is-local="false" location="http://uk.maven.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+			<revision name="1.7.5" status="release" pubdate="20130325205215" resolver="public" artresolver="public" evicted="latest-revision" evicted-reason="" homepage="http://www.slf4j.org" downloaded="true" searched="true" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="-1">
+				<metadata-artifact status="successful" details="" size="2689" time="433" location="/home/alois/.ivy2/cache/org.slf4j/slf4j-api/ivy-1.7.5.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/org.slf4j/slf4j-api/ivy-1.7.5.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.pom"/>
+				<evicted-by rev="1.7.7"/>
+				<caller organisation="com.ning" name="async-http-client" conf="compile, runtime" rev="1.7.5" rev-constraint-default="1.7.5" rev-constraint-dynamic="1.7.5" callerrev="1.8.8"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="me.lessis" name="bintry_2.10">
+			<revision name="0.3.0" status="release" pubdate="20140707133110" resolver="public" artresolver="public" homepage="https://github.com/softprops/bintry/#readme" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="3">
+				<license name="MIT" url="https://github.com/softprops/bintry/blob/0.3.0/LICENSE"/>
+				<metadata-artifact status="successful" details="" size="2197" time="447" location="/home/alois/.ivy2/cache/me.lessis/bintry_2.10/ivy-0.3.0.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/me.lessis/bintry_2.10/ivy-0.3.0.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/me/lessis/bintry_2.10/0.3.0/bintry_2.10-0.3.0.pom"/>
+				<caller organisation="me.lessis" name="bintray-sbt" conf="compile" rev="0.3.0" rev-constraint-default="0.3.0" rev-constraint-dynamic="0.3.0" callerrev="0.1.2"/>
+				<artifacts>
+					<artifact name="bintry_2.10" type="jar" ext="jar" status="successful" details="" size="225308" time="690" location="/home/alois/.ivy2/cache/me.lessis/bintry_2.10/jars/bintry_2.10-0.3.0.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/me/lessis/bintry_2.10/0.3.0/bintry_2.10-0.3.0.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="net.databinder.dispatch" name="dispatch-json4s-native_2.10">
+			<revision name="0.11.1" status="release" pubdate="20140504203341" resolver="public" artresolver="public" homepage="http://dispatch.databinder.net/" downloaded="true" searched="true" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="4">
+				<license name="LGPL v3" url="http://www.gnu.org/licenses/lgpl.txt"/>
+				<metadata-artifact status="successful" details="" size="2496" time="337" location="/home/alois/.ivy2/cache/net.databinder.dispatch/dispatch-json4s-native_2.10/ivy-0.11.1.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/net.databinder.dispatch/dispatch-json4s-native_2.10/ivy-0.11.1.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/net/databinder/dispatch/dispatch-json4s-native_2.10/0.11.1/dispatch-json4s-native_2.10-0.11.1.pom"/>
+				<caller organisation="me.lessis" name="bintry_2.10" conf="default, compile, runtime, master" rev="0.11.1" rev-constraint-default="0.11.1" rev-constraint-dynamic="0.11.1" callerrev="0.3.0"/>
+				<artifacts>
+					<artifact name="dispatch-json4s-native_2.10" type="jar" ext="jar" status="successful" details="" size="8185" time="346" location="/home/alois/.ivy2/cache/net.databinder.dispatch/dispatch-json4s-native_2.10/jars/dispatch-json4s-native_2.10-0.11.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/net/databinder/dispatch/dispatch-json4s-native_2.10/0.11.1/dispatch-json4s-native_2.10-0.11.1.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.json4s" name="json4s-native_2.10">
+			<revision name="3.2.9" status="release" pubdate="20140422074040" resolver="public" artresolver="public" homepage="https://github.com/json4s/json4s" downloaded="true" searched="true" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="12">
+				<license name="ASL" url="http://github.com/json4s/json4s/raw/HEAD/LICENSE"/>
+				<metadata-artifact status="successful" details="" size="2197" time="344" location="/home/alois/.ivy2/cache/org.json4s/json4s-native_2.10/ivy-3.2.9.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/org.json4s/json4s-native_2.10/ivy-3.2.9.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/json4s/json4s-native_2.10/3.2.9/json4s-native_2.10-3.2.9.pom"/>
+				<caller organisation="net.databinder.dispatch" name="dispatch-json4s-native_2.10" conf="compile, runtime" rev="3.2.9" rev-constraint-default="3.2.9" rev-constraint-dynamic="3.2.9" callerrev="0.11.1"/>
+				<artifacts>
+					<artifact name="json4s-native_2.10" type="jar" ext="jar" status="successful" details="" size="68748" time="466" location="/home/alois/.ivy2/cache/org.json4s/json4s-native_2.10/jars/json4s-native_2.10-3.2.9.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/json4s/json4s-native_2.10/3.2.9/json4s-native_2.10-3.2.9.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.json4s" name="json4s-core_2.10">
+			<revision name="3.2.9" status="release" pubdate="20140422074034" resolver="public" artresolver="public" homepage="https://github.com/json4s/json4s" downloaded="true" searched="true" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="8">
+				<license name="ASL" url="http://github.com/json4s/json4s/raw/HEAD/LICENSE"/>
+				<metadata-artifact status="successful" details="" size="2544" time="356" location="/home/alois/.ivy2/cache/org.json4s/json4s-core_2.10/ivy-3.2.9.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/org.json4s/json4s-core_2.10/ivy-3.2.9.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/json4s/json4s-core_2.10/3.2.9/json4s-core_2.10-3.2.9.pom"/>
+				<caller organisation="net.databinder.dispatch" name="dispatch-json4s-native_2.10" conf="compile, runtime" rev="3.2.9" rev-constraint-default="3.2.9" rev-constraint-dynamic="3.2.9" callerrev="0.11.1"/>
+				<caller organisation="org.json4s" name="json4s-native_2.10" conf="compile, runtime" rev="3.2.9" rev-constraint-default="3.2.9" rev-constraint-dynamic="3.2.9" callerrev="3.2.9"/>
+				<artifacts>
+					<artifact name="json4s-core_2.10" type="jar" ext="jar" status="successful" details="" size="582985" time="1182" location="/home/alois/.ivy2/cache/org.json4s/json4s-core_2.10/jars/json4s-core_2.10-3.2.9.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/json4s/json4s-core_2.10/3.2.9/json4s-core_2.10-3.2.9.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scalap">
+			<revision name="2.10.0" status="release" pubdate="20121220073017" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="11">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html    "/>
+				<metadata-artifact status="no" details="" size="2518" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scalap/ivy-2.10.0.xml" searched="false" origin-is-local="false" origin-location="http://oss.sonatype.org/content/repositories/releases/org/scala-lang/scalap/2.10.0/scalap-2.10.0.pom"/>
+				<caller organisation="org.json4s" name="json4s-core_2.10" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="3.2.9"/>
+				<artifacts>
+					<artifact name="scalap" type="jar" ext="jar" status="no" details="" size="855012" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scalap/jars/scalap-2.10.0.jar">
+						<origin-location is-local="false" location="http://oss.sonatype.org/content/repositories/releases/org/scala-lang/scalap/2.10.0/scalap-2.10.0.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.thoughtworks.paranamer" name="paranamer">
+			<revision name="2.6" status="release" pubdate="20131009045654" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="10">
+				<metadata-artifact status="no" details="" size="4135" time="0" location="/home/alois/.ivy2/cache/com.thoughtworks.paranamer/paranamer/ivy-2.6.xml" searched="false" origin-is-local="false" origin-location="http://uk.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.6/paranamer-2.6.pom"/>
+				<caller organisation="org.json4s" name="json4s-core_2.10" conf="compile, runtime" rev="2.6" rev-constraint-default="2.6" rev-constraint-dynamic="2.6" callerrev="3.2.9"/>
+				<artifacts>
+					<artifact name="paranamer" type="jar" ext="jar" status="no" details="" size="32806" time="0" location="/home/alois/.ivy2/cache/com.thoughtworks.paranamer/paranamer/jars/paranamer-2.6.jar">
+						<origin-location is-local="false" location="http://uk.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.6/paranamer-2.6.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.json4s" name="json4s-ast_2.10">
+			<revision name="3.2.9" status="release" pubdate="20140422074005" resolver="public" artresolver="public" homepage="https://github.com/json4s/json4s" downloaded="true" searched="true" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="9">
+				<license name="ASL" url="http://github.com/json4s/json4s/raw/HEAD/LICENSE"/>
+				<metadata-artifact status="successful" details="" size="2012" time="336" location="/home/alois/.ivy2/cache/org.json4s/json4s-ast_2.10/ivy-3.2.9.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/org.json4s/json4s-ast_2.10/ivy-3.2.9.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/json4s/json4s-ast_2.10/3.2.9/json4s-ast_2.10-3.2.9.pom"/>
+				<caller organisation="org.json4s" name="json4s-core_2.10" conf="compile, runtime" rev="3.2.9" rev-constraint-default="3.2.9" rev-constraint-dynamic="3.2.9" callerrev="3.2.9"/>
+				<artifacts>
+					<artifact name="json4s-ast_2.10" type="jar" ext="jar" status="successful" details="" size="83802" time="444" location="/home/alois/.ivy2/cache/org.json4s/json4s-ast_2.10/jars/json4s-ast_2.10-3.2.9.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/json4s/json4s-ast_2.10/3.2.9/json4s-ast_2.10-3.2.9.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="net.databinder.dispatch" name="dispatch-core_2.10">
+			<revision name="0.11.1" status="release" pubdate="20140504203359" resolver="public" artresolver="public" homepage="http://dispatch.databinder.net/" downloaded="true" searched="true" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="5">
+				<license name="LGPL v3" url="http://www.gnu.org/licenses/lgpl.txt"/>
+				<metadata-artifact status="successful" details="" size="1899" time="428" location="/home/alois/.ivy2/cache/net.databinder.dispatch/dispatch-core_2.10/ivy-0.11.1.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/net.databinder.dispatch/dispatch-core_2.10/ivy-0.11.1.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/net/databinder/dispatch/dispatch-core_2.10/0.11.1/dispatch-core_2.10-0.11.1.pom"/>
+				<caller organisation="net.databinder.dispatch" name="dispatch-json4s-native_2.10" conf="compile, runtime" rev="0.11.1" rev-constraint-default="0.11.1" rev-constraint-dynamic="0.11.1" callerrev="0.11.1"/>
+				<artifacts>
+					<artifact name="dispatch-core_2.10" type="jar" ext="jar" status="successful" details="" size="253594" time="709" location="/home/alois/.ivy2/cache/net.databinder.dispatch/dispatch-core_2.10/jars/dispatch-core_2.10-0.11.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/net/databinder/dispatch/dispatch-core_2.10/0.11.1/dispatch-core_2.10-0.11.1.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.ning" name="async-http-client">
+			<revision name="1.8.8" status="release" pubdate="20140428101702" resolver="public" artresolver="public" homepage="http://github.com/AsyncHttpClient/async-http-client" downloaded="true" searched="true" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="6">
+				<license name="Apache License 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="successful" details="" size="24448" time="373" location="/home/alois/.ivy2/cache/com.ning/async-http-client/ivy-1.8.8.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/com.ning/async-http-client/ivy-1.8.8.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/ning/async-http-client/1.8.8/async-http-client-1.8.8.pom"/>
+				<caller organisation="net.databinder.dispatch" name="dispatch-core_2.10" conf="compile, runtime" rev="1.8.8" rev-constraint-default="1.8.8" rev-constraint-dynamic="1.8.8" callerrev="0.11.1"/>
+				<artifacts>
+					<artifact name="async-http-client" type="jar" ext="jar" status="successful" details="" size="526740" time="1089" location="/home/alois/.ivy2/cache/com.ning/async-http-client/jars/async-http-client-1.8.8.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/ning/async-http-client/1.8.8/async-http-client-1.8.8.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="io.netty" name="netty">
+			<revision name="3.9.0.Final" status="release" pubdate="20131222105540" resolver="public" artresolver="public" homepage="http://netty.io/" downloaded="true" searched="true" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="7">
+				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="successful" details="" size="26204" time="375" location="/home/alois/.ivy2/cache/io.netty/netty/ivy-3.9.0.Final.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/io.netty/netty/ivy-3.9.0.Final.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/io/netty/netty/3.9.0.Final/netty-3.9.0.Final.pom"/>
+				<caller organisation="com.ning" name="async-http-client" conf="compile, runtime" rev="3.9.0.Final" rev-constraint-default="3.9.0.Final" rev-constraint-dynamic="3.9.0.Final" callerrev="1.8.8"/>
+				<artifacts>
+					<artifact name="netty" type="bundle" ext="jar" status="successful" details="" size="1231993" time="2132" location="/home/alois/.ivy2/cache/io.netty/netty/bundles/netty-3.9.0.Final.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/io/netty/netty/3.9.0.Final/netty-3.9.0.Final.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.improving" name="psp-const_2.10">
+			<revision name="1.0.0" status="release" pubdate="20140904070131" resolver="paulp/maven" artresolver="paulp/maven" homepage="" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="0">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="successful" details="" size="1559" time="281" location="/home/alois/.ivy2/cache/org.improving/psp-const_2.10/ivy-1.0.0.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/org.improving/psp-const_2.10/ivy-1.0.0.xml.original" origin-is-local="false" origin-location="https://dl.bintray.com/paulp/maven/org/improving/psp-const_2.10/1.0.0/psp-const_2.10-1.0.0.pom"/>
+				<caller organisation="org.improving" name="psp-libsbt" conf="compile" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="0.3.1-M3"/>
+				<caller organisation="default" name="policy-build" conf="test, compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="psp-const_2.10" type="jar" ext="jar" status="successful" details="" size="22661" time="409" location="/home/alois/.ivy2/cache/org.improving/psp-const_2.10/jars/psp-const_2.10-1.0.0.jar">
+						<origin-location is-local="false" location="https://dl.bintray.com/paulp/maven/org/improving/psp-const_2.10/1.0.0/psp-const_2.10-1.0.0.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-library">
+			<revision name="2.10.4" status="release" pubdate="20140318214629" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.10.4/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="1">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html          "/>
+				<metadata-artifact status="no" details="" size="2487" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-library/ivy-2.10.4.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.10.4/scala-library-2.10.4.pom"/>
+				<caller organisation="org.json4s" name="json4s-ast_2.10" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="3.2.9"/>
+				<caller organisation="org.json4s" name="json4s-core_2.10" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="3.2.9"/>
+				<caller organisation="org.improving" name="psp-api_2.10" conf="default, compile, runtime, master" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.4" callerrev="0.3.1-M3"/>
+				<caller organisation="org.scala-lang" name="scala-actors" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="2.10.2"/>
+				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="2.10.0"/>
+				<caller organisation="org.scala-lang" name="scala-reflect" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="2.10.0"/>
+				<caller organisation="org.improving" name="psp-const_2.10" conf="default, compile, runtime, master" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.4" callerrev="1.0.0"/>
+				<caller organisation="com.typesafe" name="mima-core_2.10" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="0.1.6"/>
+				<caller organisation="me.lessis" name="bintry_2.10" conf="default, compile, runtime, master" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.4" callerrev="0.3.0"/>
+				<caller organisation="org.scala-lang" name="scala-swing" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="2.10.2"/>
+				<caller organisation="net.databinder.dispatch" name="dispatch-json4s-native_2.10" conf="compile, runtime" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.4" callerrev="0.11.1"/>
+				<caller organisation="org.scala-lang" name="scala-reflect" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="2.10.2"/>
+				<caller organisation="org.json4s" name="json4s-native_2.10" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="3.2.9"/>
+				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="2.10.2"/>
+				<caller organisation="com.typesafe" name="mima-reporter_2.10" conf="default, compile, runtime, master" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="0.1.6"/>
+				<caller organisation="net.databinder.dispatch" name="dispatch-core_2.10" conf="compile, runtime" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.4" callerrev="0.11.1"/>
+				<artifacts>
+					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="7126372" time="0" location="/home/alois/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.4.jar">
+						<origin-location is-local="false" location="UNKNOWN"/>
+					</artifact>
+				</artifacts>
+			</revision>
+			<revision name="2.10.2" evicted="latest-revision" evicted-reason="" downloaded="false" searched="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="-1">
+				<evicted-by rev="2.10.4"/>
+				<caller organisation="com.typesafe" name="mima-core_2.10" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="0.1.6"/>
+				<caller organisation="org.scala-lang" name="scala-swing" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="2.10.2"/>
+				<caller organisation="org.scala-lang" name="scala-actors" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="2.10.2"/>
+				<caller organisation="org.scala-lang" name="scala-reflect" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="2.10.2"/>
+				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="2.10.2"/>
+				<caller organisation="com.typesafe" name="mima-reporter_2.10" conf="default, compile, runtime, master" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="0.1.6"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+			<revision name="2.10.0" evicted="latest-revision" evicted-reason="" downloaded="false" searched="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="-1">
+				<evicted-by rev="2.10.4"/>
+				<caller organisation="org.json4s" name="json4s-ast_2.10" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="3.2.9"/>
+				<caller organisation="org.json4s" name="json4s-core_2.10" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="3.2.9"/>
+				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="2.10.0"/>
+				<caller organisation="org.scala-lang" name="scala-reflect" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="2.10.0"/>
+				<caller organisation="org.json4s" name="json4s-native_2.10" conf="compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="3.2.9"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>

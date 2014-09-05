@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+
+shopt -s globstar
+
+cd $(dirname "$0")/..
+ls -1 test/**/*.log | bin/paths

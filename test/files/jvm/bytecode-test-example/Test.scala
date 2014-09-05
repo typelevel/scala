@@ -1,8 +1,8 @@
-import scala.tools.partest.BytecodeTest
+import scala.tools.partest._
 
 import scala.tools.nsc.util.JavaClassPath
 import java.io.InputStream
-import scala.tools.asm
+import org.objectweb.asm
 import asm.ClassReader
 import asm.tree.{ClassNode, InsnList}
 import scala.collection.JavaConverters._
@@ -27,6 +27,6 @@ object Test extends BytecodeTest {
       val opcode = node.getOpcode
       (opcode == asm.Opcodes.IFNULL) || (opcode == asm.Opcodes.IFNONNULL)
     }
-    insnList.iterator.asScala.count(isNullCheck)
+    insnList.typed.count(isNullCheck)
   }
 }

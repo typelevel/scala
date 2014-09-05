@@ -6,7 +6,7 @@
 package scala.tools.nsc
 package backend.jvm
 
-import scala.tools.asm
+import org.objectweb.asm
 import asm.Opcodes
 
 /**

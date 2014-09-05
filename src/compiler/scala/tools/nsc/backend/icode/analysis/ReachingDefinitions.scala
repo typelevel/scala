@@ -44,17 +44,7 @@ abstract class ReachingDefinitions {
       else IState(a.vars ++ b.vars,
         if (a.stack.isEmpty) b.stack
         else if (b.stack.isEmpty) a.stack
-        else {
-          // !!! These stacks are with some frequency not of the same size.
-          // I can't reverse engineer the logic well enough to say whether this
-          // indicates a problem.  Even if it doesn't indicate a problem,
-          // it'd be nice not to call zip with mismatched sequences because
-          // it makes it harder to spot the real problems.
-          val result = (a.stack, b.stack).zipped map (_ ++ _)
-          if (settings.debug && (a.stack.length != b.stack.length))
-            devWarning(s"Mismatched stacks in ReachingDefinitions#lub2: ${a.stack}, ${b.stack}, returning $result")
-          result
-        }
+        else (a.stack, b.stack).zipped map (_ ++ _)
       )
     }
   }

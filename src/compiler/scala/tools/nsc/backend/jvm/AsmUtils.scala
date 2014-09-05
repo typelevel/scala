@@ -5,10 +5,11 @@
 
 package scala.tools.nsc.backend.jvm
 
-import scala.tools.asm.tree.{ClassNode, MethodNode}
 import java.io.PrintWriter
-import scala.tools.asm.util.{TraceClassVisitor, TraceMethodVisitor, Textifier}
-import scala.tools.asm.ClassReader
+import org.objectweb.asm
+import asm.tree.{ClassNode, MethodNode}
+import asm.util.{TraceClassVisitor, TraceMethodVisitor, Textifier}
+import asm.ClassReader
 
 object AsmUtils {
 

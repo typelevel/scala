@@ -317,16 +317,10 @@ trait MethodSynthesis {
         enterInScope(sym)
         sym setInfo completer(sym)
       }
-      private def logDerived(result: Tree): Tree = {
-        debuglog("[+derived] " + ojoin(mods.flagString, basisSym.accurateKindString, basisSym.getterName.decode)
-          + " (" + derivedSym + ")\n        " + result)
-
-        result
-      }
       final def derive(initial: List[AnnotationInfo]): Tree = {
         validate()
         derivedSym setAnnotations deriveAnnotations(initial, category, keepClean)
-        logDerived(derivedTree)
+        derivedTree
       }
     }
     sealed trait DerivedGetter extends DerivedFromValDef {

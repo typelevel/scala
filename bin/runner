@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+#
+# runner -d -a com.google.guava%guava
+
+# java -cp $(ivycp org.paula%scala-repl) scala.tools.nsc.MainGenericRunner -usejavacp
+
+unset debug bootcp colors
+unset mainClass javaArg scalaArg
+
+declare -a javaArgs scalaArgs userCp deps
+ReplClass="scala.tools.nsc.MainGenericRunner"
+CompilerClass="scala.tools.nsc.Main"
+RunnerClass="scala.tools.nsc.MainGenericRunner"
+
+warn () { echo >&2 "warning: $@"; }
+log () { [[ -z $debug ]] || echo >&2 "$@"; }
+run () { log "% $@" && "$@"; }
+die () { echo >&2 "$@" && exit 1; }
+
+findScalaHome () {
+  # see SI-2092 and SI-5792
+  local source="$1"
+  while [ -h "$source" ] ; do
+    local linked="$(readlink "$source")"
+    local dir="$( cd -P $(dirname "$source") && cd -P $(dirname "$linked") && pwd )"
+    source="$dir/$(basename "$linked")"
+  done
+  ( cd -P "$(dirname "$source")/.." && pwd )
+}
+
+findScalaLibs () {
+  ( cd "$1" && cpof "$(pwd)/lib" )
+}
+
+paula_exit_status=255
+paula_stty="$(stty -g 2>/dev/null)"
+# clear on error so we don't later try to restore them
+[ $? -eq 0 ] || unset paula_stty
+
+onExit() {
+  log "onExit $@"
+  [ -n "$paula_stty" ] && stty "$paula_stty"
+  # No argument should mean we received sigint - exit 1.
+  exit ${1:-1}
+}
+
+trap onExit INT
+
+saveScala () { log "[scala] $@" && scalaArgs=("${scalaArgs[@]}" "$@"); }
+saveJava ()  { log "[ java] $@" && javaArgs=("${javaArgs[@]}" "$@"); }
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+          -a) deps=( "${deps[@]}" "$2" ) && shift 2 ;;
+  -x|--trace) set -x && shift                              ;;
+   -h|--help) usage && exit 1                              ;;
+  -d|--debug) debug=true && shift                          ;;
+
+      --repl) mainClass=$ReplClass && shift                ;;
+-c|--compile) mainClass=$CompilerClass && shift            ;;
+       --run) mainClass=$RunnerClass && shift              ;;
+
+   -j|--java) javaArg="$2" && shift 2                      ;;
+  -s|--scala) scalaArg="$2" && shift 2                     ;;
+   -b|--boot) bootcp=true && shift ;;
+
+         -cp) userCp=( "$2"                ) && shift 2 ;;
+       -cp/a) userCp=( "${userCp[@]}" "$2" ) && shift 2 ;;
+       -cp/p) userCp=( "$2" "${userCp[@]}" ) && shift 2 ;;
+
+         -D*) saveJava "$1" && saveScala "$1" && shift     ;;
+         -J*) saveJava "${1:2}" && saveScala "$1" && shift ;;
+          --) saveScala "$@" && set --                     ;;
+           *) saveScala "$1" && shift                      ;;
+  esac
+done
+
+if [ -f "$scalaArg" ]; then
+  scalaLibs="$(findScalaLibs "$(findScalaHome "$scalaArg")")"
+elif [ -d "$scalaArg" ]; then
+  scalaLibs="$(findScalaLibs "$scalaArg")"
+elif [ -n "$scalaArg" ]; then
+  scalaHash="$(which scala-hash 2>/dev/null)"
+  if [ $? -eq 0 ]; then
+    scalaHome="$(scala-hash -h "$scalaArg")"
+    scalaLibs="$(findScalaLibs "$scalaHome")"
+  else
+    scalaLibs="$(ivycp org.scala-lang%scala-compiler%$scalaArg)"
+  fi
+elif [ -n "$SCALA_HOME" ]; then
+  scalaLibs="$(findScalaLibs "$SCALA_HOME")"
+else
+  scalaLibs="$(findScalaLibs "$(findScalaHome "$(which scala)")")"
+fi
+
+if [ -f "$javaArg" ]; then
+  javaCmd="$javaArg"
+elif [ -d "$javaArg" ]; then
+  javaCmd="$javaArg/bin/java"
+elif [ -n "$javaArg" ]; then
+  if [ -x /usr/libexec/java_home ]; then
+    javaCmd="$(/usr/libexec/java_home -v $javaArg 2>/dev/null)"/bin/java || die "Unable to satisfy java version: $javaArg"
+  else
+    die "Don't know how to find java home for java version: $javaArg"
+  fi
+elif [ -n "$JAVA_HOME" ];then
+  javaCmd="$JAVA_HOME/bin/java"
+else
+  javaCmd="$(which java)"
+fi
+
+[[ -x "$javaCmd" ]] || die "No java program to be found - set JAVA_HOME or give -j."
+
+if (( ${#userCp} == 0 )); then
+  classpath="."
+else
+  classpath="$( IFS=: && echo "${userCp[*]}")"
+fi
+
+for dep in "${deps[@]}"; do
+  log "Resolving dependency $dep ..."
+  depcp="$(ivycp "$dep" 2>/dev/null)"
+  if (( $? == 0 )); then
+    classpath="$classpath:$depcp"
+  else
+    warn "failed to retrieve dependency '$dep', it will not be on the classpath"
+  fi
+done
+
+if [ -n "$bootcp" ]; then
+  javaCpArgs=( "-Xbootclasspath/a:$scalaLibs" )
+else
+  javaCpArgs=( "-classpath" "$scalaLibs" )
+fi
+
+run "$javaCmd" \
+  "${javaArgs[@]}" \
+  "${javaCpArgs[@]}" \
+  "${mainClass:-$RunnerClass}" \
+  -usejavacp \
+  -classpath "$classpath" \
+  "${scalaArgs[@]}"
+
+onExit "$?"
