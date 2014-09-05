@@ -38,7 +38,7 @@ The commits relative to scalac can be seen like so:
 Compatibility
 -------------
 
-The whole scala test suite still passes, except for the tests I've removed. Since I deleted views, parallel collections, and other albatrosses, I deleted all their tests too. These weren't always cleanly separated so there was a bit of collateral deletion. However the fact that ~4000 tests pass should offer a little confidence that if we have diverged, we haven't diverged far.
+The whole scala test suite still passes, except for the tests I've removed. Since I deleted views, parallel collections, and other albatrosses, I deleted all their tests too. [Edit: It seems I've only deleted those particular things in a branch, but they will eventually be "on my table" as Dexter would say.] These weren't always cleanly separated so there was a bit of collateral deletion. However the fact that ~4000 tests pass should offer a little confidence that if we have diverged, we haven't diverged far.
 
 My intention is to backstop outright deletions with extension methods in auxiliary jars such that source compatibility can be retained by adding a legacy dependency, e.g. depend on policy-legacy-views and obtain implicit classes which install the old views onto the core collections types. This isn't done yet. In the case of views specifically, it's difficult to believe anyone will ever want this as there will be views which actually work.
 
