@@ -73,12 +73,12 @@ You can update the bootstrap compiler in place:
 [info] Set current project to policy (in build file:/l/policy/)
 > publishLocalBootstrap
 ...
-[info]  published ... 1.0.0-20140905-104026-3313c76c50-115620/jars/bootstrap-compiler.jar
+[info] ... 1.0.0-20140905-104026-3313c76c50-115620/jars/bootstrap-compiler.jar
 ...
 > about
 [info] This is sbt 0.13.5
 [info] The current project is {file:/l/policy/}root 1.0.0-M4
-[info] The current project is built against Scala 1.0.0-20140905-104026-3313c76c50-115620
+[info] ... is built against 1.0.0-20140905-104026-3313c76c50-115620
 >
 ```
 
