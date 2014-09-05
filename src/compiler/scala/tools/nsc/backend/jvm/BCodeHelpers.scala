@@ -782,7 +782,7 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
     }
   } // end of trait BCClassGen
 
-  /* basic functionality for class file building of plain, mirror, and beaninfo classes. */
+  /* basic functionality for class file building of plain and mirror classes. */
   abstract class JBuilder extends BCInnerClassGen {
 
   } // end of class JBuilder
@@ -849,120 +849,6 @@ abstract class BCodeHelpers extends BCodeIdiomatic with BytecodeWriters {
     }
 
   } // end of class JMirrorBuilder
-
-  /* builder of bean info classes */
-  class JBeanInfoBuilder extends JBuilder {
-
-    /*
-     * Generate a bean info class that describes the given class.
-     *
-     * @author Ross Judson (ross.judson@soletta.com)
-     *
-     * must-single-thread
-     */
-    def genBeanInfoClass(cls: Symbol, cunit: CompilationUnit, fieldSymbols: List[Symbol], methodSymbols: List[Symbol]): asm.tree.ClassNode = {
-
-      def javaSimpleName(s: Symbol): String = { s.javaSimpleName.toString }
-
-      innerClassBufferASM.clear()
-
-      val flags = javaFlags(cls)
-
-      val beanInfoName  = (internalName(cls) + "BeanInfo")
-      val beanInfoClass = new asm.tree.ClassNode
-      beanInfoClass.visit(
-        classfileVersion,
-        flags,
-        beanInfoName,
-        null, // no java-generic-signature
-        "scala/beans/ScalaBeanInfo",
-        EMPTY_STRING_ARRAY
-      )
-
-      beanInfoClass.visitSource(
-        cunit.source.toString,
-        null /* SourceDebugExtension */
-      )
-
-      var fieldList = List[String]()
-
-      for (f <- fieldSymbols if f.hasGetter;
-	         g = f.getter(cls);
-	         s = f.setter(cls);
-	         if g.isPublic && !(f.name startsWith "$")
-          ) {
-             // inserting $outer breaks the bean
-             fieldList = javaSimpleName(f) :: javaSimpleName(g) :: (if (s != NoSymbol) javaSimpleName(s) else null) :: fieldList
-      }
-
-      val methodList: List[String] =
-	     for (m <- methodSymbols
-	          if !m.isConstructor &&
-	          m.isPublic &&
-	          !(m.name startsWith "$") &&
-	          !m.isGetter &&
-	          !m.isSetter)
-       yield javaSimpleName(m)
-
-      val constructor = beanInfoClass.visitMethod(
-        asm.Opcodes.ACC_PUBLIC,
-        INSTANCE_CONSTRUCTOR_NAME,
-        "()V",
-        null, // no java-generic-signature
-        EMPTY_STRING_ARRAY // no throwable exceptions
-      )
-
-      val stringArrayJType: BType = ArrayBType(StringReference)
-      val conJType: BType = MethodBType(
-        classBTypeFromSymbol(definitions.ClassClass) :: stringArrayJType :: stringArrayJType :: Nil,
-        UNIT
-      )
-
-      def push(lst: List[String]) {
-        var fi = 0
-        for (f <- lst) {
-          constructor.visitInsn(asm.Opcodes.DUP)
-          constructor.visitLdcInsn(new java.lang.Integer(fi))
-          if (f == null) { constructor.visitInsn(asm.Opcodes.ACONST_NULL) }
-          else           { constructor.visitLdcInsn(f) }
-          constructor.visitInsn(StringReference.typedOpcode(asm.Opcodes.IASTORE))
-          fi += 1
-        }
-      }
-
-      constructor.visitCode()
-
-      constructor.visitVarInsn(asm.Opcodes.ALOAD, 0)
-      // push the class
-      constructor.visitLdcInsn(classBTypeFromSymbol(cls).toASMType)
-
-      // push the string array of field information
-      constructor.visitLdcInsn(new java.lang.Integer(fieldList.length))
-      constructor.visitTypeInsn(asm.Opcodes.ANEWARRAY, StringReference.internalName)
-      push(fieldList)
-
-      // push the string array of method information
-      constructor.visitLdcInsn(new java.lang.Integer(methodList.length))
-      constructor.visitTypeInsn(asm.Opcodes.ANEWARRAY, StringReference.internalName)
-      push(methodList)
-
-      // invoke the superclass constructor, which will do the
-      // necessary java reflection and create Method objects.
-      constructor.visitMethodInsn(asm.Opcodes.INVOKESPECIAL, "scala/beans/ScalaBeanInfo", INSTANCE_CONSTRUCTOR_NAME, conJType.descriptor, false)
-      constructor.visitInsn(asm.Opcodes.RETURN)
-
-      constructor.visitMaxs(0, 0) // just to follow protocol, dummy arguments
-      constructor.visitEnd()
-
-      innerClassBufferASM ++= classBTypeFromSymbol(cls).info.memberClasses
-      addInnerClassesASM(beanInfoClass, innerClassBufferASM.toList)
-
-      beanInfoClass.visitEnd()
-
-      beanInfoClass
-    }
-
-  } // end of class JBeanInfoBuilder
 
   trait JAndroidBuilder {
     self: BCInnerClassGen =>

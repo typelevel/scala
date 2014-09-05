@@ -3,12 +3,11 @@ package scala.annotation
 /**
  * When defining a field, the Scala compiler creates up to four accessors
  * for it: a getter, a setter, and if the field is annotated with
- * `@BeanProperty`, a bean getter and a bean setter.
  *
  * For instance in the following class definition
  *
  * {{{
- * class C(@myAnnot @BeanProperty var c: Int)
+ * class C(@myAnnot var c: Int)
  * }}}
  *
  * there are six entities which can carry the annotation `@myAnnot`: the
@@ -27,29 +26,11 @@ package scala.annotation
  *
  * The target meta-annotations can be put on the annotation type when
  * instantiating the annotation. In the following example, the annotation
- * `@Id` will be added only to the bean getter `getX`.
- *
- * {{{
- * import javax.persistence.Id
- * class A {
- *   @(Id @beanGetter) @BeanProperty val x = 0
- * }
- * }}}
  *
  * In order to annotate the field as well, the meta-annotation `@field`
  * would need to be added.
  *
  * The syntax can be improved using a type alias:
- *
- * {{{
- * object ScalaJPA {
- *   type Id = javax.persistence.Id @beanGetter
- * }
- * import ScalaJPA.Id
- * class A {
- *   @Id @BeanProperty val x = 0
- * }
- * }}}
  *
  * ==Annotating the annotation class==
  *

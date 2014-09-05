@@ -370,8 +370,6 @@ trait JavaUniverseForce { self: runtime.JavaUniverse  =>
     definitions.VarargsClass
     definitions.uncheckedStableClass
     definitions.uncheckedVarianceClass
-    definitions.BeanPropertyAttr
-    definitions.BooleanBeanPropertyAttr
     definitions.CompileTimeOnlyAttr
     definitions.DeprecatedAttr
     definitions.DeprecatedNameAttr
@@ -390,8 +388,6 @@ trait JavaUniverseForce { self: runtime.JavaUniverse  =>
     definitions.UncheckedBoundsClass
     definitions.UnspecializedClass
     definitions.VolatileAttr
-    definitions.BeanGetterTargetClass
-    definitions.BeanSetterTargetClass
     definitions.FieldTargetClass
     definitions.GetterTargetClass
     definitions.ParamTargetClass

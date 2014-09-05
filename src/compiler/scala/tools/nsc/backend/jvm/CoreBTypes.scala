@@ -130,8 +130,6 @@ class CoreBTypes[BTFS <: BTypesFromSymbols[_ <: Global]](val bTypes: BTFS) {
   lazy val AndroidParcelableInterface : Symbol = getClassIfDefined("android.os.Parcelable")
   lazy val AndroidCreatorClass        : Symbol = getClassIfDefined("android.os.Parcelable$Creator")
 
-  lazy val BeanInfoAttr: Symbol = requiredClass[scala.beans.BeanInfo]
-
   /* The Object => String overload. */
   lazy val String_valueOf: Symbol = {
     getMember(StringModule, nme.valueOf) filter (sym => sym.info.paramTypes match {
@@ -272,8 +270,6 @@ final class CoreBTypesProxy[BTFS <: BTypesFromSymbols[_ <: Global]](val bTypes: 
 
   def AndroidParcelableInterface : Symbol = _coreBTypes.AndroidParcelableInterface
   def AndroidCreatorClass        : Symbol = _coreBTypes.AndroidCreatorClass
-
-  def BeanInfoAttr: Symbol = _coreBTypes.BeanInfoAttr
 
   def String_valueOf: Symbol = _coreBTypes.String_valueOf
 

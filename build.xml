@@ -732,11 +732,6 @@ TODO:
       <path refid="aux.libs"/>
     </path>
 
-    <path id="quick.actors.build.path">
-      <path refid="quick.library.build.path"/>
-      <pathelement location="${build-quick.dir}/classes/actors"/>
-    </path>
-
     <path id="quick.reflect.build.path">
       <path refid="quick.library.build.path"/>
       <pathelement location="${build-quick.dir}/classes/reflect"/>
@@ -786,7 +781,6 @@ TODO:
 
     <path id="quick.bin.tool.path">
       <path refid="quick.repl.build.path"/>
-      <path refid="quick.actors.build.path"/>
       <pathelement location="${build-quick.dir}/classes/scalap"/>
       <pathelement location="${build-quick.dir}/classes/scaladoc"/>
       <path refid="external-modules-nocore"/>
@@ -818,10 +812,6 @@ TODO:
     <path id="pack.library.files">
       <fileset dir="${build-quick.dir}/classes/library"/>
       <fileset dir="${forkjoin-classes}"/>
-    </path>
-
-    <path id="pack.actors.files">
-      <fileset dir="${build-quick.dir}/classes/actors"/>
     </path>
 
     <path id="pack.compiler.files">
@@ -871,7 +861,6 @@ TODO:
     <path id="docs.scaladoc.build.path">              <path refid="quick.scaladoc.build.path"/> </path>
     <path id="docs.interactive.build.path">           <path refid="quick.interactive.build.path"/> </path>
     <path id="docs.scalap.build.path">                <path refid="quick.scalap.build.path"/>   </path>
-    <path id="docs.actors.build.path">                <path refid="quick.actors.build.path"/>   </path>
 
     <!-- run-time classpath for scaladoc TODO: resolve through maven -->
     <path id="scaladoc.classpath">
@@ -1108,11 +1097,6 @@ TODO:
   <target name="quick.scalap"     depends="quick.repl">
     <staged-build with="locker"   stage="quick" project="scalap"/> </target>
 
-  <target name="quick.actors"     depends="quick.lib">
-    <staged-build with="locker"   stage="quick" project="actors"/> </target>
-
-
-
   <target name="quick.modules" depends="quick.repl, quick.scaladoc, quick.interactive, quick.scalap"/>
 
   <target name="quick.bin" depends="quick.lib, quick.reflect, quick.comp, quick.modules">
@@ -1162,14 +1146,12 @@ TODO:
   <target name="pack.interactive" depends="quick.interactive"> <staged-pack project="interactive"/> </target>
   -->
 
-  <target name="pack.actors" depends="quick.actors"> <staged-pack project="actors"/> </target>
-
   <target name="pack.scalap"     depends="quick.scalap">     <staged-pack project="scalap"/> </target>
 
   <target name="pack.core" depends="pack.reflect, pack.comp, pack.lib"/>
 
   <!-- TODO modularize compiler: pack.scaladoc, pack.interactive, -->
-  <target name="pack.modules" depends="pack.actors, pack.scalap">
+  <target name="pack.modules" depends="pack.scalap">
     <copy todir="${build-pack.dir}/lib">
       <path refid="external-modules-nocore" />
       <mapper type="flatten" />
@@ -1598,13 +1580,6 @@ TODO:
     </staged-docs>
   </target>
   -->
-
-  <target name="docs.actors" depends="docs.start" unless="docs.skip">
-    <staged-docs project="actors">
-      <include name="**/*.scala"/>
-    </staged-docs>
-  </target>
-
   <target name="docs.scalap" depends="docs.start" unless="docs.skip">
     <staged-docs project="scalap">
       <include name="**/*.scala"/>
@@ -1613,7 +1588,7 @@ TODO:
 
   <target name="docs.core" depends="docs.lib, docs.reflect, docs.comp" unless="docs.skip"/>
   <!-- TODO modularize compiler:  docs.scaladoc, docs.interactive, -->
-  <target name="docs.done" depends="docs.core, docs.actors, docs.scalap" unless="docs.skip"/>
+  <target name="docs.done" depends="docs.core, docs.scalap" unless="docs.skip"/>
 
   <!-- doc/ and man/ -->
   <target name="pack.doc" depends="scaladoc.task" unless="docs.skip"> <!-- depends on scaladoc.task for scalac taskdef -->

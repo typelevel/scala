@@ -61,21 +61,6 @@ Java platform, the following annotations have a standard meaning.
     clause for the method or constructor must mention the class of that exception
     or one of the superclasses of the class of that exception.
 
-## Java Beans Annotations
-
-  * `@scala.beans.BeanProperty` When prefixed to a definition of some variable `X`, this
-    annotation causes getter and setter methods `getX`, `setX`
-    in the Java bean style to be added in the class containing the
-    variable. The first letter of the variable appears capitalized after
-    the `get` or `set`. When the annotation is added to the
-    definition of an immutable value definition `X`, only a getter is
-    generated. The construction of these methods is part of
-    code-generation; therefore, these methods become visible only once a
-    classfile for the containing class is generated.
-
-  * `@scala.beans.BooleanBeanProperty` This annotation is equivalent to `scala.reflect.BeanProperty`, but
-    the generated getter method is named `isX` instead of `getX`.
-
 ## Deprecation Annotations
 
   * `@deprecated(<stringlit>)` Marks a definition as deprecated. Accesses to the

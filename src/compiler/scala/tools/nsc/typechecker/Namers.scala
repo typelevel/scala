@@ -806,7 +806,7 @@ trait Namers extends MethodSynthesis {
       }
     }
 
-    /* Explicit isSetter required for bean setters (beanSetterSym.isSetter is false) */
+    /* Explicit isSetter required for  setters (beanSetterSym.isSetter is false) */
     def accessorTypeCompleter(tree: ValDef, isSetter: Boolean) = mkTypeCompleter(tree) { sym =>
       logAndValidate(sym) {
         sym setInfo {

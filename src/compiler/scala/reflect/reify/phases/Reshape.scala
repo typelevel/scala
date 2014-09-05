@@ -255,21 +255,6 @@ trait Reshape {
       stats collect { case ddef: DefDef => ddef } foreach (defdef => {
         val valdef = symdefs get defdef.symbol.accessedOrSelf collect { case vdef: ValDef => vdef } getOrElse null
         if (valdef != null) accessors(valdef) = accessors.getOrElse(valdef, Nil) :+ defdef
-
-        def detectBeanAccessors(prefix: String): Unit = {
-          if (defdef.name.startsWith(prefix)) {
-            val name = defdef.name.toString.substring(prefix.length)
-            def uncapitalize(s: String) = if (s.length == 0) "" else { val chars = s.toCharArray; chars(0) = chars(0).toLower; new String(chars) }
-            def findValDef(name: String) = symdefs.values collectFirst {
-              case vdef: ValDef if vdef.name.dropLocal string_== name => vdef
-            }
-            val valdef = findValDef(name).orElse(findValDef(uncapitalize(name))).orNull
-            if (valdef != null) accessors(valdef) = accessors.getOrElse(valdef, Nil) :+ defdef
-          }
-        }
-        detectBeanAccessors("get")
-        detectBeanAccessors("set")
-        detectBeanAccessors("is")
       })
 
       val stats1 = stats flatMap {

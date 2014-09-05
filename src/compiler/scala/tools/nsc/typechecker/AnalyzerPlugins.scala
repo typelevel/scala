@@ -124,7 +124,7 @@ trait AnalyzerPlugins { self: Analyzer =>
      * @param tpe   The method type created by the namer for the accessor
      * @param typer The typer for the ValDef (not for the rhs)
      * @param tree  The ValDef corresponding to the accessor
-     * @param sym   The accessor method symbol (getter, setter, beanGetter or beanSetter)
+     * @param sym   The accessor method symbol (getter, setter)
      */
     def pluginsTypeSigAccessor(tpe: Type, typer: Typer, tree: ValDef, sym: Symbol): Type = tpe
 

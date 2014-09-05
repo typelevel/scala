@@ -281,7 +281,6 @@ class Flags extends ModifierFlags {
    *  SYNTHETIC.
    */
   final val ValueParameterFlags = BYNAMEPARAM | IMPLICIT | DEFAULTPARAM | STABLE | SYNTHETIC
-  final val BeanPropertyFlags   = DEFERRED | OVERRIDE | STATIC
   final val VarianceFlags       = COVARIANT | CONTRAVARIANT
 
   /** These appear to be flags which should be transferred from owner symbol

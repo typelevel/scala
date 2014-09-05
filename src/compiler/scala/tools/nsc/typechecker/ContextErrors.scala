@@ -1094,15 +1094,6 @@ trait ContextErrors {
       def PrivateThisCaseClassParameterError(tree: Tree) =
         issueNormalTypeError(tree, "private[this] not allowed for case class parameters")
 
-      def BeanPropertyAnnotationLimitationError(tree: Tree) =
-        issueNormalTypeError(tree, "implementation limitation: the BeanProperty annotation cannot be used in a type alias or renamed import")
-
-      def BeanPropertyAnnotationFieldWithoutLetterError(tree: Tree) =
-        issueNormalTypeError(tree, "`BeanProperty' annotation can be applied only to fields that start with a letter")
-
-      def BeanPropertyAnnotationPrivateFieldError(tree: Tree) =
-        issueNormalTypeError(tree, "`BeanProperty' annotation can be applied only to non-private fields")
-
       def DoubleDefError(currentSym: Symbol, prevSym: Symbol) = {
         val s1 = if (prevSym.isModule) "case class companion " else ""
         val s2 = if (prevSym.isSynthetic) "(compiler-generated) " + s1 else ""

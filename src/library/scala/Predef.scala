@@ -131,13 +131,6 @@ object Predef extends LowPriorityImplicits with DeprecatedPredef {
   @inline def locally[T](x: T): T  = x    // to communicate intent and avoid unmoored statements
 
   // errors and asserts -------------------------------------------------
-
-  // !!! Remove this when possible - ideally for 2.11.
-  // We are stuck with it a while longer because sbt's compiler interface
-  // still calls it as of 0.12.2.
-  @deprecated("Use `sys.error(message)` instead", "2.9.0")
-  def error(message: String): Nothing = sys.error(message)
-
   /** Tests an expression, throwing an `AssertionError` if false.
    *  Calls to this method will not be generated if `-Xelide-below`
    *  is at least `ASSERTION`.
@@ -220,27 +213,9 @@ object Predef extends LowPriorityImplicits with DeprecatedPredef {
   }
 
   /** `???` can be used for marking methods that remain to be implemented.
-   *  @throws  A `NotImplementedError`
+   *  @throws  A `RuntimeException`
    */
-  def ??? : Nothing = throw new NotImplementedError
-
-  // tupling ------------------------------------------------------------
-
-  @deprecated("Use built-in tuple syntax or Tuple2 instead", "2.11.0")
-  type Pair[+A, +B] = Tuple2[A, B]
-  @deprecated("Use built-in tuple syntax or Tuple2 instead", "2.11.0")
-  object Pair {
-    def apply[A, B](x: A, y: B) = Tuple2(x, y)
-    def unapply[A, B](x: Tuple2[A, B]): Option[Tuple2[A, B]] = Some(x)
-  }
-
-  @deprecated("Use built-in tuple syntax or Tuple3 instead", "2.11.0")
-  type Triple[+A, +B, +C] = Tuple3[A, B, C]
-  @deprecated("Use built-in tuple syntax or Tuple3 instead", "2.11.0")
-  object Triple {
-    def apply[A, B, C](x: A, y: B, z: C) = Tuple3(x, y, z)
-    def unapply[A, B, C](x: Tuple3[A, B, C]): Option[Tuple3[A, B, C]] = Some(x)
-  }
+  def ??? : Nothing = throw new RuntimeException("undefined value evaluated")
 
   // implicit classes -----------------------------------------------------
 
@@ -501,6 +476,7 @@ private[scala] abstract class LowPriorityImplicits {
 
   implicit def wrapString(s: String): WrappedString = if (s ne null) new WrappedString(s) else null
   implicit def unwrapString(ws: WrappedString): String = if (ws ne null) ws.self else null
+  
 
   implicit def fallbackStringCanBuildFrom[T]: CanBuildFrom[String, T, immutable.IndexedSeq[T]] =
     new CanBuildFrom[String, T, immutable.IndexedSeq[T]] {
