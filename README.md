@@ -57,8 +57,8 @@ Test Run PASSED
 % sbt about
 [info] Set current project to policy (in build file:/l/policy/)
 [info] scala-tool:
-[info]   ~/.ivy2/local/org.improving/bootstrap-library/1.0.0-M4/jars/bootstrap-library.jar
-[info]   ~/.ivy2/local/org.improving/bootstrap-compiler/1.0.0-M4/jars/bootstrap-compiler.jar
+[info]   .../bootstrap-library/1.0.0-M4/jars/bootstrap-library.jar
+[info]   .../bootstrap-compiler/1.0.0-M4/jars/bootstrap-compiler.jar
 [info]   ~/.ivy2/cache/jline/jline/jars/jline-2.12.jar
 [info]   /l/policy/lib/asm-5.0.4-SNAPSHOT.jar
 [info] This is sbt 0.13.5
@@ -73,7 +73,7 @@ You can update the bootstrap compiler in place:
 [info] Set current project to policy (in build file:/l/policy/)
 > publishLocalBootstrap
 ...
-[info]  published bootstrap-compiler to ... 1.0.0-20140905-104026-3313c76c50-115620/jars/bootstrap-compiler.jar
+[info]  published ... 1.0.0-20140905-104026-3313c76c50-115620/jars/bootstrap-compiler.jar
 ...
 > about
 [info] This is sbt 0.13.5
