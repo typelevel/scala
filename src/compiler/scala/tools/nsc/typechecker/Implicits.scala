@@ -71,7 +71,6 @@ trait Implicits {
       typingStack.printTyping(tree, "typing implicit: %s %s".format(tree, context.undetparamsString))
     val implicitSearchContext = context.makeImplicit(reportAmbiguous)
     val result = new ImplicitSearch(tree, pt, isView, implicitSearchContext, pos).bestImplicit
-
     if (result.isFailure && saveAmbiguousDivergent && implicitSearchContext.reporter.hasErrors)
       implicitSearchContext.reporter.propagateImplicitTypeErrorsTo(context.reporter)
 
@@ -601,7 +600,6 @@ trait Implicits {
         }
       }
       val itree1 = if (isBlackbox(info.sym)) suppressMacroExpansion(itree0) else itree0
-      typingLog("considering", typeDebug.ptTree(itree1))
 
       def fail(reason: String): SearchResult = failure(itree0, reason)
       def fallback = typed1(itree1, EXPRmode, wildPt)
@@ -633,9 +631,7 @@ trait Implicits {
           case _ => fallback
         }
         context.reporter.firstError match { // using match rather than foreach to avoid non local return.
-          case Some(err) =>
-            log("implicit adapt failed: " + err.errMsg)
-            return fail(err.errMsg)
+          case Some(err) => return fail(err.errMsg)
           case None      =>
         }
 
@@ -1195,11 +1191,7 @@ trait Implicits {
       /* Creates a tree that calls the factory method called constructor in object scala.reflect.Manifest */
       def manifestFactoryCall(constructor: String, tparg: Type, args: Tree*): Tree =
         if (args contains EmptyTree) EmptyTree
-        else typedPos(tree.pos.focus) {
-          val mani = gen.mkManifestFactoryCall(full, constructor, tparg, args.toList)
-          if (settings.debug) println("generated manifest: "+mani) // DEBUG
-          mani
-        }
+        else typedPos(tree.pos.focus)(gen.mkManifestFactoryCall(full, constructor, tparg, args.toList))
 
       /* Creates a tree representing one of the singleton manifests.*/
       def findSingletonManifest(name: String) = typedPos(tree.pos.focus) {
@@ -1409,10 +1401,6 @@ trait Implicits {
           result = SearchFailure
         }
       }
-
-      if (result.isFailure && settings.debug) // debuglog is not inlined for some reason
-        log("no implicits found for "+pt+" "+pt.typeSymbol.info.baseClasses+" "+implicitsOfExpectedType)
-
       result
     }
 

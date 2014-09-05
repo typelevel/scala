@@ -1,8 +1,8 @@
 Scope{
-  def <init>: <?>;
-  sealed abstract trait T extends ;
-  def foo: <?>
+  def <init><_>;
+  sealed abstract trait T<_>;
+  def foo<_>
 }
 Scope{
-  def f: <?>
+  def f<_>
 }

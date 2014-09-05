@@ -1,5 +1,5 @@
 import scala.tools.partest.BytecodeTest
-import scala.tools.asm
+import org.objectweb.asm
 import asm.tree.{ClassNode, InnerClassNode}
 import asm.{Opcodes => Flags}
 import scala.collection.JavaConverters._
@@ -9,7 +9,7 @@ object Test extends BytecodeTest {
     assert(a == b, s"\na: $a\nb: $b")
   }
 
-  val publicStatic = Flags.ACC_PUBLIC | Flags.ACC_STATIC 
+  val publicStatic = Flags.ACC_PUBLIC | Flags.ACC_STATIC
   val publicAbstractInterface = Flags.ACC_PUBLIC | Flags.ACC_ABSTRACT | Flags.ACC_INTERFACE
 
   def innerClassNodes(className: String): List[InnerClassNode] = {

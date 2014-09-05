@@ -129,8 +129,6 @@ abstract class ClassfileParser {
   }
 
   def parse(file: AbstractFile, root: Symbol): Unit = {
-    debuglog("[class] >> " + root.fullName)
-
     pushBusy(root) {
       this.in           = new AbstractFileReader(file)
       this.clazz        = if (root.isModule) root.companionClass else root
@@ -386,7 +384,6 @@ abstract class ClassfileParser {
     ss = name.subName(0, start)
     owner.info.decls lookup ss orElse {
       sym = owner.newClass(ss.toTypeName) setInfoAndEnter completer
-      debuglog("loaded "+sym+" from file "+file)
       sym
     }
   }
@@ -663,13 +660,13 @@ abstract class ClassfileParser {
                 }
                 accept('>')
                 assert(xs.length > 0, tp)
-                debuglogResult("new existential")(newExistentialType(existentials.toList, typeRef(pre, classSym, xs.toList)))
+                newExistentialType(existentials.toList, typeRef(pre, classSym, xs.toList))
               }
               // isMonomorphicType is false if the info is incomplete, as it usually is here
               // so have to check unsafeTypeParams.isEmpty before worrying about raw type case below,
               // or we'll create a boatload of needless existentials.
               else if (classSym.isMonomorphicType || classSym.unsafeTypeParams.isEmpty) tp
-              else debuglogResult(s"raw type from $classSym"){
+              else {
                 // raw type - existentially quantify all type parameters
                 val eparams = typeParamsToExistentials(classSym, classSym.unsafeTypeParams)
                 newExistentialType(eparams, typeRef(pre, classSym, eparams.map(_.tpeHK)))
@@ -834,7 +831,6 @@ abstract class ClassfileParser {
                 case None =>
                   throw new RuntimeException("Scala class file does not contain Scala annotation")
               }
-            debuglog("[class] << " + sym.fullName + sym.annotationsString)
           }
           else
             in.skip(attrLen)
@@ -857,10 +853,9 @@ abstract class ClassfileParser {
           }
           srcfile0 = settings.outputDirs.srcFilesFor(in.file, srcpath).find(_.exists)
         case tpnme.CodeATTR =>
-          if (sym.owner.isInterface) {
+          if (sym.owner.isInterface)
             sym setFlag DEFAULTMETHOD
-            log(s"$sym in ${sym.owner} is a java8+ default method.")
-          }
+
           in.skip(attrLen)
         case _ =>
           in.skip(attrLen)

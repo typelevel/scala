@@ -1,0 +1,1065 @@
+format version: 5
+output mode:
+1 items
+0 -> single
+output directories:
+1 items
+output dir -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes
+compile options:
+0 items
+javac options:
+0 items
+compiler version:
+1 items
+0 -> 2.10.4
+compile order:
+1 items
+0 -> Mixed
+name hashing:
+1 items
+0 -> false
+products:
+232 items
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$1.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$bootstrapCommands$1.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$commonBootstrap$1$$anonfun$3.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$commonBootstrap$1$$anonfun$4.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$commonBootstrap$1.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$1$$anonfun$apply$5.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$1.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$2$$anonfun$apply$6.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$2.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$saveBootstrapVersion$1$$anonfun$2.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$saveBootstrapVersion$1$$anonfun$apply$4.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$saveBootstrapVersion$1.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$class.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$commands$1$$anonfun$apply$1.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$commands$1$$anonfun$apply$2.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$commands$1$$anonfun$apply$3.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$commands$1.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$methods$1.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$class.class
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Depends$class.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Depends.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$deps$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$fullMimaSettings$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$fullMimaSettings$2.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$intransitiveDeps$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$intransitiveTestDeps$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$sbtDeps$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$scalaDeps$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$asmAttributed$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiler$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$2.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$3.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$4.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$5.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$library$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$library$2.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$2.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$3.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$4.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$5.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$6.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$replJar$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$2$$anonfun$apply$1$$anonfun$apply$2.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$2$$anonfun$apply$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$2.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$3.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$4.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$5.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$6.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$7.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$1.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$10.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$11.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$12.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$13.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$14.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$15.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$2.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$3.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$4.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$5.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$6.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$7.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$8.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$9.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$.class
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$compilePath$1$$anonfun$apply$1.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$compilePath$1.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$createUnzipTask$1$$anonfun$apply$2.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$createUnzipTask$1.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$generateProperties$1.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$policy$building$BuildTasks$$explode$1.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runAllTests$1.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runTests$1$$anonfun$apply$3$$anonfun$apply$4.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runTests$1$$anonfun$apply$3.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runTests$1.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runTestsWithArgs$1.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$testJavaOptions$1.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$class.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/PolicyKeys$.class
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/PolicyKeys.class
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$$anonfun$SbtKnownVersion$1.class
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$$anonfun$ScalaKnownVersion$1.class
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$$anonfun$sysOrBuild$1.class
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$$anonfun$sysOrBuild$2.class
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$class.class
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Helpers.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$asLines$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$hasExtension$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$oempty$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$oempty$2.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$strings$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$class.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$5.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$6.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$7.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$8.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$allInSrc$1$$anonfun$apply$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$allInSrc$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$appendInEveryScope$1$$anonfun$apply$8.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$appendInEveryScope$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$buildLevelJars$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$chooseBootstrap$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$chooseBootstrap$2.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$filesIn$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$fromBase$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$inSrc$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$jarPathsTask$1$$anonfun$apply$2.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$jarPathsTask$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$logger$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$moduleId$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$sbtFilesInBuild$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceForVersion$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromAppConfiguration$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$2.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$3.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$4.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$apply$5.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$apply$6.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$apply$7.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceTask$1$$anonfun$apply$3$$anonfun$apply$4.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceTask$1$$anonfun$apply$3.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceTask$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$sourceFilesInProject$1.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$class.class
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers.class
+/home/alois/oss/policy/project/Ivy.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IvyHelpers$class.class
+/home/alois/oss/policy/project/Ivy.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IvyHelpers.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$arityFilters$1$$anonfun$apply$1$$anonfun$apply$2.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$arityFilters$1$$anonfun$apply$1.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$arityFilters$1.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$deletedFilter$1$$anonfun$apply$3.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$deletedFilter$1$$anonfun$apply$4.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$deletedFilter$1.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$HasFullNames$$anonfun$unapply$1.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$HasFullNames$.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$HasName$.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$PackageOf$.class
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy.class
+/home/alois/oss/policy/project/PluginRelated.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/PluginRelatedCode$class.class
+/home/alois/oss/policy/project/PluginRelated.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/PluginRelatedCode.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$1.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$2.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$commandLineArgs$1.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$filterKeys$1.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$joined$1.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$joined$2.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$get$1.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$getInt$1.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$keys$1.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$toSeq$1.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$toString$1.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$toString$2.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$.class
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$asInputTask$1$$anonfun$apply$1$$anonfun$apply$2.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$asInputTask$1$$anonfun$apply$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$asInputTask$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$classpathFiles$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$compilerClasspathString$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$forkCompiler$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$forkPartest$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$forkRepl$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$partestProperties$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$sbtDefaultForkOptions$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathFiles$1$$anonfun$apply$3.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathFiles$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathFiles$2$$anonfun$apply$4.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathFiles$2.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathReadable$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathString$1.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$class.class
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1$$anonfun$2.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1$$anonfun$3.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1$$anonfun$4.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1$$anonfun$apply$3.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$globals$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$hasPrintableValue$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$policy$building$ScopedShow$$any_s$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$policy$building$ScopedShow$$any_s$2.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$policy$building$ScopedShow$$any_s$3.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$thises$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$value$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$value_s$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$value_s$2.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$$anonfun$apply$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$$anonfun$apply$2.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$$anonfun$attrKeys$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$$anonfun$look$1.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$.class
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig$$anonfun$asInputTask$1$$anonfun$apply$2$$anonfun$apply$1.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig$$anonfun$asInputTask$1$$anonfun$apply$2.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig$$anonfun$asInputTask$1.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig$.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/NullLogger$.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/NullLogger.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScalaOptionOps$.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScalaOptionOps.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SequenceOps$$anonfun$preferring$extension$1.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SequenceOps$.class
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SequenceOps.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/PolicyPackage.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$$anonfun$inputTaskValueDiscarding$1.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$InitSettingOps$$anonfun$$bar$greater$1.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$InitSettingOps$$anonfun$task$1.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$InitSettingOps.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$InitTaskOps.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$SettingKeyOps.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$TaskKeyOps.class
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package.class
+binary dependencies:
+121 items
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/.ivy2/cache/org.scala-sbt/collections/jars/collections-0.13.5.jar
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/.ivy2/cache/org.scala-sbt/command/jars/command-0.13.5.jar
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/.ivy2/cache/org.scala-sbt/ivy/jars/ivy-0.13.5.jar
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/Bootstrap.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.improving/psp-api_2.10/jars/psp-api_2.10-0.3.1-M3.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/apply-macro/jars/apply-macro-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/classpath/jars/classpath-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/collections/jars/collections-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/command/jars/command-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/incremental-compiler/jars/incremental-compiler-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/interface/jars/interface-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/ivy/jars/ivy-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/org.scala-sbt/task-system/jars/task-system-0.13.5.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/scala_2.10/sbt_0.13/com.typesafe/sbt-mima-plugin/jars/sbt-mima-plugin-0.1.6.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/scala_2.10/sbt_0.13/me.lessis/bintray-sbt/jars/bintray-sbt-0.1.2.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.ivy2/cache/scala_2.10/sbt_0.13/org.improving/psp-libsbt/jars/psp-libsbt-0.3.1-M3.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/BuildSettings.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/apply-macro/jars/apply-macro-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/classpath/jars/classpath-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/collections/jars/collections-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/completion/jars/completion-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/io/jars/io-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/ivy/jars/ivy-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.ivy2/cache/org.scala-sbt/task-system/jars/task-system-0.13.5.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/BuildTasks.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/.ivy2/cache/org.scala-sbt/collections/jars/collections-0.13.5.jar
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/.ivy2/cache/org.scala-sbt/command/jars/command-0.13.5.jar
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/.ivy2/cache/org.scala-sbt/completion/jars/completion-0.13.5.jar
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/.ivy2/cache/org.scala-sbt/task-system/jars/task-system-0.13.5.jar
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/Constants.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/apply-macro/jars/apply-macro-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/classpath/jars/classpath-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/collections/jars/collections-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/command/jars/command-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/completion/jars/completion-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/io/jars/io-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/ivy/jars/ivy-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/launcher-interface/jars/launcher-interface-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/logging/jars/logging-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/process/jars/process-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/relation/jars/relation-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/task-system/jars/task-system-0.13.5.jar
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/Helpers.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/Ivy.scala -> /home/alois/.ivy2/cache/org.scala-sbt/io/jars/io-0.13.5.jar
+/home/alois/oss/policy/project/Ivy.scala -> /home/alois/.ivy2/cache/org.scala-sbt/ivy/jars/ivy-0.13.5.jar
+/home/alois/oss/policy/project/Ivy.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/Ivy.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/Ivy.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/Ivy.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/.ivy2/cache/com.typesafe/mima-core_2.10/jars/mima-core_2.10-0.1.6.jar
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/Mima.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/PluginRelated.scala -> /home/alois/.ivy2/cache/scala_2.10/sbt_0.13/com.typesafe/sbt-mima-plugin/jars/sbt-mima-plugin-0.1.6.jar
+/home/alois/oss/policy/project/PluginRelated.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/.ivy2/cache/org.scala-sbt/io/jars/io-0.13.5.jar
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/Properties.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.ivy2/cache/org.scala-sbt/apply-macro/jars/apply-macro-0.13.5.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.ivy2/cache/org.scala-sbt/collections/jars/collections-0.13.5.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.ivy2/cache/org.scala-sbt/incremental-compiler/jars/incremental-compiler-0.13.5.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.ivy2/cache/org.scala-sbt/ivy/jars/ivy-0.13.5.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.ivy2/cache/org.scala-sbt/run/jars/run-0.13.5.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.ivy2/cache/org.scala-sbt/task-system/jars/task-system-0.13.5.jar
+/home/alois/oss/policy/project/Run.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/Run.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/collections/jars/collections-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/command/jars/command-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/interface/jars/interface-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/io/jars/io-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/ivy/jars/ivy-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/logging/jars/logging-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/relation/jars/relation-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/task-system/jars/task-system-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.ivy2/cache/org.scala-sbt/tasks/jars/tasks-0.13.5.jar
+/home/alois/oss/policy/project/Show.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/Show.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/interface/jars/interface-0.13.5.jar
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/logging/jars/logging-0.13.5.jar
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/run/jars/run-0.13.5.jar
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/Wrappers.scala -> /opt/java/jre/lib/rt.jar
+/home/alois/oss/policy/project/package.scala -> /home/alois/.ivy2/cache/org.scala-sbt/apply-macro/jars/apply-macro-0.13.5.jar
+/home/alois/oss/policy/project/package.scala -> /home/alois/.ivy2/cache/org.scala-sbt/command/jars/command-0.13.5.jar
+/home/alois/oss/policy/project/package.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar
+/home/alois/oss/policy/project/package.scala -> /home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar
+/home/alois/oss/policy/project/package.scala -> /home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar
+/home/alois/oss/policy/project/package.scala -> /home/alois/.ivy2/cache/org.scala-sbt/task-system/jars/task-system-0.13.5.jar
+/home/alois/oss/policy/project/package.scala -> /home/alois/.ivy2/cache/org.scala-sbt/tasks/jars/tasks-0.13.5.jar
+/home/alois/oss/policy/project/package.scala -> /home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar
+/home/alois/oss/policy/project/package.scala -> /opt/java/jre/lib/rt.jar
+direct source dependencies:
+58 items
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/BuildTasks.scala
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/Constants.scala
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/Properties.scala
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/Show.scala
+/home/alois/oss/policy/project/Bootstrap.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/Bootstrap.scala
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/BuildTasks.scala
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/Constants.scala
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/Mima.scala
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/PluginRelated.scala
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/Run.scala
+/home/alois/oss/policy/project/BuildSettings.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/Constants.scala
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/Properties.scala
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/Run.scala
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/Wrappers.scala
+/home/alois/oss/policy/project/BuildTasks.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/Properties.scala
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/Wrappers.scala
+/home/alois/oss/policy/project/Constants.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/BuildSettings.scala
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/BuildTasks.scala
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/Constants.scala
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/Properties.scala
+/home/alois/oss/policy/project/Helpers.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/Ivy.scala -> /home/alois/oss/policy/project/Wrappers.scala
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/Mima.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/Constants.scala
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/Wrappers.scala
+/home/alois/oss/policy/project/Properties.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/BuildTasks.scala
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/Constants.scala
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/Properties.scala
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/Wrappers.scala
+/home/alois/oss/policy/project/Run.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/BuildTasks.scala
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/Constants.scala
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/Wrappers.scala
+/home/alois/oss/policy/project/Show.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/Properties.scala
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/Run.scala
+/home/alois/oss/policy/project/Wrappers.scala -> /home/alois/oss/policy/project/package.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/Bootstrap.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/BuildSettings.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/BuildTasks.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/Constants.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/PluginRelated.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/Run.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/Wrappers.scala
+direct external dependencies:
+0 items
+public inherited source dependencies:
+7 items
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/Bootstrap.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/BuildSettings.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/BuildTasks.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/Constants.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/Helpers.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/PluginRelated.scala
+/home/alois/oss/policy/project/package.scala -> /home/alois/oss/policy/project/Run.scala
+public inherited external dependencies:
+0 items
+member reference internal dependencies:
+0 items
+member reference external dependencies:
+0 items
+inheritance internal dependencies:
+0 items
+inheritance external dependencies:
+0 items
+class names:
+232 items
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$1
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$bootstrapCommands$1
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$commonBootstrap$1
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$commonBootstrap$1$$anonfun$3
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$commonBootstrap$1$$anonfun$4
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$1
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$1$$anonfun$apply$5
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$2
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$2$$anonfun$apply$6
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$policy$building$Bootstrap$$saveBootstrapVersion$1
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$policy$building$Bootstrap$$saveBootstrapVersion$1$$anonfun$2
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$$anonfun$policy$building$Bootstrap$$saveBootstrapVersion$1$$anonfun$apply$4
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.Bootstrap$class
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.ReflectiveCommands
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.ReflectiveCommands$$anonfun$commands$1
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.ReflectiveCommands$$anonfun$commands$1$$anonfun$apply$1
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.ReflectiveCommands$$anonfun$commands$1$$anonfun$apply$2
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.ReflectiveCommands$$anonfun$commands$1$$anonfun$apply$3
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.ReflectiveCommands$$anonfun$methods$1
+/home/alois/oss/policy/project/Bootstrap.scala -> policy.building.ReflectiveCommands$class
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.Depends
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.Depends$class
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.ProjectOps
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.ProjectOps$$anonfun$deps$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.ProjectOps$$anonfun$fullMimaSettings$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.ProjectOps$$anonfun$fullMimaSettings$2
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.ProjectOps$$anonfun$intransitiveDeps$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.ProjectOps$$anonfun$intransitiveTestDeps$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.ProjectOps$$anonfun$sbtDeps$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.ProjectOps$$anonfun$scalaDeps$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$asmAttributed$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$compiler$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$compiling$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$compiling$2
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$compiling$3
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$compiling$4
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$compiling$5
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$library$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$library$2
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$publishing$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$publishing$2
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$publishing$3
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$publishing$4
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$publishing$5
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$publishing$6
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$replJar$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$root$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$root$2
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$root$2$$anonfun$apply$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$root$2$$anonfun$apply$1$$anonfun$apply$2
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$root$3
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$root$4
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$root$5
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$root$6
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$root$7
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$1
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$10
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$11
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$12
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$13
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$14
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$15
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$2
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$3
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$4
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$5
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$6
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$7
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$8
+/home/alois/oss/policy/project/BuildSettings.scala -> policy.building.projectSettings$$anonfun$universal$9
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$compilePath$1
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$compilePath$1$$anonfun$apply$1
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$createUnzipTask$1
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$createUnzipTask$1$$anonfun$apply$2
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$generateProperties$1
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$policy$building$BuildTasks$$explode$1
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$runAllTests$1
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$runTests$1
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$runTests$1$$anonfun$apply$3
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$runTests$1$$anonfun$apply$3$$anonfun$apply$4
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$runTestsWithArgs$1
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$$anonfun$testJavaOptions$1
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.BuildTasks$class
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.PolicyKeys
+/home/alois/oss/policy/project/BuildTasks.scala -> policy.building.PolicyKeys$
+/home/alois/oss/policy/project/Constants.scala -> policy.building.Constants
+/home/alois/oss/policy/project/Constants.scala -> policy.building.Constants$$anonfun$SbtKnownVersion$1
+/home/alois/oss/policy/project/Constants.scala -> policy.building.Constants$$anonfun$ScalaKnownVersion$1
+/home/alois/oss/policy/project/Constants.scala -> policy.building.Constants$$anonfun$sysOrBuild$1
+/home/alois/oss/policy/project/Constants.scala -> policy.building.Constants$$anonfun$sysOrBuild$2
+/home/alois/oss/policy/project/Constants.scala -> policy.building.Constants$class
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.Helpers
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.IndependentHelpers
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.IndependentHelpers$$anonfun$asLines$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.IndependentHelpers$$anonfun$hasExtension$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.IndependentHelpers$$anonfun$oempty$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.IndependentHelpers$$anonfun$oempty$2
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.IndependentHelpers$$anonfun$strings$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.IndependentHelpers$class
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$5
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$6
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$7
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$8
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$allInSrc$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$allInSrc$1$$anonfun$apply$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$appendInEveryScope$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$appendInEveryScope$1$$anonfun$apply$8
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$buildLevelJars$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$chooseBootstrap$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$chooseBootstrap$2
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$filesIn$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$fromBase$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$inSrc$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$jarPathsTask$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$jarPathsTask$1$$anonfun$apply$2
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$logger$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$moduleId$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$sbtFilesInBuild$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceForVersion$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceFromAppConfiguration$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$2
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$3
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$4
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$apply$5
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$apply$6
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$apply$7
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceTask$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceTask$1$$anonfun$apply$3
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$scalaInstanceTask$1$$anonfun$apply$3$$anonfun$apply$4
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$$anonfun$sourceFilesInProject$1
+/home/alois/oss/policy/project/Helpers.scala -> policy.building.SbtHelpers$class
+/home/alois/oss/policy/project/Ivy.scala -> policy.building.IvyHelpers
+/home/alois/oss/policy/project/Ivy.scala -> policy.building.IvyHelpers$class
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$$anonfun$arityFilters$1
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$$anonfun$arityFilters$1$$anonfun$apply$1
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$$anonfun$arityFilters$1$$anonfun$apply$1$$anonfun$apply$2
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$$anonfun$deletedFilter$1
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$$anonfun$deletedFilter$1$$anonfun$apply$3
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$$anonfun$deletedFilter$1$$anonfun$apply$4
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$HasFullNames$
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$HasFullNames$$anonfun$unapply$1
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$HasName$
+/home/alois/oss/policy/project/Mima.scala -> policy.building.MimaPolicy$PackageOf$
+/home/alois/oss/policy/project/PluginRelated.scala -> policy.building.PluginRelatedCode
+/home/alois/oss/policy/project/PluginRelated.scala -> policy.building.PluginRelatedCode$class
+/home/alois/oss/policy/project/Properties.scala -> policy.building.ImmutableProperties
+/home/alois/oss/policy/project/Properties.scala -> policy.building.ImmutableProperties$
+/home/alois/oss/policy/project/Properties.scala -> policy.building.ImmutableProperties$$anonfun$1
+/home/alois/oss/policy/project/Properties.scala -> policy.building.ImmutableProperties$$anonfun$2
+/home/alois/oss/policy/project/Properties.scala -> policy.building.ImmutableProperties$$anonfun$commandLineArgs$1
+/home/alois/oss/policy/project/Properties.scala -> policy.building.ImmutableProperties$$anonfun$filterKeys$1
+/home/alois/oss/policy/project/Properties.scala -> policy.building.ImmutableProperties$$anonfun$joined$1
+/home/alois/oss/policy/project/Properties.scala -> policy.building.ImmutableProperties$$anonfun$joined$2
+/home/alois/oss/policy/project/Properties.scala -> policy.building.MutableProperties
+/home/alois/oss/policy/project/Properties.scala -> policy.building.MutableProperties$
+/home/alois/oss/policy/project/Properties.scala -> policy.building.MutableProperties$$anonfun$get$1
+/home/alois/oss/policy/project/Properties.scala -> policy.building.MutableProperties$$anonfun$getInt$1
+/home/alois/oss/policy/project/Properties.scala -> policy.building.MutableProperties$$anonfun$keys$1
+/home/alois/oss/policy/project/Properties.scala -> policy.building.MutableProperties$$anonfun$toSeq$1
+/home/alois/oss/policy/project/Properties.scala -> policy.building.MutableProperties$$anonfun$toString$1
+/home/alois/oss/policy/project/Properties.scala -> policy.building.MutableProperties$$anonfun$toString$2
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$asInputTask$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$asInputTask$1$$anonfun$apply$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$asInputTask$1$$anonfun$apply$1$$anonfun$apply$2
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$classpathFiles$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$compilerClasspathString$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$forkCompiler$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$forkPartest$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$forkRepl$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$partestProperties$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$sbtDefaultForkOptions$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$testClasspathFiles$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$testClasspathFiles$1$$anonfun$apply$3
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$testClasspathFiles$2
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$testClasspathFiles$2$$anonfun$apply$4
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$testClasspathReadable$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$$anonfun$testClasspathString$1
+/home/alois/oss/policy/project/Run.scala -> policy.building.Runners$class
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$1
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$1$$anonfun$2
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$1$$anonfun$3
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$1$$anonfun$4
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$1$$anonfun$apply$3
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$globals$1
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$hasPrintableValue$1
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$policy$building$ScopedShow$$any_s$1
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$policy$building$ScopedShow$$any_s$2
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$policy$building$ScopedShow$$any_s$3
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$thises$1
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$value$1
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$value_s$1
+/home/alois/oss/policy/project/Show.scala -> policy.building.ScopedShow$$anonfun$value_s$2
+/home/alois/oss/policy/project/Show.scala -> policy.building.WState
+/home/alois/oss/policy/project/Show.scala -> policy.building.WState$
+/home/alois/oss/policy/project/Show.scala -> policy.building.WState$$anonfun$apply$1
+/home/alois/oss/policy/project/Show.scala -> policy.building.WState$$anonfun$apply$2
+/home/alois/oss/policy/project/Show.scala -> policy.building.WState$$anonfun$attrKeys$1
+/home/alois/oss/policy/project/Show.scala -> policy.building.WState$$anonfun$look$1
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.ForkConfig
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.ForkConfig$
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.ForkConfig$$anonfun$asInputTask$1
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.ForkConfig$$anonfun$asInputTask$1$$anonfun$apply$2
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.ForkConfig$$anonfun$asInputTask$1$$anonfun$apply$2$$anonfun$apply$1
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.NullLogger
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.NullLogger$
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.ScalaOptionOps
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.ScalaOptionOps$
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.SequenceOps
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.SequenceOps$
+/home/alois/oss/policy/project/Wrappers.scala -> policy.building.SequenceOps$$anonfun$preferring$extension$1
+/home/alois/oss/policy/project/package.scala -> policy.PolicyPackage
+/home/alois/oss/policy/project/package.scala -> policy.building.package
+/home/alois/oss/policy/project/package.scala -> policy.building.package$
+/home/alois/oss/policy/project/package.scala -> policy.building.package$$anonfun$inputTaskValueDiscarding$1
+/home/alois/oss/policy/project/package.scala -> policy.building.package$InitSettingOps
+/home/alois/oss/policy/project/package.scala -> policy.building.package$InitSettingOps$$anonfun$$bar$greater$1
+/home/alois/oss/policy/project/package.scala -> policy.building.package$InitSettingOps$$anonfun$task$1
+/home/alois/oss/policy/project/package.scala -> policy.building.package$InitTaskOps
+/home/alois/oss/policy/project/package.scala -> policy.building.package$SettingKeyOps
+/home/alois/oss/policy/project/package.scala -> policy.building.package$TaskKeyOps
+used names:
+0 items
+product stamps:
+232 items
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/PolicyPackage.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$bootstrapCommands$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$commonBootstrap$1$$anonfun$3.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$commonBootstrap$1$$anonfun$4.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$commonBootstrap$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$1$$anonfun$apply$5.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$2$$anonfun$apply$6.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$bootstrapSettings$2.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$saveBootstrapVersion$1$$anonfun$2.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$saveBootstrapVersion$1$$anonfun$apply$4.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$$anonfun$policy$building$Bootstrap$$saveBootstrapVersion$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap$class.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Bootstrap.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$compilePath$1$$anonfun$apply$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$compilePath$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$createUnzipTask$1$$anonfun$apply$2.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$createUnzipTask$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$generateProperties$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$policy$building$BuildTasks$$explode$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runAllTests$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runTests$1$$anonfun$apply$3$$anonfun$apply$4.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runTests$1$$anonfun$apply$3.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runTests$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$runTestsWithArgs$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$$anonfun$testJavaOptions$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks$class.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/BuildTasks.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$$anonfun$SbtKnownVersion$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$$anonfun$ScalaKnownVersion$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$$anonfun$sysOrBuild$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$$anonfun$sysOrBuild$2.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants$class.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Constants.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Depends$class.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Depends.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig$$anonfun$asInputTask$1$$anonfun$apply$2$$anonfun$apply$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig$$anonfun$asInputTask$1$$anonfun$apply$2.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig$$anonfun$asInputTask$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig$.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ForkConfig.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Helpers.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$2.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$commandLineArgs$1.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$filterKeys$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$joined$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$$anonfun$joined$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties$.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ImmutableProperties.class -> lastModified(1409954195000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$asLines$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$hasExtension$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$oempty$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$oempty$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$$anonfun$strings$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers$class.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IndependentHelpers.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IvyHelpers$class.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/IvyHelpers.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$arityFilters$1$$anonfun$apply$1$$anonfun$apply$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$arityFilters$1$$anonfun$apply$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$arityFilters$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$deletedFilter$1$$anonfun$apply$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$deletedFilter$1$$anonfun$apply$4.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$$anonfun$deletedFilter$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$HasFullNames$$anonfun$unapply$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$HasFullNames$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$HasName$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy$PackageOf$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MimaPolicy.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$get$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$getInt$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$keys$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$toSeq$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$toString$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$$anonfun$toString$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/MutableProperties.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/NullLogger$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/NullLogger.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/PluginRelatedCode$class.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/PluginRelatedCode.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/PolicyKeys$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/PolicyKeys.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$deps$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$fullMimaSettings$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$fullMimaSettings$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$intransitiveDeps$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$intransitiveTestDeps$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$sbtDeps$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps$$anonfun$scalaDeps$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ProjectOps.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$commands$1$$anonfun$apply$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$commands$1$$anonfun$apply$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$commands$1$$anonfun$apply$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$commands$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$$anonfun$methods$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands$class.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ReflectiveCommands.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$asInputTask$1$$anonfun$apply$1$$anonfun$apply$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$asInputTask$1$$anonfun$apply$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$asInputTask$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$classpathFiles$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$compilerClasspathString$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$forkCompiler$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$forkPartest$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$forkRepl$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$partestProperties$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$sbtDefaultForkOptions$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathFiles$1$$anonfun$apply$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathFiles$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathFiles$2$$anonfun$apply$4.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathFiles$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathReadable$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$$anonfun$testClasspathString$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners$class.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/Runners.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$5.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$6.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$7.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$8.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$allInSrc$1$$anonfun$apply$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$allInSrc$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$appendInEveryScope$1$$anonfun$apply$8.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$appendInEveryScope$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$buildLevelJars$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$chooseBootstrap$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$chooseBootstrap$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$filesIn$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$fromBase$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$inSrc$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$jarPathsTask$1$$anonfun$apply$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$jarPathsTask$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$logger$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$moduleId$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$sbtFilesInBuild$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceForVersion$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromAppConfiguration$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$4.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$apply$5.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$apply$6.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1$$anonfun$apply$7.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceFromModuleIDTask$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceTask$1$$anonfun$apply$3$$anonfun$apply$4.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceTask$1$$anonfun$apply$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$scalaInstanceTask$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$$anonfun$sourceFilesInProject$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers$class.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SbtHelpers.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScalaOptionOps$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScalaOptionOps.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1$$anonfun$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1$$anonfun$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1$$anonfun$4.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1$$anonfun$apply$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$globals$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$hasPrintableValue$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$policy$building$ScopedShow$$any_s$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$policy$building$ScopedShow$$any_s$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$policy$building$ScopedShow$$any_s$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$thises$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$value$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$value_s$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$$anonfun$value_s$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/ScopedShow.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SequenceOps$$anonfun$preferring$extension$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SequenceOps$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/SequenceOps.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$$anonfun$apply$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$$anonfun$apply$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$$anonfun$attrKeys$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$$anonfun$look$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/WState.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$$anonfun$inputTaskValueDiscarding$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$InitSettingOps$$anonfun$$bar$greater$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$InitSettingOps$$anonfun$task$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$InitSettingOps.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$InitTaskOps.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$SettingKeyOps.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package$TaskKeyOps.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/package.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$asmAttributed$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiler$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$4.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$compiling$5.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$library$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$library$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$4.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$5.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$publishing$6.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$replJar$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$2$$anonfun$apply$1$$anonfun$apply$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$2$$anonfun$apply$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$4.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$5.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$6.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$root$7.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$1.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$10.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$11.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$12.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$13.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$14.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$15.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$2.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$3.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$4.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$5.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$6.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$7.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$8.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$$anonfun$universal$9.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings$.class -> lastModified(1409954196000)
+/home/alois/oss/policy/project/target/scala-2.10/sbt-0.13/classes/policy/building/projectSettings.class -> lastModified(1409954196000)
+source stamps:
+14 items
+/home/alois/oss/policy/project/Bootstrap.scala -> hash(c6be0ddff5c22af401e29737a9e45596fe5c25da)
+/home/alois/oss/policy/project/BuildSettings.scala -> hash(8d64ac27273609453435fc5783785016af9f122f)
+/home/alois/oss/policy/project/BuildTasks.scala -> hash(eb9528fc6b1b2f5e8cad0c9c570412c6cbdd007f)
+/home/alois/oss/policy/project/Constants.scala -> hash(98aa1c0c10bffd81704332d0e4f7911725a324af)
+/home/alois/oss/policy/project/Helpers.scala -> hash(09d7116dd63cb03bfd71d0bcb7e58fd4f0c2261c)
+/home/alois/oss/policy/project/Ivy.scala -> hash(27f6da6c9e8a5980354db0ad6da21340fba4c5ab)
+/home/alois/oss/policy/project/Mima.scala -> hash(e7f694822c0382e92484d4f94102f4539d6f4dfc)
+/home/alois/oss/policy/project/PluginRelated.scala -> hash(c0d8ed427ff24d0d8c731175618c0e72591f49e1)
+/home/alois/oss/policy/project/Properties.scala -> hash(487858a81f01084cdcfe5f5026d09e399dad6c1c)
+/home/alois/oss/policy/project/Run.scala -> hash(d8f938b6652a1946e1944e51991893306baed645)
+/home/alois/oss/policy/project/Scratch.scala -> hash(25233fac928e9868c48f4fed88f11b44216a932d)
+/home/alois/oss/policy/project/Show.scala -> hash(21eee2ddf6398971095a6d5aefa655c5abe3aeee)
+/home/alois/oss/policy/project/Wrappers.scala -> hash(f9e32d21da1451d0d429b61347c55b38baf62d2a)
+/home/alois/oss/policy/project/package.scala -> hash(16a7107b97d3745d033a65827ad8708821331efc)
+binary stamps:
+26 items
+/home/alois/.ivy2/cache/com.typesafe/mima-core_2.10/jars/mima-core_2.10-0.1.6.jar -> lastModified(1380016242000)
+/home/alois/.ivy2/cache/org.improving/psp-api_2.10/jars/psp-api_2.10-0.3.1-M3.jar -> lastModified(1409811927000)
+/home/alois/.ivy2/cache/org.scala-sbt/apply-macro/jars/apply-macro-0.13.5.jar -> lastModified(1401198213000)
+/home/alois/.ivy2/cache/org.scala-sbt/classpath/jars/classpath-0.13.5.jar -> lastModified(1401198314000)
+/home/alois/.ivy2/cache/org.scala-sbt/collections/jars/collections-0.13.5.jar -> lastModified(1401198267000)
+/home/alois/.ivy2/cache/org.scala-sbt/command/jars/command-0.13.5.jar -> lastModified(1401198356000)
+/home/alois/.ivy2/cache/org.scala-sbt/completion/jars/completion-0.13.5.jar -> lastModified(1401198264000)
+/home/alois/.ivy2/cache/org.scala-sbt/incremental-compiler/jars/incremental-compiler-0.13.5.jar -> lastModified(1401198351000)
+/home/alois/.ivy2/cache/org.scala-sbt/interface/jars/interface-0.13.5.jar -> lastModified(1401198248000)
+/home/alois/.ivy2/cache/org.scala-sbt/io/jars/io-0.13.5.jar -> lastModified(1401198198000)
+/home/alois/.ivy2/cache/org.scala-sbt/ivy/jars/ivy-0.13.5.jar -> lastModified(1401198279000)
+/home/alois/.ivy2/cache/org.scala-sbt/launcher-interface/jars/launcher-interface-0.13.5.jar -> lastModified(1401198226000)
+/home/alois/.ivy2/cache/org.scala-sbt/logging/jars/logging-0.13.5.jar -> lastModified(1401198321000)
+/home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar -> lastModified(1401198341000)
+/home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar -> lastModified(1401198381000)
+/home/alois/.ivy2/cache/org.scala-sbt/process/jars/process-0.13.5.jar -> lastModified(1401198207000)
+/home/alois/.ivy2/cache/org.scala-sbt/relation/jars/relation-0.13.5.jar -> lastModified(1401198317000)
+/home/alois/.ivy2/cache/org.scala-sbt/run/jars/run-0.13.5.jar -> lastModified(1401198366000)
+/home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar -> lastModified(1401198390000)
+/home/alois/.ivy2/cache/org.scala-sbt/task-system/jars/task-system-0.13.5.jar -> lastModified(1401198283000)
+/home/alois/.ivy2/cache/org.scala-sbt/tasks/jars/tasks-0.13.5.jar -> lastModified(1401198205000)
+/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/com.typesafe/sbt-mima-plugin/jars/sbt-mima-plugin-0.1.6.jar -> lastModified(1380016327000)
+/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/me.lessis/bintray-sbt/jars/bintray-sbt-0.1.2.jar -> lastModified(1404793852000)
+/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/org.improving/psp-libsbt/jars/psp-libsbt-0.3.1-M3.jar -> lastModified(1409813532000)
+/home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar -> lastModified(1395179187000)
+/opt/java/jre/lib/rt.jar -> lastModified(1395128400000)
+class names:
+26 items
+/home/alois/.ivy2/cache/com.typesafe/mima-core_2.10/jars/mima-core_2.10-0.1.6.jar -> com.typesafe.tools.mima.core.MemberProblem
+/home/alois/.ivy2/cache/org.improving/psp-api_2.10/jars/psp-api_2.10-0.3.1-M3.jar -> psp.std.api.PackageAliases
+/home/alois/.ivy2/cache/org.scala-sbt/apply-macro/jars/apply-macro-0.13.5.jar -> sbt.appmacro.Instance$
+/home/alois/.ivy2/cache/org.scala-sbt/classpath/jars/classpath-0.13.5.jar -> sbt.ScalaInstance$
+/home/alois/.ivy2/cache/org.scala-sbt/collections/jars/collections-0.13.5.jar -> sbt.Settings
+/home/alois/.ivy2/cache/org.scala-sbt/command/jars/command-0.13.5.jar -> sbt.State
+/home/alois/.ivy2/cache/org.scala-sbt/completion/jars/completion-0.13.5.jar -> sbt.complete.RichParser
+/home/alois/.ivy2/cache/org.scala-sbt/incremental-compiler/jars/incremental-compiler-0.13.5.jar -> sbt.inc.IncOptions$
+/home/alois/.ivy2/cache/org.scala-sbt/interface/jars/interface-0.13.5.jar -> xsbti.Logger
+/home/alois/.ivy2/cache/org.scala-sbt/io/jars/io-0.13.5.jar -> sbt.IO$
+/home/alois/.ivy2/cache/org.scala-sbt/ivy/jars/ivy-0.13.5.jar -> sbt.CrossVersion
+/home/alois/.ivy2/cache/org.scala-sbt/launcher-interface/jars/launcher-interface-0.13.5.jar -> xsbti.AppConfiguration
+/home/alois/.ivy2/cache/org.scala-sbt/logging/jars/logging-0.13.5.jar -> sbt.AbstractLogger
+/home/alois/.ivy2/cache/org.scala-sbt/main-settings/jars/main-settings-0.13.5.jar -> sbt.std.FullInstance$
+/home/alois/.ivy2/cache/org.scala-sbt/main/jars/main-0.13.5.jar -> sbt.Project
+/home/alois/.ivy2/cache/org.scala-sbt/process/jars/process-0.13.5.jar -> sbt.Process$
+/home/alois/.ivy2/cache/org.scala-sbt/relation/jars/relation-0.13.5.jar -> sbt.Relation
+/home/alois/.ivy2/cache/org.scala-sbt/run/jars/run-0.13.5.jar -> sbt.ForkOptions
+/home/alois/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-0.13.5.jar -> sbt.package$
+/home/alois/.ivy2/cache/org.scala-sbt/task-system/jars/task-system-0.13.5.jar -> sbt.std.TaskExtra
+/home/alois/.ivy2/cache/org.scala-sbt/tasks/jars/tasks-0.13.5.jar -> sbt.Inc
+/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/com.typesafe/sbt-mima-plugin/jars/sbt-mima-plugin-0.1.6.jar -> com.typesafe.tools.mima.plugin.MimaKeys$
+/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/me.lessis/bintray-sbt/jars/bintray-sbt-0.1.2.jar -> bintray.Plugin$
+/home/alois/.ivy2/cache/scala_2.10/sbt_0.13/org.improving/psp-libsbt/jars/psp-libsbt-0.3.1-M3.jar -> psp.libsbt.package$
+/home/alois/.sbt/boot/scala-2.10.4/lib/scala-library.jar -> scala.package$
+/opt/java/jre/lib/rt.jar -> java.lang.Object
+internal apis:
+14 items
+/home/alois/oss/policy/project/Bootstrap.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHAJ7Uj4AHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAJzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHABdAAicG9saWN5LmJ1aWxkaW5nLlJlZmxlY3RpdmVDb21tYW5kc3VyABpbTHhzYnRpLmFwaS5UeXBlUGFyYW1ldGVyO9ltJg8onfK2AgAAeHAAAAAAfnIAGHhzYnRpLmFwaS5EZWZpbml0aW9uVHlwZQAAAAAAAAAAEgAAeHIADmphdmEubGFuZy5FbnVtAAAAAAAAAAASAAB4cHQABVRyYWl0dXIAE1tMamF2YS5sYW5nLlN0cmluZzut0lbn6R17RwIAAHhwAAAAAHNyABN4c2J0aS5TYWZlTGF6eSRJbXBsUAIuk5eXQD8CAANaAAhiaXRtYXAkMEwAAl90dAASTGphdmEvbGFuZy9PYmplY3Q7TAAEZXZhbHQAEUxzY2FsYS9GdW5jdGlvbjA7eHIAFnhzYnRpLmFwaS5BYnN0cmFjdExhennTd7UBX7vnoAIAAHhwAHBzcgAgeHNidGkuU2FmZUxhenkkJGFub25mdW4kc3RyaWN0JDEAAAAAAAAAAAIAAUwAB3ZhbHVlJDFxAH4AL3hwc3IAE3hzYnRpLmFwaS5FbXB0eVR5cGW8/Z5GSTuJJAIAAHhyABR4c2J0aS5hcGkuU2ltcGxlVHlwZXJ4YoghI79AAgAAeHIADnhzYnRpLmFwaS5UeXBlP2rZIRZJqsoCAAB4cHNxAH4ALgBwc3EAfgAzc3IAE3hzYnRpLmFwaS5TdHJ1Y3R1cmWpqvmAk2/YAAIAA0wACGRlY2xhcmVkcQB+ABVMAAlpbmhlcml0ZWRxAH4AFUwAB3BhcmVudHNxAH4AFXhxAH4AN3NxAH4ALgBwc3EAfgAzdXEAfgAQAAAAAHNxAH4ALgBwc3EAfgAzdXEAfgAQAAAAAHNxAH4ALgBwc3EAfgAzdXIAEVtMeHNidGkuYXBpLlR5cGU7dP+lWnv56UECAAB4cAAAAAJzcgAUeHNidGkuYXBpLlByb2plY3Rpb27z0o1U6UWkLQIAAkwAAmlkcQB+ABxMAAZwcmVmaXh0ABZMeHNidGkvYXBpL1NpbXBsZVR5cGU7eHEAfgA2dAAGT2JqZWN0c3IAE3hzYnRpLmFwaS5TaW5nbGV0b278p1/4z1bkRgIAAUwABHBhdGh0ABBMeHNidGkvYXBpL1BhdGg7eHEAfgA2c3IADnhzYnRpLmFwaS5QYXRomz1cCM6lJ4QCAAFbAApjb21wb25lbnRzdAAaW0x4c2J0aS9hcGkvUGF0aENvbXBvbmVudDt4cHVyABpbTHhzYnRpLmFwaS5QYXRoQ29tcG9uZW50O0PaCXQtZxZ0AgAAeHAAAAADc3IADHhzYnRpLmFwaS5JZJgybIs3U8RAAgABTAACaWRxAH4AHHhyABd4c2J0aS5hcGkuUGF0aENvbXBvbmVudF+aIlsuhp+8AgAAeHB0AARqYXZhc3EAfgBTdAAEbGFuZ3NyAA54c2J0aS5hcGkuVGhpc9sJ7abMWkBcAgAAeHEAfgBUc3EAfgBHdAADQW55c3EAfgBLc3EAfgBOdXEAfgBRAAAAAnNxAH4AU3QABXNjYWxhcQB+AFpzcQB+ABJxAH4AIHVxAH4AIQAAAABzcQB+ACMBdAAZcG9saWN5LmJ1aWxkaW5nLkJvb3RzdHJhcHVxAH4AJgAAAABxAH4AKnVxAH4ALAAAAABzcQB+AC4AcHNxAH4AM3EAfgA4c3EAfgAuAHBzcQB+ADNzcQB+ADtzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4ARQAAAAJzcQB+AEdxAH4ASnNxAH4AS3NxAH4ATnVxAH4AUQAAAANzcQB+AFNxAH4AVnNxAH4AU3EAfgBYcQB+AFpzcQB+AEdxAH4AXHNxAH4AS3NxAH4ATnVxAH4AUQAAAAJzcQB+AFNxAH4AYXEAfgBadXIAFFtMeHNidGkuYXBpLlBhY2thZ2U7WxMZN3CnJ6ECAAB4cAAAAAJzcgAReHNidGkuYXBpLlBhY2thZ2V+WY/2rs45WAIAAUwABG5hbWVxAH4AHHhwdAAGcG9saWN5c3EAfgCDdAAPcG9saWN5LmJ1aWxkaW5nc3IAFXhzYnRpLmFwaS5Db21waWxhdGlvbu364MNq6KBCAgACSgAJc3RhcnRUaW1lWwAHb3V0cHV0c3QAGltMeHNidGkvYXBpL091dHB1dFNldHRpbmc7eHAAAAFIR9FyH3VyABpbTHhzYnRpLmFwaS5PdXRwdXRTZXR0aW5nO39qwvOnh6VCAgAAeHAAAAABc3IAF3hzYnRpLmFwaS5PdXRwdXRTZXR0aW5netmaR3T7HXsCAAJMAA9vdXRwdXREaXJlY3RvcnlxAH4AHEwAD3NvdXJjZURpcmVjdG9yeXEAfgAceHB0AEEvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvdGFyZ2V0L3NjYWxhLTIuMTAvc2J0LTAuMTMvY2xhc3Nlc3QAAS91cgACW0Ks8xf4BghU4AIAAHhwAAAAFMa+Dd/1wir0AeKXN6nkVZb+XCXa
+/home/alois/oss/policy/project/BuildSettings.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHCcSmt5AHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAANzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHABdAAXcG9saWN5LmJ1aWxkaW5nLkRlcGVuZHN1cgAaW0x4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcjvZbSYPKJ3ytgIAAHhwAAAAAH5yABh4c2J0aS5hcGkuRGVmaW5pdGlvblR5cGUAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAVUcmFpdHVyABNbTGphdmEubGFuZy5TdHJpbmc7rdJW5+kde0cCAAB4cAAAAABzcgATeHNidGkuU2FmZUxhenkkSW1wbFACLpOXl0A/AgADWgAIYml0bWFwJDBMAAJfdHQAEkxqYXZhL2xhbmcvT2JqZWN0O0wABGV2YWx0ABFMc2NhbGEvRnVuY3Rpb24wO3hyABZ4c2J0aS5hcGkuQWJzdHJhY3RMYXp503e1AV+756ACAAB4cABwc3IAIHhzYnRpLlNhZmVMYXp5JCRhbm9uZnVuJHN0cmljdCQxAAAAAAAAAAACAAFMAAd2YWx1ZSQxcQB+AC94cHNyABN4c2J0aS5hcGkuRW1wdHlUeXBlvP2eRkk7iSQCAAB4cgAUeHNidGkuYXBpLlNpbXBsZVR5cGVyeGKIISO/QAIAAHhyAA54c2J0aS5hcGkuVHlwZT9q2SEWSarKAgAAeHBzcQB+AC4AcHNxAH4AM3NyABN4c2J0aS5hcGkuU3RydWN0dXJlqar5gJNv2AACAANMAAhkZWNsYXJlZHEAfgAVTAAJaW5oZXJpdGVkcQB+ABVMAAdwYXJlbnRzcQB+ABV4cQB+ADdzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHN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
+/home/alois/oss/policy/project/BuildTasks.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHCcusT/AHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAJzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHAAdAAacG9saWN5LmJ1aWxkaW5nLlBvbGljeUtleXN1cgAaW0x4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcjvZbSYPKJ3ytgIAAHhwAAAAAH5yABh4c2J0aS5hcGkuRGVmaW5pdGlvblR5cGUAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAZNb2R1bGV1cgATW0xqYXZhLmxhbmcuU3RyaW5nO63SVufpHXtHAgAAeHAAAAAAc3IAE3hzYnRpLlNhZmVMYXp5JEltcGxQAi6Tl5dAPwIAA1oACGJpdG1hcCQwTAACX3R0ABJMamF2YS9sYW5nL09iamVjdDtMAARldmFsdAARTHNjYWxhL0Z1bmN0aW9uMDt4cgAWeHNidGkuYXBpLkFic3RyYWN0TGF6edN3tQFfu+egAgAAeHAAcHNyACB4c2J0aS5TYWZlTGF6eSQkYW5vbmZ1biRzdHJpY3QkMQAAAAAAAAAAAgABTAAHdmFsdWUkMXEAfgAveHBzcgATeHNidGkuYXBpLkVtcHR5VHlwZbz9nkZJO4kkAgAAeHIAFHhzYnRpLmFwaS5TaW1wbGVUeXBlcnhiiCEjv0ACAAB4cgAOeHNidGkuYXBpLlR5cGU/atkhFkmqygIAAHhwc3EAfgAuAHBzcQB+ADNzcgATeHNidGkuYXBpLlN0cnVjdHVyZamq+YCTb9gAAgADTAAIZGVjbGFyZWRxAH4AFUwACWluaGVyaXRlZHEAfgAVTAAHcGFyZW50c3EAfgAVeHEAfgA3c3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cgARW0x4c2J0aS5hcGkuVHlwZTt0/6Vae/npQQIAAHhwAAAAAnNyABR4c2J0aS5hcGkuUHJvamVjdGlvbvPSjVTpRaQtAgACTAACaWRxAH4AHEwABnByZWZpeHQAFkx4c2J0aS9hcGkvU2ltcGxlVHlwZTt4cQB+ADZ0AAZPYmplY3RzcgATeHNidGkuYXBpLlNpbmdsZXRvbvynX/jPVuRGAgABTAAEcGF0aHQAEEx4c2J0aS9hcGkvUGF0aDt4cQB+ADZzcgAOeHNidGkuYXBpLlBhdGibPVwIzqUnhAIAAVsACmNvbXBvbmVudHN0ABpbTHhzYnRpL2FwaS9QYXRoQ29tcG9uZW50O3hwdXIAGltMeHNidGkuYXBpLlBhdGhDb21wb25lbnQ7Q9oJdC1nFnQCAAB4cAAAAANzcgAMeHNidGkuYXBpLklkmDJsizdTxEACAAFMAAJpZHEAfgAceHIAF3hzYnRpLmFwaS5QYXRoQ29tcG9uZW50X5oiWy6Gn7wCAAB4cHQABGphdmFzcQB+AFN0AARsYW5nc3IADnhzYnRpLmFwaS5UaGlz2wntpsxaQFwCAAB4cQB+AFRzcQB+AEd0AANBbnlzcQB+AEtzcQB+AE51cQB+AFEAAAACc3EAfgBTdAAFc2NhbGFxAH4AWnNxAH4AEnEAfgAgdXEAfgAhAAAAAHNxAH4AIwF0ABpwb2xpY3kuYnVpbGRpbmcuQnVpbGRUYXNrc3VxAH4AJgAAAAB+cQB+ACh0AAVUcmFpdHVxAH4ALAAAAABzcQB+AC4AcHNxAH4AM3EAfgA4c3EAfgAuAHBzcQB+ADNzcQB+ADtzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4ARQAAAAJzcQB+AEdxAH4ASnNxAH4AS3NxAH4ATnVxAH4AUQAAAANzcQB+AFNxAH4AVnNxAH4AU3EAfgBYcQB+AFpzcQB+AEdxAH4AXHNxAH4AS3NxAH4ATnVxAH4AUQAAAAJzcQB+AFNxAH4AYXEAfgBadXIAFFtMeHNidGkuYXBpLlBhY2thZ2U7WxMZN3CnJ6ECAAB4cAAAAAJzcgAReHNidGkuYXBpLlBhY2thZ2V+WY/2rs45WAIAAUwABG5hbWVxAH4AHHhwdAAGcG9saWN5c3EAfgCFdAAPcG9saWN5LmJ1aWxkaW5nc3IAFXhzYnRpLmFwaS5Db21waWxhdGlvbu364MNq6KBCAgACSgAJc3RhcnRUaW1lWwAHb3V0cHV0c3QAGltMeHNidGkvYXBpL091dHB1dFNldHRpbmc7eHAAAAFIR9FyH3VyABpbTHhzYnRpLmFwaS5PdXRwdXRTZXR0aW5nO39qwvOnh6VCAgAAeHAAAAABc3IAF3hzYnRpLmFwaS5PdXRwdXRTZXR0aW5netmaR3T7HXsCAAJMAA9vdXRwdXREaXJlY3RvcnlxAH4AHEwAD3NvdXJjZURpcmVjdG9yeXEAfgAceHB0AEEvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvdGFyZ2V0L3NjYWxhLTIuMTAvc2J0LTAuMTMvY2xhc3Nlc3QAAS91cgACW0Ks8xf4BghU4AIAAHhwAAAAFOuVKPxrGy9ejK0MnFcEEsbL3QB/
+/home/alois/oss/policy/project/Constants.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHC9XBoDAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAFzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHABdAAZcG9saWN5LmJ1aWxkaW5nLkNvbnN0YW50c3VyABpbTHhzYnRpLmFwaS5UeXBlUGFyYW1ldGVyO9ltJg8onfK2AgAAeHAAAAAAfnIAGHhzYnRpLmFwaS5EZWZpbml0aW9uVHlwZQAAAAAAAAAAEgAAeHIADmphdmEubGFuZy5FbnVtAAAAAAAAAAASAAB4cHQABVRyYWl0dXIAE1tMamF2YS5sYW5nLlN0cmluZzut0lbn6R17RwIAAHhwAAAAAHNyABN4c2J0aS5TYWZlTGF6eSRJbXBsUAIuk5eXQD8CAANaAAhiaXRtYXAkMEwAAl90dAASTGphdmEvbGFuZy9PYmplY3Q7TAAEZXZhbHQAEUxzY2FsYS9GdW5jdGlvbjA7eHIAFnhzYnRpLmFwaS5BYnN0cmFjdExhennTd7UBX7vnoAIAAHhwAHBzcgAgeHNidGkuU2FmZUxhenkkJGFub25mdW4kc3RyaWN0JDEAAAAAAAAAAAIAAUwAB3ZhbHVlJDFxAH4AL3hwc3IAE3hzYnRpLmFwaS5FbXB0eVR5cGW8/Z5GSTuJJAIAAHhyABR4c2J0aS5hcGkuU2ltcGxlVHlwZXJ4YoghI79AAgAAeHIADnhzYnRpLmFwaS5UeXBlP2rZIRZJqsoCAAB4cHNxAH4ALgBwc3EAfgAzc3IAE3hzYnRpLmFwaS5TdHJ1Y3R1cmWpqvmAk2/YAAIAA0wACGRlY2xhcmVkcQB+ABVMAAlpbmhlcml0ZWRxAH4AFUwAB3BhcmVudHNxAH4AFXhxAH4AN3NxAH4ALgBwc3EAfgAzdXEAfgAQAAAAAHNxAH4ALgBwc3EAfgAzdXEAfgAQAAAAAHNxAH4ALgBwc3EAfgAzdXIAEVtMeHNidGkuYXBpLlR5cGU7dP+lWnv56UECAAB4cAAAAAJzcgAUeHNidGkuYXBpLlByb2plY3Rpb27z0o1U6UWkLQIAAkwAAmlkcQB+ABxMAAZwcmVmaXh0ABZMeHNidGkvYXBpL1NpbXBsZVR5cGU7eHEAfgA2dAAGT2JqZWN0c3IAE3hzYnRpLmFwaS5TaW5nbGV0b278p1/4z1bkRgIAAUwABHBhdGh0ABBMeHNidGkvYXBpL1BhdGg7eHEAfgA2c3IADnhzYnRpLmFwaS5QYXRomz1cCM6lJ4QCAAFbAApjb21wb25lbnRzdAAaW0x4c2J0aS9hcGkvUGF0aENvbXBvbmVudDt4cHVyABpbTHhzYnRpLmFwaS5QYXRoQ29tcG9uZW50O0PaCXQtZxZ0AgAAeHAAAAADc3IADHhzYnRpLmFwaS5JZJgybIs3U8RAAgABTAACaWRxAH4AHHhyABd4c2J0aS5hcGkuUGF0aENvbXBvbmVudF+aIlsuhp+8AgAAeHB0AARqYXZhc3EAfgBTdAAEbGFuZ3NyAA54c2J0aS5hcGkuVGhpc9sJ7abMWkBcAgAAeHEAfgBUc3EAfgBHdAADQW55c3EAfgBLc3EAfgBOdXEAfgBRAAAAAnNxAH4AU3QABXNjYWxhcQB+AFp1cgAUW0x4c2J0aS5hcGkuUGFja2FnZTtbExk3cKcnoQIAAHhwAAAAAnNyABF4c2J0aS5hcGkuUGFja2FnZX5Zj/auzjlYAgABTAAEbmFtZXEAfgAceHB0AAZwb2xpY3lzcQB+AGR0AA9wb2xpY3kuYnVpbGRpbmdzcgAVeHNidGkuYXBpLkNvbXBpbGF0aW9u7frgw2rooEICAAJKAAlzdGFydFRpbWVbAAdvdXRwdXRzdAAaW0x4c2J0aS9hcGkvT3V0cHV0U2V0dGluZzt4cAAAAUhH0XIfdXIAGltMeHNidGkuYXBpLk91dHB1dFNldHRpbmc7f2rC86eHpUICAAB4cAAAAAFzcgAXeHNidGkuYXBpLk91dHB1dFNldHRpbmd62ZpHdPsdewIAAkwAD291dHB1dERpcmVjdG9yeXEAfgAcTAAPc291cmNlRGlyZWN0b3J5cQB+ABx4cHQAQS9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC90YXJnZXQvc2NhbGEtMi4xMC9zYnQtMC4xMy9jbGFzc2VzdAABL3VyAAJbQqzzF/gGCFTgAgAAeHAAAAAUmKocDBC//YFwQzLQ5PeRFyWjJK8=
+/home/alois/oss/policy/project/Helpers.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHBEd3i0AHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAANzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHABdAAXcG9saWN5LmJ1aWxkaW5nLkhlbHBlcnN1cgAaW0x4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcjvZbSYPKJ3ytgIAAHhwAAAAAH5yABh4c2J0aS5hcGkuRGVmaW5pdGlvblR5cGUAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAVUcmFpdHVyABNbTGphdmEubGFuZy5TdHJpbmc7rdJW5+kde0cCAAB4cAAAAABzcgATeHNidGkuU2FmZUxhenkkSW1wbFACLpOXl0A/AgADWgAIYml0bWFwJDBMAAJfdHQAEkxqYXZhL2xhbmcvT2JqZWN0O0wABGV2YWx0ABFMc2NhbGEvRnVuY3Rpb24wO3hyABZ4c2J0aS5hcGkuQWJzdHJhY3RMYXp503e1AV+756ACAAB4cABwc3IAIHhzYnRpLlNhZmVMYXp5JCRhbm9uZnVuJHN0cmljdCQxAAAAAAAAAAACAAFMAAd2YWx1ZSQxcQB+AC94cHNyABN4c2J0aS5hcGkuRW1wdHlUeXBlvP2eRkk7iSQCAAB4cgAUeHNidGkuYXBpLlNpbXBsZVR5cGVyeGKIISO/QAIAAHhyAA54c2J0aS5hcGkuVHlwZT9q2SEWSarKAgAAeHBzcQB+AC4AcHNxAH4AM3NyABN4c2J0aS5hcGkuU3RydWN0dXJlqar5gJNv2AACAANMAAhkZWNsYXJlZHEAfgAVTAAJaW5oZXJpdGVkcQB+ABVMAAdwYXJlbnRzcQB+ABV4cQB+ADdzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHN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
+/home/alois/oss/policy/project/Ivy.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHAEZ/i7AHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAFzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHABdAAacG9saWN5LmJ1aWxkaW5nLkl2eUhlbHBlcnN1cgAaW0x4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcjvZbSYPKJ3ytgIAAHhwAAAAAH5yABh4c2J0aS5hcGkuRGVmaW5pdGlvblR5cGUAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAVUcmFpdHVyABNbTGphdmEubGFuZy5TdHJpbmc7rdJW5+kde0cCAAB4cAAAAABzcgATeHNidGkuU2FmZUxhenkkSW1wbFACLpOXl0A/AgADWgAIYml0bWFwJDBMAAJfdHQAEkxqYXZhL2xhbmcvT2JqZWN0O0wABGV2YWx0ABFMc2NhbGEvRnVuY3Rpb24wO3hyABZ4c2J0aS5hcGkuQWJzdHJhY3RMYXp503e1AV+756ACAAB4cABwc3IAIHhzYnRpLlNhZmVMYXp5JCRhbm9uZnVuJHN0cmljdCQxAAAAAAAAAAACAAFMAAd2YWx1ZSQxcQB+AC94cHNyABN4c2J0aS5hcGkuRW1wdHlUeXBlvP2eRkk7iSQCAAB4cgAUeHNidGkuYXBpLlNpbXBsZVR5cGVyeGKIISO/QAIAAHhyAA54c2J0aS5hcGkuVHlwZT9q2SEWSarKAgAAeHBzcQB+AC4AcHNxAH4AM3NyABN4c2J0aS5hcGkuU3RydWN0dXJlqar5gJNv2AACAANMAAhkZWNsYXJlZHEAfgAVTAAJaW5oZXJpdGVkcQB+ABVMAAdwYXJlbnRzcQB+ABV4cQB+ADdzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VyABFbTHhzYnRpLmFwaS5UeXBlO3T/pVp7+elBAgAAeHAAAAACc3IAFHhzYnRpLmFwaS5Qcm9qZWN0aW9u89KNVOlFpC0CAAJMAAJpZHEAfgAcTAAGcHJlZml4dAAWTHhzYnRpL2FwaS9TaW1wbGVUeXBlO3hxAH4ANnQABk9iamVjdHNyABN4c2J0aS5hcGkuU2luZ2xldG9u/Kdf+M9W5EYCAAFMAARwYXRodAAQTHhzYnRpL2FwaS9QYXRoO3hxAH4ANnNyAA54c2J0aS5hcGkuUGF0aJs9XAjOpSeEAgABWwAKY29tcG9uZW50c3QAGltMeHNidGkvYXBpL1BhdGhDb21wb25lbnQ7eHB1cgAaW0x4c2J0aS5hcGkuUGF0aENvbXBvbmVudDtD2gl0LWcWdAIAAHhwAAAAA3NyAAx4c2J0aS5hcGkuSWSYMmyLN1PEQAIAAUwAAmlkcQB+ABx4cgAXeHNidGkuYXBpLlBhdGhDb21wb25lbnRfmiJbLoafvAIAAHhwdAAEamF2YXNxAH4AU3QABGxhbmdzcgAOeHNidGkuYXBpLlRoaXPbCe2mzFpAXAIAAHhxAH4AVHNxAH4AR3QAA0FueXNxAH4AS3NxAH4ATnVxAH4AUQAAAAJzcQB+AFN0AAVzY2FsYXEAfgBadXIAFFtMeHNidGkuYXBpLlBhY2thZ2U7WxMZN3CnJ6ECAAB4cAAAAAJzcgAReHNidGkuYXBpLlBhY2thZ2V+WY/2rs45WAIAAUwABG5hbWVxAH4AHHhwdAAGcG9saWN5c3EAfgBkdAAPcG9saWN5LmJ1aWxkaW5nc3IAFXhzYnRpLmFwaS5Db21waWxhdGlvbu364MNq6KBCAgACSgAJc3RhcnRUaW1lWwAHb3V0cHV0c3QAGltMeHNidGkvYXBpL091dHB1dFNldHRpbmc7eHAAAAFIR9FyH3VyABpbTHhzYnRpLmFwaS5PdXRwdXRTZXR0aW5nO39qwvOnh6VCAgAAeHAAAAABc3IAF3hzYnRpLmFwaS5PdXRwdXRTZXR0aW5netmaR3T7HXsCAAJMAA9vdXRwdXREaXJlY3RvcnlxAH4AHEwAD3NvdXJjZURpcmVjdG9yeXEAfgAceHB0AEEvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvdGFyZ2V0L3NjYWxhLTIuMTAvc2J0LTAuMTMvY2xhc3Nlc3QAAS91cgACW0Ks8xf4BghU4AIAAHhwAAAAFCf22myeilmANU2wrW2iE0D7pMWr
+/home/alois/oss/policy/project/Mima.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHBJ/BOWAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAFzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHAAdAAacG9saWN5LmJ1aWxkaW5nLk1pbWFQb2xpY3l1cgAaW0x4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcjvZbSYPKJ3ytgIAAHhwAAAAAH5yABh4c2J0aS5hcGkuRGVmaW5pdGlvblR5cGUAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAZNb2R1bGV1cgATW0xqYXZhLmxhbmcuU3RyaW5nO63SVufpHXtHAgAAeHAAAAAAc3IAE3hzYnRpLlNhZmVMYXp5JEltcGxQAi6Tl5dAPwIAA1oACGJpdG1hcCQwTAACX3R0ABJMamF2YS9sYW5nL09iamVjdDtMAARldmFsdAARTHNjYWxhL0Z1bmN0aW9uMDt4cgAWeHNidGkuYXBpLkFic3RyYWN0TGF6edN3tQFfu+egAgAAeHAAcHNyACB4c2J0aS5TYWZlTGF6eSQkYW5vbmZ1biRzdHJpY3QkMQAAAAAAAAAAAgABTAAHdmFsdWUkMXEAfgAveHBzcgATeHNidGkuYXBpLkVtcHR5VHlwZbz9nkZJO4kkAgAAeHIAFHhzYnRpLmFwaS5TaW1wbGVUeXBlcnhiiCEjv0ACAAB4cgAOeHNidGkuYXBpLlR5cGU/atkhFkmqygIAAHhwc3EAfgAuAHBzcQB+ADNzcgATeHNidGkuYXBpLlN0cnVjdHVyZamq+YCTb9gAAgADTAAIZGVjbGFyZWRxAH4AFUwACWluaGVyaXRlZHEAfgAVTAAHcGFyZW50c3EAfgAVeHEAfgA3c3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cgARW0x4c2J0aS5hcGkuVHlwZTt0/6Vae/npQQIAAHhwAAAAAnNyABR4c2J0aS5hcGkuUHJvamVjdGlvbvPSjVTpRaQtAgACTAACaWRxAH4AHEwABnByZWZpeHQAFkx4c2J0aS9hcGkvU2ltcGxlVHlwZTt4cQB+ADZ0AAZPYmplY3RzcgATeHNidGkuYXBpLlNpbmdsZXRvbvynX/jPVuRGAgABTAAEcGF0aHQAEEx4c2J0aS9hcGkvUGF0aDt4cQB+ADZzcgAOeHNidGkuYXBpLlBhdGibPVwIzqUnhAIAAVsACmNvbXBvbmVudHN0ABpbTHhzYnRpL2FwaS9QYXRoQ29tcG9uZW50O3hwdXIAGltMeHNidGkuYXBpLlBhdGhDb21wb25lbnQ7Q9oJdC1nFnQCAAB4cAAAAANzcgAMeHNidGkuYXBpLklkmDJsizdTxEACAAFMAAJpZHEAfgAceHIAF3hzYnRpLmFwaS5QYXRoQ29tcG9uZW50X5oiWy6Gn7wCAAB4cHQABGphdmFzcQB+AFN0AARsYW5nc3IADnhzYnRpLmFwaS5UaGlz2wntpsxaQFwCAAB4cQB+AFRzcQB+AEd0AANBbnlzcQB+AEtzcQB+AE51cQB+AFEAAAACc3EAfgBTdAAFc2NhbGFxAH4AWnVyABRbTHhzYnRpLmFwaS5QYWNrYWdlO1sTGTdwpyehAgAAeHAAAAACc3IAEXhzYnRpLmFwaS5QYWNrYWdlflmP9q7OOVgCAAFMAARuYW1lcQB+ABx4cHQABnBvbGljeXNxAH4AZHQAD3BvbGljeS5idWlsZGluZ3NyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABSEfRch91cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5cQB+ABxMAA9zb3VyY2VEaXJlY3RvcnlxAH4AHHhwdABBL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L3RhcmdldC9zY2FsYS0yLjEwL3NidC0wLjEzL2NsYXNzZXN0AAEvdXIAAltCrPMX+AYIVOACAAB4cAAAABTn9pSCLAOC6SSE1PlBAvRTnW9N/A==
+/home/alois/oss/policy/project/PluginRelated.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHDX7lYyAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAFzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHABdAAhcG9saWN5LmJ1aWxkaW5nLlBsdWdpblJlbGF0ZWRDb2RldXIAGltMeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXI72W0mDyid8rYCAAB4cAAAAAB+cgAYeHNidGkuYXBpLkRlZmluaXRpb25UeXBlAAAAAAAAAAASAAB4cgAOamF2YS5sYW5nLkVudW0AAAAAAAAAABIAAHhwdAAFVHJhaXR1cgATW0xqYXZhLmxhbmcuU3RyaW5nO63SVufpHXtHAgAAeHAAAAAAc3IAE3hzYnRpLlNhZmVMYXp5JEltcGxQAi6Tl5dAPwIAA1oACGJpdG1hcCQwTAACX3R0ABJMamF2YS9sYW5nL09iamVjdDtMAARldmFsdAARTHNjYWxhL0Z1bmN0aW9uMDt4cgAWeHNidGkuYXBpLkFic3RyYWN0TGF6edN3tQFfu+egAgAAeHAAcHNyACB4c2J0aS5TYWZlTGF6eSQkYW5vbmZ1biRzdHJpY3QkMQAAAAAAAAAAAgABTAAHdmFsdWUkMXEAfgAveHBzcgATeHNidGkuYXBpLkVtcHR5VHlwZbz9nkZJO4kkAgAAeHIAFHhzYnRpLmFwaS5TaW1wbGVUeXBlcnhiiCEjv0ACAAB4cgAOeHNidGkuYXBpLlR5cGU/atkhFkmqygIAAHhwc3EAfgAuAHBzcQB+ADNzcgATeHNidGkuYXBpLlN0cnVjdHVyZamq+YCTb9gAAgADTAAIZGVjbGFyZWRxAH4AFUwACWluaGVyaXRlZHEAfgAVTAAHcGFyZW50c3EAfgAVeHEAfgA3c3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cgARW0x4c2J0aS5hcGkuVHlwZTt0/6Vae/npQQIAAHhwAAAAAnNyABR4c2J0aS5hcGkuUHJvamVjdGlvbvPSjVTpRaQtAgACTAACaWRxAH4AHEwABnByZWZpeHQAFkx4c2J0aS9hcGkvU2ltcGxlVHlwZTt4cQB+ADZ0AAZPYmplY3RzcgATeHNidGkuYXBpLlNpbmdsZXRvbvynX/jPVuRGAgABTAAEcGF0aHQAEEx4c2J0aS9hcGkvUGF0aDt4cQB+ADZzcgAOeHNidGkuYXBpLlBhdGibPVwIzqUnhAIAAVsACmNvbXBvbmVudHN0ABpbTHhzYnRpL2FwaS9QYXRoQ29tcG9uZW50O3hwdXIAGltMeHNidGkuYXBpLlBhdGhDb21wb25lbnQ7Q9oJdC1nFnQCAAB4cAAAAANzcgAMeHNidGkuYXBpLklkmDJsizdTxEACAAFMAAJpZHEAfgAceHIAF3hzYnRpLmFwaS5QYXRoQ29tcG9uZW50X5oiWy6Gn7wCAAB4cHQABGphdmFzcQB+AFN0AARsYW5nc3IADnhzYnRpLmFwaS5UaGlz2wntpsxaQFwCAAB4cQB+AFRzcQB+AEd0AANBbnlzcQB+AEtzcQB+AE51cQB+AFEAAAACc3EAfgBTdAAFc2NhbGFxAH4AWnVyABRbTHhzYnRpLmFwaS5QYWNrYWdlO1sTGTdwpyehAgAAeHAAAAACc3IAEXhzYnRpLmFwaS5QYWNrYWdlflmP9q7OOVgCAAFMAARuYW1lcQB+ABx4cHQABnBvbGljeXNxAH4AZHQAD3BvbGljeS5idWlsZGluZ3NyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABSEfRch91cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5cQB+ABxMAA9zb3VyY2VEaXJlY3RvcnlxAH4AHHhwdABBL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L3RhcmdldC9zY2FsYS0yLjEwL3NidC0wLjEzL2NsYXNzZXN0AAEvdXIAAltCrPMX+AYIVOACAAB4cAAAABTA2O1Cf/JNDYxzEXVhjA5yWR9J4Q==
+/home/alois/oss/policy/project/Properties.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHCA/2xVAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAARzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHAEdAAjcG9saWN5LmJ1aWxkaW5nLkltbXV0YWJsZVByb3BlcnRpZXN1cgAaW0x4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcjvZbSYPKJ3ytgIAAHhwAAAAAH5yABh4c2J0aS5hcGkuRGVmaW5pdGlvblR5cGUAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAhDbGFzc0RlZnVyABNbTGphdmEubGFuZy5TdHJpbmc7rdJW5+kde0cCAAB4cAAAAAJ0ABRqYXZhLmxhbmcuRGVwcmVjYXRlZHQAEHNjYWxhLmRlcHJlY2F0ZWRzcgATeHNidGkuU2FmZUxhenkkSW1wbFACLpOXl0A/AgADWgAIYml0bWFwJDBMAAJfdHQAEkxqYXZhL2xhbmcvT2JqZWN0O0wABGV2YWx0ABFMc2NhbGEvRnVuY3Rpb24wO3hyABZ4c2J0aS5hcGkuQWJzdHJhY3RMYXp503e1AV+756ACAAB4cABwc3IAIHhzYnRpLlNhZmVMYXp5JCRhbm9uZnVuJHN0cmljdCQxAAAAAAAAAAACAAFMAAd2YWx1ZSQxcQB+ADF4cHNyABN4c2J0aS5hcGkuRW1wdHlUeXBlvP2eRkk7iSQCAAB4cgAUeHNidGkuYXBpLlNpbXBsZVR5cGVyeGKIISO/QAIAAHhyAA54c2J0aS5hcGkuVHlwZT9q2SEWSarKAgAAeHBzcQB+ADAAcHNxAH4ANXNyABN4c2J0aS5hcGkuU3RydWN0dXJlqar5gJNv2AACAANMAAhkZWNsYXJlZHEAfgAVTAAJaW5oZXJpdGVkcQB+ABVMAAdwYXJlbnRzcQB+ABV4cQB+ADl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
+/home/alois/oss/policy/project/Run.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHDR2e7RAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAFzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHABdAAXcG9saWN5LmJ1aWxkaW5nLlJ1bm5lcnN1cgAaW0x4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcjvZbSYPKJ3ytgIAAHhwAAAAAH5yABh4c2J0aS5hcGkuRGVmaW5pdGlvblR5cGUAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAVUcmFpdHVyABNbTGphdmEubGFuZy5TdHJpbmc7rdJW5+kde0cCAAB4cAAAAABzcgATeHNidGkuU2FmZUxhenkkSW1wbFACLpOXl0A/AgADWgAIYml0bWFwJDBMAAJfdHQAEkxqYXZhL2xhbmcvT2JqZWN0O0wABGV2YWx0ABFMc2NhbGEvRnVuY3Rpb24wO3hyABZ4c2J0aS5hcGkuQWJzdHJhY3RMYXp503e1AV+756ACAAB4cABwc3IAIHhzYnRpLlNhZmVMYXp5JCRhbm9uZnVuJHN0cmljdCQxAAAAAAAAAAACAAFMAAd2YWx1ZSQxcQB+AC94cHNyABN4c2J0aS5hcGkuRW1wdHlUeXBlvP2eRkk7iSQCAAB4cgAUeHNidGkuYXBpLlNpbXBsZVR5cGVyeGKIISO/QAIAAHhyAA54c2J0aS5hcGkuVHlwZT9q2SEWSarKAgAAeHBzcQB+AC4AcHNxAH4AM3NyABN4c2J0aS5hcGkuU3RydWN0dXJlqar5gJNv2AACAANMAAhkZWNsYXJlZHEAfgAVTAAJaW5oZXJpdGVkcQB+ABVMAAdwYXJlbnRzcQB+ABV4cQB+ADdzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VyABFbTHhzYnRpLmFwaS5UeXBlO3T/pVp7+elBAgAAeHAAAAACc3IAFHhzYnRpLmFwaS5Qcm9qZWN0aW9u89KNVOlFpC0CAAJMAAJpZHEAfgAcTAAGcHJlZml4dAAWTHhzYnRpL2FwaS9TaW1wbGVUeXBlO3hxAH4ANnQABk9iamVjdHNyABN4c2J0aS5hcGkuU2luZ2xldG9u/Kdf+M9W5EYCAAFMAARwYXRodAAQTHhzYnRpL2FwaS9QYXRoO3hxAH4ANnNyAA54c2J0aS5hcGkuUGF0aJs9XAjOpSeEAgABWwAKY29tcG9uZW50c3QAGltMeHNidGkvYXBpL1BhdGhDb21wb25lbnQ7eHB1cgAaW0x4c2J0aS5hcGkuUGF0aENvbXBvbmVudDtD2gl0LWcWdAIAAHhwAAAAA3NyAAx4c2J0aS5hcGkuSWSYMmyLN1PEQAIAAUwAAmlkcQB+ABx4cgAXeHNidGkuYXBpLlBhdGhDb21wb25lbnRfmiJbLoafvAIAAHhwdAAEamF2YXNxAH4AU3QABGxhbmdzcgAOeHNidGkuYXBpLlRoaXPbCe2mzFpAXAIAAHhxAH4AVHNxAH4AR3QAA0FueXNxAH4AS3NxAH4ATnVxAH4AUQAAAAJzcQB+AFN0AAVzY2FsYXEAfgBadXIAFFtMeHNidGkuYXBpLlBhY2thZ2U7WxMZN3CnJ6ECAAB4cAAAAAJzcgAReHNidGkuYXBpLlBhY2thZ2V+WY/2rs45WAIAAUwABG5hbWVxAH4AHHhwdAAGcG9saWN5c3EAfgBkdAAPcG9saWN5LmJ1aWxkaW5nc3IAFXhzYnRpLmFwaS5Db21waWxhdGlvbu364MNq6KBCAgACSgAJc3RhcnRUaW1lWwAHb3V0cHV0c3QAGltMeHNidGkvYXBpL091dHB1dFNldHRpbmc7eHAAAAFIR9FyH3VyABpbTHhzYnRpLmFwaS5PdXRwdXRTZXR0aW5nO39qwvOnh6VCAgAAeHAAAAABc3IAF3hzYnRpLmFwaS5PdXRwdXRTZXR0aW5netmaR3T7HXsCAAJMAA9vdXRwdXREaXJlY3RvcnlxAH4AHEwAD3NvdXJjZURpcmVjdG9yeXEAfgAceHB0AEEvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvdGFyZ2V0L3NjYWxhLTIuMTAvc2J0LTAuMTMvY2xhc3Nlc3QAAS91cgACW0Ks8xf4BghU4AIAAHhwAAAAFNj5OLZlKhlG4ZROUZkYkzBrrtZF
+/home/alois/oss/policy/project/Scratch.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHCn0XniAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAB1cgAUW0x4c2J0aS5hcGkuUGFja2FnZTtbExk3cKcnoQIAAHhwAAAAAnNyABF4c2J0aS5hcGkuUGFja2FnZX5Zj/auzjlYAgABTAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwdAAGcG9saWN5c3EAfgAUdAAPcG9saWN5LmJ1aWxkaW5nc3IAFXhzYnRpLmFwaS5Db21waWxhdGlvbu364MNq6KBCAgACSgAJc3RhcnRUaW1lWwAHb3V0cHV0c3QAGltMeHNidGkvYXBpL091dHB1dFNldHRpbmc7eHAAAAFIR9FyH3VyABpbTHhzYnRpLmFwaS5PdXRwdXRTZXR0aW5nO39qwvOnh6VCAgAAeHAAAAABc3IAF3hzYnRpLmFwaS5PdXRwdXRTZXR0aW5netmaR3T7HXsCAAJMAA9vdXRwdXREaXJlY3RvcnlxAH4AFUwAD3NvdXJjZURpcmVjdG9yeXEAfgAVeHB0AEEvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvdGFyZ2V0L3NjYWxhLTIuMTAvc2J0LTAuMTMvY2xhc3Nlc3QAAS91cgACW0Ks8xf4BghU4AIAAHhwAAAAFCUjP6ySjphoxI9P7YjxG0QhapMt
+/home/alois/oss/policy/project/Show.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHCSrMQsAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAARzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHAAdAAWcG9saWN5LmJ1aWxkaW5nLldTdGF0ZXVyABpbTHhzYnRpLmFwaS5UeXBlUGFyYW1ldGVyO9ltJg8onfK2AgAAeHAAAAAAfnIAGHhzYnRpLmFwaS5EZWZpbml0aW9uVHlwZQAAAAAAAAAAEgAAeHIADmphdmEubGFuZy5FbnVtAAAAAAAAAAASAAB4cHQABk1vZHVsZXVyABNbTGphdmEubGFuZy5TdHJpbmc7rdJW5+kde0cCAAB4cAAAAABzcgATeHNidGkuU2FmZUxhenkkSW1wbFACLpOXl0A/AgADWgAIYml0bWFwJDBMAAJfdHQAEkxqYXZhL2xhbmcvT2JqZWN0O0wABGV2YWx0ABFMc2NhbGEvRnVuY3Rpb24wO3hyABZ4c2J0aS5hcGkuQWJzdHJhY3RMYXp503e1AV+756ACAAB4cABwc3IAIHhzYnRpLlNhZmVMYXp5JCRhbm9uZnVuJHN0cmljdCQxAAAAAAAAAAACAAFMAAd2YWx1ZSQxcQB+AC94cHNyABN4c2J0aS5hcGkuRW1wdHlUeXBlvP2eRkk7iSQCAAB4cgAUeHNidGkuYXBpLlNpbXBsZVR5cGVyeGKIISO/QAIAAHhyAA54c2J0aS5hcGkuVHlwZT9q2SEWSarKAgAAeHBzcQB+AC4AcHNxAH4AM3NyABN4c2J0aS5hcGkuU3RydWN0dXJlqar5gJNv2AACAANMAAhkZWNsYXJlZHEAfgAVTAAJaW5oZXJpdGVkcQB+ABVMAAdwYXJlbnRzcQB+ABV4cQB+ADdzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VyABFbTHhzYnRpLmFwaS5UeXBlO3T/pVp7+elBAgAAeHAAAAACc3IAFHhzYnRpLmFwaS5Qcm9qZWN0aW9u89KNVOlFpC0CAAJMAAJpZHEAfgAcTAAGcHJlZml4dAAWTHhzYnRpL2FwaS9TaW1wbGVUeXBlO3hxAH4ANnQABk9iamVjdHNyABN4c2J0aS5hcGkuU2luZ2xldG9u/Kdf+M9W5EYCAAFMAARwYXRodAAQTHhzYnRpL2FwaS9QYXRoO3hxAH4ANnNyAA54c2J0aS5hcGkuUGF0aJs9XAjOpSeEAgABWwAKY29tcG9uZW50c3QAGltMeHNidGkvYXBpL1BhdGhDb21wb25lbnQ7eHB1cgAaW0x4c2J0aS5hcGkuUGF0aENvbXBvbmVudDtD2gl0LWcWdAIAAHhwAAAAA3NyAAx4c2J0aS5hcGkuSWSYMmyLN1PEQAIAAUwAAmlkcQB+ABx4cgAXeHNidGkuYXBpLlBhdGhDb21wb25lbnRfmiJbLoafvAIAAHhwdAAEamF2YXNxAH4AU3QABGxhbmdzcgAOeHNidGkuYXBpLlRoaXPbCe2mzFpAXAIAAHhxAH4AVHNxAH4AR3QAA0FueXNxAH4AS3NxAH4ATnVxAH4AUQAAAAJzcQB+AFN0AAVzY2FsYXEAfgBac3EAfgAScQB+ACB1cQB+ACEAAAAAc3EAfgAjBHQAFnBvbGljeS5idWlsZGluZy5XU3RhdGV1cQB+ACYAAAAAfnEAfgAodAAIQ2xhc3NEZWZ1cQB+ACwAAAAAc3EAfgAuAHBzcQB+ADNxAH4AOHNxAH4ALgBwc3EAfgAzc3EAfgA7c3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cQB+AEUAAAACc3EAfgBHcQB+AEpzcQB+AEtzcQB+AE51cQB+AFEAAAADc3EAfgBTcQB+AFZzcQB+AFNxAH4AWHEAfgBac3EAfgBHcQB+AFxzcQB+AEtzcQB+AE51cQB+AFEAAAACc3EAfgBTcQB+AGFxAH4AWnNxAH4AEnEAfgAgdXEAfgAhAAAAAHNxAH4AIwB0ABpwb2xpY3kuYnVpbGRpbmcuU2NvcGVkU2hvd3VxAH4AJgAAAABxAH4AKnVxAH4ALAAAAABzcQB+AC4AcHNxAH4AM3EAfgA4c3EAfgAuAHBzcQB+ADNzcQB+ADtzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4ARQAAAAJzcQB+AEdxAH4ASnNxAH4AS3NxAH4ATnVxAH4AUQAAAANzcQB+AFNxAH4AVnNxAH4AU3EAfgBYcQB+AFpzcQB+AEdxAH4AXHNxAH4AS3NxAH4ATnVxAH4AUQAAAAJzcQB+AFNxAH4AYXEAfgBac3EAfgAScQB+ACB1cQB+ACEAAAAAc3EAfgAjAHQAGnBvbGljeS5idWlsZGluZy5TY29wZWRTaG93dXEAfgAmAAAAAXNyABd4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcmdpVdvjcpBrAgAGWwALYW5ub3RhdGlvbnNxAH4AGkwAAmlkcQB+ABxMAApsb3dlckJvdW5kdAAQTHhzYnRpL2FwaS9UeXBlO1sADnR5cGVQYXJhbWV0ZXJzcQB+ABdMAAp1cHBlckJvdW5kcQB+AKhMAAh2YXJpYW5jZXQAFEx4c2J0aS9hcGkvVmFyaWFuY2U7eHB1cQB+ACEAAAAAdAAccG9saWN5LmJ1aWxkaW5nLlNjb3BlZFNob3cuQXNxAH4AR3QAB05vdGhpbmdzcQB+AEtzcQB+AE51cQB+AFEAAAACc3EAfgBTcQB+AGFxAH4AWnVxAH4AJgAAAABzcQB+AEdxAH4AXHEAfgCvfnIAEnhzYnRpLmFwaS5WYXJpYW5jZQAAAAAAAAAAEgAAeHEAfgApdAAJSW52YXJpYW50cQB+AGd1cQB+ACwAAAAAc3EAfgAuAHBzcQB+ADNxAH4AOHNxAH4ALgBwc3EAfgAzc3EAfgA7c3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cQB+ABAAAAAAc3EAfgAuAHBzcQB+ADN1cQB+AEUAAAACc3EAfgBHcQB+AEpzcQB+AEtzcQB+AE51cQB+AFEAAAADc3EAfgBTcQB+AFZzcQB+AFNxAH4AWHEAfgBac3EAfgBHcQB+AFxzcQB+AEtzcQB+AE51cQB+AFEAAAACc3EAfgBTcQB+AGFxAH4AWnVyABRbTHhzYnRpLmFwaS5QYWNrYWdlO1sTGTdwpyehAgAAeHAAAAACc3IAEXhzYnRpLmFwaS5QYWNrYWdlflmP9q7OOVgCAAFMAARuYW1lcQB+ABx4cHQABnBvbGljeXNxAH4A1HQAD3BvbGljeS5idWlsZGluZ3NyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABSEfRch91cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5cQB+ABxMAA9zb3VyY2VEaXJlY3RvcnlxAH4AHHhwdABBL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L3RhcmdldC9zY2FsYS0yLjEwL3NidC0wLjEzL2NsYXNzZXN0AAEvdXIAAltCrPMX+AYIVOACAAB4cAAAABQh7uLd9jmJcQlabVrvplXFq+Ou7g==
+/home/alois/oss/policy/project/Wrappers.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHCvZr0fAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAARzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHAEdAAbcG9saWN5LmJ1aWxkaW5nLlNlcXVlbmNlT3BzdXIAGltMeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXI72W0mDyid8rYCAAB4cAAAAAFzcgAXeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXJnaVXb43KQawIABlsAC2Fubm90YXRpb25zcQB+ABpMAAJpZHEAfgAcTAAKbG93ZXJCb3VuZHQAEEx4c2J0aS9hcGkvVHlwZTtbAA50eXBlUGFyYW1ldGVyc3EAfgAXTAAKdXBwZXJCb3VuZHEAfgApTAAIdmFyaWFuY2V0ABRMeHNidGkvYXBpL1ZhcmlhbmNlO3hwdXEAfgAhAAAAAHQAHXBvbGljeS5idWlsZGluZy5TZXF1ZW5jZU9wcy5Bc3IAFHhzYnRpLmFwaS5Qcm9qZWN0aW9u89KNVOlFpC0CAAJMAAJpZHEAfgAcTAAGcHJlZml4dAAWTHhzYnRpL2FwaS9TaW1wbGVUeXBlO3hyABR4c2J0aS5hcGkuU2ltcGxlVHlwZXJ4YoghI79AAgAAeHIADnhzYnRpLmFwaS5UeXBlP2rZIRZJqsoCAAB4cHQAB05vdGhpbmdzcgATeHNidGkuYXBpLlNpbmdsZXRvbvynX/jPVuRGAgABTAAEcGF0aHQAEEx4c2J0aS9hcGkvUGF0aDt4cQB+ADBzcgAOeHNidGkuYXBpLlBhdGibPVwIzqUnhAIAAVsACmNvbXBvbmVudHN0ABpbTHhzYnRpL2FwaS9QYXRoQ29tcG9uZW50O3hwdXIAGltMeHNidGkuYXBpLlBhdGhDb21wb25lbnQ7Q9oJdC1nFnQCAAB4cAAAAAJzcgAMeHNidGkuYXBpLklkmDJ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
+/home/alois/oss/policy/project/package.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHDb0szoAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAJzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+ABV4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnPHERMhaZzcJAIAAUIABWZsYWdzeHAJdAAUcG9saWN5LlBvbGljeVBhY2thZ2V1cgAaW0x4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcjvZbSYPKJ3ytgIAAHhwAAAAAH5yABh4c2J0aS5hcGkuRGVmaW5pdGlvblR5cGUAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAhDbGFzc0RlZnVyABNbTGphdmEubGFuZy5TdHJpbmc7rdJW5+kde0cCAAB4cAAAAABzcgATeHNidGkuU2FmZUxhenkkSW1wbFACLpOXl0A/AgADWgAIYml0bWFwJDBMAAJfdHQAEkxqYXZhL2xhbmcvT2JqZWN0O0wABGV2YWx0ABFMc2NhbGEvRnVuY3Rpb24wO3hyABZ4c2J0aS5hcGkuQWJzdHJhY3RMYXp503e1AV+756ACAAB4cABwc3IAIHhzYnRpLlNhZmVMYXp5JCRhbm9uZnVuJHN0cmljdCQxAAAAAAAAAAACAAFMAAd2YWx1ZSQxcQB+AC94cHNyABN4c2J0aS5hcGkuRW1wdHlUeXBlvP2eRkk7iSQCAAB4cgAUeHNidGkuYXBpLlNpbXBsZVR5cGVyeGKIISO/QAIAAHhyAA54c2J0aS5hcGkuVHlwZT9q2SEWSarKAgAAeHBzcQB+AC4AcHNxAH4AM3NyABN4c2J0aS5hcGkuU3RydWN0dXJlqar5gJNv2AACAANMAAhkZWNsYXJlZHEAfgAVTAAJaW5oZXJpdGVkcQB+ABVMAAdwYXJlbnRzcQB+ABV4cQB+ADdzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHNxAH4AM3VxAH4AEAAAAABzcQB+AC4AcHN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
+external apis:
+0 items
+source infos:
+14 items
+/home/alois/oss/policy/project/Bootstrap.scala -> 
+AAAAAAAAAAA=
+/home/alois/oss/policy/project/BuildSettings.scala -> 
+AAAAAAAAAAA=
+/home/alois/oss/policy/project/BuildTasks.scala -> 
+AAAAAAAAAAEAAAEAAAAgACwgICAgdmFsIGlkICAgID0gbmFtZS52YWx1ZSBzcGxpdCAiWy1dIiBsYXN0OwEAAAWwAQAAACcBACcgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICABAC8vaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvQnVpbGRUYXNrcy5zY2FsYQEALy9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9CdWlsZFRhc2tzLnNjYWxhAWlwb3N0Zml4IG9wZXJhdG9yIGxhc3Qgc2hvdWxkIGJlIGVuYWJsZWQKYnkgbWFraW5nIHRoZSBpbXBsaWNpdCB2YWx1ZSBzY2FsYS5sYW5ndWFnZS5wb3N0Zml4T3BzIHZpc2libGUuClRoaXMgY2FuIGJlIGFjaGlldmVkIGJ5IGFkZGluZyB0aGUgaW1wb3J0IGNsYXVzZSAnaW1wb3J0IHNjYWxhLmxhbmd1YWdlLnBvc3RmaXhPcHMnCm9yIGJ5IHNldHRpbmcgdGhlIGNvbXBpbGVyIG9wdGlvbiAtbGFuZ3VhZ2U6cG9zdGZpeE9wcy4KU2VlIHRoZSBTY2FsYSBkb2NzIGZvciB2YWx1ZSBzY2FsYS5sYW5ndWFnZS5wb3N0Zml4T3BzIGZvciBhIGRpc2N1c3Npb24Kd2h5IHRoZSBmZWF0dXJlIHNob3VsZCBiZSBleHBsaWNpdGx5IGVuYWJsZWQuAQ==
+/home/alois/oss/policy/project/Constants.scala -> 
+AAAAAAAAAAA=
+/home/alois/oss/policy/project/Helpers.scala -> 
+AAAAAAAAAAMAAAEAAAB+AF8gICAgICAgIFNjYWxhSW5zdGFuY2UoZmlyc3RSZXZpc2lvbiwgbGliLCBjb21wLCBleHRyYXM6IF8qKShzdGF0ZS52YWx1ZS5jbGFzc0xvYWRlckNhY2hlLmFwcGx5KQEAABegAQAAAAgBAAggICAgICAgIAEALC9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9IZWxwZXJzLnNjYWxhAQAsL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L0hlbHBlcnMuc2NhbGEAgW1ldGhvZCBhcHBseSBpbiBvYmplY3QgU2NhbGFJbnN0YW5jZSBpcyBkZXByZWNhdGVkOiBEb2VzIG5vdCBoYW5kbGUgbW9kdWxhcml6ZWQgU2NhbGEuICBVc2UgYSB2YXJpYW50IHRoYXQgb25seSBhY2NlcHRzIGFsbCBqYXJzLgEAAAEAAAA4AFQgIGRlZiBmaWxlc0luKGRpcjogRmlsZSwgZXh0ZW5zaW9uOiBTdHJpbmcpOiBTZXFbRmlsZV0gICA9IGRpciAqIHMiKi4kZXh0ZW5zaW9uIiBnZXQBAAAJDgEAAABRAQBRICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgAQAsL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L0hlbHBlcnMuc2NhbGEBACwvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvSGVscGVycy5zY2FsYQBmcG9zdGZpeCBvcGVyYXRvciBnZXQgc2hvdWxkIGJlIGVuYWJsZWQKYnkgbWFraW5nIHRoZSBpbXBsaWNpdCB2YWx1ZSBzY2FsYS5sYW5ndWFnZS5wb3N0Zml4T3BzIHZpc2libGUuAQAAAQAAAI0AUyAgICB2YWwgc2NvcGVzICAgICAgID0gYWxsRGVmcyBmaWx0ZXIgKF8ua2V5ID09IHRhc2tLZXkua2V5KSBtYXAgKF8uc2NvcGUpIGRpc3RpbmN0AQAAGtEBAAAASwEASyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAEALC9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9IZWxwZXJzLnNjYWxhAQAsL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L0hlbHBlcnMuc2NhbGEAa3Bvc3RmaXggb3BlcmF0b3IgZGlzdGluY3Qgc2hvdWxkIGJlIGVuYWJsZWQKYnkgbWFraW5nIHRoZSBpbXBsaWNpdCB2YWx1ZSBzY2FsYS5sYW5ndWFnZS5wb3N0Zml4T3BzIHZpc2libGUuAQ==
+/home/alois/oss/policy/project/Ivy.scala -> 
+AAAAAAAAAAA=
+/home/alois/oss/policy/project/Mima.scala -> 
+AAAAAAAAAAEAAAEAAACoAGYgICAgICBjYXNlIE1pc3NpbmdDbGFzc1Byb2JsZW0oY2wpIGlmIHJlbW92ZWRDbGFzc2VzKGNsLmZ1bGxOYW1lIHNwbGl0ICJbJCNdIiBoZWFkKSAgICAgICAgICAgPT4gZmFsc2UBAAAZBwEAAABOAQBOICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgAQApL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L01pbWEuc2NhbGEBACkvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvTWltYS5zY2FsYQBncG9zdGZpeCBvcGVyYXRvciBoZWFkIHNob3VsZCBiZSBlbmFibGVkCmJ5IG1ha2luZyB0aGUgaW1wbGljaXQgdmFsdWUgc2NhbGEubGFuZ3VhZ2UucG9zdGZpeE9wcyB2aXNpYmxlLgE=
+/home/alois/oss/policy/project/PluginRelated.scala -> 
+AAAAAAAAAAA=
+/home/alois/oss/policy/project/Properties.scala -> 
+AAAAAAAAAAA=
+/home/alois/oss/policy/project/Run.scala -> 
+AAAAAAAAAAA=
+/home/alois/oss/policy/project/Scratch.scala -> 
+AAAAAAAAAAA=
+/home/alois/oss/policy/project/Show.scala -> 
+AAAAAAAAAAMAAAEAAAAbAFMgIGRlZiBnZXRbQV0oa2V5OiBUYXNrS2V5W0FdKTogT3B0aW9uW0FdID0gUHJvamVjdC5ldmFsdWF0ZVRhc2soa2V5LCBzdGF0ZSkgbWF0Y2ggewEAAANsAQAAADMBADMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICABACkvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvU2hvdy5zY2FsYQEAKS9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9TaG93LnNjYWxhAKJtZXRob2QgZXZhbHVhdGVUYXNrIGluIG9iamVjdCBQcm9qZWN0IGlzIGRlcHJlY2F0ZWQ6IFRoaXMgbWV0aG9kIGRvZXMgbm90IGFwcGx5IHN0YXRlIGNoYW5nZXMgcmVxdWVzdGVkIGR1cmluZyB0YXNrIGV4ZWN1dGlvbi4gIFVzZSAncnVuVGFzaycgaW5zdGVhZCwgd2hpY2ggZG9lcy4BAAABAAAANwAuICBkZWYgZ2xvYmFscyA9IGF4ZXMgZmlsdGVyIChfID09IEdsb2JhbCkgc2l6ZQEAAAfAAQAAACoBACogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICABACkvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvU2hvdy5zY2FsYQEAKS9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9TaG93LnNjYWxhAGdwb3N0Zml4IG9wZXJhdG9yIHNpemUgc2hvdWxkIGJlIGVuYWJsZWQKYnkgbWFraW5nIHRoZSBpbXBsaWNpdCB2YWx1ZSBzY2FsYS5sYW5ndWFnZS5wb3N0Zml4T3BzIHZpc2libGUuAQAAAQAAADgALCAgZGVmIHRoaXNlcyAgPSBheGVzIGZpbHRlciAoXyA9PSBUaGlzKSBzaXplAQAAB+0BAAAAKAEAKCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICABACkvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvU2hvdy5zY2FsYQEAKS9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9TaG93LnNjYWxhAGdwb3N0Zml4IG9wZXJhdG9yIHNpemUgc2hvdWxkIGJlIGVuYWJsZWQKYnkgbWFraW5nIHRoZSBpbXBsaWNpdCB2YWx1ZSBzY2FsYS5sYW5ndWFnZS5wb3N0Zml4T3BzIHZpc2libGUuAQ==
+/home/alois/oss/policy/project/Wrappers.scala -> 
+AAAAAAAAAAA=
+/home/alois/oss/policy/project/package.scala -> 
+AAAAAAAAAAYAAAEAAAAiAEAgICAgZGVmIGlzOiBPcHRpb25bQV0gPSBQcm9qZWN0LmV2YWx1YXRlVGFzayhrZXksIHN0YXRlKSBtYXRjaCB7AQAABoQBAAAAIAEAICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgAQAsL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L3BhY2thZ2Uuc2NhbGEBACwvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvcGFja2FnZS5zY2FsYQCibWV0aG9kIGV2YWx1YXRlVGFzayBpbiBvYmplY3QgUHJvamVjdCBpcyBkZXByZWNhdGVkOiBUaGlzIG1ldGhvZCBkb2VzIG5vdCBhcHBseSBzdGF0ZSBjaGFuZ2VzIHJlcXVlc3RlZCBkdXJpbmcgdGFzayBleGVjdXRpb24uICBVc2UgJ3J1blRhc2snIGluc3RlYWQsIHdoaWNoIGRvZXMuAQAAAQAAAAwAaiAgaW1wbGljaXQgZGVmIHN5bVRvTG9jYWxQcm9qZWN0KHN5bTogc2NhbGEuU3ltYm9sKTogTG9jYWxQcm9qZWN0ICAgICAgICAgICAgICAgICA9IExvY2FsUHJvamVjdChzeW0ubmFtZSkBAAABrAEAAAAPAQAPICAgICAgICAgICAgICAgAQAsL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L3BhY2thZ2Uuc2NhbGEBACwvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvcGFja2FnZS5zY2FsYQGkaW1wbGljaXQgY29udmVyc2lvbiBtZXRob2Qgc3ltVG9Mb2NhbFByb2plY3Qgc2hvdWxkIGJlIGVuYWJsZWQKYnkgbWFraW5nIHRoZSBpbXBsaWNpdCB2YWx1ZSBzY2FsYS5sYW5ndWFnZS5pbXBsaWNpdENvbnZlcnNpb25zIHZpc2libGUuClRoaXMgY2FuIGJlIGFjaGlldmVkIGJ5IGFkZGluZyB0aGUgaW1wb3J0IGNsYXVzZSAnaW1wb3J0IHNjYWxhLmxhbmd1YWdlLmltcGxpY2l0Q29udmVyc2lvbnMnCm9yIGJ5IHNldHRpbmcgdGhlIGNvbXBpbGVyIG9wdGlvbiAtbGFuZ3VhZ2U6aW1wbGljaXRDb252ZXJzaW9ucy4KU2VlIHRoZSBTY2FsYSBkb2NzIGZvciB2YWx1ZSBzY2FsYS5sYW5ndWFnZS5pbXBsaWNpdENvbnZlcnNpb25zIGZvciBhIGRpc2N1c3Npb24Kd2h5IHRoZSBmZWF0dXJlIHNob3VsZCBiZSBleHBsaWNpdGx5IGVuYWJsZWQuAQAAAQAAAA0AZSAgaW1wbGljaXQgZGVmIHByb2plY3RUb1Byb2plY3RPcHMocDogUHJvamVjdCk6IFByb2plY3RPcHMgICAgICAgICAgICAgICAgICAgICAgICA9IG5ldyBQcm9qZWN0T3BzKHApAQAAAhcBAAAADwEADyAgICAgICAgICAgICAgIAEALC9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9wYWNrYWdlLnNjYWxhAQAsL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L3BhY2thZ2Uuc2NhbGEAiWltcGxpY2l0IGNvbnZlcnNpb24gbWV0aG9kIHByb2plY3RUb1Byb2plY3RPcHMgc2hvdWxkIGJlIGVuYWJsZWQKYnkgbWFraW5nIHRoZSBpbXBsaWNpdCB2YWx1ZSBzY2FsYS5sYW5ndWFnZS5pbXBsaWNpdENvbnZlcnNpb25zIHZpc2libGUuAQAAAQAAAA4AayAgaW1wbGljaXQgZGVmIG9wdGlvblRvT3B0aW9uT3BzW0FdKG9wdDogT3B0aW9uW0FdKTogU2NhbGFPcHRpb25PcHNbQV0gICAgICAgICAgICA9IG5ldyBTY2FsYU9wdGlvbk9wcyhvcHQpAQAAAn0BAAAADwEADyAgICAgICAgICAgICAgIAEALC9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9wYWNrYWdlLnNjYWxhAQAsL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L3BhY2thZ2Uuc2NhbGEAh2ltcGxpY2l0IGNvbnZlcnNpb24gbWV0aG9kIG9wdGlvblRvT3B0aW9uT3BzIHNob3VsZCBiZSBlbmFibGVkCmJ5IG1ha2luZyB0aGUgaW1wbGljaXQgdmFsdWUgc2NhbGEubGFuZ3VhZ2UuaW1wbGljaXRDb252ZXJzaW9ucyB2aXNpYmxlLgEAAAEAAAAPAGQgIGltcGxpY2l0IGRlZiBpbnB1dFRhc2tWYWx1ZURpc2NhcmRpbmdbQV0oaW46IElucHV0VGFza09mW0FdKTogSW5wdXRUYXNrT2ZbVW5pdF0gPSBpbiBtYXAgKF8gPT4gKCkpAQAAAukBAAAADwEADyAgICAgICAgICAgICAgIAEALC9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9wYWNrYWdlLnNjYWxhAQAsL2hvbWUvYWxvaXMvb3NzL3BvbGljeS9wcm9qZWN0L3BhY2thZ2Uuc2NhbGEAjmltcGxpY2l0IGNvbnZlcnNpb24gbWV0aG9kIGlucHV0VGFza1ZhbHVlRGlzY2FyZGluZyBzaG91bGQgYmUgZW5hYmxlZApieSBtYWtpbmcgdGhlIGltcGxpY2l0IHZhbHVlIHNjYWxhLmxhbmd1YWdlLmltcGxpY2l0Q29udmVyc2lvbnMgdmlzaWJsZS4BAAABAAAAEABqICBpbXBsaWNpdCBkZWYgc2VxdWVuY2VPcHNbQV0oeHM6IFNlcVtBXSk6IFNlcXVlbmNlT3BzW0FdICAgICAgICAgICAgICAgICAgICAgICAgID0gbmV3IFNlcXVlbmNlT3BzW0FdKHhzKQEAAANOAQAAAA8BAA8gICAgICAgICAgICAgICABACwvaG9tZS9hbG9pcy9vc3MvcG9saWN5L3Byb2plY3QvcGFja2FnZS5zY2FsYQEALC9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC9wYWNrYWdlLnNjYWxhAIFpbXBsaWNpdCBjb252ZXJzaW9uIG1ldGhvZCBzZXF1ZW5jZU9wcyBzaG91bGQgYmUgZW5hYmxlZApieSBtYWtpbmcgdGhlIGltcGxpY2l0IHZhbHVlIHNjYWxhLmxhbmd1YWdlLmltcGxpY2l0Q29udmVyc2lvbnMgdmlzaWJsZS4B
+compilations:
+1 items
+0 -> rO0ABXNyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABSEfRch91cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5dAASTGphdmEvbGFuZy9TdHJpbmc7TAAPc291cmNlRGlyZWN0b3J5cQB+AAZ4cHQAQS9ob21lL2Fsb2lzL29zcy9wb2xpY3kvcHJvamVjdC90YXJnZXQvc2NhbGEtMi4xMC9zYnQtMC4xMy9jbGFzc2VzdAABLw==

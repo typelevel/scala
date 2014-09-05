@@ -8,6 +8,8 @@ package cmd
 
 import scala.collection.mutable.ListBuffer
 
+case class CommandLineException(msg: String) extends RuntimeException(msg)
+
 trait CommandLineConfig {
   def enforceArity: Boolean = true
   def onlyKnownOptions: Boolean = true
@@ -51,7 +53,8 @@ class CommandLine(val spec: Reference, val originalArgs: List[String]) extends C
       /* Assumes known options have all been ruled out already. */
       def isUnknown(opt: String) =
         onlyKnownOptions && (opt startsWith "-") && {
-          errorFn("Option '%s' not recognized.".format(opt))
+          errorFn(s"Option '$opt' not recognized.")
+          throw new CommandLineException(s"Option '$opt' not recognized.")
           true
         }
 

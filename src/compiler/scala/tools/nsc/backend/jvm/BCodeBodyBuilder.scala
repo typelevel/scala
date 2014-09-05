@@ -12,7 +12,7 @@ package jvm
 import scala.collection.{ mutable, immutable }
 import scala.annotation.switch
 
-import scala.tools.asm
+import org.objectweb.asm
 
 /*
  *
@@ -39,7 +39,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
      *  it is the host class; otherwise the symbol's owner.
      */
     def findHostClass(selector: Type, sym: Symbol) = selector member sym.name match {
-      case NoSymbol   => debuglog(s"Rejecting $selector as host class for $sym") ; sym.owner
+      case NoSymbol   => sym.owner
       case _          => selector.typeSymbol
     }
 
@@ -274,8 +274,6 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
         case lblDf : LabelDef => genLabelDef(lblDf, expectedType)
 
         case ValDef(_, nme.THIS, _, _) =>
-          debuglog("skipping trivial assign to _$this: " + tree)
-
         case ValDef(_, _, _, rhs) =>
           val sym = tree.symbol
           /* most of the time, !locals.contains(sym), unless the current activation of genLoad() is being called
@@ -333,7 +331,6 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
           val sym = tree.symbol
           generatedType = symInfoTK(sym)
           val hostClass = findHostClass(qualifier.tpe, sym)
-          debuglog(s"Host class of $sym with qual $qualifier (${qualifier.tpe}) is $hostClass")
           val qualSafeToElide = treeInfo isQualifierSafeToElide qualifier
 
           def genLoadQualUnlessElidable() { if (!qualSafeToElide) { genLoadQualifier(tree) } }
@@ -676,13 +673,9 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
                   val qualSym = findHostClass(qual.tpe, sym)
                   if (qualSym == ArrayClass) {
                     targetTypeKind = tpeTK(qual)
-                    log(s"Stored target type kind for ${sym.fullName} as $targetTypeKind")
                   }
                   else {
                     hostClass = qualSym
-                    if (qual.tpe.typeSymbol != qualSym) {
-                      log(s"Precisified host class for $sym from ${qual.tpe.typeSymbol.fullName} to ${qualSym.fullName}")
-                    }
                   }
 
                 case _ =>

@@ -355,14 +355,9 @@ abstract class ICodeCheckers {
         import platform.isMaybeBoxed
 
         (k1, k2) match {
-          case (REFERENCE(_), REFERENCE(_)) if k1.isInterfaceType || k2.isInterfaceType =>
-            logChecker("Considering %s <:< %s because at least one is an interface".format(k1, k2))
-            true
-          case (REFERENCE(cls1), REFERENCE(cls2)) if isMaybeBoxed(cls1) || isMaybeBoxed(cls2) =>
-            logChecker("Considering %s <:< %s because at least one might be a boxed primitive".format(cls1, cls2))
-            true
-          case _ =>
-            false
+          case (REFERENCE(_), REFERENCE(_)) if k1.isInterfaceType || k2.isInterfaceType       => true
+          case (REFERENCE(cls1), REFERENCE(cls2)) if isMaybeBoxed(cls1) || isMaybeBoxed(cls2) => true
+          case _                                                                              => false
         }
       }
 

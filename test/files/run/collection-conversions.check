@@ -9,7 +9,7 @@
   :[Direct] Stream   : OK
   :[Copy]   Stream   : OK
   :[Direct] Array    : OK
-  :[Copy]   Array    : OK
+  :[Copy]   Array    : FAILED, Array[java.lang.Object] != Array[int]
   :[Copy]   ParVector: OK
   :[Copy]   ParArray : OK
 -- Testing Vector ---
@@ -23,7 +23,7 @@
   :[Direct] Stream   : OK
   :[Copy]   Stream   : OK
   :[Direct] Array    : OK
-  :[Copy]   Array    : OK
+  :[Copy]   Array    : FAILED, Array[java.lang.Object] != Array[int]
   :[Copy]   ParVector: OK
   :[Copy]   ParArray : OK
 -- Testing List ---
@@ -37,7 +37,7 @@
   :[Direct] Stream   : OK
   :[Copy]   Stream   : OK
   :[Direct] Array    : OK
-  :[Copy]   Array    : OK
+  :[Copy]   Array    : FAILED, Array[java.lang.Object] != Array[int]
   :[Copy]   ParVector: OK
   :[Copy]   ParArray : OK
 -- Testing Buffer ---
@@ -51,7 +51,7 @@
   :[Direct] Stream   : OK
   :[Copy]   Stream   : OK
   :[Direct] Array    : OK
-  :[Copy]   Array    : OK
+  :[Copy]   Array    : FAILED, Array[java.lang.Object] != Array[int]
   :[Copy]   ParVector: OK
   :[Copy]   ParArray : OK
 -- Testing ParVector ---
@@ -65,7 +65,7 @@
   :[Direct] Stream   : OK
   :[Copy]   Stream   : OK
   :[Direct] Array    : OK
-  :[Copy]   Array    : OK
+  :[Copy]   Array    : FAILED, Array[java.lang.Object] != Array[int]
   :[Copy]   ParVector: OK
   :[Copy]   ParArray : OK
 -- Testing ParArray ---
@@ -79,7 +79,7 @@
   :[Direct] Stream   : OK
   :[Copy]   Stream   : OK
   :[Direct] Array    : OK
-  :[Copy]   Array    : OK
+  :[Copy]   Array    : FAILED, Array[java.lang.Object] != Array[int]
   :[Copy]   ParVector: OK
   :[Copy]   ParArray : OK
 -- Testing Set ---
@@ -93,7 +93,7 @@
   :[Direct] Stream   : OK
   :[Copy]   Stream   : OK
   :[Direct] Array    : OK
-  :[Copy]   Array    : OK
+  :[Copy]   Array    : FAILED, Array[java.lang.Object] != Array[int]
   :[Copy]   ParVector: OK
   :[Copy]   ParArray : OK
 -- Testing SetView ---
@@ -107,7 +107,7 @@
   :[Direct] Stream   : OK
   :[Copy]   Stream   : OK
   :[Direct] Array    : OK
-  :[Copy]   Array    : OK
+  :[Copy]   Array    : FAILED, Array[java.lang.Object] != Array[int]
   :[Copy]   ParVector: OK
   :[Copy]   ParArray : OK
 -- Testing BufferView ---
@@ -121,6 +121,6 @@
   :[Direct] Stream   : OK
   :[Copy]   Stream   : OK
   :[Direct] Array    : OK
-  :[Copy]   Array    : OK
+  :[Copy]   Array    : FAILED, Array[java.lang.Object] != Array[int]
   :[Copy]   ParVector: OK
   :[Copy]   ParArray : OK

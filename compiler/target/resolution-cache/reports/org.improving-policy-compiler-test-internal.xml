@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="org.improving"
+		module="policy-compiler"
+		revision="1.0.0-M4"
+		conf="test-internal"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
+		date="20140905225651"/>
+	<dependencies>
+		<module organisation="org.scala-sbt" name="test-interface">
+			<revision name="1.0" status="release" pubdate="20130628234435" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-sbt.org" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="3">
+				<license name="BSD" url="https://github.com/sbt/test-interface/blob/master/LICENSE"/>
+				<metadata-artifact status="no" details="" size="2589" time="0" location="/home/alois/.ivy2/cache/org.scala-sbt/test-interface/ivy-1.0.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0/test-interface-1.0.pom"/>
+				<caller organisation="org.improving" name="policy-compiler" conf="test, compile, provided, test-internal, runtime, optional" rev="1.0" rev-constraint-default="1.0" rev-constraint-dynamic="1.0" callerrev="1.0.0-M4"/>
+				<artifacts>
+					<artifact name="test-interface" type="jar" ext="jar" status="no" details="" size="14755" time="0" location="/home/alois/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0/test-interface-1.0.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.googlecode.java-diff-utils" name="diffutils">
+			<revision name="1.3.0" status="release" pubdate="20130304150716" resolver="public" artresolver="public" homepage="http://code.google.com/p/java-diff-utils/" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="2">
+				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="successful" details="" size="2777" time="463" location="/home/alois/.ivy2/cache/com.googlecode.java-diff-utils/diffutils/ivy-1.3.0.xml" searched="true" original-local-location="/home/alois/.ivy2/cache/com.googlecode.java-diff-utils/diffutils/ivy-1.3.0.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.pom"/>
+				<caller organisation="org.improving" name="policy-compiler" conf="test, compile, provided, test-internal, runtime, optional" rev="1.3.0" rev-constraint-default="1.3.0" rev-constraint-dynamic="1.3.0" callerrev="1.0.0-M4"/>
+				<artifacts>
+					<artifact name="diffutils" type="jar" ext="jar" status="successful" details="" size="34130" time="375" location="/home/alois/.ivy2/cache/com.googlecode.java-diff-utils/diffutils/jars/diffutils-1.3.0.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="jline" name="jline">
+			<revision name="2.12" status="release" pubdate="20140606222408" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="1">
+				<license name="The BSD License" url="http://www.opensource.org/licenses/bsd-license.php"/>
+				<metadata-artifact status="no" details="" size="3767" time="0" location="/home/alois/.ivy2/cache/jline/jline/ivy-2.12.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.pom"/>
+				<caller organisation="org.improving" name="policy-compiler" conf="test, compile, provided, test-internal, runtime, optional" rev="2.12" rev-constraint-default="2.12" rev-constraint-dynamic="2.12" callerrev="1.0.0-M4"/>
+				<artifacts>
+					<artifact name="jline" type="jar" ext="jar" status="no" details="" size="213854" time="0" location="/home/alois/.ivy2/cache/jline/jline/jars/jline-2.12.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.improving" name="policy-library">
+			<revision name="1.0.0-M4" status="integration" pubdate="20140905225651" resolver="inter-project" artresolver="inter-project" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="0">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
+				<caller organisation="org.improving" name="policy-compiler" conf="test, compile, provided, test-internal, runtime, optional" rev="1.0.0-M4" rev-constraint-default="1.0.0-M4" rev-constraint-dynamic="1.0.0-M4" callerrev="1.0.0-M4"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>

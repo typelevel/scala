@@ -1,5 +1,5 @@
-import scala.tools.partest.BytecodeTest
-import scala.tools.asm
+import scala.tools.partest._
+import org.objectweb.asm
 import asm.tree.InsnList
 import scala.collection.JavaConverters._
 
@@ -19,6 +19,6 @@ object Test extends BytecodeTest {
   def countMagicThrees(insnList: InsnList): Int = {
     def isMagicThree(node: asm.tree.AbstractInsnNode): Boolean =
       (node.getOpcode == asm.Opcodes.ICONST_3)
-    insnList.iterator.asScala.count(isMagicThree)
+    insnList.typed.count(isMagicThree)
   }
 }

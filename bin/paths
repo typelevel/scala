@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# Given a list of files on stdin, translates them into a set
+# of tests covering those files. That means paths which aren't
+# part of a test are dropped and the rest are rewritten to the
+# primary test path, with duplicates dropped.
+
+cd "$(dirname "$0")/.."
+
+# We have to enumerate good test dirs since partest chokes and fails
+# on continuations, bench, etc. tests
+pathRegex="test[/]+files[/]+(pos|neg|jvm|run|scalacheck|specialized)[/]+[^/.]+([.]scala)?\$"
+
+# Echo the argument only if it matches our idea of a test and exists.
+isPath () { [[ "$1" =~ $pathRegex ]] && [[ -e "$1" ]]; }
+
+existsEither () { isPath "$1.scala" || isPath "$1"; }
+
+tryPath () {
+  local p="$1"
+  local p1="${p%.*}"
+  local p2="${p1%/*}"
+
+  # Matched file at the standard test depth
+  # Or, matched file may be in a test subdirectory, so strip the last path segment and check
+  if isPath "$p1.scala"; then
+    echo "$p1.scala"
+  elif isPath "$p2"; then
+    echo "$p2"
+  fi
+}
+
+# Filter stdin down to actual test paths.
+asTestPaths() {
+  while read -r p; do
+    if [[ $p == *.log ]]; then
+      tryPath "${p%-*.log}"
+    else
+      tryPath "$p"
+    fi
+  done
+}
+
+asTestPaths | sort -u

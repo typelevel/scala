@@ -36,7 +36,6 @@ abstract class Pickler extends SubComponent {
       def pickle(tree: Tree) {
         def add(sym: Symbol, pickle: Pickle) = {
           if (currentRun.compiles(sym) && !currentRun.symData.contains(sym)) {
-            debuglog("pickling " + sym)
             pickle putSymbol sym
             currentRun.symData(sym) = pickle
           }
@@ -151,22 +150,7 @@ abstract class Pickler extends SubComponent {
      *  the applied type CC[A] will hold a different CC symbol
      *  than the type-constructor type-parameter CC.
      */
-    private def deskolemize(sym: Symbol): Symbol = {
-      if (sym.isTypeSkolem) {
-        val sym1 = sym.deSkolemize
-        log({
-          val what0 = sym.defString
-          val what = sym1.defString match {
-            case `what0` => what0
-            case other   => what0 + "->" + other
-          }
-          val where = sym.enclMethod.fullLocationString
-          s"deskolemizing $what in $where"
-        })
-        sym1
-      }
-      else sym
-    }
+    private def deskolemize(sym: Symbol): Symbol = if (sym.isTypeSkolem) sym.deSkolemize else sym
 
     /** Store symbol in index. If symbol is local, also store everything it references.
      */

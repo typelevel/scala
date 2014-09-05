@@ -60,7 +60,7 @@ trait Erasure {
    */
   protected def unboundedGenericArrayLevel(tp: Type): Int = tp match {
     case GenericArray(level, core) if !(core <:< AnyRefTpe) => level
-    case RefinedType(ps, _) if ps.nonEmpty                  => logResult(s"Unbounded generic level for $tp is")((ps map unboundedGenericArrayLevel).max)
+    case RefinedType(ps, _) if ps.nonEmpty                  => (ps map unboundedGenericArrayLevel).max
     case _                                                  => 0
   }
 
@@ -270,13 +270,7 @@ trait Erasure {
   object javaErasure extends JavaErasureMap
 
   object verifiedJavaErasure extends JavaErasureMap {
-    override def apply(tp: Type): Type = {
-      val res = javaErasure(tp)
-      val old = scalaErasure(tp)
-      if (!(res =:= old))
-        log("Identified divergence between java/scala erasure:\n  scala: " + old + "\n   java: " + res)
-      res
-    }
+    override def apply(tp: Type): Type = javaErasure(tp)
   }
 
   object boxingErasure extends ScalaErasureMap {

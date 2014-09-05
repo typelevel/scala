@@ -12,7 +12,7 @@ package jvm
 import scala.collection.{ mutable, immutable }
 import scala.annotation.switch
 
-import scala.tools.asm
+import org.objectweb.asm
 
 /*
  *  Prepare in-memory representations of classfiles using the ASM Tree API, and serialize them to disk.

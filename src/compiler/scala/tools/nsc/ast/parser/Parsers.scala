@@ -762,6 +762,18 @@ self =>
       }
       ts.toList
     }
+    @inline final def commaSeparatedOrTrailing[T](part: => T): List[T] = {
+      val ts = ListBuffer[T](part)
+      while (in.token == COMMA) {
+        accept(COMMA)
+        if (in.token == RPAREN) // that was a trailing comma
+          return ts.toList
+        else
+          ts += part
+      }
+
+      ts.toList
+    }
     @inline final def commaSeparated[T](part: => T): List[T] = tokenSeparated(COMMA, sepFirst = false, part)
     @inline final def caseSeparated[T](part: => T): List[T] = tokenSeparated(CASE, sepFirst = true, part)
     def readAnnots(part: => Tree): List[Tree] = tokenSeparated(AT, sepFirst = true, part)
@@ -1601,7 +1613,7 @@ self =>
           case USCORE =>
             freshPlaceholder()
           case LPAREN =>
-            atPos(in.offset)(makeParens(commaSeparated(expr())))
+            atPos(in.offset)(makeParens(commaSeparatedOrTrailing(expr())))
           case LBRACE =>
             canApply = false
             blockExpr()
@@ -1665,7 +1677,7 @@ self =>
      *  }}}
      */
     def argumentExprs(): List[Tree] = {
-      def args(): List[Tree] = commaSeparated(
+      def args(): List[Tree] = commaSeparatedOrTrailing(
         if (isIdent) treeInfo.assignmentToMaybeNamedArg(expr()) else expr()
       )
       in.token match {
@@ -2166,7 +2178,7 @@ self =>
           in.nextToken()
           implicitmod = Flags.IMPLICIT
         }
-        commaSeparated(param(owner, implicitmod, caseParam  ))
+        commaSeparated(param(owner, implicitmod, caseParam))
       }
       val vds = new ListBuffer[List[ValDef]]
       val start = in.offset
@@ -2944,9 +2956,11 @@ self =>
       case x: RefTree => atPos(start, pkg.pos.point)(PackageDef(x, stats))
     }
 
-    def makeEmptyPackage(start: Offset, stats: List[Tree]): PackageDef = (
-      makePackaging(start, atPos(start, start, start)(Ident(nme.EMPTY_PACKAGE_NAME)), stats)
-    )
+    def makeEmptyPackage(start: Offset, stats: List[Tree]): PackageDef = {
+      def customName = "emptyPackage_%s_%s".format(source.file.name.split("[.]").head.filter(_.isLetter), math.abs(scala.util.Random.nextInt()))
+      val pid = if (settings.noEmptyPackage) Ident(TermName(customName)) else Ident(nme.EMPTY_PACKAGE_NAME)
+      makePackaging(start, atPos(start, start, start)(pid), stats)
+    }
 
     def statSeq(stat: PartialFunction[Token, List[Tree]], errorMsg: String = "illegal start of definition"): List[Tree] = {
       val stats = new ListBuffer[Tree]

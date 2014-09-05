@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+	<info organisation="org.improving"
+		module="policy"
+		revision="1.0.0-M4"
+		status="integration"
+		publication="20140905225653"
+	>
+		<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0" />
+		<description>
+		policy
+		</description>
+	</info>
+	<configurations>
+		<conf name="compile" visibility="public" description=""/>
+		<conf name="runtime" visibility="public" description="" extends="compile"/>
+		<conf name="test" visibility="public" description="" extends="runtime"/>
+		<conf name="provided" visibility="public" description=""/>
+		<conf name="optional" visibility="public" description=""/>
+		<conf name="compile-internal" visibility="private" description="" extends="compile,optional,provided"/>
+		<conf name="runtime-internal" visibility="private" description="" extends="runtime,optional"/>
+		<conf name="test-internal" visibility="private" description="" extends="test,optional,provided"/>
+		<conf name="plugin" visibility="private" description=""/>
+		<conf name="sources" visibility="public" description=""/>
+		<conf name="docs" visibility="public" description=""/>
+		<conf name="pom" visibility="public" description=""/>
+		<conf name="scala-tool" visibility="private" description=""/>
+	</configurations>
+	<publications>
+		<artifact name="policy" type="pom" ext="pom" conf="pom"/>
+		<artifact name="policy" type="jar" ext="jar" conf="compile"/>
+		<artifact name="policy" type="src" ext="jar" conf="sources" e:classifier="sources"/>
+		<artifact name="policy" type="doc" ext="jar" conf="docs" e:classifier="javadoc"/>
+	</publications>
+	<dependencies>
+		<dependency org="org.improving" name="policy-library" rev="1.0.0-M4" conf="compile->default(compile)"/>
+		<dependency org="org.improving" name="policy-compiler" rev="1.0.0-M4" conf="compile->default(compile)"/>
+		<dependency org="org.improving" name="bootstrap-compiler" rev="1.0.0-M4" conf="scala-tool->default(compile)"/>
+	</dependencies>
+</ivy-module>

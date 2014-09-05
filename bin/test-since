@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#
+
+[[ $# -eq 0 ]] && echo "Usage: $0 <commit>" && exit 1
+
+sbt "testOnly $(git diff --name-only "$@" HEAD -- test | bin/paths)"

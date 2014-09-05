@@ -1,3 +1,0 @@
-package nodescala
-
-class Foo

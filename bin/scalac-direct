@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+
+optsfile="$(mktemp -t allfiles)"
+find src/ partest/src/ -name '*.scala' -o -name '*.java' | egrep -v '/library-aux/' | sort-random | head -n100 > "$optsfile"
+
+"$(dirname "$0")"/scalac @"$optsfile" "$@"

@@ -5,7 +5,7 @@ import scala.tools.testing.AssertUtil._
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.Test
-import scala.tools.asm.Opcodes
+import org.objectweb.asm.Opcodes
 import org.junit.Assert._
 
 @RunWith(classOf[JUnit4])

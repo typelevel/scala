@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#
+# Scans for and removes .check and .flags files under test/
+# which don't have an accompanying test.
+
+shopt -s nullglob
+shopt -s globstar
+
+echo "Scanning for orphan check/flag/log files..."
+
+for f in test/**/*.check ; do
+  base="${f%.check}"
+  [[ -d $base ]] || [[ -f $base.scala ]] || git rm -f $f
+done
+
+for f in test/**/*.flags ; do
+  base=${f%.flags}
+  [[ -d $base ]] || [[ -f $base.scala ]] || git rm -f $f
+done
+
+for f in test/*/*/*-*.log; do
+  base=${f%-*.log}
+  [[ -d $base ]] || [[ -f $base.scala ]] || { echo >&2 "[dead] $f" && rm "$f"; }
+done

@@ -44,11 +44,7 @@ private[internal] trait TypeConstraints {
       log ::= UndoPair(tv, tv.constr.cloneInternal)
     }
 
-    def clear() {
-      if (settings.debug)
-        self.log("Clearing " + log.size + " entries from the undoLog.")
-      log = Nil
-    }
+    def clear(): Unit = log = Nil
 
     // `block` should not affect constraints on typevars
     def undo[T](block: => T): T = {
@@ -211,28 +207,22 @@ private[internal] trait TypeConstraints {
         })
         if (!cyclic) {
           if (up) {
-            if (bound.typeSymbol != AnyClass) {
-              debuglog(s"$tvar addHiBound $bound.instantiateTypeParams($tparams, $tvars)")
+            if (bound.typeSymbol != AnyClass)
               tvar addHiBound bound.instantiateTypeParams(tparams, tvars)
-            }
+
             for (tparam2 <- tparams)
               tparam2.info.bounds.lo.dealias match {
-                case TypeRef(_, `tparam`, _) =>
-                  debuglog(s"$tvar addHiBound $tparam2.tpeHK.instantiateTypeParams($tparams, $tvars)")
-                  tvar addHiBound tparam2.tpeHK.instantiateTypeParams(tparams, tvars)
+                case TypeRef(_, `tparam`, _) => tvar addHiBound tparam2.tpeHK.instantiateTypeParams(tparams, tvars)
                 case _ =>
               }
           } else {
-            if (bound.typeSymbol != NothingClass && bound.typeSymbol != tparam) {
-              debuglog(s"$tvar addLoBound $bound.instantiateTypeParams($tparams, $tvars)")
+            if (bound.typeSymbol != NothingClass && bound.typeSymbol != tparam)
               tvar addLoBound bound.instantiateTypeParams(tparams, tvars)
-            }
+
             for (tparam2 <- tparams)
               tparam2.info.bounds.hi.dealias match {
-                case TypeRef(_, `tparam`, _) =>
-                  debuglog(s"$tvar addLoBound $tparam2.tpeHK.instantiateTypeParams($tparams, $tvars)")
-                  tvar addLoBound tparam2.tpeHK.instantiateTypeParams(tparams, tvars)
-                case _ =>
+                case TypeRef(_, `tparam`, _) => tvar addLoBound tparam2.tpeHK.instantiateTypeParams(tparams, tvars)
+                case _                       =>
               }
           }
         }
@@ -250,21 +240,12 @@ private[internal] trait TypeConstraints {
           }
           )
 
-        debuglog(s"$tvar setInst $newInst")
         tvar setInst newInst
-        //Console.println("solving "+tvar+" "+up+" "+(if (up) (tvar.constr.hiBounds) else tvar.constr.loBounds)+((if (up) (tvar.constr.hiBounds) else tvar.constr.loBounds) map (_.widen))+" = "+tvar.constr.inst)//@MDEBUG
       }
     }
 
-    // println("solving "+tvars+"/"+tparams+"/"+(tparams map (_.info)))
     foreach3(tvars, tparams, variances)(solveOne)
-
-    def logBounds(tv: TypeVar) = log {
-      val what = if (!tv.instValid) "is invalid" else s"does not conform to bounds: ${tv.constr}"
-      s"Inferred type for ${tv.originString} (${tv.inst}) $what"
-    }
-
-    tvars forall (tv => tv.instWithinBounds || util.andFalse(logBounds(tv)))
+    tvars forall (_.instWithinBounds)
   }
 }
 

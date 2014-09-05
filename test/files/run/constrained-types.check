@@ -25,7 +25,7 @@ scala> var a2 = new A
 a2: A = an A
 
 scala> val y2 = a2.y   // should drop the annotation
-y2: Int = 10
+y2: Int @Annot(<empty>) = 10
 
 scala> 
 
