@@ -39,8 +39,11 @@ object MimaPolicy {
     scala.collection.mutable.SynchronizedStack
   """)
 
+  // filterImpl, filteredTail exclusions are from the mainline.
   private val removedMethods = wordSet("""
     <<
+    filterImpl
+    filteredTail
   """)
 
   // val methods       = wordSet("""
