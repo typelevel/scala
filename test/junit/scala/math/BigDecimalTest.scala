@@ -87,7 +87,7 @@ class BigDecimalTest {
     val bi: BigInt = 100000
     val bd: BigDecimal = 100000
     val l: Long = 100000
-    val d: Double = 100000
+    val d: Double = 100000.0
     assert(
       d.## == l.## &&
       l.## == bd.## &&
