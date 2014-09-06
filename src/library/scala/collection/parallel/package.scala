@@ -22,7 +22,7 @@ package object parallel {
   /* constants */
   val MIN_FOR_COPY = 512
   val CHECK_RATE = 512
-  val SQRT2 = math.sqrt(2)
+  val SQRT2 = math.sqrt(2.0)
   val availableProcessors = java.lang.Runtime.getRuntime.availableProcessors
 
   /* functions */

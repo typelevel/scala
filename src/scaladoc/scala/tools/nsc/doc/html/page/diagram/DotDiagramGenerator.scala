@@ -389,7 +389,7 @@ class DotDiagramGenerator(settings: doc.Settings) extends DiagramGenerator {
         if (kind != "")
           if (((g \ "a" \ "image").isEmpty)) {
             DiagramStats.addBrokenImage()
-            val xposition = getPosition(g, "x", -22)
+            val xposition = getPosition(g, "x", -22.0)
             val yposition = getPosition(g, "y", -11.3334)
             if (xposition.isDefined && yposition.isDefined) {
               val imageNode = <image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href={ ("./lib/" + kind + "_diagram.png") } width="16px" height="16px" preserveAspectRatio="xMinYMin meet" x={ xposition.get.toString } y={ yposition.get.toString }/>

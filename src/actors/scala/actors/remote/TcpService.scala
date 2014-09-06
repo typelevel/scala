@@ -201,7 +201,7 @@ class TcpService(port: Int, cl: ClassLoader) extends Thread with Service {
       socket.connect(new InetSocketAddress(n.address, n.port), TcpService.connectTimeoutMillis)
     } catch {
       case e: SocketTimeoutException =>
-        Debug.warning(f"Timed out connecting to $n after ${(System.nanoTime - start) / math.pow(10, 9)}%.3f seconds")
+        Debug.warning(f"Timed out connecting to $n after ${(System.nanoTime - start) / math.pow(10.0, 9.0)}%.3f seconds")
         throw e
     }
     val worker = new TcpServiceWorker(this, socket)

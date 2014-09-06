@@ -459,7 +459,7 @@ class SetMapConsistencyTest {
     def mhm: M = { val m = new cm.HashMap[Int, Boolean]; m ++= manyKVs; m }
     def mohm: M = { val m = new cm.OpenHashMap[Int, Boolean]; m ++= manyKVs; m }
     def ihm: M = ci.HashMap.empty[Int, Boolean] ++ manyKVs
-    val densities = List(0, 0.05, 0.2, 0.5, 0.8, 0.95, 1)
+    val densities = List(0.0, 0.05, 0.2, 0.5, 0.8, 0.95, 1.0)
     def repeat = rn.nextInt(100) < 33
     def pick(m: M, density: Double) = m.keys.filter(_ => rn.nextDouble < density).toSet
     def test: Boolean = {
