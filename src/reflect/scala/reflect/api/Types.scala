@@ -528,8 +528,8 @@ trait Types {
      */
     def supertpe: Type
   }
-  /** The `ConstantType` type is not directly written in user programs, but arises as the type of a constant.
-   *  The REPL expresses constant types like `Int(11)`. Here are some constants with their types:
+  /** The `ConstantType` type is not directly written in user programs (now it is), but arises as the type of a constant.
+   *  The REPL expresses constant types like `11.type`. Here are some constants with their types:
    *  {{{
    *     1           ConstantType(Constant(1))
    *     "abc"       ConstantType(Constant("abc"))

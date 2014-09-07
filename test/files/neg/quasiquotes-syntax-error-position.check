@@ -20,7 +20,7 @@ quasiquotes-syntax-error-position.scala:11: error: case classes without a parame
 use either case objects or case classes with an explicit `()' as a parameter list.
   q"case class A"
                 ^
-quasiquotes-syntax-error-position.scala:12: error: identifier expected but ']' found.
+quasiquotes-syntax-error-position.scala:12: error: illegal literal
   tq"$t => $t $t]"
                 ^
 quasiquotes-syntax-error-position.scala:13: error: end of quote expected but 'case' found.

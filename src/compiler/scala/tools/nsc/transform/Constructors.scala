@@ -640,6 +640,7 @@ abstract class Constructors extends Statics with Transform with ast.TreeDSL {
         // methods with constant result type get literals as their body
         // all methods except the primary constructor go into template
         stat.symbol.tpe match {
+          // TODO (folone): inlining of defs with literal-based singleton type results?
           case MethodType(List(), tp @ ConstantType(c)) =>
             defBuf += deriveDefDef(stat)(Literal(c) setPos _.pos setType tp)
           case _ =>

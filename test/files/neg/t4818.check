@@ -1,5 +1,5 @@
 t4818.scala:4: error: type mismatch;
- found   : Int(5)
+ found   : 5.type (with underlying type Int)
  required: Nothing
 	def f(x: Any) = x match { case Fn(f) => f(5) }
                                                   ^

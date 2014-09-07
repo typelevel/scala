@@ -504,6 +504,8 @@ trait Definitions extends api.StandardDefinitions {
 
     lazy val StringContextClass           = requiredClass[scala.StringContext]
 
+    lazy val SingleInhabitantModule       = requiredModule[scala.SingleInhabitant.type]
+
     // SI-8392 a reflection universe on classpath may not have
     // quasiquotes, if e.g. crosstyping with -Xsource on
     lazy val QuasiquoteClass             = if (ApiUniverseClass != NoSymbol) getMemberIfDefined(ApiUniverseClass, tpnme.Quasiquote) else NoSymbol
@@ -1410,6 +1412,8 @@ trait Definitions extends api.StandardDefinitions {
       def isStringAddition(sym: Symbol) = sym == String_+ || sym == StringAdd_+
 
       lazy val StringContext_f = getMemberMethod(StringContextClass, nme.f)
+
+      lazy val SingleInhabitant_witness = getMemberMethod(SingleInhabitantModule, nme.witness)
 
       lazy val ArrowAssocClass = getMemberClass(PredefModule, TypeName("ArrowAssoc")) // SI-5731
       def isArrowAssoc(sym: Symbol) = sym.owner == ArrowAssocClass

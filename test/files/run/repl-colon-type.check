@@ -2,9 +2,9 @@ Type in expressions to have them evaluated.
 Type :help for more information.
 
 scala> :type List[1, 2, 3]
-<console>:1: error: identifier expected but integer literal found.
+<console>:1: error: '.' expected but ',' found.
        List[1, 2, 3]
-            ^
+             ^
 
 scala> :type List(1, 2, 3)
 List[Int]

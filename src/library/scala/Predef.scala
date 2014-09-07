@@ -125,6 +125,8 @@ object Predef extends LowPriorityImplicits with DeprecatedPredef {
   // @deprecated("This notion doesn't have a corresponding concept in 2.10, because scala.reflect.runtime.universe.TypeTag can capture arbitrary types. Use type tags instead of manifests, and there will be no need in opt manifests.", "2.10.0")
   def optManifest[T](implicit m: OptManifest[T])     = m
 
+  def inhabitant[A](implicit h: SingleInhabitant[A]) = h.a
+
   // Minor variations on identity functions
   def identity[A](x: A): A         = x    // @see `conforms` for the implicit version
   @inline def implicitly[T](implicit e: T) = e    // for summoning implicit values from the nether world -- TODO: when dependent method types are on by default, give this result type `e.type`, so that inliner has better chance of knowing which method to inline in calls like `implicitly[MatchingStrategy[Option]].zero`
