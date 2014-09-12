@@ -2,7 +2,7 @@ t7509.scala:3: error: inferred type arguments [Int] do not conform to method cra
   crash(42)
   ^
 t7509.scala:3: error: type mismatch;
- found   : Int(42)
+ found   : 42.type (with underlying type Int)
  required: R
   crash(42)
         ^

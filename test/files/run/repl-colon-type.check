@@ -2,9 +2,9 @@ Type in expressions to have them evaluated.
 Type :help for more information.
 
 scala> :type List[1, 2, 3]
-<console>:1: error: identifier expected but integer literal found.
-       List[1, 2, 3]
-            ^
+<console>:8: error: wrong number of type parameters for method apply: [A](xs: A*)List[A] in object List
+              List[1, 2, 3]
+                  ^
 
 scala> :type List(1, 2, 3)
 List[Int]
@@ -38,7 +38,7 @@ Int
 scala> :type protected lazy val f = 5
 <console>:5: error: lazy value f cannot be accessed in object $iw
  Access to protected value f not permitted because
- enclosing object $eval in package $line13 is not a subclass of
+ enclosing object $eval in package $line16 is not a subclass of
  object $iw where target is defined
   lazy val $result = f
                                            ^

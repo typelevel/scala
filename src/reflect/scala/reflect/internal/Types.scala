@@ -258,6 +258,12 @@ trait Types
 
   /** The base class for all types */
   abstract class Type extends TypeApiImpl with Annotatable[Type] {
+    var isDeclaredSingleton: Boolean = false
+    def asDeclaredSingleton: this.type = {
+      isDeclaredSingleton = true
+      this
+    }
+
     /** Types for which asSeenFrom always is the identity, no matter what
      *  prefix or owner.
      */
@@ -1817,9 +1823,10 @@ trait Types
     override def underlying: Type = value.tpe
     assert(underlying.typeSymbol != UnitClass)
     override def isTrivial: Boolean = true
-    override def deconst: Type = underlying.deconst
-    override def safeToString: String =
-      underlying.toString + "(" + value.escapedStringValue + ")"
+    override def deconst: Type =
+      if (isDeclaredSingleton) this
+      else underlying
+    override def safeToString: String = value.escapedStringValue + ".type"
     override def kind = "ConstantType"
   }
 
@@ -2421,7 +2428,7 @@ trait Types
       if (isTrivial || phase.erasedTypes) resultType
       else if (/*isDependentMethodType &&*/ sameLength(actuals, params)) {
         val idm = new InstantiateDependentMap(params, actuals)
-        val res = idm(resultType)
+        val res = idm(resultType).deconst
         existentialAbstraction(idm.existentialsNeeded, res)
       }
       else existentialAbstraction(params, resultType)

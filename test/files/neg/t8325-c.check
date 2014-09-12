@@ -1,7 +1,7 @@
-t8325-c.scala:3: error: identifier expected but ')' found.
+t8325-c.scala:3: error: illegal literal
   def k(xx: Int`*`) = ???
                   ^
-t8325-c.scala:4: error: ')' expected but '}' found.
+t8325-c.scala:4: error: ')' expected but eof found.
 }
-^
+ ^
 two errors found

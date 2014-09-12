@@ -496,6 +496,7 @@ trait MatchOptimization extends MatchTreeMaking with MatchAnalysis {
       val alternativesSupported = true
       val canJump = true
 
+      // TODO (folone): ConstantType folding?
       // Constant folding sets the type of a constant tree to `ConstantType(Constant(folded))`
       // The tree itself can be a literal, an ident, a selection, ...
       object SwitchablePattern { def unapply(pat: Tree): Option[Tree] = pat.tpe match {

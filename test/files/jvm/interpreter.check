@@ -33,7 +33,7 @@ four: anotherint = 4
 
 scala> val bogus: anotherint = "hello"
 <console>:8: error: type mismatch;
- found   : String("hello")
+ found   : "hello".type (with underlying type String)
  required: anotherint
     (which expands to)  Int
        val bogus: anotherint = "hello"

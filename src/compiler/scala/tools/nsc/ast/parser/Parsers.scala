@@ -675,11 +675,11 @@ self =>
 
     def isExprIntro: Boolean = isExprIntroToken(in.token)
 
-    def isTypeIntroToken(token: Token): Boolean = token match {
+    def isTypeIntroToken(token: Token): Boolean = isLiteralToken(token) || (token match {
       case IDENTIFIER | BACKQUOTED_IDENT | THIS |
-           SUPER | USCORE | LPAREN | AT => true
+           SUPER | USCORE | LPAREN | AT | NULL => true
       case _ => false
-    }
+    })
 
     def isStatSeqEnd = in.token == RBRACE || in.token == EOF
 
@@ -862,7 +862,13 @@ self =>
         in.nextToken()
         if (in.token == RPAREN) {
           in.nextToken()
-          atPos(start, accept(ARROW)) { makeFunctionTypeTree(Nil, typ()) }
+          if (in.token == DOT && lookingAhead { in.token == TYPE }) {
+            accept(DOT)
+            accept(TYPE)
+            atPos(start)(new SingletonTypeTree(Literal(Constant(()))) { override val isLiteral = true })
+          } else {
+            atPos(start, accept(ARROW)) { makeFunctionTypeTree(Nil, typ()) }
+          }
         }
         else {
           val ts = functionTypes()
@@ -1108,6 +1114,14 @@ self =>
         if (in.token == DOT) t = selectors(t, typeOK, in.skipToken())
       } else {
         val tok = in.token
+        if (tok != BACKQUOTED_IDENT && tok != IDENTIFIER) {
+          val lit = literal(false)
+          if (in.token == DOT && lookingAhead { in.token == TYPE }) {
+            accept(DOT)
+            accept(TYPE)
+          }
+          return atPos(start)(new SingletonTypeTree(lit) { override val isLiteral = true })
+        }
         val name = ident()
         t = atPos(start) {
           if (tok == BACKQUOTED_IDENT) Ident(name) updateAttachment BackquotedIdentifierAttachment

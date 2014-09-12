@@ -1,5 +1,5 @@
 no-predef.scala:2: error: type mismatch;
- found   : scala.Long(5L)
+ found   : 5L.type (with underlying type scala.Long)
  required: java.lang.Long
   def f1 = 5L: java.lang.Long
            ^

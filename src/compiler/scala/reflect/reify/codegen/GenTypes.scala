@@ -52,7 +52,8 @@ trait GenTypes {
         reifyBuildCall(nme.SuperType, thistpe, supertpe)
       case tpe @ SingleType(pre, sym) =>
         reifyBuildCall(nme.SingleType, pre, sym)
-      case tpe @ ConstantType(value) =>
+      // TODO (folone): ConstantType folding?
+      case tpe @ ConstantType(value) if !tpe.isDeclaredSingleton =>
         mirrorBuildCall(nme.ConstantType, reifyProduct(value))
       case tpe @ TypeRef(pre, sym, args) =>
         reifyBuildCall(nme.TypeRef, pre, sym, args)
