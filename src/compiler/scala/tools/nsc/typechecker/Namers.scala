@@ -25,8 +25,6 @@ trait Namers extends MethodSynthesis {
   var _lockedCount = 0
   def lockedCount = this._lockedCount
 
-  private var inferDependentTypes = false
-
   /** Replaces any Idents for which cond is true with fresh TypeTrees().
    *  Does the same for any trees containing EmptyTrees.
    */
@@ -865,7 +863,7 @@ trait Namers extends MethodSynthesis {
       )
       dropIllegalStarTypes(
         if (shouldWiden) tpe.widen
-        else if (sym.isFinal || (isLiteral && inferDependentTypes)) tpe    // "final val" allowed to retain constant type
+        else if (sym.isFinal) tpe    // "final val" allowed to retain constant type
         else tpe.deconst
       )
     }
