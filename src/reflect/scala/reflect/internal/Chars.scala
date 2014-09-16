@@ -76,7 +76,7 @@ trait Chars {
   /** Is character a math or other symbol in Unicode?  */
   def isSpecial(c: Char) = {
     val chtp = Character.getType(c)
-    chtp == Character.MATH_SYMBOL.toInt || chtp == Character.OTHER_SYMBOL.toInt
+    chtp == Character.MATH_SYMBOL.toInt || chtp == Character.OTHER_SYMBOL.toInt || chtp == Character.CURRENCY_SYMBOL.toInt && c != '$'
   }
 
   private final val otherLetters = Set[Char]('\u0024', '\u005F')  // '$' and '_'
