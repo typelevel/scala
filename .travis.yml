@@ -2,5 +2,4 @@ language: scala
 scala: 
 - 2.11.2
 sudo: false
-script: ANT_OPTS="-Xms2g -Xmx2g -Xss1M -XX:MaxPermSize=256M -XX:+UseParallelGC" ant test
-
+script: ANT_OPTS="-Xms1g -Xmx1g -Xss1M -XX:MaxPermSize=512M -XX:+UseParallelGC -Dpartest.threads=1" ant test
