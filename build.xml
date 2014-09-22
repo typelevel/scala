@@ -1481,6 +1481,11 @@ TODO:
     <testSuite colors="8" kinds="pos neg run jvm res scalap scalacheck specialized instrumented"/>
   </target>
 
+  <!-- Travis job for the Typelevel project, excludes run and jvm -->
+  <target name="test.suite.small" depends="test.suite.init">
+    <testSuite kinds="pos neg res scalap scalacheck specialized instrumented"/>
+  </target>
+
   <target name="test.suite.quick" depends="init, quick.done">
     <path id="test.suite.path">
       <path refid="quick.bin.tool.path"/>
