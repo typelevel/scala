@@ -4,5 +4,5 @@ scala:
 sudo: false
 script: ANT_OPTS="-Xms1g -Xmx1g -Xss1M -XX:MaxPermSize=512M -XX:+UseParallelGC -Dpartest.threads=2 -Dlocker.skip=1 -Dstarr.use.released=1 -Dscalac.args.optimise=-optimise" ant $TASK
 env:
-  - TASK: "test.run"
-  - TASK: "test.osgi test.sbt test.bc test.junit test.interactive test.scaladoc test.suite.small"
+  - TASK="test.run"
+  - TASK="test.osgi test.sbt test.bc test.junit test.interactive test.scaladoc test.suite.small"
