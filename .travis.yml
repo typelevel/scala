@@ -2,7 +2,8 @@ language: scala
 scala: 
 - 2.11.2
 sudo: false
-script: ANT_OPTS="-Xms1g -Xmx1g -Xss1M -XX:MaxPermSize=512M -XX:+UseParallelGC -Dpartest.threads=2 -Dlocker.skip=1 -Dstarr.use.released=1 -Dscalac.args.optimise=-optimise" ant $TASK
+script: ANT_OPTS="-Xms1g -Xmx1g -Xss1M -XX:MaxPermSize=512M -XX:+UseParallelGC -Dpartest.threads=2 -Dlocker.skip=1 -Dstarr.use.released=1 -Dscalac.args.optimise=-optimise" $TASK
 env:
-  - TASK="test.run"
-  - TASK="test.osgi test.sbt test.bc test.junit test.interactive test.scaladoc test.suite.small"
+  - TASK="ant test.osgi test.sbt test.bc test.junit test.interactive test.scaladoc test.suite.small"
+  - TASK="test/partest test/files/run/t*"
+  - TASK="test/partest test/files/run/[^t]*"
