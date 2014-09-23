@@ -1,5 +1,7 @@
 This is the repository for the [Scala Programming Language](http://www.scala-lang.org).
 
+WORK CI!
+
   - [Report an issue](https://issues.scala-lang.org);
   - [Read about the development of the compiler and the standard library](http://docs.scala-lang.org/scala/);
   - [Check our Jenkins status](https://scala-webapps.epfl.ch/jenkins/);
