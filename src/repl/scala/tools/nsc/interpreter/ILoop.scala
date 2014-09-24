@@ -445,8 +445,14 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
   }
 
   private def readOneLine() = {
+    import scala.io.AnsiColor.{ MAGENTA, RESET }
     out.flush()
-    in readLine prompt
+    in readLine (
+      if (in.colorsOk)
+        MAGENTA + prompt + RESET
+      else
+        prompt
+    )
   }
 
   /** The main read-eval-print loop for the repl.  It calls
@@ -857,6 +863,7 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
       case x: JLineReader => x.consoleReader.postInit
       case _              =>
     }
+    intp.colorsOk = in.colorsOk
   }
   def process(settings: Settings): Boolean = savingContextLoader {
     this.settings = settings
