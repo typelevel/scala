@@ -7,6 +7,22 @@ test "\0x61\0x62".trim() == "x61\0x62" was successful
 
 test (65 : Byte) == 'A' was successful
 
+test 1z == 1 was successful
+test -1z == -1 was successful
+test 1Z == 1 was successful
+test -1Z == -1 was successful
+test 0xffZ == -1 was successful
+test 0xFFz == -1 was successful
+test 0x0aZ == 0xAz was successful
+
+test 1s == 1 was successful
+test -1s == -1 was successful
+test 1S == 1 was successful
+test -1S == -1 was successful
+test 0xffffS == -1 was successful
+test 0xFFFFs == -1 was successful
+test 0x0aS == 0xAs was successful
+
 test 0X01 == 1 was successful
 test 0x01 == 1 was successful
 test 0x10 == 16 was successful

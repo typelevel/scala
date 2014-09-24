@@ -1,0 +1,7 @@
+primed-identifiers.scala:4: error: value b' is not a member of object a1
+  a1 b'c' // parses as a1 b' c'
+     ^
+primed-identifiers.scala:4: error: not found: value c'
+  a1 b'c' // parses as a1 b' c'
+       ^
+two errors found

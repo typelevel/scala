@@ -150,6 +150,8 @@ trait JavaScanners extends ast.parser.ScannersCommon {
       case INTLIT     => "integer literal"
       case LONGLIT    => "long literal"
       case STRINGLIT  => "string literal"
+      case BYTELIT    => "byte literal"
+      case SHORTLIT   => "short literal"
       case EOF        => "eof"
       case ERROR      => "something"
       case AMP        => "`&'"
@@ -728,8 +730,13 @@ trait JavaScanners extends ast.parser.ScannersCommon {
       } else {
         var value: Long = 0
         val divider = if (base == 10) 1 else 2
-        val limit: Long =
-          if (token == LONGLIT) Long.MaxValue else Int.MaxValue
+        val limit: Long = token match {
+          case BYTELIT => Byte.MaxValue
+          case SHORTLIT => Short.MaxValue
+          case LONGLIT => Long.MaxValue
+          case _ => Int.MaxValue
+        }
+
         var i = 0
         val len = name.length
         while (i < len) {
@@ -804,6 +811,12 @@ trait JavaScanners extends ast.parser.ScannersCommon {
       if (in.ch == 'l' || in.ch == 'L') {
         in.next()
         token = LONGLIT
+      } else if (in.ch == 'z' || in.ch == 'Z') {
+        in.next()
+        token = BYTELIT
+      } else if (in.ch == 's' || in.ch == 'S') {
+        in.next()
+        token = SHORTLIT
       }
     }
 
