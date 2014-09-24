@@ -42,7 +42,7 @@ trait ScalaSettings extends AbsScalaSettings
   def optimiseSettings = List[BooleanSetting](inline, inlineHandlers, Xcloselim, Xdce, YconstOptimization)
 
   /** If any of these settings is enabled, the compiler should print a message and exit.  */
-  def infoSettings = List[Setting](version, help, Xhelp, Yhelp, showPlugins, showPhases, genPhaseGraph)
+  def infoSettings = List[Setting](version, help, Xhelp, Yhelp, Zhelp, showPlugins, showPhases, genPhaseGraph)
 
   /** Any -multichoice:help? Nicer if any option could report that it had help to offer. */
   private def multihelp = allSettings exists { case s: MultiChoiceSetting[_] => s.isHelping case _ => false }
@@ -236,6 +236,12 @@ trait ScalaSettings extends AbsScalaSettings
   def YoptUnreachableCode: Boolean = !Yopt.isSetByUser || Yopt.contains(YoptChoices.unreachableCode)
 
   private def removalIn212 = "This flag is scheduled for removal in 2.12. If you have a case where you need this flag then please report a bug."
+
+  /**
+   * -Z Typelevel settings
+   */
+  val Zhelp                         = BooleanSetting("-Z", "Print a synopsis of Typelevel options.")
+  val ZirrefutableGeneratorPatterns = BooleanSetting("-Zirrefutable-generator-patterns", "Treat patterns in for comprehensions as irrefutable. Do not add filter or withFilter calls.")
 
   object YstatisticsPhases extends MultiChoiceEnumeration { val parser, typer, patmat, erasure, cleanup, jvm = Value }
   val Ystatistics = {

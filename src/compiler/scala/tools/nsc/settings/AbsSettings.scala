@@ -109,6 +109,7 @@ trait AbsSettings extends scala.reflect.internal.settings.AbsSettings {
      */
     def isAdvanced   = name match { case "-Y" => true ; case "-X" => false ; case _  => name startsWith "-X" }
     def isPrivate    = name match { case "-Y" => false ; case _  => name startsWith "-Y" }
+    def isTypelevel  = name match { case "-Z" => false ; case _  => name startsWith "-Z" }
     def isStandard   = !isAdvanced && !isPrivate
     def isForDebug   = name endsWith "-debug" // by convention, i.e. -Ytyper-debug
     def isDeprecated = deprecationMessage.isDefined
