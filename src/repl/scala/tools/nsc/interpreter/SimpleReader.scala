@@ -19,6 +19,7 @@ extends InteractiveReader
 {
   val history = NoHistory
   val completion = NoCompletion
+  val colorsOk = false
 
   def reset() = ()
   def redrawLine() = ()

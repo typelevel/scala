@@ -24,6 +24,8 @@ class JLineReader(_completion: => Completion) extends InteractiveReader {
   private def term = consoleReader.getTerminal()
   def reset() = term.reset()
 
+  lazy val colorsOk = term.isAnsiSupported
+
   def scalaToJline(tc: ScalaCompleter): Completer = new Completer {
     def complete(_buf: String, cursor: Int, candidates: JList[CharSequence]): Int = {
       val buf   = if (_buf == null) "" else _buf

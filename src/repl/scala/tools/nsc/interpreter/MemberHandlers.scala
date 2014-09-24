@@ -121,12 +121,12 @@ trait MemberHandlers {
 
         import scala.io.AnsiColor.{ BOLD, BLUE, GREEN, RESET }
 
-        def color(c: String, s: String) =
-          if (replProps.colorOk) string2code(BOLD) + string2code(c) + s + string2code(RESET)
+        def boldColor(c: String, s: String) =
+          if (intp.colorsOk) string2code(BOLD) + string2code(c) + s + string2code(RESET)
           else s
 
-        val nameString = color(BLUE, string2code(prettyName)) + vidString
-        val typeString = color(GREEN, string2code(req typeOf name))
+        val nameString = boldColor(BLUE, string2code(prettyName)) + vidString
+        val typeString = boldColor(GREEN, string2code(req typeOf name))
         s""" + "$nameString: $typeString = " + $resultString"""
       }
     }
