@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.scala-lang</groupId>
+  <artifactId>scala-typelevel</artifactId>
+  <packaging>jar</packaging>
+  <version>@VERSION@</version>
+  <name>Scala Typelevel Library</name>
+  <description>Typelevel Library for the Typelevel Scala Compiler</description>
+  <url>http://typelevel.org/</url>
+  <inceptionYear>2014</inceptionYear>
+  <organization>
+    <name>Typelevel</name>
+    <url>http://typelevel.org/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>BSD 3-Clause</name>
+      <url>http://www.scala-lang.org/license.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:git:git://github.com/typelevel/scala.git</connection>
+    <url>https://github.com/typelevel/scala.git</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/typelevel/scala/issues/</url>
+  </issueManagement>
+  <properties>
+    <info.apiURL>http://www.scala-lang.org/api/@VERSION@/</info.apiURL>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>@VERSION@</version>
+    </dependency>
+  </dependencies>
+  <developers>
+    <developer>
+      <id>typelevel</id>
+      <name>Typelevel</name>
+    </developer>
+  </developers>
+</project>

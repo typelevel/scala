@@ -1,0 +1,7 @@
+Bundle-Name: Scala Typelevel Library
+Bundle-SymbolicName: org.scala-lang.scala-typelevel
+ver: @VERSION@
+Bundle-Version: ${ver}
+Export-Package: *;version=${ver}
+Import-Package: scala.*;version="${range;[==,=+);@VERSION@}",*
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6, JavaSE-1.7
