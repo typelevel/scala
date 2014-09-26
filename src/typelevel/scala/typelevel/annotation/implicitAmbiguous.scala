@@ -1,4 +1,4 @@
-package scala.annotation
+package scala.typelevel.annotation
 
 import scala.annotation.meta._
 
