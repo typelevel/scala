@@ -1,6 +1,6 @@
 # Typelevel Scala
 
-[![Build Status](http://typelevel-ci.orexio.org/job/typelevel-scala-pr/badge/icon)](http://typelevel-ci.orexio.org/job/typelevel-scala-pr/) [![Stories in Ready](https://badge.waffle.io/typelevel/scala.svg?label=ready&title=Ready)](http://waffle.io/typelevel/scala)
+[![Build Status](http://typelevel-ci.orexio.org/job/typelevel-scala-master/badge/icon)](http://typelevel-ci.orexio.org/job/typelevel-scala-master/) [![Stories in Ready](https://badge.waffle.io/typelevel/scala.svg?label=ready&title=Ready)](http://waffle.io/typelevel/scala)
 
 This is the repository for the [Typelevel fork](http://typelevel.org/blog/2014/09/02/typelevel-scala.html) of the Scala compiler.
 
