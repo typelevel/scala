@@ -46,7 +46,7 @@ import LongMapUtils._
  */
 object LongMap {
   /** $mapCanBuildFromInfo */
-  implicit def canBuildFrom[A, B] = new CanBuildFrom[LongMap[A], (Long, B), LongMap[B]] {
+  implicit def canBuildFrom[A, B]: CanBuildFrom[LongMap[A], (Long, B), LongMap[B]] = new CanBuildFrom[LongMap[A], (Long, B), LongMap[B]] {
     def apply(from: LongMap[A]): Builder[(Long, B), LongMap[B]] = apply()
     def apply(): Builder[(Long, B), LongMap[B]] = new MapBuilder[Long, B, LongMap[B]](empty[B])
   }

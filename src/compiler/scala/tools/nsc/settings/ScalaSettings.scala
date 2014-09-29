@@ -240,8 +240,9 @@ trait ScalaSettings extends AbsScalaSettings
   /**
    * -Z Typelevel settings
    */
-  val Zhelp                         = BooleanSetting("-Z", "Print a synopsis of Typelevel options.")
-  val ZirrefutableGeneratorPatterns = BooleanSetting("-Zirrefutable-generator-patterns", "Treat patterns in for comprehensions as irrefutable. Do not add filter or withFilter calls.")
+  val Zhelp                            = BooleanSetting("-Z", "Print a synopsis of Typelevel options.")
+  val ZirrefutableGeneratorPatterns    = BooleanSetting("-Zirrefutable-generator-patterns", "Treat patterns in for comprehensions as irrefutable. Do not add filter or withFilter calls.")
+  val ZexplicitImplicitTypeAscriptions = BooleanSetting("-Zexplicit-implicit-type-ascriptions", "Require all implicit definitions to have an explicit type ascription.")
 
   object YstatisticsPhases extends MultiChoiceEnumeration { val parser, typer, patmat, erasure, cleanup, jvm = Value }
   val Ystatistics = {

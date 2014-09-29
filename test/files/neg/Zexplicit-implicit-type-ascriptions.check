@@ -1,0 +1,7 @@
+Zexplicit-implicit-type-ascriptions.scala:4: error: Implicit definitions must have an explicit type ascription
+  implicit val foo = new Foo(1)
+                   ^
+Zexplicit-implicit-type-ascriptions.scala:5: error: Implicit definitions must have an explicit type ascription
+  implicit def foo2 = new Foo("")
+                    ^
+two errors found

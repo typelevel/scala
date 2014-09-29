@@ -300,7 +300,7 @@ self: ParIterableLike[T, Repr, Sequential] =>
   }
 
   /* convenience task operations wrapper */
-  protected implicit def task2ops[R, Tp](tsk: SSCTask[R, Tp]) = new TaskOps[R, Tp] {
+  protected implicit def task2ops[R, Tp](tsk: SSCTask[R, Tp]): TaskOps[R, Tp] = new TaskOps[R, Tp] {
     def mapResult[R1](mapping: R => R1): ResultMapping[R, Tp, R1] = new ResultMapping[R, Tp, R1](tsk) {
       def map(r: R): R1 = mapping(r)
     }
@@ -320,14 +320,14 @@ self: ParIterableLike[T, Repr, Sequential] =>
   }
 
   /* convenience signalling operations wrapper */
-  protected implicit def delegatedSignalling2ops[PI <: DelegatedSignalling](it: PI) = new SignallingOps[PI] {
+  protected implicit def delegatedSignalling2ops[PI <: DelegatedSignalling](it: PI): SignallingOps[PI] = new SignallingOps[PI] {
     def assign(cntx: Signalling): PI = {
       it.signalDelegate = cntx
       it
     }
   }
 
-  protected implicit def builder2ops[Elem, To](cb: Builder[Elem, To]) = new BuilderOps[Elem, To] {
+  protected implicit def builder2ops[Elem, To](cb: Builder[Elem, To]): BuilderOps[Elem, To] = new BuilderOps[Elem, To] {
     def ifIs[Cmb](isbody: Cmb => Unit) = new Otherwise[Cmb] {
       def otherwise(notbody: => Unit)(implicit t: ClassTag[Cmb]) {
         if (cb.getClass == t.runtimeClass) isbody(cb.asInstanceOf[Cmb]) else notbody

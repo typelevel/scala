@@ -40,15 +40,15 @@ package object interpreter extends ReplConfig with ReplStrings {
 
   val IR = Results
 
-  implicit def postfixOps = scala.language.postfixOps // make all postfix ops in this package compile without warning
+  implicit def postfixOps: languageFeature.postfixOps = scala.language.postfixOps // make all postfix ops in this package compile without warning
 
   private[interpreter] implicit def javaCharSeqCollectionToScala(xs: JCollection[_ <: CharSequence]): List[String] = {
     import scala.collection.JavaConverters._
     xs.asScala.toList map ("" + _)
   }
 
-  private[nsc] implicit def enrichClass[T](clazz: Class[T]) = new RichClass[T](clazz)
-  private[nsc] implicit def enrichAnyRefWithTap[T](x: T) = new TapMaker(x)
+  private[nsc] implicit def enrichClass[T](clazz: Class[T]): RichClass[T] = new RichClass[T](clazz)
+  private[nsc] implicit def enrichAnyRefWithTap[T](x: T): TapMaker[T] = new TapMaker(x)
   private[nsc] def debugging[T](msg: String)(x: T) = x.tapDebug(msg)
 
   private val ourClassloader = getClass.getClassLoader

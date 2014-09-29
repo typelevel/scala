@@ -53,4 +53,5 @@ private[reflect] class Settings extends MutableSettings {
   def isScala211        = true
 
   def ZirrefutableGeneratorPatterns = new BooleanSetting(false)
+  def ZexplicitImplicitTypeAscriptions = new BooleanSetting(false)
 }

@@ -1295,6 +1295,13 @@ self =>
       if (in.token == COLON) { in.nextToken(); typ() }
       else TypeTree()
 
+    def typedOptImplicit(): Tree =
+      if (in.token == COLON) { in.nextToken(); typ() }
+      else {
+        syntaxError(in.offset, "Implicit definitions must have an explicit type ascription", false)
+        TypeTree()
+      }
+    
     def typeOrInfixType(location: Location): Tree =
       if (location == Local) typ()
       else startInfixType()
@@ -2485,7 +2492,7 @@ self =>
       var newmods = mods
       in.nextToken()
       val lhs = commaSeparated(stripParens(noSeq.pattern2()))
-      val tp = typedOpt()
+      val tp = if((mods hasFlag Flags.IMPLICIT) && settings.ZexplicitImplicitTypeAscriptions) typedOptImplicit() else typedOpt()
       val rhs =
         if (tp.isEmpty || in.token == EQUALS) {
           accept(EQUALS)
@@ -2589,7 +2596,7 @@ self =>
         val tparams = typeParamClauseOpt(name, contextBoundBuf)
         val vparamss = paramClauses(name, contextBoundBuf.toList, ofCaseClass = false)
         newLineOptWhenFollowedBy(LBRACE)
-        var restype = fromWithinReturnType(typedOpt())
+        var restype = fromWithinReturnType(if((mods hasFlag Flags.IMPLICIT) && settings.ZexplicitImplicitTypeAscriptions) typedOptImplicit() else typedOpt())
         val rhs =
           if (isStatSep || in.token == RBRACE) {
             if (restype.isEmpty) {
