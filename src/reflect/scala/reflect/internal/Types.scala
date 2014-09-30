@@ -2520,7 +2520,11 @@ trait Types
 
     override def isHigherKinded = !typeParams.isEmpty
 
-    override def safeToString = typeParamsString(this) + resultType
+    override def safeToString: String =
+      resultType match {
+        case TypeRef(_, _, _) => typeParamsString(this) + " => " + resultType
+        case _ => typeParamsString(this) + resultType
+      }
 
     override def cloneInfo(owner: Symbol) = {
       val tparams = cloneSymbolsAtOwner(typeParams, owner)
