@@ -572,7 +572,8 @@ self =>
     }
 
     def expectedMsgTemplate(exp: String, fnd: String) = s"$exp expected but $fnd found."
-    def expectedMsg(token: Token): String = expectedMsgTemplate(token2string(token), token2string(in.token))
+    def expectedMsg(token: Token): String =
+      expectedMsgTemplate(token2string(token), token2string(in.token))
 
     /** Consume one token of the specified type, or signal an error if it is not there. */
     def accept(token: Token): Offset = {
@@ -927,6 +928,7 @@ self =>
 
       /** {{{
        *  SimpleType       ::=  SimpleType TypeArgs
+       *                     |  `[' Types `]' `=>' Type
        *                     |  SimpleType `#' Id
        *                     |  StableId
        *                     |  Path `.' type
@@ -937,9 +939,22 @@ self =>
       def simpleType(): Tree = {
         val start = in.offset
         simpleTypeRest(in.token match {
-          case LPAREN   => atPos(start)(makeTupleType(inParens(types())))
-          case USCORE   => wildcardType(in.skipToken())
-          case _        =>
+          case LPAREN =>
+            atPos(start)(makeTupleType(inParens(types())))
+          case LBRACKET =>
+            atPos(start) {
+              val ts = typeParamClauseOpt(freshTypeName("typelambda"), null)
+              if (in.token == ARROW) {
+                in.skipToken()
+                makeTypeLambdaTypeTree(ts, typ())
+              } else {
+                syntaxError("`=>' expected", skipIt = false)
+                errorTypeTree
+              }
+            }
+          case USCORE =>
+            wildcardType(in.skipToken())
+          case _ =>
             path(thisOK = false, typeOK = true) match {
               case r @ SingletonTypeTree(_) => r
               case r => convertToTypeId(r)
