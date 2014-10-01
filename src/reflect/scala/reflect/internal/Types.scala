@@ -2522,8 +2522,10 @@ trait Types
 
     override def safeToString: String =
       resultType match {
-        case TypeRef(_, _, _) => typeParamsString(this) + " => " + resultType
-        case _ => typeParamsString(this) + resultType
+        case TypeBounds(_, _) | ClassInfoType(_, _, _) | MethodType(_, _) | NullaryMethodType(_) =>
+          typeParamsString(this) + resultType
+        case _ =>
+          typeParamsString(this) + " => " + resultType
       }
 
     override def cloneInfo(owner: Symbol) = {
