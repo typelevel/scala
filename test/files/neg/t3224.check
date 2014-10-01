@@ -1,5 +1,5 @@
 t3224.scala:30: error: polymorphic expression cannot be instantiated to expected type;
- found   : [T]Array[T]
+ found   : [T] => Array[T]
  required: List[?]
     println(Texts textL Array())
                              ^
@@ -19,7 +19,7 @@ t3224.scala:36: error: type mismatch;
     println(Texts textA List(1, 1));
                             ^
 t3224.scala:48: error: polymorphic expression cannot be instantiated to expected type;
- found   : [T]Array[T]
+ found   : [T] => Array[T]
  required: List[?]
     assert(size(Array()) == 0)
                      ^
