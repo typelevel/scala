@@ -20,6 +20,9 @@ Incompatible changes will be accepted, but only when under an
 additional compiler flag prefixed with `-Z` so that users can opt-in
 to the changed behaviour.
 
+You can read a more detailed [Compatibility Guide](https://github.com/typelevel/scala/wiki/Typelevel-Scala-Compatibility-Guide)
+on the wiki.
+
 ## Publishing Locally
 
 We do not currently have a release but you can build and publish a
