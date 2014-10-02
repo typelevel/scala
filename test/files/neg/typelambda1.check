@@ -1,0 +1,4 @@
+typelambda1.scala:5: error: type L$1 takes type parameters
+  qux[[x] => [y] => (x, y)]
+             ^
+one error found
