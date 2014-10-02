@@ -155,13 +155,13 @@ abstract class TreeBuilder {
 
   /** Create a type lambda tree */
   def makeTypeLambdaTypeTree(argtpes: List[TypeDef], restpe: Tree): Tree = {
-    val name = freshTypeName("L")
+    val name = freshTypeName("L$")
     SelectFromTypeTree(
       CompoundTypeTree(
         Template(
-          Select(Select(Ident("_root_"), "scala"), newTypeName("AnyRef")) :: Nil,
-          ValDef(Modifiers(0), "_", TypeTree(), EmptyTree),
-          TypeDef(Modifiers(0), name, argtpes, restpe) :: Nil)), name)
+          gen.rootScalaDot(tpnme.AnyRef) :: Nil,
+          ValDef(NoMods, nme.WILDCARD, TypeTree(), EmptyTree),
+          TypeDef(NoMods, name, argtpes, restpe) :: Nil)), name)
   }
 
   /** Append implicit parameter section if `contextBounds` nonempty */
