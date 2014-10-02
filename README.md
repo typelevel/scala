@@ -23,6 +23,10 @@ to the changed behaviour.
 You can read a more detailed [Compatibility Guide](https://github.com/typelevel/scala/wiki/Typelevel-Scala-Compatibility-Guide)
 on the wiki.
 
+## Features
+
+A comprehensive list of features and differences is [listed on the wiki](https://github.com/typelevel/scala/wiki/Differences).
+
 ## Publishing Locally
 
 We do not currently have a release but you can build and publish a
