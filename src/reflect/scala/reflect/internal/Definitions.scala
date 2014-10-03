@@ -1481,9 +1481,6 @@ trait Definitions extends api.StandardDefinitions {
       lazy val DynamicsFeature            = getLanguageFeature("dynamics")
       lazy val PostfixOpsFeature          = getLanguageFeature("postfixOps")
       lazy val ReflectiveCallsFeature     = getLanguageFeature("reflectiveCalls")
-      lazy val ImplicitConversionsFeature = getLanguageFeature("implicitConversions")
-      lazy val HigherKindsFeature         = getLanguageFeature("higherKinds")
-      lazy val ExistentialsFeature        = getLanguageFeature("existentials")
 
       lazy val ApiUniverseReify = ApiUniverseClass.map(sym => getMemberMethod(sym, nme.reify))
 
