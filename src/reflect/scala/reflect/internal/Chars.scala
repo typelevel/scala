@@ -6,6 +6,7 @@ package scala
 package reflect
 package internal
 
+import settings.MutableSettings
 import scala.annotation.{ tailrec, switch }
 import java.lang.{ Character => JCharacter }
 import scala.language.postfixOps
@@ -74,9 +75,9 @@ trait Chars {
     (c == '$') || Character.isUnicodeIdentifierPart(c)
 
   /** Is character a math or other symbol in Unicode?  */
-  def isSpecial(c: Char) = {
+  def isSpecial(c: Char, settings: MutableSettings) = {
     val chtp = Character.getType(c)
-    chtp == Character.MATH_SYMBOL.toInt || chtp == Character.OTHER_SYMBOL.toInt || chtp == Character.CURRENCY_SYMBOL.toInt && c != '$'
+    chtp == Character.MATH_SYMBOL.toInt || chtp == Character.OTHER_SYMBOL.toInt || chtp == Character.CURRENCY_SYMBOL.toInt && c != '$' && settings.ZcurrencySymbols
   }
 
   private final val otherLetters = Set[Char]('\u0024', '\u005F')  // '$' and '_'
@@ -87,12 +88,12 @@ trait Chars {
   def isScalaLetter(ch: Char) = letterGroups(JCharacter.getType(ch).toByte) || otherLetters(ch)
 
   /** Can character form part of a Scala operator name? */
-  def isOperatorPart(c : Char) : Boolean = (c: @switch) match {
+  def isOperatorPart(c : Char, settings: MutableSettings) : Boolean = (c: @switch) match {
     case '~' | '!' | '@' | '#' | '%' |
          '^' | '*' | '+' | '-' | '<' |
          '>' | '?' | ':' | '=' | '&' |
          '|' | '/' | '\\' => true
-    case c => isSpecial(c)
+    case c => isSpecial(c, settings)
   }
 }
 

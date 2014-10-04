@@ -4,6 +4,7 @@ package internal
 
 import scala.annotation.switch
 import Chars._
+import settings.MutableSettings
 
 final class Precedence private (val level: Int) extends AnyVal with Ordered[Precedence] {
   def compare(that: Precedence): Int = level compare that.level
@@ -13,9 +14,9 @@ final class Precedence private (val level: Int) extends AnyVal with Ordered[Prec
 
 object Precedence extends (Int => Precedence) {
   private val ErrorName = "<error>"
-  private def isAssignmentOp(name: String) = name match {
+  private def isAssignmentOp(name: String, settings: MutableSettings) = name match {
     case "!=" | "<=" | ">=" | "" => false
-    case _                       => name.last == '=' && name.head != '=' && isOperatorPart(name.head)
+    case _                       => name.last == '=' && name.head != '=' && isOperatorPart(name.head, settings)
   }
   private def firstChar(ch: Char): Precedence = apply((ch: @switch) match {
     case '|'             => 2
@@ -30,9 +31,9 @@ object Precedence extends (Int => Precedence) {
   })
 
   def apply(level: Int): Precedence = new Precedence(level)
-  def apply(name: String): Precedence = name match {
-    case "" | ErrorName            => this(-1)
-    case _ if isAssignmentOp(name) => this(0)
-    case _                         => firstChar(name charAt 0)
+  def apply(name: String, settings: MutableSettings): Precedence = name match {
+    case "" | ErrorName                      => this(-1)
+    case _ if isAssignmentOp(name, settings) => this(0)
+    case _                                   => firstChar(name charAt 0)
   }
 }

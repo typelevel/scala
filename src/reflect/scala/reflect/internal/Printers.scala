@@ -550,7 +550,7 @@ trait Printers extends api.Printers { self: SymbolTable =>
 
       def addBackquotes(s: String) =
         if (decoded && (decName.exists(ch => brackets.contains(ch) || isWhitespace(ch)) ||
-          (name.isOperatorName && decName.exists(isOperatorPart) && decName.exists(isScalaLetter) && !decName.contains(bslash))))
+          (name.isOperatorName && decName.exists(isOperatorPart(_, settings)) && decName.exists(isScalaLetter) && !decName.contains(bslash))))
           s"`$s`" else s
 
       if (name == nme.CONSTRUCTOR) "this"
