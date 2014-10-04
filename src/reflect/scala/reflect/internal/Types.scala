@@ -2520,7 +2520,13 @@ trait Types
 
     override def isHigherKinded = !typeParams.isEmpty
 
-    override def safeToString = typeParamsString(this) + resultType
+    override def safeToString: String =
+      resultType match {
+        case TypeBounds(_, _) | ClassInfoType(_, _, _) | MethodType(_, _) | NullaryMethodType(_) | OverloadedType(_, _) =>
+          typeParamsString(this) + resultType
+        case _ =>
+          typeParamsString(this) + " => " + resultType
+      }
 
     override def cloneInfo(owner: Symbol) = {
       val tparams = cloneSymbolsAtOwner(typeParams, owner)
@@ -2605,7 +2611,7 @@ trait Types
       // derived from the existentially quantified type into the typing environment
       // (aka \Gamma, which tracks types for variables and constraints/kinds for types)
       // as a nice bonus, delaying this until we need it avoids cyclic errors
-      def tpars = underlying.typeSymbol.initialize.typeParams
+      def tpars = underlying.typeSymbolDirect.initialize.typeParams
 
       def newSkolem(quant: Symbol) = owner.newExistentialSkolem(quant, origin)
       def newSharpenedSkolem(quant: Symbol, tparam: Symbol): Symbol = {

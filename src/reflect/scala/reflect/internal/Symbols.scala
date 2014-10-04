@@ -789,6 +789,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
       isMethod && owner.isDerivedValueClass && !isParamAccessor && !isConstructor && !hasFlag(SUPERACCESSOR) && !isMacro && !isSpecialized
 
     final def isAnonymousFunction = isSynthetic && (name containsName tpnme.ANON_FUN_NAME)
+    final def isDelambdafyFunction = isSynthetic && (name containsName tpnme.DELAMBDAFY_LAMBDA_CLASS_NAME)
     final def isDefinedInPackage  = effectiveOwner.isPackageClass
     final def needsFlatClasses    = phase.flatClasses && rawowner != NoSymbol && !rawowner.isPackageClass
 
@@ -865,10 +866,11 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
     // string.  So this needs attention.  For now the fact that migration is
     // private[scala] ought to provide enough protection.
     def hasMigrationAnnotation = hasAnnotation(MigrationAnnotationClass)
-    def migrationMessage    = getAnnotation(MigrationAnnotationClass) flatMap { _.stringArg(0) }
-    def migrationVersion    = getAnnotation(MigrationAnnotationClass) flatMap { _.stringArg(1) }
-    def elisionLevel        = getAnnotation(ElidableMethodClass) flatMap { _.intArg(0) }
-    def implicitNotFoundMsg = getAnnotation(ImplicitNotFoundClass) flatMap { _.stringArg(0) }
+    def migrationMessage     = getAnnotation(MigrationAnnotationClass) flatMap { _.stringArg(0) }
+    def migrationVersion     = getAnnotation(MigrationAnnotationClass) flatMap { _.stringArg(1) }
+    def elisionLevel         = getAnnotation(ElidableMethodClass) flatMap { _.intArg(0) }
+    def implicitNotFoundMsg  = getAnnotation(ImplicitNotFoundClass) flatMap { _.stringArg(0) }
+    def implicitAmbiguousMsg = getAnnotation(ImplicitAmbiguousClass) flatMap { _.stringArg(0) }
 
     def isCompileTimeOnly       = hasAnnotation(CompileTimeOnlyAttr)
     def compileTimeOnlyMessage  = getAnnotation(CompileTimeOnlyAttr) flatMap (_ stringArg 0)
@@ -2022,12 +2024,19 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
       info.decls.filter(sym => !sym.isMethod && sym.isParamAccessor).toList
 
     /** The symbol accessed by this accessor (getter or setter) function. */
-    final def accessed: Symbol = accessed(owner.info)
-
-    /** The symbol accessed by this accessor function, but with given owner type. */
-    final def accessed(ownerTp: Type): Symbol = {
+    final def accessed: Symbol = {
       assert(hasAccessorFlag, this)
-      ownerTp decl localName
+      val localField = owner.info decl localName
+
+      if (localField == NoSymbol && this.hasFlag(MIXEDIN)) {
+        // SI-8087: private[this] fields don't have a `localName`. When searching the accessed field
+        // for a mixin accessor of such a field, we need to look for `name` instead.
+        // The phase travel ensures that the field is found (`owner` is the trait class symbol, the
+        // field gets removed from there in later phases).
+        enteringPhase(picklerPhase)(owner.info).decl(name).suchThat(!_.isAccessor)
+      } else {
+        localField
+      }
     }
 
     /** The module corresponding to this module class (note that this

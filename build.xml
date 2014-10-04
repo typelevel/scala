@@ -267,20 +267,20 @@ TODO:
     <if><not><isset property="maven-deps-done"></isset></not><then>
       <mkdir dir="${user.home}/.m2/repository"/>
       <!-- This task has an issue where if the user directory does not exist, so we create it above. UGH. -->
-      <artifact:dependencies pathId="extra.tasks.classpath" filesetId="extra.tasks.fileset">
+      <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="extra.tasks.classpath" filesetId="extra.tasks.fileset">
         <dependency groupId="biz.aQute" artifactId="bnd" version="1.50.0"/>
       </artifact:dependencies>
 
       <!-- JUnit -->
       <property name="junit.version" value="4.10"/>
-      <artifact:dependencies pathId="junit.classpath" filesetId="junit.fileset">
+      <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="junit.classpath" filesetId="junit.fileset">
         <dependency groupId="junit" artifactId="junit" version="${junit.version}"/>
       </artifact:dependencies>
       <copy-deps project="junit"/>
 
       <!-- Pax runner -->
       <property name="pax.exam.version" value="2.6.0"/>
-      <artifact:dependencies pathId="pax.exam.classpath" filesetId="pax.exam.fileset">
+      <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="pax.exam.classpath" filesetId="pax.exam.fileset">
         <dependency groupId="org.ops4j.pax.exam" artifactId="pax-exam-container-native" version="${pax.exam.version}"/>
         <dependency groupId="org.ops4j.pax.exam" artifactId="pax-exam-junit4" version="${pax.exam.version}"/>
         <dependency groupId="org.ops4j.pax.exam" artifactId="pax-exam-link-assembly" version="${pax.exam.version}"/>
@@ -310,7 +310,7 @@ TODO:
       <prepareCross name="scalacheck"/>
 
       <!-- TODO: delay until absolutely necessary to allow minimal build, also move out partest dependency from scaladoc -->
-      <artifact:dependencies pathId="partest.classpath" filesetId="partest.fileset" versionsId="partest.versions">
+      <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="partest.classpath" filesetId="partest.fileset" versionsId="partest.versions">
         <!-- uncomment the following if you're deploying your own partest locally -->
         <!-- <localRepository path="${user.home}/.m2/repository"/> -->
         <!-- so we don't have to wait for artifacts to synch to maven central
@@ -322,12 +322,12 @@ TODO:
       </artifact:dependencies>
       <copy-deps project="partest"/>
 
-      <artifact:dependencies pathId="scalacheck.classpath" filesetId="scalacheck.fileset" versionsId="scalacheck.versions">
+      <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="scalacheck.classpath" filesetId="scalacheck.fileset" versionsId="scalacheck.versions">
         <artifact:remoteRepository refid="extra-repo"/>
         <dependency groupId="org.scalacheck"         artifactId="scalacheck${scalacheck.cross}"    version="${scalacheck.version.number}" />
       </artifact:dependencies>
 
-      <artifact:dependencies pathId="repl.deps.classpath" filesetId="repl.fileset" versionsId="repl.deps.versions">
+      <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="repl.deps.classpath" filesetId="repl.fileset" versionsId="repl.deps.versions">
         <dependency groupId="jline" artifactId="jline" version="${jline.version}"/>
       </artifact:dependencies>
       <copy-deps project="repl"/>
@@ -349,6 +349,7 @@ TODO:
           <path refid="external-modules.deps.classpath"/>
           <rsel:not><rsel:or>
             <rsel:name name="scala-library*.jar"/>
+            <rsel:name name="scala-typelevel*.jar"/>
             <rsel:name name="scala-reflect*.jar"/>
             <rsel:name name="scala-compiler*.jar"/>
           </rsel:or></rsel:not>
@@ -366,7 +367,7 @@ TODO:
       <typedef resource="aQute/bnd/ant/taskdef.properties" classpathref="extra.tasks.classpath" />
 
       <echo message="Using Scala ${starr.version} for STARR."/>
-      <artifact:dependencies pathId="starr.compiler.path" filesetId="starr.fileset">
+      <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="starr.compiler.path" filesetId="starr.fileset">
         <artifact:remoteRepository refid="extra-repo"/>
         <dependency groupId="org.scala-lang" artifactId="scala-library" version="${starr.version}"/>
         <dependency groupId="org.scala-lang" artifactId="scala-reflect" version="${starr.version}"/>
@@ -650,7 +651,7 @@ TODO:
     <property name="partest-javaagent.description" value="Scala Compiler Testing Tool (compiler-specific java agent)"/>
 
     <!-- projects without project-specific options: asm, forkjoin, manual, bin, repl -->
-    <for list="actors,compiler,interactive,scaladoc,library,parser-combinators,partest,partest-extras,partest-javaagent,reflect,scalap,swing,xml,continuations-plugin,continuations-library" param="project">
+    <for list="actors,compiler,interactive,scaladoc,library,typelevel,parser-combinators,partest,partest-extras,partest-javaagent,reflect,scalap,swing,xml,continuations-plugin,continuations-library" param="project">
       <sequential>
         <!-- description is mandatory -->
         <init-project-prop project="@{project}" name="package"     default=""/> <!-- used by mvn-package, copy-bundle, make-bundle -->
@@ -732,6 +733,11 @@ TODO:
       <path refid="aux.libs"/>
     </path>
 
+    <path id="quick.typelevel.build.path">
+      <path refid="quick.library.build.path"/>
+      <pathelement location="${build-quick.dir}/classes/typelevel"/>
+    </path>
+
     <path id="quick.actors.build.path">
       <path refid="quick.library.build.path"/>
       <pathelement location="${build-quick.dir}/classes/actors"/>
@@ -786,6 +792,7 @@ TODO:
 
     <path id="quick.bin.tool.path">
       <path refid="quick.repl.build.path"/>
+      <path refid="quick.typelevel.build.path"/>
       <path refid="quick.actors.build.path"/>
       <pathelement location="${build-quick.dir}/classes/scalap"/>
       <pathelement location="${build-quick.dir}/classes/scaladoc"/>
@@ -795,6 +802,7 @@ TODO:
     <!-- PACK -->
     <path id="pack.compiler.path">
       <pathelement location="${library.jar}"/>
+      <pathelement location="${typelevel.jar}"/>
       <pathelement location="${reflect.jar}"/>
       <pathelement location="${compiler.jar}"/>
       <pathelement location="${ant.jar}"/>
@@ -804,6 +812,7 @@ TODO:
 
     <path id="pack.bin.tool.path">
       <pathelement location="${library.jar}"/>
+      <pathelement location="${typelevel.jar}"/>
       <pathelement location="${xml.jar}"/>
       <pathelement location="${parser-combinators.jar}"/>
       <pathelement location="${actors.jar}"/>
@@ -818,6 +827,10 @@ TODO:
     <path id="pack.library.files">
       <fileset dir="${build-quick.dir}/classes/library"/>
       <fileset dir="${forkjoin-classes}"/>
+    </path>
+
+    <path id="pack.typelevel.files">
+      <fileset dir="${build-quick.dir}/classes/typelevel"/>
     </path>
 
     <path id="pack.actors.files">
@@ -866,6 +879,7 @@ TODO:
 
     <!-- DOCS -->
     <path id="docs.library.build.path">               <path refid="quick.library.build.path"/>  </path>
+    <path id="docs.typelevel.build.path">             <path refid="quick.typelevel.build.path"/> </path>
     <path id="docs.reflect.build.path">               <path refid="quick.reflect.build.path"/>  </path>
     <path id="docs.compiler.build.path">              <path refid="quick.compiler.build.path"/> </path>
     <path id="docs.scaladoc.build.path">              <path refid="quick.scaladoc.build.path"/> </path>
@@ -877,6 +891,7 @@ TODO:
     <path id="scaladoc.classpath">
       <path refid="external-modules-nocore"/>
       <pathelement location="${library.jar}"/>
+      <pathelement location="${typelevel.jar}"/>
       <pathelement location="${reflect.jar}"/>
       <pathelement location="${compiler.jar}"/>
 
@@ -892,6 +907,7 @@ TODO:
     <path id="manual.build.path">
       <path refid="external-modules-nocore"/> <!-- xml -->
       <pathelement location="${library.jar}"/>
+      <pathelement location="${typelevel.jar}"/>
       <pathelement location="${build.dir}/manmaker/classes"/>
       <path refid="aux.libs"/>  <!-- for ant -->
     </path>
@@ -917,6 +933,7 @@ TODO:
     </path>
     <path id="partest.compilation.path.core">
       <pathelement location="${library.jar}"/>
+      <pathelement location="${typelevel.jar}"/>
       <pathelement location="${reflect.jar}"/>
       <pathelement location="${compiler.jar}"/>
     </path>
@@ -940,6 +957,7 @@ TODO:
         <path refid="partest.classpath"/>
         <rsel:not><rsel:or>
           <rsel:name name="scala-library*.jar"/>
+          <rsel:name name="scala-typelevel*.jar"/>
         </rsel:or></rsel:not>
       </restrict>
       <pathelement location="${scala-xml}"/>
@@ -950,6 +968,7 @@ TODO:
         <path refid="scalacheck.classpath"/>
         <rsel:not><rsel:or>
           <rsel:name name="scala-library*.jar"/>
+          <rsel:name name="scala-typelevel*.jar"/>
           <rsel:name name="scala-compiler*.jar"/>
           <rsel:name name="scala-reflect*.jar"/>
           <rsel:name name="scala-actors*.jar"/>
@@ -970,12 +989,14 @@ TODO:
       <pathelement location="${test.junit.classes}"/>
       <path refid="quick.compiler.build.path"/>
       <path refid="quick.repl.build.path"/>
+      <path refid="quick.partest-extras.build.path"/>
       <path refid="junit.classpath"/>
     </path>
 
     <path id="test.osgi.compiler.build.path">
       <pathelement location="${test.osgi.classes}"/>
       <pathelement location="${build-osgi.dir}/org.scala-lang.scala-library.jar"/>
+      <pathelement location="${build-osgi.dir}/org.scala-lang.scala-typelevel.jar"/>
       <pathelement location="${build-osgi.dir}/org.scala-lang.scala-reflect.jar"/>
       <pathelement location="${build-osgi.dir}/org.scala-lang.scala-compiler.jar"/>
       <pathelement location="${build-osgi.dir}/org.scala-lang.scala-actors.jar"/>
@@ -1090,6 +1111,9 @@ TODO:
   <target name="quick.lib"        depends="quick.start">
     <staged-build with="locker"   stage="quick" project="library" srcpath="${src.dir}/library" includes="lib.rootdoc.includes"/></target>
 
+  <target name="quick.typelevel"  depends="quick.lib">
+    <staged-build with="locker"   stage="quick" project="typelevel"/> </target>
+
   <target name="quick.reflect"    depends="quick.lib">
     <staged-build with="locker"   stage="quick" project="reflect"/> </target>
 
@@ -1128,6 +1152,8 @@ TODO:
 ============================================================================ -->
   <target name="pack.lib"    depends="quick.lib, forkjoin.done"> <staged-pack project="library"/></target>
 
+  <target name="pack.typelevel" depends="quick.typelevel"> <staged-pack project="typelevel"/></target>
+
   <target name="pack.reflect" depends="quick.reflect"> <staged-pack project="reflect"/> </target>
 
   <!-- TODO modularize compiler. Remove other quick targets when they become modules. -->
@@ -1147,7 +1173,7 @@ TODO:
         <copy file="${basedir}/META-INF/MANIFEST.MF" toDir="${build-pack.dir}/META-INF"/>
         <manifest file="${build-pack.dir}/META-INF/MANIFEST.MF" mode="update">
           <attribute name="Bundle-Version" value="${version.number}"/>
-          <attribute name="Class-Path" value="scala-reflect.jar scala-library.jar"/>
+          <attribute name="Class-Path" value="scala-reflect.jar scala-library.jar scala-typelevel.jar"/>
         </manifest>
       </pre>
       <!-- JSR-223 support introduced in 2.11 -->
@@ -1166,7 +1192,7 @@ TODO:
 
   <target name="pack.scalap"     depends="quick.scalap">     <staged-pack project="scalap"/> </target>
 
-  <target name="pack.core" depends="pack.reflect, pack.comp, pack.lib"/>
+  <target name="pack.core" depends="pack.reflect, pack.comp, pack.lib, pack.typelevel"/>
 
   <!-- TODO modularize compiler: pack.scaladoc, pack.interactive, -->
   <target name="pack.modules" depends="pack.actors, pack.scalap">
@@ -1232,6 +1258,7 @@ TODO:
         </fileset>
         <filelist>
           <file name="${library.jar}"/>
+          <file name="${typelevel.jar}"/>
           <file name="${reflect.jar}"/>
           <file name="${compiler.jar}"/>
         </filelist>
@@ -1242,6 +1269,10 @@ TODO:
       <stopwatch name="osgi.core.timer"/>
       <make-bundle project="library">
         <fileset dir="${src.dir}/library"/>
+      </make-bundle>
+
+      <make-bundle project="typelevel">
+        <fileset dir="${src.dir}/typelevel"/>
       </make-bundle>
 
       <make-bundle project="reflect">
@@ -1436,7 +1467,7 @@ TODO:
     <stopwatch name="test.junit.compiler.timer" action="total"/>
   </target>
 
-  <target name="test.junit" depends="test.junit.comp">
+  <target name="test.junit" depends="test.junit.comp, test.junit.init">
     <stopwatch name="test.junit.timer"/>
     <mkdir dir="${test.junit.classes}"/>
     <echo message="Note: details of failed tests will be output to ${build-junit.dir}"/>
@@ -1512,17 +1543,22 @@ TODO:
 <!-- ===========================================================================
                                   BINARY COMPATIBILITY TESTING
 ============================================================================ -->
-  <target name="bc.init" depends="init" unless="maven-deps-done-mima">
+  <target name="bc.init" depends="init" if="test.bc.skip">
+    <!-- if test.bc.skip is set, make sure that pc.prepare is not executed either -->
+    <property name="maven-deps-done-mima" value="true"/>
+  </target>
+
+  <target name="bc.prepare" depends="bc.init" unless="maven-deps-done-mima">
     <property name="bc-reference-version" value="2.11.0"/>
 
     <property name="bc-build.dir" value="${build.dir}/bc"/>
     <!-- Obtain mima -->
     <mkdir dir="${bc-build.dir}"/>
     <!-- Pull down MIMA -->
-    <artifact:dependencies pathId="mima.classpath">
+    <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="mima.classpath">
       <dependency groupId="com.typesafe" artifactId="mima-reporter_2.10" version="0.1.6"/>
     </artifact:dependencies>
-    <artifact:dependencies pathId="old.bc.classpath">
+    <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="old.bc.classpath">
       <dependency groupId="org.scala-lang" artifactId="scala-library" version="${bc-reference-version}"/>
       <dependency groupId="org.scala-lang" artifactId="scala-reflect" version="${bc-reference-version}"/>
     </artifact:dependencies>
@@ -1530,7 +1566,7 @@ TODO:
   </target>
 
   <target name="test.bc-opt" description="Optimized version of test.bc."> <optimized name="test.bc"/></target>
-  <target name="test.bc" depends="bc.init, pack.lib, pack.reflect">
+  <target name="test.bc" depends="bc.prepare, pack.lib, pack.reflect" unless="test.bc.skip">
     <bc.check project="library"/>
     <bc.check project="reflect"/>
   </target>
@@ -1565,6 +1601,12 @@ TODO:
       <exclude name="runtime/*$.scala"/>
       <exclude name="runtime/ScalaRunTime.scala"/>
       <exclude name="runtime/StringAdd.scala"/>
+    </staged-docs>
+  </target>
+
+  <target name="docs.typelevel" depends="docs.start" unless="docs.skip">
+    <staged-docs project="typelevel">
+      <include name="**/*.scala"/>
     </staged-docs>
   </target>
 
@@ -1611,7 +1653,7 @@ TODO:
     </staged-docs>
   </target>
 
-  <target name="docs.core" depends="docs.lib, docs.reflect, docs.comp" unless="docs.skip"/>
+  <target name="docs.core" depends="docs.lib, docs.typelevel, docs.reflect, docs.comp" unless="docs.skip"/>
   <!-- TODO modularize compiler:  docs.scaladoc, docs.interactive, -->
   <target name="docs.done" depends="docs.core, docs.actors, docs.scalap" unless="docs.skip"/>
 
@@ -1667,6 +1709,7 @@ MAIN DISTRIBUTION PACKAGING
     <mkdir dir="${dist.maven}"/>
 
     <mvn-package project="library"/>
+    <mvn-package project="typelevel"/>
     <mvn-package project="reflect"/>
     <mvn-package project="compiler"/>
 
@@ -1731,30 +1774,35 @@ MAIN DISTRIBUTION PACKAGING
   <target name="publish"        depends="pack-maven.done, init.maven" description="Publishes unsigned artifacts to the maven repo.">
     <deploy />
     <deploy-pom name="scala-library-all"/>
+    <deploy-jar name="scala-typelevel"/>
     <deploy-jar name="scala-dist"/>
   </target>
 
   <target name="publish.local"  depends="pack-maven.done, init.maven" description="Publishes unsigned artifacts to the local maven repo.">
     <deploy local="true"/>
     <deploy-pom name="scala-library-all" local="true"/>
+    <deploy-jar name="scala-typelevel" local="true"/>
     <deploy-jar name="scala-dist" local="true"/>
   </target>
 
   <target name="publish.signed" depends="pack-maven.done, init.maven" description="Publishes signed artifacts to the remote maven repo.">
     <deploy signed="true"/>
     <deploy-pom name="scala-library-all" signed="true"/>
+    <deploy-jar name="scala-typelevel" signed="true"/>
     <deploy-jar name="scala-dist" signed="true"/>
   </target>
 
   <target name="publish-core"   depends="pack-maven.core, init.maven">
     <deploy-one name="scala-compiler" />
     <deploy-one name="scala-library"  />
+    <deploy-one name="scala-typelevel"  />
     <deploy-one name="scala-reflect"  />
   </target>
 
   <target name="publish-core-local" depends="pack-maven.core, init.maven">
     <deploy-one name="scala-compiler" local="true"/>
     <deploy-one name="scala-library"  local="true"/>
+    <deploy-one name="scala-typelevel"  local="true"/>
     <deploy-one name="scala-reflect"  local="true"/>
   </target>
 

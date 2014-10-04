@@ -1,17 +1,81 @@
-(
-  :disable-source-load-on-startup t
-  :disable-scala-jars-on-classpath t
-  :root-dir "c:/Projects/Kepler"
-  :sources (
-    "c:/Projects/Kepler/src/library"
-    "c:/Projects/Kepler/src/reflect"
-    "c:/Projects/Kepler/src/compiler"
-  )
-  :compile-deps (
-    "c:/Projects/Kepler/build/asm/classes"
-    "c:/Projects/Kepler/build/locker/classes/library"
-    "c:/Projects/Kepler/build/locker/classes/reflect"
-    "c:/Projects/Kepler/build/locker/classes/compiler"
-  )
-  :target "c:/Projects/Kepler/build/classes"
-)
+(:root-dir "BASE"
+ :cache-dir "BASE/.ensime_cache"
+ :name "scala"
+ :java-home "/opt/jdk1.6.0_45"
+ :reference-source-roots ("/opt/jdk1.6.0_45/src.zip")
+ :scala-version "2.11.2"
+ :subprojects (
+               (:name "asm"
+                      :depends-on-modules nil
+                      :source-roots ("BASE/src/asm")
+                      :target "BASE/build/asm/classes")
+               (:name "forkjoin"
+                      :depends-on-modules nil
+                      :source-roots ("BASE/src/forkjoin")
+                      :target "BASE/build/libs/classes/forkjoin")
+               (:name "library"
+                      :depends-on-modules ("asm" "forkjoin")
+                      :source-roots ("BASE/src/library"
+                                     "BASE/test/junit")
+                      :target "BASE/build/quick/classes/library"
+                      :test-target "BASE/build/junit/classes"
+                      :compile-deps ("M2_REPO/junit/junit/4.10/junit-4.10.jar"
+                                     "M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar")
+                      :reference-source-roots ("M2_REPO/junit/junit/4.10/junit-4.10-sources.jar"
+                                               "M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar"))
+               (:name "reflect"
+                      :depends-on-modules ("library")
+                      :source-roots ("BASE/src/reflect")
+                      :target "BASE/build/quick/classes/reflect")
+               (:name "compiler"
+                      :depends-on-modules ("reflect")
+                      :source-roots ("BASE/src/compiler")
+                      :target "BASE/build/classes"
+                      :compile-deps ("M2_REPO/org/apache/ant/ant/1.8.4/ant-1.8.4.jar")
+                      :reference-source-roots ("M2_REPO/org/apache/ant/ant/1.8.4/ant-1.8.4-sources.jar"))
+               (:name "repl"
+                      :depends-on-modules ("compiler")
+                      :source-roots ("BASE/src/repl")
+                      :target "BASE/build/quick/classes/repl"
+                      :compile-deps ("M2_REPO/jline/jline/2.12/jline-2.12.jar")
+                      :reference-source-roots ("M2_REPO/jline/jline/2.12/jline-2.12-sources.jar"))
+               (:name "scalap"
+                      :depends-on-modules ("compiler")
+                      :source-roots ("BASE/src/scalap")
+                      :target "BASE/build/scalap/classes")
+               (:name "actors"
+                      :depends-on-modules ("library")
+                      :source-roots ("BASE/src/actors")
+                      :target "BASE/build/actors/classes")
+               (:name "partest"
+                      :depends-on-modules ("repl")
+                      :source-roots ("BASE/src/partest-extras"
+                                     "BASE/src/partest-javaagent")
+                      :targets ("BASE/build/quick/classes/partest-extras"
+                                "BASE/build/quick/classes/partest-javaagent")
+                      :compile-deps ("M2_REPO/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.jar"
+                                     "M2_REPO/org/scala-sbt/test-interface/1.0/test-interface-1.0.jar"
+                                     "M2_REPO/org/apache/ant/ant-launcher/1.8.4/ant-launcher-1.8.4.jar")
+                      :reference-source-roots ("M2_REPO/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0-sources.jar"
+                                               "M2_REPO/org/scala-sbt/test-interface/1.0/test-interface-1.0-sources.jar"
+                                               "M2_REPO/org/apache/ant/ant-launcher/1.8.4/ant-launcher-1.8.4-sources.jar"))
+               (:name "scaladoc"
+                      :depends-on-modules ("partest")
+                      :source-roots ("BASE/src/scaladoc")
+                      :target "BASE/build/scaladoc/classes"
+                      :compile-deps ("M2_REPO/org/scala-lang/plugins/scala-continuations-library_2.11/1.0.2/scala-continuations-library_2.11-1.0.2.jar"
+                                     "M2_REPO/org/scala-lang/plugins/scala-continuations-plugin_2.11.2/1.0.2/scala-continuations-plugin_2.11.2-1.0.2.jar"
+                                     "M2_REPO/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.2/scala-parser-combinators_2.11-1.0.2.jar"
+                                     "M2_REPO/org/scala-lang/modules/scala-swing_2.11/1.0.1/scala-swing_2.11-1.0.1.jar"
+                                     "M2_REPO/org/scala-lang/modules/scala-xml_2.11/1.0.2/scala-xml_2.11-1.0.2.jar"
+                                     )
+                      :reference-source-roots ("M2_REPO/org/scala-lang/plugins/scala-continuations-library_2.11/1.0.2/scala-continuations-library_2.11-1.0.2-sources.jar"
+                                               "M2_REPO/org/scala-lang/plugins/scala-continuations-plugin_2.11.2/1.0.2/scala-continuations-plugin_2.11.2-1.0.2-sources.jar"
+                                               "M2_REPO/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.2/scala-parser-combinators_2.11-1.0.2-sources.jar"
+                                               "M2_REPO/org/scala-lang/modules/scala-swing_2.11/1.0.1/scala-swing_2.11-1.0.1-sources.jar"
+                                               "M2_REPO/org/scala-lang/modules/scala-xml_2.11/1.0.2/scala-xml_2.11-1.0.2-sources.jar"))
+               (:name "interactive"
+                      :depends-on-modules ("scaladoc")
+                      :source-roots ("BASE/src/interactive")
+                      :target "BASE/build/interactive/classes")
+               ))

@@ -733,6 +733,7 @@
 
     <sequential>
       <deploy-one name="scala-library"     local="@{local}" signed="@{signed}"/>
+      <deploy-one name="scala-typelevel"   local="@{local}" signed="@{signed}"/>
       <deploy-one name="scala-reflect"     local="@{local}" signed="@{signed}"/>
       <deploy-one name="scala-compiler"    local="@{local}" signed="@{signed}"/>
 

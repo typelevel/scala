@@ -65,6 +65,7 @@ class IMain(@BeanProperty val factory: ScriptEngineFactory, initialSettings: Set
   // Used in a test case.
   def showDirectory() = replOutput.show(out)
 
+  private[nsc] var colorsOk                   = false     // whether we should use colors in results
   private[nsc] var printResults               = true      // whether to print result lines
   private[nsc] var totalSilence               = false     // whether to print anything
   private var _initializeComplete             = false     // compiler is initialized

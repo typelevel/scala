@@ -36,6 +36,11 @@
     </dependency>
     <dependency>
       <groupId>org.scala-lang</groupId>
+      <artifactId>scala-typelevel</artifactId>
+      <version>@VERSION@</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
       <artifactId>scala-compiler</artifactId>
       <version>@VERSION@</version>
     </dependency>

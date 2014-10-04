@@ -36,7 +36,7 @@
 /sandbox/
 /.ant-targets-build.xml
 
-# eclipse, intellij
+# eclipse, intellij, ensime
 /.classpath
 /.project
 /src/intellij/*.iml
@@ -45,6 +45,8 @@
 **/.cache
 /.idea
 /.settings
+/.ensime
+/.ensime_cache
 
 # Standard symbolic link to build/quick/bin
 /qbin

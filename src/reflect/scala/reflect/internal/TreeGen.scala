@@ -622,7 +622,7 @@ abstract class TreeGen {
             body) setPos splitpos
         case None =>
           atPos(splitpos) {
-            mkVisitor(List(CaseDef(pat, EmptyTree, body)), checkExhaustive = false)
+            mkVisitor(List(CaseDef(pat, EmptyTree, body)), checkExhaustive = settings.ZirrefutableGeneratorPatterns)
           }
       }
     }
@@ -768,7 +768,7 @@ abstract class TreeGen {
   }
 
   def mkCheckIfRefutable(pat: Tree, rhs: Tree)(implicit fresh: FreshNameCreator) =
-    if (treeInfo.isVarPatternDeep(pat)) rhs
+    if (treeInfo.isVarPatternDeep(pat) || settings.ZirrefutableGeneratorPatterns) rhs
     else {
       val cases = List(
         CaseDef(pat.duplicate, EmptyTree, Literal(Constant(true))),
