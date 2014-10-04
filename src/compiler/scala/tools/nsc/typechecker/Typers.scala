@@ -735,12 +735,6 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
         }
       }
 
-    def checkExistentialsFeature(pos: Position, tpe: Type, prefix: String) = tpe match {
-      case extp: ExistentialType if !extp.isRepresentableWithWildcards =>
-        checkFeature(pos, ExistentialsFeature, prefix+" "+tpe)
-      case _ =>
-    }
-
     /** Perform the following adaptations of expression, pattern or type `tree` wrt to
      *  given mode `mode` and given prototype `pt`:
      *  (-1) For expressions with annotated types, let AnnotationCheckers decide what to do
@@ -2185,11 +2179,6 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
         if (meth.isStructuralRefinementMember)
           checkMethodStructuralCompatible(ddef)
 
-        if (meth.isImplicit && !meth.isSynthetic) meth.info.paramss match {
-          case List(param) :: _ if !param.isImplicit =>
-            checkFeature(ddef.pos, ImplicitConversionsFeature, meth.toString)
-          case _ =>
-        }
       }
 
       treeCopy.DefDef(ddef, typedMods, ddef.name, tparams1, vparamss1, tpt1, rhs1) setType NoType
@@ -2223,9 +2212,6 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
           case TypeBounds(lo1, hi1) if (!(lo1 <:< hi1)) => LowerBoundError(tdef, lo1, hi1)
           case _                                        => ()
         }
-
-      if (tdef.symbol.isDeferred && tdef.symbol.info.isHigherKinded)
-        checkFeature(tdef.pos, HigherKindsFeature)
 
       treeCopy.TypeDef(tdef, typedMods, tdef.name, tparams1, rhs1) setType NoType
     }
@@ -5135,7 +5121,6 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
         val tree1 = typerWithLocalContext(context.makeNewScope(tree, context.owner)){
           _.typedExistentialTypeTree(tree, mode)
         }
-        checkExistentialsFeature(tree1.pos, tree1.tpe, "the existential type")
         tree1
       }
 
@@ -5433,7 +5418,6 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
       val tree1 = typed(tree, pt)
       transformed(tree) = tree1
       val tpe = packedType(tree1, context.owner)
-      checkExistentialsFeature(tree.pos, tpe, "inferred existential type")
       tpe
     }
 
