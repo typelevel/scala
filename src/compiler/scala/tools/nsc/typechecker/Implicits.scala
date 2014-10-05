@@ -1482,11 +1482,13 @@ trait Implicits {
           // #3915: need to quote replacement string since it may include $'s (such as the interpreter's $iw)
       })
 
-    private lazy val typeParamNames: List[String] = sym.typeParams.map(_.decodedName)
+      private lazy val typeParamNames: List[String] = sym.typeParams.map(_.decodedName)
+      private def typeArgsAtSym(paramTp: Type) = paramTp.baseType(sym).typeArgs
 
-    def format(paramName: Name, paramTp: Type): String = format(paramTp.typeArgs map (_.toString))
-    def format(typeArgs: List[String]): String =
-      interpolate(msg, Map((typeParamNames zip typeArgs): _*)) // TODO: give access to the name and type of the implicit argument, etc?
+      def format(paramName: Name, paramTp: Type): String = format(typeArgsAtSym(paramTp) map (_.toString))
+
+      def format(typeArgs: List[String]): String =
+        interpolate(msg, Map((typeParamNames zip typeArgs): _*)) // TODO: give access to the name and type of the implicit argument, etc?
 
     def validate: Option[String] = {
       val refs  = Intersobralator.findAllMatchIn(msg).map(_ group 1).toSet
