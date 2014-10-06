@@ -928,7 +928,7 @@ self =>
 
       /** {{{
        *  SimpleType       ::=  SimpleType TypeArgs
-       *                     |  `[' Types `]' `=>' Type
+       *                     |  `[' VariantTypeParam {`,' VariantTypeParam} `]'] `=>' Type
        *                     |  SimpleType `#' Id
        *                     |  StableId
        *                     |  Path `.' type
@@ -944,7 +944,10 @@ self =>
           case LBRACKET =>
             atPos(start) {
               val ts = typeParamClauseOpt(freshTypeName("typelambda"), null)
-              if (in.token == ARROW) {
+              if (ts.isEmpty) {
+                syntaxError("missing type parameters", skipIt = false)
+                errorTypeTree
+              } else if (in.token == ARROW) {
                 in.skipToken()
                 makeTypeLambdaTypeTree(ts, typ())
               } else {

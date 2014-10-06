@@ -1,0 +1,18 @@
+typelambda2.scala:5: error: kinds of the type arguments ([x[_]] => x[Double]) do not conform to the expected kinds of the type parameters (type Q).
+[x[_]] => x[Double]'s type parameters do not match type Q's expected parameters:
+type x has one type parameter, but type _ has none
+  qux[[x[_]] => x[Double]]
+     ^
+typelambda2.scala:6: error: [x, y] => x => y takes two type parameters, expected: one
+  qux[[x, y] => (x => y)]
+      ^
+typelambda2.scala:7: error: not found: type x
+  qux[x => y]
+      ^
+typelambda2.scala:7: error: not found: type y
+  qux[x => y]
+           ^
+typelambda2.scala:7: error: <error> => <error> takes no type parameters, expected: one
+  qux[x => y]
+        ^
+5 errors found
