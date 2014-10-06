@@ -258,11 +258,8 @@ trait Types
 
   /** The base class for all types */
   abstract class Type extends TypeApiImpl with Annotatable[Type] {
-    var isDeclaredSingleton: Boolean = false
-    def asDeclaredSingleton: this.type = {
-      isDeclaredSingleton = true
-      this
-    }
+    val isDeclaredSingleton: Boolean = false
+    def asDeclaredSingleton: Option[DeclaredSingletonType] = None
 
     /** Types for which asSeenFrom always is the identity, no matter what
      *  prefix or owner.
@@ -1817,15 +1814,24 @@ trait Types
   class PackageClassInfoType(decls: Scope, clazz: Symbol)
   extends ClassInfoType(List(), decls, clazz)
 
+  final case class DeclaredSingletonType(value: Constant) extends SingletonType with SingletonTypeApi {
+    override val isDeclaredSingleton = true
+    override def asDeclaredSingleton = Some(this)
+    override def underlying: Type = value.tpe
+    override def isTrivial: Boolean = true
+    override def deconst = underlying
+    override def safeToString: String = value.escapedStringValue + ".type"
+    override def kind = "DeclaredSingletonType"
+  }
+
   /** A class representing a constant type.
    */
   abstract case class ConstantType(value: Constant) extends SingletonType with ConstantTypeApi {
+    override def asDeclaredSingleton = Some(DeclaredSingletonType(value))
     override def underlying: Type = value.tpe
     assert(underlying.typeSymbol != UnitClass)
     override def isTrivial: Boolean = true
-    override def deconst: Type =
-      if (isDeclaredSingleton) this
-      else underlying
+    override def deconst: Type = underlying
     override def safeToString: String = value.escapedStringValue + ".type"
     override def kind = "ConstantType"
   }

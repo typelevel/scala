@@ -16,7 +16,7 @@ object Test {
 
   type Null = null.type
 
-  var x: 3.type = 3
+  //var x: 3.type = 3
   /*
     scala> x = 42
     <console>:8: error: type mismatch;
@@ -46,7 +46,7 @@ object Test {
 
   implicit object One extends Succ[1.type] {
     type Out = 2.type
-    def apply(x: 1.type) = 2
+    def apply(x: 1.type): 2 = 2
   }
 
   def f[T](x: T)(implicit succ: Succ[T]) = succ(x)
@@ -57,28 +57,32 @@ object Test {
   }
 
   def main(args: Array[String]): Unit = {
-    println(f(1))
+    //println(f(1))
     // println(f(5))
     println((g(1), g(5), g(7)))
     noisyIdentity(1)
     noisyIdentity("PANDA!")
   }
 
-  // Inlining functions with singleton result type
+  // vars don't play well with singleton types:
+/*
+scala> var test: 3.type = 3
+<console>:7: error: assignment to non variable
+       var test: 3.type = 3
+           ^
+ */
+
+  // No inlining of functions with singleton result type anymore, but then this:
   /*
-scala> def ok(): 7.type = {
+scala> def test(): 7.type = {
      | println("PANDA!")
      | 7
      | }
-ok: ()7.type
-
-scala> ok()
-res0: 7.type = 7
-
-// Expected:
-scala> ok()
-PANDA!
-res0: 7.type = 7
+<console>:7: error: type mismatch;
+ found   : Int
+ required: 7.type
+       def test(): 7.type = {
+                            ^
    */
 
   // Parser problem:

@@ -143,6 +143,7 @@ trait JavaUniverseForce { self: runtime.JavaUniverse  =>
     this.baseClassesCycleMonitor
     this.RefinedType
     this.ClassInfoType
+    this.DeclaredSingletonType
     this.ConstantType
     this.TypeRef
     this.MethodType

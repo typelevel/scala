@@ -103,12 +103,13 @@ forms.
 
 ```ebnf
 SimpleType  ::=  Path ‘.’ type
+              |  Literal [‘.’ type]
 ```
 
-A singleton type is of the form $p.$`type`, where $p$ is a
-path pointing to a value expected to [conform](06-expressions.html#expression-typing)
-to `scala.AnyRef`. The type denotes the set of values
-consisting of `null` and the value denoted by $p$.
+A singleton type is of the form $p.$`type`, where $p$ is a path,
+or $42$, with `.type` being optional for literals.
+The type denotes the set of values consisting of `null` and the
+value denoted by $p$.
 
 A _stable type_ is either a singleton type or a type which is
 declared to be a subtype of trait `scala.Singleton`.

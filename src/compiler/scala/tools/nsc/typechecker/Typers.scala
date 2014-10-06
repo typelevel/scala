@@ -5100,8 +5100,7 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
           typed(tree.ref, MonoQualifierModes | mode.onlyTypePat, AnyClass.tpe)
         }
         tree setType {
-          if (tree.isLiteral) refTyped.tpe.resultType.asDeclaredSingleton
-          else refTyped.tpe.resultType
+          refTyped.tpe.resultType.asDeclaredSingleton.getOrElse(refTyped.tpe.resultType)
         }
         if (!refTyped.isErrorTyped)
           tree setType refTyped.tpe.resultType
