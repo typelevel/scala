@@ -34,7 +34,7 @@ self =>
   override def keySet : SortedSet[A] = new DefaultKeySortedSet
 
   protected class DefaultKeySortedSet extends super.DefaultKeySet with SortedSet[A] {
-    implicit def ordering = self.ordering
+    implicit def ordering: Ordering[A] = self.ordering
     override def + (elem: A): SortedSet[A] = (SortedSet[A]() ++ this + elem)
     override def - (elem: A): SortedSet[A] = (SortedSet[A]() ++ this - elem)
     override def rangeImpl(from : Option[A], until : Option[A]) : SortedSet[A] = {
