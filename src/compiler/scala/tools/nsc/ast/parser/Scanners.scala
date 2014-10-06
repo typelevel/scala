@@ -516,7 +516,7 @@ trait Scanners extends ScannersCommon {
             nextChar()
             if (isIdentifierStart(ch))
               charLitOr(getIdentRest)
-            else if (isOperatorPart(ch) && (ch != '\\'))
+            else if (isOperatorPart(ch, settings) && (ch != '\\'))
               charLitOr(getOperatorRest)
             else {
               getLitChar()
@@ -569,7 +569,7 @@ trait Scanners extends ScannersCommon {
               putChar(ch)
               nextChar()
               getIdentRest()
-            } else if (isSpecial(ch)) {
+            } else if (isSpecial(ch, settings)) {
               putChar(ch)
               nextChar()
               getOperatorRest()
@@ -671,7 +671,7 @@ trait Scanners extends ScannersCommon {
         if (skipComment()) finishNamed()
         else { putChar('/'); getOperatorRest() }
       case _ =>
-        if (isSpecial(ch)) { putChar(ch); nextChar(); getOperatorRest() }
+        if (isSpecial(ch, settings)) { putChar(ch); nextChar(); getOperatorRest() }
         else finishNamed()
     }
 
@@ -685,7 +685,7 @@ trait Scanners extends ScannersCommon {
              '|' | '\\' | '/' =>
           getOperatorRest()
         case _ =>
-          if (isSpecial(ch)) getOperatorRest()
+          if (isSpecial(ch, settings)) getOperatorRest()
           else finishNamed()
       }
     }

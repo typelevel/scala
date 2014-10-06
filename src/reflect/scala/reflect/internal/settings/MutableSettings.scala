@@ -57,6 +57,7 @@ abstract class MutableSettings extends AbsSettings {
   def isScala211: Boolean
 
   def ZirrefutableGeneratorPatterns: BooleanSetting
+  def ZcurrencySymbols: BooleanSetting
 }
 
 object MutableSettings {

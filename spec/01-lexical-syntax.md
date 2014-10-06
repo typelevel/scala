@@ -42,7 +42,7 @@ classes (Unicode general category given in parentheses):
 1. Delimiter characters ``‘`’ | ‘'’ | ‘"’ | ‘.’ | ‘;’ | ‘,’ ``.
 1. Operator characters. These consist of all printable ASCII characters
    `\u0020` - `\u007F` which are in none of the sets above, mathematical
-   symbols (`Sm`) and other symbols (`So`).
+   symbols (`Sm`), currency symbols (`Sc`) and other symbols (`So`).
 
 ## Identifiers
 

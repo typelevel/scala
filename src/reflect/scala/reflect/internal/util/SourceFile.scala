@@ -7,6 +7,7 @@
 package scala
 package reflect.internal.util
 
+import scala.reflect.internal.settings.MutableSettings
 import scala.reflect.io.{ AbstractFile, VirtualFile }
 import scala.collection.mutable.ArrayBuffer
 import scala.annotation.tailrec
@@ -48,7 +49,7 @@ abstract class SourceFile {
   final def skipWhitespace(offset: Int): Int =
     if (content(offset).isWhitespace) skipWhitespace(offset + 1) else offset
 
-  def identifier(pos: Position): Option[String] = None
+  def identifier(pos: Position, settings: MutableSettings): Option[String] = None
 }
 
 /** An object representing a missing source file.
@@ -126,12 +127,12 @@ class BatchSourceFile(val file : AbstractFile, content0: Array[Char]) extends So
   def start = 0
   def isSelfContained = true
 
-  override def identifier(pos: Position) =
+  override def identifier(pos: Position, settings: MutableSettings) =
     if (pos.isDefined && pos.source == this && pos.point != -1) {
-      def isOK(c: Char) = isIdentifierPart(c) || isOperatorPart(c)
+      def isOK(c: Char) = isIdentifierPart(c) || isOperatorPart(c, settings)
       Some(new String(content drop pos.point takeWhile isOK))
     } else {
-      super.identifier(pos)
+      super.identifier(pos, settings)
     }
 
   private def charAtIsEOL(idx: Int)(p: Char => Boolean) = {

@@ -381,7 +381,7 @@ trait StdNames {
     def isOpAssignmentName(name: Name) = name match {
       case raw.NE | raw.LE | raw.GE | EMPTY => false
       case _                                =>
-      name.endChar == '=' && name.startChar != '=' && isOperatorPart(name.startChar)
+      name.endChar == '=' && name.startChar != '=' && isOperatorPart(name.startChar, settings)
     }
 
     private def expandedNameInternal(name: TermName, base: Symbol, separator: String): TermName =

@@ -1,0 +1,52 @@
+currency-symbols.scala:3: error: illegal character '\u00a3'
+  val £ : Int = 0
+      ^
+currency-symbols.scala:4: error: illegal character '\u00a5'
+  var ¥ : Int = 0
+      ^
+currency-symbols.scala:5: error: illegal character '\u00a2'
+  def ¢ : Int = 0
+      ^
+currency-symbols.scala:6: error: illegal character '\u00a3'
+  val ££ : Int = 0
+      ^
+currency-symbols.scala:6: error: illegal character '\u00a3'
+  val ££ : Int = 0
+       ^
+currency-symbols.scala:7: error: illegal character '\u00a3'
+  val x_£ : Int = 0
+        ^
+currency-symbols.scala:9: error: illegal character '\u00a3'
+  type £ = Int
+       ^
+currency-symbols.scala:10: error: illegal character '\u00a5'
+  type ¥[T] = List[T]
+       ^
+currency-symbols.scala:11: error: illegal character '\u00a3'
+  type T[£] = List[£]
+         ^
+currency-symbols.scala:11: error: illegal character '\u00a3'
+  type T[£] = List[£]
+                   ^
+currency-symbols.scala:13: error: illegal character '\u20ac'
+  type €[A, B] = Either[A, B]
+       ^
+currency-symbols.scala:15: error: illegal character '\u20ac'
+  type Foo = Int € String
+                 ^
+currency-symbols.scala:4: error: '=' expected but ';' found.
+  var ¥ : Int = 0
+^
+currency-symbols.scala:5: error: '=' expected but ';' found.
+  def ¢ : Int = 0
+^
+currency-symbols.scala:7: error: '=' expected but ';' found.
+  val x_£ : Int = 0
+^
+currency-symbols.scala:9: error: illegal start of simple expression
+  type £ = Int
+^
+currency-symbols.scala:13: error: ']' expected but ';' found.
+  type €[A, B] = Either[A, B]
+^
+17 errors found

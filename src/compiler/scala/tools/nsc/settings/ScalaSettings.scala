@@ -242,6 +242,7 @@ trait ScalaSettings extends AbsScalaSettings
    */
   val Zhelp                         = BooleanSetting("-Z", "Print a synopsis of Typelevel options.")
   val ZirrefutableGeneratorPatterns = BooleanSetting("-Zirrefutable-generator-patterns", "Treat patterns in for comprehensions as irrefutable. Do not add filter or withFilter calls.")
+  val ZcurrencySymbols              = BooleanSetting("-Zcurrency-symbols", "Allow the use of currency symbols in identifiers.")
 
   object YstatisticsPhases extends MultiChoiceEnumeration { val parser, typer, patmat, erasure, cleanup, jvm = Value }
   val Ystatistics = {

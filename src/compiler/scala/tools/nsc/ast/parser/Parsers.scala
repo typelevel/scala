@@ -134,7 +134,7 @@ self =>
   import global._
 
   case class OpInfo(lhs: Tree, operator: TermName, targs: List[Tree], offset: Offset) {
-    def precedence = Precedence(operator.toString)
+    def precedence = Precedence(operator.toString, settings)
   }
 
   class SourceFileParser(val source: SourceFile) extends Parser {
@@ -777,7 +777,7 @@ self =>
     var opstack: List[OpInfo] = Nil
 
     @deprecated("Use `scala.reflect.internal.Precedence`", "2.11.0")
-    def precedence(operator: Name): Int = Precedence(operator.toString).level
+    def precedence(operator: Name): Int = Precedence(operator.toString, settings).level
 
     private def opHead = opstack.head
     private def headPrecedence = opHead.precedence
@@ -817,7 +817,7 @@ self =>
     def reducePatternStack(base: List[OpInfo], top: Tree): Tree = reduceStack(isExpr = false, base, top)
 
     def reduceStack(isExpr: Boolean, base: List[OpInfo], top: Tree): Tree = {
-      val opPrecedence = if (isIdent) Precedence(in.name.toString) else Precedence(0)
+      val opPrecedence = if (isIdent) Precedence(in.name.toString, settings) else Precedence(0)
       val leftAssoc    = !isIdent || (treeInfo isLeftAssoc in.name)
 
       reduceStack(isExpr, base, top, opPrecedence, leftAssoc)
