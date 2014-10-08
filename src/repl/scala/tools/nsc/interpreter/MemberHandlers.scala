@@ -102,6 +102,18 @@ trait MemberHandlers {
 
   class GenericHandler(member: Tree) extends MemberHandler(member)
 
+  import scala.io.AnsiColor.{ BOLD, BLUE, GREEN, RESET }
+
+  def color(c: String, s: String) =
+    if (intp.colorsOk) string2code(BOLD) + string2code(c) + s + string2code(RESET)
+    else s
+
+  def colorName(s: String) =
+    color(BLUE, string2code(s))
+
+  def colorType(s: String) =
+    color(GREEN, string2code(s))
+
   class ValHandler(member: ValDef) extends MemberDefHandler(member) {
     val maxStringElements = 1000  // no need to mkString billions of elements
     override def definesValue = true
@@ -134,8 +146,11 @@ trait MemberHandlers {
 
   class DefHandler(member: DefDef) extends MemberDefHandler(member) {
     override def definesValue = flattensToEmpty(member.vparamss) // true if 0-arity
-    override def resultExtractionCode(req: Request) =
-      if (mods.isPublic) codegenln(name, ": ", req.typeOf(name)) else ""
+    override def resultExtractionCode(req: Request) = {
+      val nameString = colorName(name)
+      val typeString = colorType(req typeOf name)
+      if (mods.isPublic) s""" + "$nameString: $typeString\\n"""" else ""
+    }
   }
 
   abstract class MacroHandler(member: DefDef) extends MemberDefHandler(member) {
