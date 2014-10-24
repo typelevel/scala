@@ -738,7 +738,7 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
     /** Perform the following adaptations of expression, pattern or type `tree` wrt to
      *  given mode `mode` and given prototype `pt`:
      *  (-1) For expressions with annotated types, let AnnotationCheckers decide what to do
-     *  (0) Convert expressions with constant types to literals (unless in interactive/scaladoc mode)
+     *  (0) Convert expressions with constant types to literals (unless in interactive/scaladoc mode or dealing with a singleton type)
      *  (1) Resolve overloading, unless mode contains FUNmode
      *  (2) Apply parameterless functions
      *  (3) Apply polymorphic types to fresh instances of their type parameters and
@@ -990,6 +990,7 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
         if (mode.inPatternMode && isPopulatedPattern)
           return tree
 
+        // TODO (folone): ConstantType folding?
         val tree1 = constfold(tree, pt) // (10) (11)
         if (tree1.tpe <:< pt)
           return adapt(tree1, mode, pt, original)
@@ -1090,7 +1091,7 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
       } else tree.tpe match {
         case atp @ AnnotatedType(_, _) if canAdaptAnnotations(tree, this, mode, pt) => // (-1)
           adaptAnnotations(tree, this, mode, pt)
-        case ct @ ConstantType(value) if mode.inNone(TYPEmode | FUNmode) && (ct <:< pt) && canAdaptConstantTypeToLiteral => // (0)
+        case ct @ ConstantType(value) if mode.inNone(TYPEmode | FUNmode) && (ct <:< pt) && canAdaptConstantTypeToLiteral && !ct.isDeclaredSingleton => // (0)
           adaptConstant(value)
         case OverloadedType(pre, alts) if !mode.inFunMode => // (1)
           inferExprAlternative(tree, pt)
@@ -3464,6 +3465,7 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
         ErroneousAnnotation
       }
 
+      // TODO (folone): ConstantType folding?
       /* Calling constfold right here is necessary because some trees (negated
        * floats and literals in particular) are not yet folded.
        */
@@ -3527,6 +3529,7 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
         case Typed(t, _) =>
           tree2ConstArg(t, pt)
 
+        // TODO (folone): ConstantType folding?
         case tree =>
           tryConst(tree, pt)
       }
@@ -5093,11 +5096,12 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
       }
 
       def typedSingletonTypeTree(tree: SingletonTypeTree) = {
-        val refTyped =
-          context.withImplicitsDisabled {
-            typed(tree.ref, MonoQualifierModes | mode.onlyTypePat, AnyRefTpe)
-          }
-
+        val refTyped = context.withImplicitsDisabled {
+          typed(tree.ref, MonoQualifierModes | mode.onlyTypePat, AnyClass.tpe)
+        }
+        tree setType {
+          refTyped.tpe.resultType.asDeclaredSingleton.getOrElse(refTyped.tpe.resultType)
+        }
         if (!refTyped.isErrorTyped)
           tree setType refTyped.tpe.resultType
 

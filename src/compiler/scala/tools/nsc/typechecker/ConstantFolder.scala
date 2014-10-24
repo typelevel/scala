@@ -14,6 +14,7 @@ import java.lang.ArithmeticException
  *  @author Martin Odersky
  *  @version 1.0
  */
+// TODO (folone): ConstantType folding?
 abstract class ConstantFolder {
 
   val global: Global
@@ -30,7 +31,7 @@ abstract class ConstantFolder {
    *  the conversion.
    */
   def apply(tree: Tree, pt: Type): Tree = fold(apply(tree), tree.tpe match {
-    case ConstantType(x) => x convertTo pt
+    case t @ ConstantType(x) if !t.isDeclaredSingleton => x convertTo pt
     case _ => null
   })
 

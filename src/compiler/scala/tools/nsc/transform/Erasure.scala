@@ -535,7 +535,8 @@ abstract class Erasure extends AddInterfaces
         } else bridgingCall
       }
       val rhs = member.tpe match {
-        case MethodType(Nil, ConstantType(c)) => Literal(c)
+        // TODO (folone): inlining of defs with literal-based singleton type results?
+        case MethodType(Nil, tp @ ConstantType(c)) if !tp.isDeclaredSingleton => Literal(c)
         case _                                =>
           val sel: Tree    = Select(This(root), member)
           val bridgingCall = (sel /: bridge.paramss)((fun, vparams) => Apply(fun, vparams map Ident))

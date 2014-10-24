@@ -1,5 +1,5 @@
 divergent-implicit.scala:4: error: type mismatch;
- found   : Int(1)
+ found   : 1.type (with underlying type Int)
  required: String
   val x1: String = 1
                    ^

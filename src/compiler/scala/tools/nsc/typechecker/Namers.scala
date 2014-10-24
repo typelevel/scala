@@ -838,7 +838,7 @@ trait Namers extends MethodSynthesis {
      *  value should not be widened, so it has a use even in situations
      *  whether it is otherwise redundant (such as in a singleton.)
      */
-    private def widenIfNecessary(sym: Symbol, tpe: Type, pt: Type): Type = {
+    private def widenIfNecessary(sym: Symbol, tpe: Type, pt: Type, isLiteral: Boolean): Type = {
       val getter =
         if (sym.isValue && sym.owner.isClass && sym.isPrivate)
           sym.getter(sym.owner)
@@ -876,7 +876,7 @@ trait Namers extends MethodSynthesis {
         case _ => defnTyper.computeType(tree.rhs, pt)
       }
 
-      val defnTpe = widenIfNecessary(tree.symbol, rhsTpe, pt)
+      val defnTpe = widenIfNecessary(tree.symbol, rhsTpe, pt, tree.rhs.isInstanceOf[Literal])
       tree.tpt defineType defnTpe setPos tree.pos.focus
       tree.tpt.tpe
     }

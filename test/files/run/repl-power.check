@@ -25,6 +25,6 @@ scala> val m = LIT(10)                           // treedsl
 m: $r.treedsl.global.Literal = 10
 
 scala> typed(m).tpe                              // typed is in scope
-res2: $r.treedsl.global.Type = Int(10)
+res2: $r.treedsl.global.Type = 10.type
 
 scala> :quit

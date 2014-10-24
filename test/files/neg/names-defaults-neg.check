@@ -3,12 +3,12 @@ Unspecified value parameter b.
   val fac = Fact(1)(2, 3)
                 ^
 names-defaults-neg.scala:5: error: type mismatch;
- found   : String("#")
+ found   : "#".type (with underlying type String)
  required: Int
   test1(b = 2, a = "#")
                    ^
 names-defaults-neg.scala:5: error: type mismatch;
- found   : Int(2)
+ found   : 2.type (with underlying type Int)
  required: String
   test1(b = 2, a = "#")
             ^

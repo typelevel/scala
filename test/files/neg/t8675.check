@@ -1,10 +1,10 @@
 t8675.scala:13: error: type mismatch;
- found   : Boolean(true)
+ found   : true.type (with underlying type Boolean)
  required: String
     a.update(0, x[A]({new isString(true)})) // !!! allowed
                                    ^
 t8675.scala:22: error: type mismatch;
- found   : Boolean(true)
+ found   : true.type (with underlying type Boolean)
  required: String
     new X().m(x[A]({new isString(true)})) // !!! allowed
                                  ^

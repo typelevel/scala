@@ -1,5 +1,5 @@
 t846.scala:9: error: type mismatch;
- found   : Null(null)
+ found   : null.type (with underlying type Null)
  required: B
     if (a != null) f(a) else null
                              ^

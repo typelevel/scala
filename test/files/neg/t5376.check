@@ -1,10 +1,10 @@
 t5376.scala:12: error: type mismatch;
- found   : String("a")
+ found   : "a".type (with underlying type String)
  required: Int
     "a": Int
     ^
 t5376.scala:22: error: type mismatch;
- found   : String("a")
+ found   : "a".type (with underlying type String)
  required: Int
     "a": Int
     ^
