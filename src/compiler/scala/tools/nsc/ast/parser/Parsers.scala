@@ -935,7 +935,7 @@ self =>
        *                     |  SimpleType `#' Id
        *                     |  StableId
        *                     |  Path `.' type
-       *                     |  Literal [`.' type]
+       *                     |  Literal
        *                     |  `(' Types `)'
        *                     |  WildcardType
        *  }}}
