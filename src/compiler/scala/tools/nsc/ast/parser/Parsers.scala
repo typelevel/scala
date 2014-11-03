@@ -945,7 +945,7 @@ self =>
         simpleTypeRest(in.token match {
           case LPAREN   => atPos(start)(makeTupleType(inParens(types())))
           case USCORE   => wildcardType(in.skipToken())
-          case tok if parseLiteralSingletonTypes && isLiteralToken(tok) => SingletonTypeTree(literal(start = start)) // SIP-23
+          case tok if parseLiteralSingletonTypes && isLiteralToken(tok) => atPos(start){SingletonTypeTree(literal())} // SIP-23
           case _ =>
             path(thisOK = false, typeOK = true) match {
               case r @ SingletonTypeTree(_) => r
@@ -1035,7 +1035,7 @@ self =>
           }
         )
         if (isIdent) checkRepeatedParam orElse asInfix
-        else if (isNegatedLiteralType) SingletonTypeTree(literal(isNegated = true, start = t.pos.start))
+        else if (isNegatedLiteralType) atPos(t.pos.start){SingletonTypeTree(literal(isNegated = true, start = t.pos.start))}
         else t
       }
 
