@@ -79,7 +79,7 @@ class Global(var currentSettings: Settings, var reporter: Reporter)
   override def settings = currentSettings
 
   // TODO: temporary flag to easily enable/disable SIP-23 (aka the type formerly known as 42.type)
-  override def sip23: Boolean = true //settings.Xexperimental.value
+  override def sip23: Boolean = settings.Xexperimental.value
 
   /** Switch to turn on detailed type logs */
   var printTypings = settings.Ytyperdebug.value
