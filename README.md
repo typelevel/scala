@@ -39,7 +39,7 @@ ant publish-local-opt -Dmaven.version.suffix="-typelevel"
 Update your `build.sbt` with:
 
 ```scala
-scalaVersion := "2.11.3-typelevel"
+scalaVersion := "2.11.5-typelevel"
 
 libraryDependencies += "org.scala-lang" % "scala-typelevel" % scalaVersion.value
 
