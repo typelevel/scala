@@ -339,6 +339,7 @@ self =>
     }
     private def inScalaRootPackage = inScalaPackage && currentPackage == "scala"
 
+
     def parseStartRule: () => Tree
 
     def parseRule[T](rule: this.type => T): T = {
@@ -675,11 +676,11 @@ self =>
 
     def isExprIntro: Boolean = isExprIntroToken(in.token)
 
-    def isTypeIntroToken(token: Token): Boolean = token match {
+    def isTypeIntroToken(token: Token): Boolean = (sip23 && isLiteralToken(token)) || (token match {
       case IDENTIFIER | BACKQUOTED_IDENT | THIS |
            SUPER | USCORE | LPAREN | AT => true
       case _ => false
-    }
+    })
 
     def isStatSeqEnd = in.token == RBRACE || in.token == EOF
 
@@ -932,6 +933,7 @@ self =>
        *                     |  SimpleType `#' Id
        *                     |  StableId
        *                     |  Path `.' type
+       *                     |  Literal
        *                     |  `(' Types `)'
        *                     |  WildcardType
        *  }}}
@@ -939,24 +941,9 @@ self =>
       def simpleType(): Tree = {
         val start = in.offset
         simpleTypeRest(in.token match {
-          case LPAREN =>
-            atPos(start)(makeTupleType(inParens(types())))
-          case LBRACKET =>
-            atPos(start) {
-              val ts = typeParamClauseOpt(freshTypeName("typelambda"), null)
-              if (ts.isEmpty) {
-                syntaxError("missing type parameters", skipIt = false)
-                errorTypeTree
-              } else if (in.token == ARROW) {
-                in.skipToken()
-                makeTypeLambdaTypeTree(ts, typ())
-              } else {
-                syntaxError("`=>' expected", skipIt = false)
-                errorTypeTree
-              }
-            }
-          case USCORE =>
-            wildcardType(in.skipToken())
+          case LPAREN   => atPos(start)(makeTupleType(inParens(types())))
+          case USCORE   => wildcardType(in.skipToken())
+          case tok if sip23 && isLiteralToken(tok) => atPos(start){SingletonTypeTree(literal())} // SIP-23
           case _ =>
             path(thisOK = false, typeOK = true) match {
               case r @ SingletonTypeTree(_) => r
@@ -1038,7 +1025,15 @@ self =>
           else
             mkOp(infixType(InfixMode.RightOp))
         }
+        // SIP-23
+        def isNegatedLiteralType = sip23 && (
+          t match { // the token for `t` (Ident("-")) has already been read, thus `isLiteral` below is looking at next token (must be a literal)
+            case Ident(name) if isLiteral => name == nme.MINUS.toTypeName // TODO: OPT? lift out nme.MINUS.toTypeName?
+            case _ => false
+          }
+        )
         if (isIdent) checkRepeatedParam orElse asInfix
+        else if (isNegatedLiteralType) atPos(t.pos.start){SingletonTypeTree(literal(isNegated = true, start = t.pos.start))}
         else t
       }
 
