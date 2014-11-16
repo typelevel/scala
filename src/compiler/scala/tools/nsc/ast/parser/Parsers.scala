@@ -960,12 +960,12 @@ self =>
             wildcardType(in.skipToken())
           case tok if sip23 && isLiteralToken(tok) => // SIP-23
             // allowing an optional `.type` suffix:
-            val lit = literal()
+            /*val lit = literal()
             if (in.token == DOT && lookingAhead { in.token == TYPE }) {
               accept(DOT)
               accept(TYPE)
-            }
-            atPos(start)(SingletonTypeTree(literal()))
+            }*/
+            atPos(start){SingletonTypeTree(literal())}
           case _ =>
             path(thisOK = false, typeOK = true) match {
               case r @ SingletonTypeTree(_) => r
