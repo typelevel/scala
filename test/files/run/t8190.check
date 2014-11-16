@@ -88,4 +88,4 @@ TypeTree
 Modifiers
 TreeCopier
 checking exhaustiveness in scala.reflect.api.Universe...
-uncovered type members: List()
+uncovered type members: List(LiteralType)

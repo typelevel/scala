@@ -1,30 +1,30 @@
 sammy_wrong_arity.scala:6: error: type mismatch;
- found   : () => Int
+ found   : () => 0
  required: T1
   (() => 0): T1
       ^
 sammy_wrong_arity.scala:7: error: type mismatch;
- found   : Any => Int
+ found   : Any => 0
  required: T2
   ((x: Any) => 0): T2
             ^
 sammy_wrong_arity.scala:9: error: type mismatch;
- found   : Any => Int
+ found   : Any => 0
  required: T0
   ((x: Any) => 0): T0
             ^
 sammy_wrong_arity.scala:10: error: type mismatch;
- found   : Any => Int
+ found   : Any => 0
  required: T2
   ((x: Any) => 0): T2
             ^
 sammy_wrong_arity.scala:12: error: type mismatch;
- found   : (Any, Any) => Int
+ found   : (Any, Any) => 0
  required: T0
   ((x: Any, y: Any) => 0): T0
                     ^
 sammy_wrong_arity.scala:13: error: type mismatch;
- found   : (Any, Any) => Int
+ found   : (Any, Any) => 0
  required: T1
   ((x: Any, y: Any) => 0): T1
                     ^
