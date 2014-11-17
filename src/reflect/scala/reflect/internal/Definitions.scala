@@ -653,6 +653,7 @@ trait Definitions extends api.StandardDefinitions {
     // tends to change the course of events by forcing types.
     def isFunctionType(tp: Type)       = isFunctionTypeDirect(tp.dealiasWiden)
     def isTupleType(tp: Type)          = isTupleTypeDirect(tp.dealiasWiden)
+    def tupleComponents(tp: Type)      = tp.dealiasWiden.typeArgs
 
     lazy val ProductRootClass: ClassSymbol = requiredClass[scala.Product]
       def Product_productArity          = getMemberMethod(ProductRootClass, nme.productArity)
@@ -837,7 +838,7 @@ trait Definitions extends api.StandardDefinitions {
     def typeOfMemberNamedApply(tp: Type) = typeArgOfBaseTypeOr(tp, SeqClass)(resultOfMatchingMethod(tp, nme.apply)(IntTpe))
     def typeOfMemberNamedDrop(tp: Type)  = typeArgOfBaseTypeOr(tp, SeqClass)(resultOfMatchingMethod(tp, nme.drop)(IntTpe))
     def typesOfSelectors(tp: Type)       =
-      if (isTupleType(tp)) tp.typeArgs
+      if (isTupleType(tp)) tupleComponents(tp)
       else getterMemberTypes(tp, productSelectors(tp))
 
     // SI-8128 Still using the type argument of the base type at Seq/Option if this is an old-style (2.10 compatible)
@@ -904,12 +905,14 @@ trait Definitions extends api.StandardDefinitions {
         )
     }
 
-    def EnumType(sym: Symbol) =
+    def EnumType(sym: Symbol) = {
       // given (in java): "class A { enum E { VAL1 } }"
       //  - sym: the symbol of the actual enumeration value (VAL1)
       //  - .owner: the ModuleClassSymbol of the enumeration (object E)
       //  - .linkedClassOfClass: the ClassSymbol of the enumeration (class E)
-      sym.owner.linkedClassOfClass.tpe
+      // SI-6613 Subsequent runs of the resident compiler demand the phase discipline here.
+      enteringPhaseNotLaterThan(picklerPhase)(sym.owner.linkedClassOfClass).tpe
+    }
 
     /** Given a class symbol C with type parameters T1, T2, ... Tn
      *  which have upper/lower bounds LB1/UB1, LB1/UB2, ..., LBn/UBn,
@@ -1086,6 +1089,10 @@ trait Definitions extends api.StandardDefinitions {
     lazy val AnnotationClass            = requiredClass[scala.annotation.Annotation]
     lazy val ClassfileAnnotationClass   = requiredClass[scala.annotation.ClassfileAnnotation]
     lazy val StaticAnnotationClass      = requiredClass[scala.annotation.StaticAnnotation]
+
+    // Java retention annotations
+    lazy val AnnotationRetentionAttr       = requiredClass[java.lang.annotation.Retention]
+    lazy val AnnotationRetentionPolicyAttr = requiredClass[java.lang.annotation.RetentionPolicy]
 
     // Annotations
     lazy val BridgeClass                = requiredClass[scala.annotation.bridge]
@@ -1432,6 +1439,10 @@ trait Definitions extends api.StandardDefinitions {
       lazy val unboxMethod      = classesMap(x => valueCompanionMember(x, nme.unbox))
       lazy val isUnbox          = unboxMethod.values.toSet[Symbol]
       lazy val isBox            = boxMethod.values.toSet[Symbol]
+
+      lazy val Boolean_and = definitions.Boolean_and
+      lazy val Boolean_or = definitions.Boolean_or
+      lazy val Boolean_not = definitions.Boolean_not
 
       lazy val Option_apply = getMemberMethod(OptionModule, nme.apply)
       lazy val List_apply = DefinitionsClass.this.List_apply

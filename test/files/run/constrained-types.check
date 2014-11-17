@@ -62,7 +62,7 @@ m: (x: String)String @Annot(x)
 scala> 
 
 scala> val three = "three"
-three: String = three
+three: "three" = three
 
 scala> val three2 = m(three:three.type)  // should change x to three
 three2: String @Annot(three) = three
@@ -96,7 +96,7 @@ scala> def m = {
   val y : String @Annot(x) = x
   y
 } // x should not escape the local scope with a narrow type
-m: String @Annot(x) forSome { val x: String }
+m: String @Annot(x) forSome { val x: "three" }
 
 scala> 
 
@@ -126,7 +126,7 @@ Companions must be defined together; you may wish to use :paste mode for this.
 scala> 
 
 scala> val y = a.x // should drop the annotation
-y: String = hello
+y: "hello" = hello
 
 scala> 
 

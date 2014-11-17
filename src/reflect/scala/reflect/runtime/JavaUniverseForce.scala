@@ -361,6 +361,8 @@ trait JavaUniverseForce { self: runtime.JavaUniverse  =>
     definitions.AnnotationClass
     definitions.ClassfileAnnotationClass
     definitions.StaticAnnotationClass
+    definitions.AnnotationRetentionAttr
+    definitions.AnnotationRetentionPolicyAttr
     definitions.BridgeClass
     definitions.ElidableMethodClass
     definitions.ImplicitNotFoundClass

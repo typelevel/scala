@@ -24,10 +24,10 @@ object PrinterHelper {
     resultCode.lines mkString s"$LF"
 
   def assertResultCode(code: String)(parsedCode: String = "", typedCode: String = "", wrap: Boolean = false, printRoot: Boolean = false) = {
-    def toolboxTree(tree: => Tree) = try{
+    def toolboxTree(tree: => Tree) = try {
         tree
       } catch {
-        case e:scala.tools.reflect.ToolBoxError => throw new Exception(e.getMessage + ": " + code)
+        case e:scala.tools.reflect.ToolBoxError => throw new Exception(e.getMessage + ": " + code, e)
       }
 
     def wrapCode(source: String) = {
@@ -352,6 +352,13 @@ trait ClassPrintTests {
   @Test def testClassWithBody = assertPrintedCode(sm"""
     |class X {
     |  def y = "test"
+    |}""")
+
+  @Test def testClassConstructorModifiers = assertPrintedCode("class X private (x: scala.Int)")
+
+  @Test def testClassConstructorModifierVisibility = assertPrintedCode(sm"""
+    |object A {
+    |  class X protected[A] (x: scala.Int)
     |}""")
 
   @Test def testClassWithPublicParams = assertPrintedCode("class X(val x: scala.Int, val s: scala.Predef.String)")

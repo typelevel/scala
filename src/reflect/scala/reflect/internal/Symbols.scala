@@ -173,7 +173,6 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
              with HasFlags
              with Annotatable[Symbol]
              with Attachable {
-
     // makes sure that all symbols that runtime reflection deals with are synchronized
     private def isSynchronized = this.isInstanceOf[scala.reflect.runtime.SynchronizedSymbols#SynchronizedSymbol]
     private def isAprioriThreadsafe = isThreadsafe(AllOps)
@@ -735,31 +734,31 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
 
     final def hasGetter = isTerm && nme.isLocalName(name)
 
-    /** A little explanation for this confusing situation.
-     *  Nested modules which have no static owner when ModuleDefs
-     *  are eliminated (refchecks) are given the lateMETHOD flag,
-     *  which makes them appear as methods after refchecks.
-     *  Here's an example where one can see all four of FF FT TF TT
-     *  for (isStatic, isMethod) at various phases.
+    /**
+     * Nested modules which have no static owner when ModuleDefs are eliminated (refchecks) are
+     * given the lateMETHOD flag, which makes them appear as methods after refchecks.
      *
-     *    trait A1 { case class Quux() }
-     *    object A2 extends A1 { object Flax }
-     *    // --  namer         object Quux in trait A1
-     *    // -M  flatten       object Quux in trait A1
-     *    // S-  flatten       object Flax in object A2
-     *    // -M  posterasure   object Quux in trait A1
-     *    // -M  jvm           object Quux in trait A1
-     *    // SM  jvm           object Quux in object A2
+     * Note: the lateMETHOD flag is added lazily in the info transformer of the RefChecks phase.
+     * This means that forcing the `sym.info` may change the value of `sym.isMethod`. Forcing the
+     * info is in the responsability of the caller. Doing it eagerly here was tried (0ccdb151f) but
+     * has proven to lead to bugs (SI-8907).
      *
-     *  So "isModuleNotMethod" exists not for its achievement in
-     *  brevity, but to encapsulate the relevant condition.
+     * Here's an example where one can see all four of FF FT TF TT for (isStatic, isMethod) at
+     * various phases.
+     *
+     *   trait A1 { case class Quux() }
+     *   object A2 extends A1 { object Flax }
+     *   // --  namer         object Quux in trait A1
+     *   // -M  flatten       object Quux in trait A1
+     *   // S-  flatten       object Flax in object A2
+     *   // -M  posterasure   object Quux in trait A1
+     *   // -M  jvm           object Quux in trait A1
+     *   // SM  jvm           object Quux in object A2
+     *
+     * So "isModuleNotMethod" exists not for its achievement in brevity, but to encapsulate the
+     * relevant condition.
      */
-    def isModuleNotMethod = {
-      if (isModule) {
-        if (phase.refChecked) this.info // force completion to make sure lateMETHOD is there.
-        !isMethod
-      } else false
-    }
+    def isModuleNotMethod = isModule && !isMethod
 
     // After RefChecks, the `isStatic` check is mostly redundant: all non-static modules should
     // be methods (and vice versa). There's a corner case on the vice-versa with mixed-in module
@@ -1593,13 +1592,11 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
       assert(isCompilerUniverse)
       if (infos == null || runId(infos.validFrom) == currentRunId) {
         infos
-      } else if (isPackageClass) {
-        // SI-7801 early phase package scopes are mutated in new runs (Namers#enterPackage), so we have to
-        //         discard transformed infos, rather than just marking them as from this run.
-        val oldest = infos.oldest
-        oldest.validFrom = validTo
-        this.infos = oldest
-        oldest
+      } else if (infos ne infos.oldest) {
+        // SI-8871 Discard all but the first element of type history. Specialization only works in the resident
+        // compiler / REPL if re-run its info transformer in this run to correctly populate its
+        // per-run caches, e.g. typeEnv
+        adaptInfos(infos.oldest)
       } else {
         val prev1 = adaptInfos(infos.prev)
         if (prev1 ne infos.prev) prev1
@@ -2157,6 +2154,12 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
       if (isTopLevel) {
         if (isClass) this else moduleClass
       } else owner.enclosingTopLevelClass
+
+    /** The top-level class or local dummy symbol containing this symbol. */
+    def enclosingTopLevelClassOrDummy: Symbol =
+      if (isTopLevel) {
+        if (isClass) this else moduleClass.orElse(this)
+      } else owner.enclosingTopLevelClassOrDummy
 
     /** Is this symbol defined in the same scope and compilation unit as `that` symbol? */
     def isCoDefinedWith(that: Symbol) = (
@@ -3506,6 +3509,7 @@ trait Symbols extends api.Symbols { self: SymbolTable =>
     override def enclClassChain = Nil
     override def enclClass: Symbol = this
     override def enclosingTopLevelClass: Symbol = this
+    override def enclosingTopLevelClassOrDummy: Symbol = this
     override def enclosingPackageClass: Symbol = this
     override def enclMethod: Symbol = this
     override def associatedFile = NoAbstractFile

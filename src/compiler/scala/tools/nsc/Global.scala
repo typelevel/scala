@@ -9,17 +9,16 @@ package nsc
 
 import java.io.{ File, FileOutputStream, PrintWriter, IOException, FileNotFoundException }
 import java.nio.charset.{ Charset, CharsetDecoder, IllegalCharsetNameException, UnsupportedCharsetException }
-import java.util.UUID._
 import scala.compat.Platform.currentTime
 import scala.collection.{ mutable, immutable }
 import io.{ SourceReader, AbstractFile, Path }
 import reporters.{ Reporter, ConsoleReporter }
-import util.{ ClassPath, MergedClassPath, StatisticsInfo, returning, stackTraceString }
+import util.{ ClassPath, StatisticsInfo, returning, stackTraceString }
 import scala.reflect.ClassTag
 import scala.reflect.internal.util.{ OffsetPosition, SourceFile, NoSourceFile, BatchSourceFile, ScriptSourceFile }
 import scala.reflect.internal.pickling.{ PickleBuffer, PickleFormat }
 import scala.reflect.io.VirtualFile
-import symtab.{ Flags, SymbolTable, SymbolLoaders, SymbolTrackers }
+import symtab.{ Flags, SymbolTable, SymbolTrackers }
 import symtab.classfile.Pickler
 import plugins.Plugins
 import ast._
@@ -28,7 +27,7 @@ import typechecker._
 import transform.patmat.PatternMatching
 import transform._
 import backend.icode.{ ICodes, GenICode, ICodeCheckers }
-import backend.{ ScalaPrimitives, Platform, JavaPlatform }
+import backend.{ ScalaPrimitives, JavaPlatform }
 import backend.jvm.GenBCode
 import backend.jvm.GenASM
 import backend.opt.{ Inliners, InlineExceptionHandlers, ConstantOptimization, ClosureElimination, DeadCodeElimination }
@@ -1235,13 +1234,12 @@ class Global(var currentSettings: Settings, var reporter: Reporter)
 
     /** does this run compile given class, module, or case factory? */
     // NOTE: Early initialized members temporarily typechecked before the enclosing class, see typedPrimaryConstrBody!
-    //       Here we work around that wrinkle by claiming that a top-level, early-initialized member is compiled in
+    //       Here we work around that wrinkle by claiming that a early-initialized member is compiled in
     //       *every* run. This approximation works because this method is exclusively called with `this` == `currentRun`.
     def compiles(sym: Symbol): Boolean =
       if (sym == NoSymbol) false
       else if (symSource.isDefinedAt(sym)) true
-      else if (sym.isTopLevel && sym.isEarlyInitialized) true
-      else if (!sym.isTopLevel) compiles(sym.enclosingTopLevelClass)
+      else if (!sym.isTopLevel) compiles(sym.enclosingTopLevelClassOrDummy)
       else if (sym.isModuleClass) compiles(sym.sourceModule)
       else false
 
