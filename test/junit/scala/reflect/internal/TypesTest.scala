@@ -32,4 +32,15 @@ class TypesTest {
     val uniquelyNarrowed2 = refinedType(boolWithString1narrow2 :: Nil, NoSymbol)
     assert(uniquelyNarrowed1 =:= uniquelyNarrowed2)
   }
+
+  @Test
+  def testLub(): Unit = {
+    assert(lub(List()) =:= NothingTpe)
+    assert(lub(List(LiteralType(Constant(0)), LiteralType(Constant(1)))) =:= IntTpe)
+    assert(lub(List(LiteralType(Constant(1)), LiteralType(Constant(1)), LiteralType(Constant(1)))) =:= LiteralType(Constant(1)))
+    assert(lub(List(LiteralType(Constant("a")), LiteralType(Constant("b")))) =:= StringTpe)
+    assert(lub(List(LiteralType(Constant("a")), LiteralType(Constant("a")))) =:= LiteralType(Constant("a")))
+    assert(lub(List(typeOf[Class[String]], typeOf[Class[String]])) =:= typeOf[Class[String]])
+    assert(lub(List(typeOf[Class[String]], typeOf[Class[Object]])) =:= typeOf[Class[_ >: String <: Object]])
+  }
 }
