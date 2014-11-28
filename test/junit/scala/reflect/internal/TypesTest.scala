@@ -34,13 +34,43 @@ class TypesTest {
   }
 
   @Test
-  def testLub(): Unit = {
-    assert(lub(List()) =:= NothingTpe)
-    assert(lub(List(LiteralType(Constant(0)), LiteralType(Constant(1)))) =:= IntTpe)
-    assert(lub(List(LiteralType(Constant(1)), LiteralType(Constant(1)), LiteralType(Constant(1)))) =:= LiteralType(Constant(1)))
-    assert(lub(List(LiteralType(Constant("a")), LiteralType(Constant("b")))) =:= StringTpe)
-    assert(lub(List(LiteralType(Constant("a")), LiteralType(Constant("a")))) =:= LiteralType(Constant("a")))
-    assert(lub(List(typeOf[Class[String]], typeOf[Class[String]])) =:= typeOf[Class[String]])
-    assert(lub(List(typeOf[Class[String]], typeOf[Class[Object]])) =:= typeOf[Class[_ >: String <: Object]])
+  def testSameTypesLub(): Unit = {
+    def testSameType(tpe: Type, num: Int = 5) = assert(lub(List.fill(num)(tpe)) =:= tpe)
+
+    testSameType(IntTpe)
+    testSameType(StringTpe)
+    testSameType(typeOf[Class[String]])
+    testSameType(LiteralType(Constant(1)))
+    testSameType(LiteralType(Constant("test")))
+  }
+
+  @Test
+  def testTypesLub(): Unit = {
+    val interestingCombos: Map[Type, List[List[Type]]] = Map(
+      IntTpe -> List(List(LiteralType(Constant(0)), LiteralType(Constant(1))),
+                     List(LiteralType(Constant(0)), IntTpe),
+                     List(ConstantType(Constant(0)), IntTpe),
+                     List(ConstantType(Constant(0)), LiteralType(Constant(1))),
+                     List(ConstantType(Constant(1)), LiteralType(Constant(1))), // Should this be LiteralType(Constant(1))?
+
+                     List(LiteralType(Constant(1)), ConstantType(Constant(1))), // Same here
+                     List(LiteralType(Constant(0)), ConstantType(Constant(1)))),
+      StringTpe -> List(List(LiteralType(Constant("a")), LiteralType(Constant("b"))),
+                        List(LiteralType(Constant("a")), StringTpe),
+                        List(ConstantType(Constant("a")), LiteralType(Constant("a"))), // Should this be LiteralType(Constant("a"))?
+                        List(LiteralType(Constant("a")), ConstantType(Constant("a"))), // Same here
+                        List(ConstantType(Constant("a")), StringTpe),
+                        List(ConstantType(Constant("a")), LiteralType(Constant("b"))),
+                        List(ConstantType(Constant("a")), LiteralType(Constant("b")))),
+      LiteralType(Constant(1))             -> List(List(LiteralType(Constant(1)), LiteralType(Constant(1)))),
+      LiteralType(Constant("a"))           -> List(List(LiteralType(Constant("a")), LiteralType(Constant("a")))),
+      AnyValTpe                            -> List(List(LiteralType(Constant(1)), IntTpe, DoubleTpe)),
+      typeOf[Class[String]]                -> List(List(typeOf[Class[String]], typeOf[Class[String]])),
+      typeOf[Class[_ >: String <: Object]] -> List(List(typeOf[Class[String]], typeOf[Class[Object]]))
+    )
+
+    interestingCombos foreach { case (result, checks) =>
+      checks.foreach(check => assert(lub(check) =:= result))
+    }
   }
 }
