@@ -50,6 +50,23 @@
  *     https://groups.google.com/d/topic/scala-internals/gp5JsM1E0Fo/discussion
  */
 
+val publishSetting = publishTo <<= (version).apply { v =>
+  val nexus = "https://oss.sonatype.org/"
+  if (v.trim.endsWith("SNAPSHOT"))
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("staging" at nexus + "service/local/staging/deploy/maven2")
+}
+
+val credentialsSetting = credentials += {
+  Seq("build.publish.user", "build.publish.password").map(k => Option(System.getProperty(k))) match {
+    case Seq(Some(user), Some(pass)) =>
+      Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", user, pass)
+    case _                           =>
+      Credentials(Path.userHome / ".ivy2" / ".credentials")
+  }
+}
+
 val bootstrapScalaVersion = "2.11.5"
 
 def withoutScalaLang(moduleId: ModuleID): ModuleID = moduleId exclude("org.scala-lang", "*")
@@ -67,8 +84,8 @@ val antDep = "org.apache.ant" % "ant" % "1.9.4"
 val scalacheckDep = withoutScalaLang("org.scalacheck" %% "scalacheck" % "1.11.4")
 
 lazy val commonSettings = clearSourceAndResourceDirectories ++ Seq[Setting[_]](
-  organization := "org.scala-lang",
-  version := "2.11.6-SNAPSHOT",
+  organization := "org.typelevel",
+  version := "2.11.8-SNAPSHOT",
   scalaVersion := bootstrapScalaVersion,
   // we don't cross build Scala itself
   crossPaths := false,
@@ -102,21 +119,45 @@ lazy val commonSettings = clearSourceAndResourceDirectories ++ Seq[Setting[_]](
   // given that classDirectory is overriden to be _outside_ of target directory, we have
   // to make sure its being cleaned properly
   cleanFiles += (classDirectory in Compile).value,
-  fork in run := true
+  fork in run := true,
+  credentialsSetting,
+  publishSetting,
+  pomExtra := (
+    <url>https://github.com/typelevel/scala</url>
+    <licenses>
+      <license>
+        <name>Apache License</name>
+        <url>http://opensource.org/licenses/Apache-2.0</url>
+        <distribution>repo</distribution>
+      </license>
+    </licenses>
+    <scm>
+      <url>git@github.com:typelevel/scala.git</url>
+      <connection>scm:git:git@github.com:typelevel/scala.git</connection>
+    </scm>
+    <developers>
+      {
+        Seq(
+          ("folone"     , "George Leontiev"),
+          ("larsrh"     , "Lars Hupel"),
+          ("milessabin" , "Miles Sabin"),
+          ("non"        , "Erik Osheim"),
+          ("stacycurl"  , "Stacy Curl"),
+          ("stew"       , "Mike O'Connor"),
+          ("tixxit"     , "Tom Switzer")
+        ).map { case (id, name) =>
+            <developer>
+              <id>{id}</id>
+              <name>{name}</name>
+              <url>http://github.com/{id}</url>
+            </developer>
+        }
+      }
+    </developers>
+  )
 )
 
-// disable various tasks that are not needed for projects that are used
-// only for compiling code and not publishing it as a standalone artifact
-// we disable those tasks by overriding them and returning bogus files when
-// needed. This is a bit sketchy but I haven't found any better way.
-val disableDocsAndPublishingTasks = Seq[Setting[_]](
-  doc := file("!!! NO DOCS !!!"),
-  publishLocal := {},
-  publish := {},
-  packageBin in Compile := file("!!! NO PACKAGING !!!")
-)
-
-lazy val setJarLocation: Setting[_] = 
+lazy val setJarLocation: Setting[_] =
   artifactPath in packageBin in Compile := {
     // two lines below are copied over from sbt's sources:
     // https://github.com/sbt/sbt/blob/0.13/main/src/main/scala/sbt/Defaults.scala#L628
@@ -188,7 +229,6 @@ lazy val compiler = configureAsSubproject(project)
   .dependsOn(library, reflect)
 
 lazy val interactive = configureAsSubproject(project)
-  .settings(disableDocsAndPublishingTasks: _*)
   .dependsOn(compiler)
 
 // TODO: SI-9339 embed shaded copy of jline & its interface (see #4563)
@@ -199,14 +239,12 @@ lazy val repl = configureAsSubproject(project)
     outputStrategy in run := Some(StdoutOutput),
     run <<= (run in Compile).partialInput(" -usejavacp") // Automatically add this so that `repl/run` works without additional arguments.
   )
-  .settings(disableDocsAndPublishingTasks: _*)
   .dependsOn(compiler)
 
 lazy val scaladoc = configureAsSubproject(project)
   .settings(
     libraryDependencies ++= Seq(scalaXmlDep, scalaParserCombinatorsDep, partestDep)
   )
-  .settings(disableDocsAndPublishingTasks: _*)
   .dependsOn(compiler)
 
 lazy val scalap = configureAsSubproject(project).
@@ -261,7 +299,6 @@ lazy val partestJavaAgent = (project in file(".") / "src" / "partest-javaagent")
 lazy val test = project.
   dependsOn(compiler, interactive, actors, repl, scalap, partestExtras, partestJavaAgent, scaladoc).
   configs(IntegrationTest).
-  settings(disableDocsAndPublishingTasks: _*).
   settings(commonSettings: _*).
   settings(Defaults.itSettings: _*).
   settings(
@@ -292,6 +329,8 @@ lazy val root = (project in file(".")).
   aggregate(library, forkjoin, reflect, compiler, interactive, repl,
     scaladoc, scalap, actors, partestExtras, junit).settings(
     sources in Compile := Seq.empty,
+    publishLocal := {},
+    publish := {},
     onLoadMessage := """|*** Welcome to the sbt build definition for Scala! ***
       |This build definition has an EXPERIMENTAL status. If you are not
       |interested in testing or working on the build itself, please use
@@ -331,7 +370,6 @@ def configureAsForkOfJavaProject(project: Project): Project = {
   val base = file(".") / "src" / project.id
   (project in base).
     settings(commonSettings: _*).
-    settings(disableDocsAndPublishingTasks: _*).
     settings(
       sourceDirectory in Compile := baseDirectory.value,
       javaSource in Compile := (sourceDirectory in Compile).value,
