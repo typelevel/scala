@@ -9,6 +9,7 @@ package backend.jvm
 
 import scala.collection.{ mutable, immutable }
 import scala.reflect.internal.pickling.{ PickleFormat, PickleBuffer }
+import scala.tools.nsc.backend.jvm.opt.InlineInfoAttribute
 import scala.tools.nsc.symtab._
 import scala.tools.asm
 import asm.Label
@@ -306,7 +307,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
       if (sym.isBridge) ACC_BRIDGE | ACC_SYNTHETIC else 0,
       if (sym.isArtifact) ACC_SYNTHETIC else 0,
       if (sym.isClass && !sym.isInterface) ACC_SUPER else 0,
-      if (sym.hasEnumFlag) ACC_ENUM else 0,
+      if (sym.hasJavaEnumFlag) ACC_ENUM else 0,
       if (sym.isVarargsMethod) ACC_VARARGS else 0,
       if (sym.hasFlag(Flags.SYNCHRONIZED)) ACC_SYNCHRONIZED else 0
     )
@@ -478,10 +479,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
     val CLASS_CONSTRUCTOR_NAME    = "<clinit>"
     val INSTANCE_CONSTRUCTOR_NAME = "<init>"
 
-    val INNER_CLASSES_FLAGS =
-      (asm.Opcodes.ACC_PUBLIC    | asm.Opcodes.ACC_PRIVATE | asm.Opcodes.ACC_PROTECTED |
-       asm.Opcodes.ACC_STATIC    | asm.Opcodes.ACC_INTERFACE | asm.Opcodes.ACC_ABSTRACT | asm.Opcodes.ACC_FINAL)
-
     // -----------------------------------------------------------------------------------------
     // factory methods
     // -----------------------------------------------------------------------------------------
@@ -498,8 +495,8 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
      *        generic classes or interfaces.
      *
      * @param superName the internal of name of the super class. For interfaces,
-     *        the super class is {@link Object}. May be <tt>null</tt>, but
-     *        only for the {@link Object} class.
+     *        the super class is [[Object]]. May be <tt>null</tt>, but
+     *        only for the [[Object]] class.
      *
      * @param interfaces the internal names of the class's interfaces (see
      *        {@link Type#getInternalName() getInternalName}). May be
@@ -532,9 +529,13 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
         }
         bytecodeWriter.writeClass(label, jclassName, arr, outF)
       } catch {
-        case e: java.lang.RuntimeException if e != null && (e.getMessage contains "too large!") =>
+        case e: java.lang.RuntimeException if e.getMessage != null && (e.getMessage contains "too large!") =>
           reporter.error(sym.pos,
             s"Could not write class $jclassName because it exceeds JVM code size limits. ${e.getMessage}")
+        case e: java.io.IOException if e.getMessage != null && (e.getMessage contains "File name too long")  =>
+          reporter.error(sym.pos, e.getMessage + "\n" +
+            "This can happen on some encrypted or legacy file systems.  Please see SI-3623 for more details.")
+
       }
     }
 
@@ -595,7 +596,8 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
           val x = innerClassSymbolFor(s)
           if(x ne NoSymbol) {
             assert(x.isClass, "not an inner-class symbol")
-            val isInner = !x.rawowner.isPackageClass
+            // impl classes are considered top-level, see comment in BTypes
+            val isInner = !considerAsTopLevelImplementationArtifact(s) && !x.rawowner.isPackageClass
             if (isInner) {
               innerClassBuffer += x
               collectInnerClass(x.rawowner)
@@ -615,18 +617,16 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
         val internalName = cachedJN.toString()
         val trackedSym = jsymbol(sym)
         reverseJavaName.get(internalName) match {
-          case Some(oldsym) if oldsym.exists && trackedSym.exists =>
-            assert(
-              // In contrast, neither NothingClass nor NullClass show up bytecode-level.
-              (oldsym == trackedSym) || (oldsym == RuntimeNothingClass) || (oldsym == RuntimeNullClass) || (oldsym.isModuleClass && (oldsym.sourceModule == trackedSym.sourceModule)),
-              s"""|Different class symbols have the same bytecode-level internal name:
-                  |     name: $internalName
-                  |   oldsym: ${oldsym.fullNameString}
-                  |  tracked: ${trackedSym.fullNameString}
-              """.stripMargin
-            )
-          case _ =>
+          case None =>
             reverseJavaName.put(internalName, trackedSym)
+          case Some(oldsym) =>
+            // TODO: `duplicateOk` seems pretty ad-hoc (a more aggressive version caused SI-9356 because it called oldSym.exists, which failed in the unpickler; see also SI-5031)
+            def duplicateOk = oldsym == NoSymbol || trackedSym == NoSymbol || (syntheticCoreClasses contains oldsym) || (oldsym.isModuleClass && (oldsym.sourceModule == trackedSym.sourceModule))
+            if (oldsym != trackedSym && !duplicateOk)
+              devWarning(s"""|Different class symbols have the same bytecode-level internal name:
+                             |     name: $internalName
+                             |   oldsym: ${oldsym.fullNameString}
+                             |  tracked: ${trackedSym.fullNameString}""".stripMargin)
         }
       }
 
@@ -677,7 +677,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
 
     def isDeprecated(sym: Symbol): Boolean = { sym.annotations exists (_ matches definitions.DeprecatedAttr) }
 
-    def addInnerClasses(csym: Symbol, jclass: asm.ClassVisitor) {
+    def addInnerClasses(csym: Symbol, jclass: asm.ClassVisitor, isMirror: Boolean = false) {
       /* The outer name for this inner class. Note that it returns null
        * when the inner class should not get an index in the constant pool.
        * That means non-member classes (anonymous). See Section 4.7.5 in the JVMS.
@@ -687,27 +687,60 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
           null
         else {
           val outerName = javaName(innerSym.rawowner)
-          if (isTopLevelModule(innerSym.rawowner)) "" + nme.stripModuleSuffix(newTermName(outerName))
+          if (isTopLevelModule(innerSym.rawowner)) "" + TermName(outerName).dropModule
           else outerName
         }
       }
 
-      def innerName(innerSym: Symbol): String =
-        if (innerSym.isAnonymousClass || innerSym.isAnonymousFunction)
-          null
-        else
-          innerSym.rawname + innerSym.moduleSuffix
+      def innerName(innerSym: Symbol): String = {
+        // phase travel necessary: after flatten, the name includes the name of outer classes.
+        // if some outer name contains $anon, a non-anon class is considered anon.
+        if (exitingPickler(innerSym.isAnonymousClass || innerSym.isAnonymousFunction)) null
+        else innerSym.rawname + innerSym.moduleSuffix
+      }
 
-      // This collects all inner classes of csym, including local and anonymous: lambdalift makes
-      // them members of their enclosing class.
-      innerClassBuffer ++= exitingPhase(currentRun.lambdaliftPhase)(memberClassesOf(csym))
-
-      // Add members of the companion object (if top-level). why, see comment in BTypes.scala.
       val linkedClass = exitingPickler(csym.linkedClassOfClass) // linkedCoC does not work properly in late phases
-      if (isTopLevelModule(linkedClass)) {
-        // phase travel to exitingPickler: this makes sure that memberClassesOf only sees member classes,
-        // not local classes that were lifted by lambdalift.
-        innerClassBuffer ++= exitingPickler(memberClassesOf(linkedClass))
+
+      innerClassBuffer ++= {
+        val members = exitingPickler(memberClassesForInnerClassTable(csym))
+        // lambdalift makes all classes (also local, anonymous) members of their enclosing class
+        val allNested = exitingPhase(currentRun.lambdaliftPhase)(memberClassesForInnerClassTable(csym))
+        val nested = {
+          // Classes nested in value classes are nested in the companion at this point. For InnerClass /
+          // EnclosingMethod, we use the value class as the outer class. So we remove nested classes
+          // from the companion that were originally nested in the value class.
+          if (exitingPickler(linkedClass.isDerivedValueClass)) allNested.filterNot(classOriginallyNestedInClass(_, linkedClass))
+          else allNested
+        }
+
+        // for the mirror class, we take the members of the companion module class (Java compat, see doc in BTypes.scala).
+        // for module classes, we filter out those members.
+        if (isMirror) members
+        else if (isTopLevelModule(csym)) nested diff members
+        else nested
+      }
+
+      if (!considerAsTopLevelImplementationArtifact(csym)) {
+        // If this is a top-level non-impl class, add members of the companion object. These are the
+        // classes for which we change the InnerClass entry to allow using them from Java.
+        // We exclude impl classes: if the classfile for the impl class exists on the classpath, a
+        // linkedClass symbol is found for which isTopLevelModule is true, so we end up searching
+        // members of that weird impl-class-module-class-symbol. that search probably cannot return
+        // any classes, but it's better to exclude it.
+        if (linkedClass != NoSymbol && isTopLevelModule(linkedClass)) {
+          // phase travel to exitingPickler: this makes sure that memberClassesForInnerClassTable only
+          // sees member classes, not local classes that were lifted by lambdalift.
+          innerClassBuffer ++= exitingPickler(memberClassesForInnerClassTable(linkedClass))
+        }
+
+        // Classes nested in value classes are nested in the companion at this point. For InnerClass /
+        // EnclosingMethod we use the value class as enclosing class. Here we search nested classes
+        // in the companion that were originally nested in the value class, and we add them as nested
+        // in the value class.
+        if (linkedClass != NoSymbol && exitingPickler(csym.isDerivedValueClass)) {
+          val moduleMemberClasses = exitingPhase(currentRun.lambdaliftPhase)(memberClassesForInnerClassTable(linkedClass))
+          innerClassBuffer ++= moduleMemberClasses.filter(classOriginallyNestedInClass(_, csym))
+        }
       }
 
       val allInners: List[Symbol] = innerClassBuffer.toList filterNot deadCode.elidedClosures
@@ -723,9 +756,9 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
           val flagsWithFinal: Int = mkFlags(
             // See comment in BTypes, when is a class marked static in the InnerClass table.
             if (isOriginallyStaticOwner(innerSym.originalOwner)) asm.Opcodes.ACC_STATIC else 0,
-            javaFlags(innerSym),
+            (if (innerSym.isJava) javaClassfileFlags(innerSym) else javaFlags(innerSym)) & ~asm.Opcodes.ACC_STATIC,
             if(isDeprecated(innerSym)) asm.Opcodes.ACC_DEPRECATED else 0 // ASM pseudo-access flag
-          ) & (INNER_CLASSES_FLAGS | asm.Opcodes.ACC_DEPRECATED)
+          ) & (BCodeAsmCommon.INNER_CLASSES_FLAGS | asm.Opcodes.ACC_DEPRECATED)
           val flags = if (innerSym.isModuleClass) flagsWithFinal & ~asm.Opcodes.ACC_FINAL else flagsWithFinal // For SI-5676, object overriding.
           val jname = javaName(innerSym)  // never null
           val oname = outerName(innerSym) // null when method-enclosed
@@ -1206,40 +1239,6 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
 
     def serialVUID: Option[Long] = genBCode.serialVUID(clasz.symbol)
 
-    private def getSuperInterfaces(c: IClass): Array[String] = {
-
-        // Additional interface parents based on annotations and other cues
-        def newParentForAttr(ann: AnnotationInfo): Symbol = ann.symbol match {
-          case RemoteAttr       => RemoteInterfaceClass
-          case _                => NoSymbol
-        }
-
-        /* Drop redundant interfaces (ones which are implemented by some other parent) from the immediate parents.
-         * This is important on Android because there is otherwise an interface explosion.
-         */
-        def minimizeInterfaces(lstIfaces: List[Symbol]): List[Symbol] = {
-          var rest   = lstIfaces
-          var leaves = List.empty[Symbol]
-          while(!rest.isEmpty) {
-            val candidate = rest.head
-            val nonLeaf = leaves exists { lsym => lsym isSubClass candidate }
-            if(!nonLeaf) {
-              leaves = candidate :: (leaves filterNot { lsym => candidate isSubClass lsym })
-            }
-            rest = rest.tail
-          }
-
-          leaves
-        }
-
-      val ps = c.symbol.info.parents
-      val superInterfaces0: List[Symbol] = if(ps.isEmpty) Nil else c.symbol.mixinClasses
-      val superInterfaces = existingSymbols(superInterfaces0 ++ c.symbol.annotations.map(newParentForAttr)).distinct
-
-      if(superInterfaces.isEmpty) EMPTY_STRING_ARRAY
-      else mkArray(minimizeInterfaces(superInterfaces) map javaName)
-    }
-
     var clasz:    IClass = _           // this var must be assigned only by genClass()
     var jclass:   asm.ClassWriter = _  // the classfile being emitted
     var thisName: String = _           // the internal name of jclass
@@ -1260,7 +1259,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
       val ps = c.symbol.info.parents
       val superClass: String = if(ps.isEmpty) JAVA_LANG_OBJECT.getInternalName else javaName(ps.head.typeSymbol)
 
-      val ifaces = getSuperInterfaces(c)
+      val ifaces: Array[String] = implementedInterfaces(c.symbol).map(javaName)(collection.breakOut)
 
       val thisSignature = getGenericSignature(c.symbol, c.symbol.owner)
       val flags = mkFlags(
@@ -1291,6 +1290,9 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
       val ssa = getAnnotPickle(thisName, c.symbol)
       jclass.visitAttribute(if(ssa.isDefined) pickleMarkerLocal else pickleMarkerForeign)
       emitAnnotations(jclass, c.symbol.annotations ++ ssa)
+
+      if (!settings.YskipInlineInfoAttribute.value)
+        jclass.visitAttribute(InlineInfoAttribute(buildInlineInfoFromClassSymbol(c.symbol, javaName, javaType(_).getDescriptor)))
 
       // typestate: entering mode with valid call sequences:
       //   ( visitInnerClass | visitField | visitMethod )* visitEnd
@@ -2050,7 +2052,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
                 seen ::= LocVarEntry(lv, start, end)
               case _ =>
                 // TODO SI-6049 track down the cause for these.
-                debugwarn(s"$iPos: Visited SCOPE_EXIT before visiting corresponding SCOPE_ENTER. SI-6191")
+                devWarning(s"$iPos: Visited SCOPE_EXIT before visiting corresponding SCOPE_ENTER. SI-6191")
             }
           }
 
@@ -2420,7 +2422,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
                 // SI-6102: Determine whether eliding this JUMP results in an empty range being covered by some EH.
                 // If so, emit a NOP in place of the elided JUMP, to avoid "java.lang.ClassFormatError: Illegal exception table range"
               else if (newNormal.isJumpOnly(b) && m.exh.exists(eh => eh.covers(b))) {
-                debugwarn("Had a jump only block that wasn't collapsed")
+                devWarning("Had a jump only block that wasn't collapsed")
                 emit(asm.Opcodes.NOP)
               }
 
@@ -2830,7 +2832,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
 
       addForwarders(isRemote(modsym), mirrorClass, mirrorName, modsym)
 
-      addInnerClasses(modsym, mirrorClass)
+      addInnerClasses(modsym, mirrorClass, isMirror = true)
       mirrorClass.visitEnd()
       writeIfNotTooBig("" + modsym.name, mirrorName, mirrorClass, modsym)
     }
@@ -2879,8 +2881,8 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
       var fieldList = List[String]()
 
       for (f <- clasz.fields if f.symbol.hasGetter;
-	         g = f.symbol.getter(clasz.symbol);
-	         s = f.symbol.setter(clasz.symbol)
+                 g = f.symbol.getterIn(clasz.symbol);
+                 s = f.symbol.setterIn(clasz.symbol)
            if g.isPublic && !(f.symbol.name startsWith "$")
           ) {
              // inserting $outer breaks the bean
@@ -2965,7 +2967,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
   } // end of class JBeanInfoBuilder
 
   /** A namespace for utilities to normalize the code of an IMethod, over and beyond what IMethod.normalize() strives for.
-   * In particualr, IMethod.normalize() doesn't collapseJumpChains().
+   * In particular, IMethod.normalize() doesn't collapseJumpChains().
    *
    * TODO Eventually, these utilities should be moved to IMethod and reused from normalize() (there's nothing JVM-specific about them).
    */
@@ -3033,7 +3035,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
      *
      *  Rationale for this normalization:
      *    test/files/run/private-inline.scala after -optimize is chock full of
-     *    BasicBlocks containing just JUMP(whereTo), where no exception handler straddles them.
+     *    BasicBlocks containing just JUMP(whereto), where no exception handler straddles them.
      *    They should be collapsed by IMethod.normalize() but aren't.
      *    That was fine in FJBG times when by the time the exception table was emitted,
      *    it already contained "anchored" labels (ie instruction offsets were known)
@@ -3132,13 +3134,13 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
         val (remappings, cycles) = detour partition {case (source, target) => source != target}
         for ((source, target) <- remappings) {
 		   debuglog(s"Will elide jump only block $source because it can be jumped around to get to $target.")
-		   if (m.startBlock == source) debugwarn("startBlock should have been re-wired by now")
+                   if (m.startBlock == source) devWarning("startBlock should have been re-wired by now")
         }
         val sources = remappings.keySet
         val targets = remappings.values.toSet
         val intersection = sources intersect targets
 
-        if (intersection.nonEmpty) debugwarn(s"contradiction: we seem to have some source and target overlap in blocks ${intersection.mkString}. Map was ${detour.mkString}")
+        if (intersection.nonEmpty) devWarning(s"contradiction: we seem to have some source and target overlap in blocks ${intersection.mkString}. Map was ${detour.mkString}")
 
         for ((source, _) <- cycles) {
           debuglog(s"Block $source is in a do-nothing infinite loop. Did the user write 'while(true){}'?")
@@ -3180,7 +3182,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters { self =>
         }
       }
 
-      // remove the unusued exception handler references
+      // remove the unused exception handler references
       if (settings.debug)
         for (exh <- unusedExceptionHandlers) debuglog(s"eliding exception handler $exh because it does not cover any reachable blocks")
       m.exh = m.exh filterNot unusedExceptionHandlers

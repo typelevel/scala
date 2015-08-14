@@ -10,8 +10,11 @@ package backend
 package jvm
 
 import scala.annotation.switch
+import scala.reflect.internal.Flags
 
 import scala.tools.asm
+import GenBCode._
+import BackendReporting._
 
 /*
  *
@@ -30,7 +33,6 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
    * Functionality to build the body of ASM MethodNode, except for `synchronized` and `try` expressions.
    */
   abstract class PlainBodyBuilder(cunit: CompilationUnit) extends PlainSkelBuilder(cunit) {
-
     import icodes.TestOp
     import icodes.opcodes.InvokeStyle
 
@@ -92,7 +94,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
       val thrownKind = tpeTK(expr)
       // `throw null` is valid although scala.Null (as defined in src/libray-aux) isn't a subtype of Throwable.
       // Similarly for scala.Nothing (again, as defined in src/libray-aux).
-      assert(thrownKind.isNullType || thrownKind.isNothingType || thrownKind.asClassBType.isSubtypeOf(ThrowableReference))
+      assert(thrownKind.isNullType || thrownKind.isNothingType || thrownKind.asClassBType.isSubtypeOf(ThrowableReference).get)
       genLoad(expr, thrownKind)
       lineNumber(expr)
       emit(asm.Opcodes.ATHROW) // ICode enters here into enterIgnoreMode, we'll rely instead on DCE at ClassNode level.
@@ -229,7 +231,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
 
       if (isArithmeticOp(code))                genArithmeticOp(tree, code)
       else if (code == scalaPrimitives.CONCAT) genStringConcat(tree)
-      else if (code == scalaPrimitives.HASH)   genScalaHash(receiver)
+      else if (code == scalaPrimitives.HASH)   genScalaHash(receiver, tree.pos)
       else if (isArrayOp(code))                genArrayOp(tree, code, expectedType)
       else if (isLogicalOp(code) || isComparisonOp(code)) {
         val success, failure, after = new asm.Label
@@ -583,7 +585,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
           // if (fun.symbol.isConstructor) Static(true) else SuperCall(mix);
           mnode.visitVarInsn(asm.Opcodes.ALOAD, 0)
           genLoadArguments(args, paramTKs(app))
-          genCallMethod(fun.symbol, invokeStyle, pos = app.pos)
+          genCallMethod(fun.symbol, invokeStyle, app.pos)
           generatedType = asmMethodType(fun.symbol).returnType
 
         // 'new' constructor call: Note: since constructors are
@@ -613,7 +615,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
                  */
                 for (i <- args.length until dims) elemKind = ArrayBType(elemKind)
               }
-              (argsSize : @switch) match {
+              argsSize match {
                 case 1 => bc newarray elemKind
                 case _ =>
                   val descr = ('[' * argsSize) + elemKind.descriptor // denotes the same as: arrayN(elemKind, argsSize).descriptor
@@ -625,17 +627,22 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
               mnode.visitTypeInsn(asm.Opcodes.NEW, rt.internalName)
               bc dup generatedType
               genLoadArguments(args, paramTKs(app))
-              genCallMethod(ctor, icodes.opcodes.Static(onInstance = true))
+              genCallMethod(ctor, icodes.opcodes.Static(onInstance = true), app.pos)
 
             case _ =>
               abort(s"Cannot instantiate $tpt of kind: $generatedType")
           }
+        case Apply(fun, args) if app.hasAttachment[delambdafy.LambdaMetaFactoryCapable] =>
+          val attachment = app.attachments.get[delambdafy.LambdaMetaFactoryCapable].get
+          genLoadArguments(args, paramTKs(app))
+          genInvokeDynamicLambda(attachment.target, attachment.arity, attachment.functionalInterface)
+          generatedType = asmMethodType(fun.symbol).returnType
 
         case Apply(fun @ _, List(expr)) if currentRun.runDefinitions.isBox(fun.symbol) =>
           val nativeKind = tpeTK(expr)
           genLoad(expr, nativeKind)
           val MethodNameAndType(mname, methodType) = asmBoxTo(nativeKind)
-          bc.invokestatic(BoxesRunTime.internalName, mname, methodType.descriptor)
+          bc.invokestatic(BoxesRunTime.internalName, mname, methodType.descriptor, app.pos)
           generatedType = boxResultType(fun.symbol) // was toTypeKind(fun.symbol.tpe.resultType)
 
         case Apply(fun @ _, List(expr)) if currentRun.runDefinitions.isUnbox(fun.symbol) =>
@@ -643,7 +650,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
           val boxType = unboxResultType(fun.symbol) // was toTypeKind(fun.symbol.owner.linkedClassOfClass.tpe)
           generatedType = boxType
           val MethodNameAndType(mname, methodType) = asmUnboxTo(boxType)
-          bc.invokestatic(BoxesRunTime.internalName, mname, methodType.descriptor)
+          bc.invokestatic(BoxesRunTime.internalName, mname, methodType.descriptor, app.pos)
 
         case app @ Apply(fun, args) =>
           val sym = fun.symbol
@@ -694,10 +701,10 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
                 // descriptor (instead of a class internal name):
                 //   invokevirtual  #2; //Method "[I".clone:()Ljava/lang/Object
                 val target: String = targetTypeKind.asRefBType.classOrArrayType
-                bc.invokevirtual(target, "clone", "()Ljava/lang/Object;")
+                bc.invokevirtual(target, "clone", "()Ljava/lang/Object;", app.pos)
               }
               else {
-                genCallMethod(sym, invokeStyle, hostClass, app.pos)
+                genCallMethod(sym, invokeStyle, app.pos, hostClass)
               }
 
             } // end of genNormalMethodCall()
@@ -809,7 +816,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
     }
 
     def adapt(from: BType, to: BType) {
-      if (!from.conformsTo(to)) {
+      if (!from.conformsTo(to).get) {
         to match {
           case UNIT => bc drop from
           case _    => bc.emitT2T(from, to)
@@ -975,23 +982,23 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
         // Optimization for expressions of the form "" + x.  We can avoid the StringBuilder.
         case List(Literal(Constant("")), arg) =>
           genLoad(arg, ObjectReference)
-          genCallMethod(String_valueOf, icodes.opcodes.Static(onInstance = false))
+          genCallMethod(String_valueOf, icodes.opcodes.Static(onInstance = false), arg.pos)
 
         case concatenations =>
-          bc.genStartConcat
+          bc.genStartConcat(tree.pos)
           for (elem <- concatenations) {
             val kind = tpeTK(elem)
             genLoad(elem, kind)
-            bc.genStringConcat(kind)
+            bc.genStringConcat(kind, elem.pos)
           }
-          bc.genEndConcat
+          bc.genEndConcat(tree.pos)
 
       }
 
       StringReference
     }
 
-    def genCallMethod(method: Symbol, style: InvokeStyle, hostClass0: Symbol = null, pos: Position = NoPosition) {
+    def genCallMethod(method: Symbol, style: InvokeStyle, pos: Position, hostClass0: Symbol = null) {
 
       val siteSymbol = claszSymbol
       val hostSymbol = if (hostClass0 == null) method.owner else hostClass0
@@ -1035,26 +1042,26 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
       }
 
       if (style.isStatic) {
-        if (style.hasInstance) { bc.invokespecial  (jowner, jname, mdescr) }
-        else                   { bc.invokestatic   (jowner, jname, mdescr) }
+        if (style.hasInstance) { bc.invokespecial  (jowner, jname, mdescr, pos) }
+        else                   { bc.invokestatic   (jowner, jname, mdescr, pos) }
       }
       else if (style.isDynamic) {
-        if (needsInterfaceCall(receiver)) { bc.invokeinterface(jowner, jname, mdescr) }
-        else                              { bc.invokevirtual  (jowner, jname, mdescr) }
+        if (needsInterfaceCall(receiver)) { bc.invokeinterface(jowner, jname, mdescr, pos) }
+        else                              { bc.invokevirtual  (jowner, jname, mdescr, pos) }
       }
       else {
         assert(style.isSuper, s"An unknown InvokeStyle: $style")
-        bc.invokespecial(jowner, jname, mdescr)
+        bc.invokespecial(jowner, jname, mdescr, pos)
         initModule()
       }
 
     } // end of genCallMethod()
 
     /* Generate the scala ## method. */
-    def genScalaHash(tree: Tree): BType = {
+    def genScalaHash(tree: Tree, applyPos: Position): BType = {
       genLoadModule(ScalaRunTimeModule) // TODO why load ScalaRunTimeModule if ## has InvokeStyle of Static(false) ?
       genLoad(tree, ObjectReference)
-      genCallMethod(hashMethodSym, icodes.opcodes.Static(onInstance = false))
+      genCallMethod(hashMethodSym, icodes.opcodes.Static(onInstance = false), applyPos)
 
       INT
     }
@@ -1186,8 +1193,8 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
               // TODO !!!!!!!!!! isReferenceType, in the sense of TypeKind? (ie non-array, non-boxed, non-nothing, may be null)
               if (scalaPrimitives.isUniversalEqualityOp(code) && tpeTK(lhs).isClass) {
                 // `lhs` has reference type
-                if (code == EQ) genEqEqPrimitive(lhs, rhs, success, failure)
-                else            genEqEqPrimitive(lhs, rhs, failure, success)
+                if (code == EQ) genEqEqPrimitive(lhs, rhs, success, failure, tree.pos)
+                else            genEqEqPrimitive(lhs, rhs, failure, success, tree.pos)
               }
               else if (scalaPrimitives.isComparisonOp(code))
                 genComparisonOp(lhs, rhs, code)
@@ -1207,7 +1214,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
      * @param l       left-hand-side  of the '=='
      * @param r       right-hand-side of the '=='
      */
-    def genEqEqPrimitive(l: Tree, r: Tree, success: asm.Label, failure: asm.Label) {
+    def genEqEqPrimitive(l: Tree, r: Tree, success: asm.Label, failure: asm.Label, pos: Position) {
 
       /* True if the equality comparison is between values that require the use of the rich equality
        * comparator (scala.runtime.Comparator.equals). This is the case when either side of the
@@ -1225,13 +1232,13 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
         val equalsMethod: Symbol = {
           if (l.tpe <:< BoxedNumberClass.tpe) {
             if (r.tpe <:< BoxedNumberClass.tpe) platform.externalEqualsNumNum
-            else if (r.tpe <:< BoxedCharacterClass.tpe) platform.externalEqualsNumChar
+            else if (r.tpe <:< BoxedCharacterClass.tpe) platform.externalEqualsNumObject // will be externalEqualsNumChar in 2.12, SI-9030
             else platform.externalEqualsNumObject
           } else platform.externalEquals
         }
         genLoad(l, ObjectReference)
         genLoad(r, ObjectReference)
-        genCallMethod(equalsMethod, icodes.opcodes.Static(onInstance = false))
+        genCallMethod(equalsMethod, icodes.opcodes.Static(onInstance = false), pos)
         genCZJUMP(success, failure, icodes.NE, BOOL)
       }
       else {
@@ -1247,7 +1254,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
           // SI-7852 Avoid null check if L is statically non-null.
           genLoad(l, ObjectReference)
           genLoad(r, ObjectReference)
-          genCallMethod(Object_equals, icodes.opcodes.Dynamic)
+          genCallMethod(Object_equals, icodes.opcodes.Dynamic, pos)
           genCZJUMP(success, failure, icodes.NE, BOOL)
         } else {
           // l == r -> if (l eq null) r eq null else l.equals(r)
@@ -1268,7 +1275,7 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
 
           markProgramPoint(lNonNull)
           locals.load(eqEqTempLocal)
-          genCallMethod(Object_equals, icodes.opcodes.Dynamic)
+          genCallMethod(Object_equals, icodes.opcodes.Dynamic, pos)
           genCZJUMP(success, failure, icodes.NE, BOOL)
         }
       }
@@ -1278,6 +1285,44 @@ abstract class BCodeBodyBuilder extends BCodeSkelBuilder {
     def genSynchronized(tree: Apply, expectedType: BType): BType
     def genLoadTry(tree: Try): BType
 
+    def genInvokeDynamicLambda(lambdaTarget: Symbol, arity: Int, functionalInterface: Symbol) {
+      val isStaticMethod = lambdaTarget.hasFlag(Flags.STATIC)
+      def asmType(sym: Symbol) = classBTypeFromSymbol(sym).toASMType
+
+      val implMethodHandle =
+        new asm.Handle(if (lambdaTarget.hasFlag(Flags.STATIC)) asm.Opcodes.H_INVOKESTATIC else asm.Opcodes.H_INVOKEVIRTUAL,
+          classBTypeFromSymbol(lambdaTarget.owner).internalName,
+          lambdaTarget.name.toString,
+          asmMethodType(lambdaTarget).descriptor)
+      val receiver = if (isStaticMethod) Nil else lambdaTarget.owner :: Nil
+      val (capturedParams, lambdaParams) = lambdaTarget.paramss.head.splitAt(lambdaTarget.paramss.head.length - arity)
+      // Requires https://github.com/scala/scala-java8-compat on the runtime classpath
+      val invokedType = asm.Type.getMethodDescriptor(asmType(functionalInterface), (receiver ::: capturedParams).map(sym => toTypeKind(sym.info).toASMType): _*)
+
+      val constrainedType = new MethodBType(lambdaParams.map(p => toTypeKind(p.tpe)), toTypeKind(lambdaTarget.tpe.resultType)).toASMType
+      val sam = functionalInterface.info.decls.find(_.isDeferred).getOrElse(functionalInterface.info.member(nme.apply))
+      val samName = sam.name.toString
+      val samMethodType = asmMethodType(sam).toASMType
+
+      val flags = 3 // TODO 2.12.x Replace with LambdaMetafactory.FLAG_SERIALIZABLE | LambdaMetafactory.FLAG_MARKERS
+
+      val ScalaSerializable = classBTypeFromSymbol(definitions.SerializableClass).toASMType
+      bc.jmethod.visitInvokeDynamicInsn(samName, invokedType, lambdaMetaFactoryBootstrapHandle,
+        /* samMethodType          = */ samMethodType,
+        /* implMethod             = */ implMethodHandle,
+        /* instantiatedMethodType = */ constrainedType,
+        /* flags                  = */ flags.asInstanceOf[AnyRef],
+        /* markerInterfaceCount   = */ 1.asInstanceOf[AnyRef],
+        /* markerInterfaces[0]    = */ ScalaSerializable,
+        /* bridgeCount            = */ 0.asInstanceOf[AnyRef]
+      )
+      indyLambdaHosts += this.claszSymbol
+    }
   }
+
+  lazy val lambdaMetaFactoryBootstrapHandle =
+    new asm.Handle(asm.Opcodes.H_INVOKESTATIC,
+      definitions.LambdaMetaFactory.fullName('/'), sn.AltMetafactory.toString,
+      "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;")
 
 }

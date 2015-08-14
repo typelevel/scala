@@ -185,6 +185,27 @@ abstract class Erasure extends AddInterfaces
 
   private def isErasedValueType(tpe: Type) = tpe.isInstanceOf[ErasedValueType]
 
+  /* Drop redundant types (ones which are implemented by some other parent) from the immediate parents.
+   * This is important on Android because there is otherwise an interface explosion.
+   */
+  def minimizeParents(parents: List[Type]): List[Type] = if (parents.isEmpty) parents else {
+    def isInterfaceOrTrait(sym: Symbol) = sym.isInterface || sym.isTrait
+
+    var rest   = parents.tail
+    var leaves = collection.mutable.ListBuffer.empty[Type] += parents.head
+    while(rest.nonEmpty) {
+      val candidate = rest.head
+      val nonLeaf = leaves exists { t => t.typeSymbol isSubClass candidate.typeSymbol }
+      if(!nonLeaf) {
+        leaves = leaves filterNot { t => isInterfaceOrTrait(t.typeSymbol) && (candidate.typeSymbol isSubClass t.typeSymbol) }
+        leaves += candidate
+      }
+      rest = rest.tail
+    }
+    leaves.toList
+  }
+
+
   /** The Java signature of type 'info', for symbol sym. The symbol is used to give the right return
    *  type for constructors.
    */
@@ -192,16 +213,24 @@ abstract class Erasure extends AddInterfaces
     val isTraitSignature = sym0.enclClass.isTrait
 
     def superSig(parents: List[Type]) = {
-      val ps = (
-        if (isTraitSignature) {
+      def isInterfaceOrTrait(sym: Symbol) = sym.isInterface || sym.isTrait
+
+      // a signature should always start with a class
+      def ensureClassAsFirstParent(tps: List[Type]) = tps match {
+        case Nil => ObjectTpe :: Nil
+        case head :: tail if isInterfaceOrTrait(head.typeSymbol) => ObjectTpe :: tps
+        case _ => tps
+      }
+
+      val minParents = minimizeParents(parents)
+      val validParents =
+        if (isTraitSignature)
           // java is unthrilled about seeing interfaces inherit from classes
-          val ok = parents filter (p => p.typeSymbol.isTrait || p.typeSymbol.isInterface)
-          // traits should always list Object.
-          if (ok.isEmpty || ok.head.typeSymbol != ObjectClass) ObjectTpe :: ok
-          else ok
-        }
-        else parents
-      )
+          minParents filter (p => isInterfaceOrTrait(p.typeSymbol))
+        else minParents
+
+      val ps = ensureClassAsFirstParent(validParents)
+
       (ps map boxedSig).mkString
     }
     def boxedSig(tp: Type) = jsig(tp, primitiveOK = false)
@@ -403,7 +432,7 @@ abstract class Erasure extends AddInterfaces
      *  a name clash. The present method guards against these name clashes.
      *
      *  @param  member   The original member
-     *  @param  other    The overidden symbol for which the bridge was generated
+     *  @param  other    The overridden symbol for which the bridge was generated
      *  @param  bridge   The bridge
      */
     def checkBridgeOverrides(member: Symbol, other: Symbol, bridge: Symbol): Seq[(Position, String)] = {
@@ -785,11 +814,10 @@ abstract class Erasure extends AddInterfaces
         // specialized members have no type history before 'specialize', causing double def errors for curried defs
         override def exclude(sym: Symbol): Boolean = (
              sym.isType
-          || sym.isPrivate
           || super.exclude(sym)
           || !sym.hasTypeAt(currentRun.refchecksPhase.id)
         )
-        override def matches(lo: Symbol, high: Symbol) = true
+        override def matches(lo: Symbol, high: Symbol) = !high.isPrivate
       }
       def isErasureDoubleDef(pair: SymbolPair) = {
         import pair._
@@ -1009,7 +1037,7 @@ abstract class Erasure extends AddInterfaces
                 //    See SI-5568.
                 tree setSymbol Object_getClass
               } else {
-                debugwarn(s"The symbol '${fn.symbol}' was interecepted but didn't match any cases, that means the intercepted methods set doesn't match the code")
+                devWarning(s"The symbol '${fn.symbol}' was interecepted but didn't match any cases, that means the intercepted methods set doesn't match the code")
                 tree
               }
             } else qual match {
@@ -1126,7 +1154,7 @@ abstract class Erasure extends AddInterfaces
       }
     }
 
-    /** The main transform function: Pretransfom the tree, and then
+    /** The main transform function: Pretransform the tree, and then
      *  re-type it at phase erasure.next.
      */
     override def transform(tree: Tree): Tree = {

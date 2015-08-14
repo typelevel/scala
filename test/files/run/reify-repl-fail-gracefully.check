@@ -1,5 +1,3 @@
-Type in expressions to have them evaluated.
-Type :help for more information.
 
 scala> import language.experimental.macros
 import language.experimental.macros
@@ -10,8 +8,8 @@ import scala.reflect.runtime.universe._
 scala> 
 
 scala> reify
-<console>:12: error: too few argument lists for macro invocation
-              reify
-              ^
+<console>:16: error: too few argument lists for macro invocation
+       reify
+       ^
 
 scala> :quit

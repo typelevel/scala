@@ -104,7 +104,7 @@ trait Contexts { self: Analyzer =>
 
     // there must be a scala.xml package when xml literals were parsed in this unit
     if (unit.hasXml && ScalaXmlPackage == NoSymbol)
-      reporter.error(unit.firstXmlPos, "To compile XML syntax, the scala.xml package must be on the classpath.\nPlease see http://docs.scala-lang.org/overviews/core/scala-2.11.html#scala-xml.")
+      reporter.error(unit.firstXmlPos, "To compile XML syntax, the scala.xml package must be on the classpath.\nPlease see https://github.com/scala/scala-xml for details.")
 
     // scala-xml needs `scala.xml.TopScope` to be in scope globally as `$scope`
     // We detect `scala-xml` by looking for `scala.xml.TopScope` and
@@ -145,7 +145,7 @@ trait Contexts { self: Analyzer =>
    *   - A variety of bits that track the current error reporting policy (more on this later);
    *     whether or not implicits/macros are enabled, whether we are in a self or super call or
    *     in a constructor suffix. These are represented as bits in the mask `contextMode`.
-   *   - Some odds and ends: undetermined type pararameters of the current line of type inference;
+   *   - Some odds and ends: undetermined type parameters of the current line of type inference;
    *     contextual augmentation for error messages, tracking of the nesting depth.
    *
    * And behaviour:
@@ -154,27 +154,27 @@ trait Contexts { self: Analyzer =>
    *     to buffer these for use in 'silent' type checking, when some recovery might be possible.
    *  -  `Context` is something of a Zipper for the tree were are typechecking: it `enclosingContextChain`
    *     is the path back to the root. This is exactly what we need to resolve names (`lookupSymbol`)
-   *     and to collect in-scope implicit defintions (`implicitss`)
+   *     and to collect in-scope implicit definitions (`implicitss`)
    *     Supporting these are `imports`, which represents all `Import` trees in in the enclosing context chain.
-   *  -  In a similar vein, we can assess accessiblity (`isAccessible`.)
+   *  -  In a similar vein, we can assess accessibility (`isAccessible`.)
    *
    * More on error buffering:
    *     When are type errors recoverable? In quite a few places, it turns out. Some examples:
    *     trying to type an application with/without the expected type, or with/without implicit views
    *     enabled. This is usually mediated by `Typer.silent`, `Inferencer#tryTwice`.
    *
-   *     Intially, starting from the `typer` phase, the contexts either buffer or report errors;
+   *     Initially, starting from the `typer` phase, the contexts either buffer or report errors;
    *     afterwards errors are thrown. This is configured in `rootContext`. Additionally, more
    *     fine grained control is needed based on the kind of error; ambiguity errors are often
-   *     suppressed during exploraratory typing, such as determining whether `a == b` in an argument
-   *     position is an assignment or a named argument, when `Infererencer#isApplicableSafe` type checks
-   *     applications with and without an expected type, or whtn `Typer#tryTypedApply` tries to fit arguments to
+   *     suppressed during exploratory typing, such as determining whether `a == b` in an argument
+   *     position is an assignment or a named argument, when `Inferencer#isApplicableSafe` type checks
+   *     applications with and without an expected type, or when `Typer#tryTypedApply` tries to fit arguments to
    *     a function type with/without implicit views.
    *
-   *     When the error policies entails error/warning buffering, the mutable [[ReportBuffer]] records
+   *     When the error policies entail error/warning buffering, the mutable [[ReportBuffer]] records
    *     everything that is issued. It is important to note, that child Contexts created with `make`
    *     "inherit" the very same `ReportBuffer` instance, whereas children spawned through `makeSilent`
-   *     receive an separate, fresh buffer.
+   *     receive a separate, fresh buffer.
    *
    * @param tree  Tree associated with this context
    * @param owner The current owner
@@ -330,7 +330,7 @@ trait Contexts { self: Analyzer =>
 
     // if set, errors will not be reporter/thrown
     def bufferErrors = reporter.isBuffering
-    def reportErrors = !bufferErrors
+    def reportErrors = !(bufferErrors || reporter.isThrowing)
 
     // whether to *report* (which is separate from buffering/throwing) ambiguity errors
     def ambiguousErrors = this(AmbiguousErrors)
@@ -480,7 +480,8 @@ trait Contexts { self: Analyzer =>
       // SI-8245 `isLazy` need to skip lazy getters to ensure `return` binds to the right place
       c.enclMethod         = if (isDefDef && !owner.isLazy) c else enclMethod
 
-      if (tree != outer.tree) c(TypeConstructorAllowed) = false
+      if (tree != outer.tree)
+        c(TypeConstructorAllowed) = false
 
       registerContext(c.asInstanceOf[analyzer.Context])
       debuglog("[context] ++ " + c.unit + " / " + tree.summaryString)
@@ -798,7 +799,7 @@ trait Contexts { self: Analyzer =>
       isAccessible(sym, pre) &&
       !(imported && {
         val e = scope.lookupEntry(name)
-        (e ne null) && (e.owner == scope)
+        (e ne null) && (e.owner == scope) && (!settings.isScala212 || e.sym.exists)
       })
 
     private def collectImplicits(syms: Scope, pre: Type, imported: Boolean = false): List[ImplicitInfo] =
@@ -1107,10 +1108,10 @@ trait Contexts { self: Analyzer =>
       //
       // A type-import-on-demand declaration never causes any other declaration to be shadowed.
       //
-      // Scala: Bindings of different kinds have a precedence deﬁned on them:
+      // Scala: Bindings of different kinds have a precedence defined on them:
       //
-      //  1) Deﬁnitions and declarations that are local, inherited, or made available by a
-      //     package clause in the same compilation unit where the deﬁnition occurs have
+      //  1) Definitions and declarations that are local, inherited, or made available by a
+      //     package clause in the same compilation unit where the definition occurs have
       //     highest precedence.
       //  2) Explicit imports have next highest precedence.
       def depthOk(imp: ImportInfo) = (
@@ -1247,6 +1248,7 @@ trait Contexts { self: Analyzer =>
     def makeImmediate: ContextReporter = this
     def makeBuffering: ContextReporter = this
     def isBuffering: Boolean           = false
+    def isThrowing: Boolean            = false
 
     /** Emit an ambiguous error according to context.ambiguousErrors
      *
@@ -1384,6 +1386,7 @@ trait Contexts { self: Analyzer =>
    * TODO: get rid of it, use ImmediateReporter and a check for reporter.hasErrors where necessary
    */
   private[typechecker] class ThrowingReporter extends ContextReporter {
+    override def isThrowing = true
     protected def handleError(pos: Position, msg: String): Unit = throw new TypeError(pos, msg)
   }
 
@@ -1534,7 +1537,7 @@ object ContextMode {
   final val TypeConstructorAllowed: ContextMode   = 1 << 16
 
   /** TODO: The "sticky modes" are EXPRmode, PATTERNmode, TYPEmode.
-   *  To mimick the sticky mode behavior, when captain stickyfingers
+   *  To mimic the sticky mode behavior, when captain stickyfingers
    *  comes around we need to propagate those modes but forget the other
    *  context modes which were once mode bits; those being so far the
    *  ones listed here.

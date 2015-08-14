@@ -1,5 +1,3 @@
-Type in expressions to have them evaluated.
-Type :help for more information.
 
 scala> val c = { class C { override def toString = "C" }; ((new C, new C { def f = 2 })) }
 c: (C, C{def f: Int}) forSome { type C <: AnyRef } = (C,C)

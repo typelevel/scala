@@ -89,7 +89,7 @@ class Template(universe: doc.Universe, generator: DiagramGenerator, tpl: DocTemp
     val templateName = if (tpl.isRootPackage) "root package" else tpl.name
     val displayName = tpl.companion match {
       case Some(companion) if (companion.visibility.isPublic && companion.inSource != None) =>
-        <a href={relativeLinkTo(companion)} title="Go to companion">{ templateName }</a>
+        <a href={relativeLinkTo(companion)} title={docEntityKindToCompanionTitle(tpl)}>{ templateName }</a>
       case _ =>
         templateName
     }
@@ -103,14 +103,18 @@ class Template(universe: doc.Universe, generator: DiagramGenerator, tpl: DocTemp
     <body class={ if (tpl.isType) "type" else "value" }>
       <div id="definition">
         {
+          val (src, alt) = docEntityKindToBigImage(tpl)
+
           tpl.companion match {
             case Some(companion) if (companion.visibility.isPublic && companion.inSource != None) =>
-              <a href={relativeLinkTo(companion)} title="Go to companion"><img src={ relativeLinkTo(List(docEntityKindToBigImage(tpl), "lib")) }/></a>
+              <a href={relativeLinkTo(companion)} title={docEntityKindToCompanionTitle(tpl)}><img alt={alt} src={ relativeLinkTo(List(src, "lib")) }/></a>
             case _ =>
-              <img src={ relativeLinkTo(List(docEntityKindToBigImage(tpl), "lib")) }/>
+              <img alt={alt} src={ relativeLinkTo(List(src, "lib")) }/>
         }}
         { owner }
-        <h1>{ displayName }</h1> { permalink(tpl) }
+        <h1>{ displayName }</h1>{
+          if (tpl.isPackage) NodeSeq.Empty else <h3>{companionAndPackage(tpl)}</h3>
+        }{ permalink(tpl) }
       </div>
 
       { signature(tpl, isSelf = true) }
@@ -173,7 +177,6 @@ class Template(universe: doc.Universe, generator: DiagramGenerator, tpl: DocTemp
               <li class="hideall out"><span>Hide All</span></li>
               <li class="showall in"><span>Show all</span></li>
             </ol>
-            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
           </div>
         }
         {
@@ -277,7 +280,7 @@ class Template(universe: doc.Universe, generator: DiagramGenerator, tpl: DocTemp
 
       {
         if (Set("epfl", "EPFL").contains(tpl.universe.settings.docfooter.value))
-          <div id="footer">Scala programming documentation. Copyright (c) 2003-2013 <a href="http://www.epfl.ch" target="_top">EPFL</a>, with contributions from <a href="http://typesafe.com" target="_top">Typesafe</a>.</div>
+          <div id="footer">Scala programming documentation. Copyright (c) 2003-2015 <a href="http://www.epfl.ch" target="_top">EPFL</a>, with contributions from <a href="http://typesafe.com" target="_top">Typesafe</a>.</div>
         else
           <div id="footer"> { tpl.universe.settings.docfooter.value } </div>
       }
@@ -605,7 +608,7 @@ class Template(universe: doc.Universe, generator: DiagramGenerator, tpl: DocTemp
             <dd>{
               val exceptionsXml: List[NodeSeq] =
                 for((name, body) <- comment.throws.toList.sortBy(_._1) ) yield
-                  <span class="cmt">{Text(name) ++ bodyToHtml(body)}</span>
+                  <span class="cmt">{bodyToHtml(body)}</span>
               exceptionsXml.reduceLeft(_ ++ Text("") ++ _)
             }</dd>
           }
@@ -673,7 +676,6 @@ class Template(universe: doc.Universe, generator: DiagramGenerator, tpl: DocTemp
             if (diagramSvg != NodeSeq.Empty) {
               <div class="toggleContainer block diagram-container" id={ id + "-container"}>
                 <span class="toggle diagram-link">{ description }</span>
-                <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#diagrams" target="_blank" class="diagram-help">Learn more about scaladoc diagrams</a>
                 <div class="diagram" id={ id }>{
                   diagramSvg
                 }</div>

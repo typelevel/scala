@@ -140,7 +140,15 @@ trait SeqLike[+A, +Repr] extends Any with IterableLike[A, Repr] with GenSeqLike[
     if (isEmpty) Iterator(repr)
     else new PermutationsItr
 
-  /** Iterates over combinations.
+  /** Iterates over combinations.  A _combination_ of length `n` is a subsequence of
+   *  the original sequence, with the elements taken in order.  Thus, `"xy"` and `"yy"`
+   *  are both length-2 combinations of `"xyy"`, but `"yx"` is not.  If there is
+   *  more than one way to generate the same subsequence, only one will be returned.
+   *
+   *  For example, `"xyyy"` has three different ways to generate `"xy"` depending on
+   *  whether the first, second, or third `"y"` is selected.  However, since all are 
+   *  identical, only one will be chosen.  Which of the three will be taken is an
+   *  implementation detail that is not defined.
    *
    *  @return   An Iterator which traverses the possible n-element combinations of this $coll.
    *  @example  `"abbbc".combinations(2) = Iterator(ab, ac, bb, bc)`
@@ -405,7 +413,7 @@ trait SeqLike[+A, +Repr] extends Any with IterableLike[A, Repr] with GenSeqLike[
    *    @inheritdoc
    *
    *    Another way to express this
-   *    is that `xs union ys` computes the order-presevring multi-set union of `xs` and `ys`.
+   *    is that `xs union ys` computes the order-preserving multi-set union of `xs` and `ys`.
    *    `union` is hence a counter-part of `diff` and `intersect` which also work on multi-sets.
    *
    *    $willNotTerminateInf
@@ -439,9 +447,11 @@ trait SeqLike[+A, +Repr] extends Any with IterableLike[A, Repr] with GenSeqLike[
   def diff[B >: A](that: GenSeq[B]): Repr = {
     val occ = occCounts(that.seq)
     val b = newBuilder
-    for (x <- this)
-      if (occ(x) == 0) b += x
-      else occ(x) -= 1
+    for (x <- this) {
+      val ox = occ(x)  // Avoid multiple map lookups
+      if (ox == 0) b += x
+      else occ(x) = ox - 1
+    }
     b.result()
   }
 
@@ -468,11 +478,13 @@ trait SeqLike[+A, +Repr] extends Any with IterableLike[A, Repr] with GenSeqLike[
   def intersect[B >: A](that: GenSeq[B]): Repr = {
     val occ = occCounts(that.seq)
     val b = newBuilder
-    for (x <- this)
-      if (occ(x) > 0) {
+    for (x <- this) {
+      val ox = occ(x)  // Avoid multiple map lookups
+      if (ox > 0) {
         b += x
-        occ(x) -= 1
+        occ(x) = ox - 1
       }
+    }
     b.result()
   }
 
@@ -501,22 +513,35 @@ trait SeqLike[+A, +Repr] extends Any with IterableLike[A, Repr] with GenSeqLike[
 
   def patch[B >: A, That](from: Int, patch: GenSeq[B], replaced: Int)(implicit bf: CanBuildFrom[Repr, B, That]): That = {
     val b = bf(repr)
-    val (prefix, rest) = this.splitAt(from)
-    b ++= toCollection(prefix)
+    var i = 0
+    val it = this.iterator
+    while (i < from && it.hasNext) {
+      b += it.next()
+      i += 1
+    }
     b ++= patch.seq
-    b ++= toCollection(rest).view drop replaced
+    i = replaced
+    while (i > 0 && it.hasNext) {
+      it.next()
+      i -= 1
+    }
+    while (it.hasNext) b += it.next()
     b.result()
   }
 
   def updated[B >: A, That](index: Int, elem: B)(implicit bf: CanBuildFrom[Repr, B, That]): That = {
     if (index < 0) throw new IndexOutOfBoundsException(index.toString)
     val b = bf(repr)
-    val (prefix, rest) = this.splitAt(index)
-    val restColl = toCollection(rest)
-    if (restColl.isEmpty) throw new IndexOutOfBoundsException(index.toString)
-    b ++= toCollection(prefix)
+    var i = 0
+    val it = this.iterator
+    while (i < index && it.hasNext) {
+      b += it.next()
+      i += 1
+    }
+    if (!it.hasNext) throw new IndexOutOfBoundsException(index.toString)
     b += elem
-    b ++= restColl.view.tail
+    it.next()
+    while (it.hasNext) b += it.next()
     b.result()
   }
 
@@ -536,8 +561,9 @@ trait SeqLike[+A, +Repr] extends Any with IterableLike[A, Repr] with GenSeqLike[
 
   def padTo[B >: A, That](len: Int, elem: B)(implicit bf: CanBuildFrom[Repr, B, That]): That = {
     val b = bf(repr)
-    b.sizeHint(length max len)
-    var diff = len - length
+    val L = length
+    b.sizeHint(math.max(L, len))
+    var diff = len - L
     b ++= thisCollection
     while (diff > 0) {
       b += elem
@@ -609,16 +635,23 @@ trait SeqLike[+A, +Repr] extends Any with IterableLike[A, Repr] with GenSeqLike[
    */
   def sorted[B >: A](implicit ord: Ordering[B]): Repr = {
     val len = this.length
-    val arr = new ArraySeq[A](len)
-    var i = 0
-    for (x <- this) {
-      arr(i) = x
-      i += 1
-    }
-    java.util.Arrays.sort(arr.array, ord.asInstanceOf[Ordering[Object]])
     val b = newBuilder
-    b.sizeHint(len)
-    for (x <- arr) b += x
+    if (len == 1) b ++= this
+    else if (len > 1) {
+      b.sizeHint(len)
+      val arr = new Array[AnyRef](len)  // Previously used ArraySeq for more compact but slower code
+      var i = 0
+      for (x <- this) {
+        arr(i) = x.asInstanceOf[AnyRef]
+        i += 1
+      }
+      java.util.Arrays.sort(arr, ord.asInstanceOf[Ordering[Object]])
+      i = 0
+      while (i < arr.length) {
+        b += arr(i).asInstanceOf[A]
+        i += 1
+      }
+    }
     b.result()
   }
 

@@ -103,7 +103,7 @@ trait Definitions extends api.StandardDefinitions {
     def isNumericValueClass(sym: Symbol) = ScalaNumericValueClasses contains sym
 
     def isGetClass(sym: Symbol) = (
-         sym.name == nme.getClass_ // this condition is for performance only, this is called from `Typer#stabliize`.
+         sym.name == nme.getClass_ // this condition is for performance only, this is called from `Typer#stabilize`.
       && getClassMethods(sym)
     )
 
@@ -156,11 +156,11 @@ trait Definitions extends api.StandardDefinitions {
 
     // It becomes tricky to create dedicated objects for other symbols because
     // of initialization order issues.
-    lazy val JavaLangPackage      = getPackage("java.lang")
+    lazy val JavaLangPackage      = getPackage(TermName("java.lang"))
     lazy val JavaLangPackageClass = JavaLangPackage.moduleClass.asClass
-    lazy val ScalaPackage         = getPackage("scala")
+    lazy val ScalaPackage         = getPackage(TermName("scala"))
     lazy val ScalaPackageClass    = ScalaPackage.moduleClass.asClass
-    lazy val RuntimePackage       = getPackage("scala.runtime")
+    lazy val RuntimePackage       = getPackage(TermName("scala.runtime"))
     lazy val RuntimePackageClass  = RuntimePackage.moduleClass.asClass
 
     def javaTypeToValueClass(jtype: Class[_]): Symbol = jtype match {
@@ -369,6 +369,8 @@ trait Definitions extends api.StandardDefinitions {
     lazy val JavaEnumClass         = requiredClass[java.lang.Enum[_]]
     lazy val RemoteInterfaceClass  = requiredClass[java.rmi.Remote]
     lazy val RemoteExceptionClass  = requiredClass[java.rmi.RemoteException]
+    lazy val JavaUtilMap           = requiredClass[java.util.Map[_, _]]
+    lazy val JavaUtilHashMap       = requiredClass[java.util.HashMap[_, _]]
 
     lazy val ByNameParamClass       = specialPolyClass(tpnme.BYNAME_PARAM_CLASS_NAME, COVARIANT)(_ => AnyTpe)
     lazy val JavaRepeatedParamClass = specialPolyClass(tpnme.JAVA_REPEATED_PARAM_CLASS_NAME, COVARIANT)(tparam => arrayType(tparam.tpe))
@@ -453,7 +455,7 @@ trait Definitions extends api.StandardDefinitions {
 
     // XML
     lazy val ScalaXmlTopScope = getModuleIfDefined("scala.xml.TopScope")
-    lazy val ScalaXmlPackage  = getPackageIfDefined("scala.xml")
+    lazy val ScalaXmlPackage  = getPackageIfDefined(TermName("scala.xml"))
 
     // scala.reflect
     lazy val ReflectPackage              = requiredModule[scala.reflect.`package`.type]
@@ -513,6 +515,9 @@ trait Definitions extends api.StandardDefinitions {
 
     lazy val ScalaSignatureAnnotation = requiredClass[scala.reflect.ScalaSignature]
     lazy val ScalaLongSignatureAnnotation = requiredClass[scala.reflect.ScalaLongSignature]
+
+    lazy val LambdaMetaFactory = getClassIfDefined("java.lang.invoke.LambdaMetafactory")
+    lazy val MethodHandle = getClassIfDefined("java.lang.invoke.MethodHandle")
 
     // Option classes
     lazy val OptionClass: ClassSymbol   = requiredClass[Option[_]]
@@ -790,7 +795,7 @@ trait Definitions extends api.StandardDefinitions {
      * The class defining the method is a supertype of `tp` that
      * has a public no-arg primary constructor.
      */
-    def samOf(tp: Type): Symbol = {
+    def samOf(tp: Type): Symbol = if (!settings.Xexperimental) NoSymbol else {
       // if tp has a constructor, it must be public and must not take any arguments
       // (not even an implicit argument list -- to keep it simple for now)
       val tpSym  = tp.typeSymbol
@@ -810,7 +815,7 @@ trait Definitions extends api.StandardDefinitions {
         // must filter out "universal" members (getClass is deferred for some reason)
         val deferredMembers = (
           tp membersBasedOnFlags (excludedFlags = BridgeAndPrivateFlags, requiredFlags = METHOD)
-          filter (mem => mem.isDeferredNotDefault && !isUniversalMember(mem)) // TODO: test
+          filter (mem => mem.isDeferredNotJavaDefault && !isUniversalMember(mem)) // TODO: test
         )
 
         // if there is only one, it's monomorphic and has a single argument list
@@ -931,10 +936,10 @@ trait Definitions extends api.StandardDefinitions {
 
     // members of class scala.Any
 
-    // TODO these aren't final! They are now overriden in AnyRef/Object. Prior to the fix
+    // TODO these aren't final! They are now overridden in AnyRef/Object. Prior to the fix
     //      for SI-8129, they were actually *overloaded* by the members in AnyRef/Object.
     //      We should unfinalize these, override in AnyValClass, and make the overrides final.
-    //      Refchecks never actually looks at these, so its just for consistency.
+    //      Refchecks never actually looks at these, so it's just for consistency.
     lazy val Any_==       = enterNewMethod(AnyClass, nme.EQ, AnyTpe :: Nil, BooleanTpe, FINAL)
     lazy val Any_!=       = enterNewMethod(AnyClass, nme.NE, AnyTpe :: Nil, BooleanTpe, FINAL)
 
@@ -1119,7 +1124,7 @@ trait Definitions extends api.StandardDefinitions {
     lazy val ScalaInlineClass           = requiredClass[scala.inline]
     lazy val ScalaNoInlineClass         = requiredClass[scala.noinline]
     lazy val SerialVersionUIDAttr       = requiredClass[scala.SerialVersionUID]
-    lazy val SerialVersionUIDAnnotation = AnnotationInfo(SerialVersionUIDAttr.tpe, List(Literal(Constant(0))), List())
+    lazy val SerialVersionUIDAnnotation = AnnotationInfo(SerialVersionUIDAttr.tpe, List(), List(nme.value -> LiteralAnnotArg(Constant(0))))
     lazy val SpecializedClass           = requiredClass[scala.specialized]
     lazy val ThrowsClass                = requiredClass[scala.throws[_]]
     lazy val TransientAttr              = requiredClass[scala.transient]
@@ -1147,7 +1152,7 @@ trait Definitions extends api.StandardDefinitions {
       // Trying to allow for deprecated locations
       sym.isAliasType && isMetaAnnotation(sym.info.typeSymbol)
     )
-    lazy val metaAnnotations: Set[Symbol] = getPackage("scala.annotation.meta").info.members filter (_ isSubClass StaticAnnotationClass) toSet
+    lazy val metaAnnotations: Set[Symbol] = getPackage(TermName("scala.annotation.meta")).info.members filter (_ isSubClass StaticAnnotationClass) toSet
 
     // According to the scala.annotation.meta package object:
     // * By default, annotations on (`val`-, `var`- or plain) constructor parameters
@@ -1461,7 +1466,7 @@ trait Definitions extends api.StandardDefinitions {
       )
       lazy val TagSymbols = TagMaterializers.keySet
       lazy val Predef_conforms     = (getMemberIfDefined(PredefModule, nme.conforms)
-                               orElse getMemberMethod(PredefModule, "conforms": TermName)) // TODO: predicate on -Xsource:2.10 (for now, needed for transition from M8 -> RC1)
+                               orElse getMemberMethod(PredefModule, TermName("conforms"))) // TODO: predicate on -Xsource:2.10 (for now, needed for transition from M8 -> RC1)
       lazy val Predef_classOf      = getMemberMethod(PredefModule, nme.classOf)
       lazy val Predef_implicitly   = getMemberMethod(PredefModule, nme.implicitly)
       lazy val Predef_wrapRefArray = getMemberMethod(PredefModule, nme.wrapRefArray)
@@ -1492,8 +1497,10 @@ trait Definitions extends api.StandardDefinitions {
       lazy val DynamicsFeature            = getLanguageFeature("dynamics")
       lazy val PostfixOpsFeature          = getLanguageFeature("postfixOps")
       lazy val ReflectiveCallsFeature     = getLanguageFeature("reflectiveCalls")
+      lazy val ExistentialsFeature        = getLanguageFeature("existentials")
 
       lazy val ApiUniverseReify = ApiUniverseClass.map(sym => getMemberMethod(sym, nme.reify))
+
 
       lazy val ReflectRuntimeUniverse      = DefinitionsClass.this.ReflectRuntimeUniverse
       lazy val ReflectRuntimeCurrentMirror = DefinitionsClass.this.ReflectRuntimeCurrentMirror
@@ -1506,6 +1513,12 @@ trait Definitions extends api.StandardDefinitions {
 
       lazy val PartialManifestClass  = getTypeMember(ReflectPackage, tpnme.ClassManifest)
       lazy val ManifestSymbols = Set[Symbol](PartialManifestClass, FullManifestClass, OptManifestClass)
+
+      def isPolymorphicSignature(sym: Symbol) = PolySigMethods(sym)
+      private lazy val PolySigMethods: Set[Symbol] = Set[Symbol](MethodHandle.info.decl(sn.Invoke), MethodHandle.info.decl(sn.InvokeExact)).filter(_.exists)
+
+      lazy val Scala_Java8_CompatPackage = rootMirror.getPackageIfDefined("scala.compat.java8")
+      lazy val Scala_Java8_CompatPackage_JFunction = (0 to MaxFunctionArity).toArray map (i => getMemberIfDefined(Scala_Java8_CompatPackage.moduleClass, TypeName("JFunction" + i)))
     }
   }
 }

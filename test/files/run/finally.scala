@@ -93,8 +93,8 @@ object Test extends App {
     }
   }
 
-  // nested finallies with return value
-  def nestedFinalies: Int =
+  // nested finally blocks with return value
+  def nestedFinallyBlocks: Int =
     try {
       try {
         return 10
@@ -123,5 +123,5 @@ object Test extends App {
   test(throwBody, "throwBody")
   test(retFinally, "retFinally")
   test(throwFinally, "throwFinally")
-  test(nestedFinalies, "nestedFinalies")
+  test(nestedFinallyBlocks, "nestedFinallyBlocks")
 }

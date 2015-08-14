@@ -7,7 +7,7 @@ package scala.tools.nsc
 package plugins
 
 import scala.tools.nsc.io.{ Jar }
-import scala.tools.nsc.util.ScalaClassLoader
+import scala.reflect.internal.util.ScalaClassLoader
 import scala.reflect.io.{ Directory, File, Path }
 import java.io.InputStream
 import java.util.zip.ZipException
@@ -60,6 +60,8 @@ abstract class Plugin {
    *  @return true to continue, or false to opt out
    */
   def init(options: List[String], error: String => Unit): Boolean = {
+    // call to deprecated method required here, we must continue to support
+    // code that subclasses that override `processOptions`.
     processOptions(options, error)
     true
   }
@@ -156,8 +158,8 @@ object Plugin {
       def loop(qs: List[Path]): Try[PluginDescription] = qs match {
         case Nil       => Failure(new MissingPluginException(ps))
         case p :: rest =>
-          if (p.isDirectory) loadDescriptionFromFile(p.toDirectory / PluginXML)
-          else if (p.isFile) loadDescriptionFromJar(p.toFile)
+          if (p.isDirectory) loadDescriptionFromFile(p.toDirectory / PluginXML) orElse loop(rest)
+          else if (p.isFile) loadDescriptionFromJar(p.toFile) orElse loop(rest)
           else loop(rest)
       }
       loop(ps)

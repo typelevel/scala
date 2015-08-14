@@ -1,5 +1,5 @@
 ---
-title: Classes and Objects
+title: Classes & Objects
 layout: default
 chapter: 5
 ---
@@ -128,7 +128,7 @@ consists of the following steps.
   occurrence in the linearization.
 - Finally the statement sequence $\mathit{stats}\,$ is evaluated.
 
-###### Delayed Initializaton
+###### Delayed Initialization
 The initialization code of an object or class (but not a trait) that follows
 the superclass
 constructor invocation and the mixin-evaluation of the template's base
@@ -368,7 +368,7 @@ it is possible to add new defaults (if the corresponding parameter in the
 superclass does not have a default) or to override the defaults of the
 superclass (otherwise).
 
-### Example
+###### Example
 
 Consider the definitions:
 
@@ -395,6 +395,7 @@ class C extends A with B { type T <: C }
 Let $C$ be a class type. The _inheritance closure_ of $C$ is the
 smallest set $\mathscr{S}$ of types such that
 
+- $C$ is in $\mathscr{S}$.
 - If $T$ is in $\mathscr{S}$, then every type $T'$ which forms syntactically
   a part of $T$ is also in $\mathscr{S}$.
 - If $T$ is a class type in $\mathscr{S}$, then all [parents](#templates)
@@ -498,18 +499,15 @@ the validity and meaning of a modifier are as follows.
 The `private` modifier can be used with any definition or
 declaration in a template.  Such members can be accessed only from
 within the directly enclosing template and its companion module or
-[companion class](#object-definitions). They
-are not inherited by subclasses and they may not override definitions
-in parent classes.
+[companion class](#object-definitions).
 
-The modifier can be _qualified_ with an identifier $C$ (e.g.
-`private[$C$]`) that must denote a class or package
-enclosing the definition.  Members labeled with such a modifier are
-accessible respectively only from code inside the package $C$ or only
-from code inside the class $C$ and its
+A `private` modifier can be _qualified_ with an identifier $C$ (e.g.
+`private[$C$]`) that must denote a class or package enclosing the definition.
+Members labeled with such a modifier are accessible respectively only from code
+inside the package $C$ or only from code inside the class $C$ and its
 [companion module](#object-definitions).
 
-An different form of qualification is `private[this]`. A member
+A different form of qualification is `private[this]`. A member
 $M$ marked with this modifier is called _object-protected_; it can be accessed only from within
 the object in which it is defined. That is, a selection $p.M$ is only
 legal if the prefix is `this` or `$O$.this`, for some
@@ -524,20 +522,20 @@ either class-private or object-private, but not if it is marked
 case the member is called _qualified private_.
 
 Class-private or object-private members may not be abstract, and may
-not have `protected` or `override` modifiers.
+not have `protected` or `override` modifiers. They are not inherited
+by subclasses and they may not override definitions in parent classes.
 
-#### `protected`
+### `protected`
 The `protected` modifier applies to class member definitions.
 Protected members of a class can be accessed from within
   - the template of the defining class,
   - all templates that have the defining class as a base class,
   - the companion module of any of those classes.
 
-A `protected` modifier can be qualified with an
-identifier $C$ (e.g.  `protected[$C$]`) that must denote a
-class or package enclosing the definition.  Members labeled with such
-a modifier are also accessible respectively from all code inside the
-package $C$ or from all code inside the class $C$ and its
+A `protected` modifier can be qualified with an identifier $C$ (e.g.
+`protected[$C$]`) that must denote a class or package enclosing the definition.
+Members labeled with such a modifier are also accessible respectively from all
+code inside the package $C$ or from all code inside the class $C$ and its
 [companion module](#object-definitions).
 
 A protected identifier $x$ may be used as a member name in a selection
@@ -557,14 +555,14 @@ legal if the prefix is `this` or `$O$.this`, for some
 class $O$ enclosing the reference. In addition, the restrictions for
 unqualified `protected` apply.
 
-#### `override`
+### `override`
 The `override` modifier applies to class member definitions or declarations.
 It is mandatory for member definitions or declarations that override some
 other concrete member definition in a parent class. If an `override`
 modifier is given, there must be at least one overridden member
 definition or declaration (either concrete or abstract).
 
-#### `abstract override`
+### `abstract override`
 The `override` modifier has an additional significance when
 combined with the `abstract` modifier.  That modifier combination
 is only allowed for value members of traits.
@@ -579,7 +577,7 @@ influence the concept whether a member is concrete or abstract. A
 member is _abstract_ if only a declaration is given for it;
 it is _concrete_ if a full definition is given.
 
-#### `abstract`
+### `abstract`
 The `abstract` modifier is used in class definitions. It is
 redundant for traits, and mandatory for all other classes which have
 incomplete members.  Abstract classes cannot be
@@ -592,7 +590,7 @@ The `abstract` modifier can also be used in conjunction with
 `override` for class member definitions. In that case the
 previous discussion applies.
 
-#### `final`
+### `final`
 The `final` modifier applies to class member definitions and to
 class definitions. A `final` class member definition may not be
 overridden in subclasses. A `final` class may not be inherited by
@@ -604,13 +602,13 @@ an explicit `final` modifier, even if they are defined in a final class or
 object. `final` may not be applied to incomplete members, and it may not be
 combined in one modifier list with `sealed`.
 
-#### `sealed`
+### `sealed`
 The `sealed` modifier applies to class definitions. A
 `sealed` class may not be directly inherited, except if the inheriting
 template is defined in the same source file as the inherited class.
 However, subclasses of a sealed class can be inherited anywhere.
 
-#### `lazy`
+### `lazy`
 The `lazy` modifier applies to value definitions. A `lazy`
 value is initialized the first time it is accessed (which might never
 happen at all). Attempting to access a lazy value during its
@@ -699,7 +697,7 @@ Here,
     parameter section is called _polymorphic_, otherwise it is called
     _monomorphic_.
   - $as$ is a possibly empty sequence of
-    [annotations](11-user-defined-annotations.html#user-defined-annotations).
+    [annotations](11-annotations.html#user-defined-annotations).
     If any annotations are given, they apply to the primary constructor of the
     class.
   - $m$ is an [access modifier](#modifiers) such as
@@ -744,7 +742,7 @@ which when applied to parameters conforming to types $\mathit{ps}$
 initializes instances of type `$c$[$\mathit{tps}\,$]` by evaluating the template
 $t$.
 
-### Example
+###### Example – `val` and `var` parameters
 The following example illustrates `val` and `var` parameters of a class `C`:
 
 ```scala
@@ -753,7 +751,7 @@ val c = new C(1, "abc", List())
 c.z = c.y :: c.z
 ```
 
-### Example Private Constructor
+###### Example – Private Constructor
 The following class can be created only from its companion module.
 
 ```scala
@@ -835,7 +833,7 @@ This defines a class `LinkedList` with three constructors.  The
 second constructor constructs an singleton list, while the
 third one constructs a list with a given head and tail.
 
-## Case Classes
+### Case Classes
 
 ```ebnf
 TmplDef  ::=  `case' `class' ClassDef
@@ -966,7 +964,7 @@ This form of extensibility can be excluded by declaring the base class
 directly extend `Expr` must be in the same source file as
 `Expr`.
 
-### Traits
+## Traits
 
 ```ebnf
 TmplDef          ::=  `trait' TraitDef
@@ -990,7 +988,7 @@ it is not statically known at the time the trait is defined.
 If $D$ is not a trait, then its actual supertype is simply its
 least proper supertype (which is statically known).
 
-### Example
+###### Example
 The following trait defines the property
 of being comparable to objects of some type. It contains an abstract
 method `<` and default implementations of the other

@@ -74,7 +74,7 @@ abstract class ICodeReader extends ClassfileParser {
             first != CONSTANT_METHODREF &&
             first != CONSTANT_INTFMETHODREF) errorBadTag(start)
         val ownerTpe = getClassOrArrayType(in.getChar(start + 1).toInt)
-        debuglog("getMemberSymbol(static: " + static + "): owner type: " + ownerTpe + " " + ownerTpe.typeSymbol.originalName)
+        debuglog("getMemberSymbol(static: " + static + "): owner type: " + ownerTpe + " " + ownerTpe.typeSymbol.unexpandedName)
         val (name0, tpe0) = getNameAndType(in.getChar(start + 3).toInt, ownerTpe)
         debuglog("getMemberSymbol: name and tpe: " + name0 + ": " + tpe0)
 
@@ -130,7 +130,7 @@ abstract class ICodeReader extends ClassfileParser {
     log("ICodeReader reading " + cls)
     val name = cls.javaClassName
 
-    classPath.findClassFile(name) match {
+    classFileLookup.findClassFile(name) match {
       case Some(classFile) => parse(classFile, cls)
       case _               => MissingRequirementError.notFound("Could not find bytecode for " + cls)
     }
@@ -326,8 +326,8 @@ abstract class ICodeReader extends ClassfileParser {
         case JVM.dconst_0    => code emit CONSTANT(Constant(0.0))
         case JVM.dconst_1    => code emit CONSTANT(Constant(1.0))
 
-        case JVM.bipush      => code.emit(CONSTANT(Constant(u1))); size += 1
-        case JVM.sipush      => code.emit(CONSTANT(Constant(u2))); size += 2
+        case JVM.bipush      => code.emit(CONSTANT(Constant(s1))); size += 1
+        case JVM.sipush      => code.emit(CONSTANT(Constant(s2))); size += 2
         case JVM.ldc         => code.emit(CONSTANT(pool.getConstant(u1))); size += 1
         case JVM.ldc_w       => code.emit(CONSTANT(pool.getConstant(u2))); size += 2
         case JVM.ldc2_w      => code.emit(CONSTANT(pool.getConstant(u2))); size += 2
@@ -466,7 +466,7 @@ abstract class ICodeReader extends ClassfileParser {
           size += 2
           val local = code.getLocal(u1, INT)
           code.emit(LOAD_LOCAL(local))
-          code.emit(CONSTANT(Constant(u1)))
+          code.emit(CONSTANT(Constant(s1)))
           code.emit(CALL_PRIMITIVE(Arithmetic(ADD, INT)))
           code.emit(STORE_LOCAL(local))
 
@@ -599,7 +599,7 @@ abstract class ICodeReader extends ClassfileParser {
           }
         case JVM.invokedynamic  =>
           // TODO, this is just a place holder. A real implementation must parse the class constant entry
-          debuglog("Found JVM invokedynamic instructionm, inserting place holder ICode INVOKE_DYNAMIC.")
+          debuglog("Found JVM invokedynamic instruction, inserting place holder ICode INVOKE_DYNAMIC.")
           containsInvokeDynamic = true
           val poolEntry = in.nextChar.toInt
           in.skip(2)

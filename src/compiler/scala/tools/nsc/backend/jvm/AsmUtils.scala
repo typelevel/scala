@@ -5,10 +5,13 @@
 
 package scala.tools.nsc.backend.jvm
 
-import scala.tools.asm.tree.{ClassNode, MethodNode}
-import java.io.PrintWriter
-import scala.tools.asm.util.{TraceClassVisitor, TraceMethodVisitor, Textifier}
-import scala.tools.asm.ClassReader
+import scala.tools.asm.tree.{InsnList, AbstractInsnNode, ClassNode, MethodNode}
+import java.io.{StringWriter, PrintWriter}
+import scala.tools.asm.util.{CheckClassAdapter, TraceClassVisitor, TraceMethodVisitor, Textifier}
+import scala.tools.asm.{ClassWriter, Attribute, ClassReader}
+import scala.collection.convert.decorateAsScala._
+import scala.tools.nsc.backend.jvm.analysis.InitialProducer
+import scala.tools.nsc.backend.jvm.opt.InlineInfoAttributePrototype
 
 object AsmUtils {
 
@@ -36,26 +39,89 @@ object AsmUtils {
 
   def traceMethod(mnode: MethodNode): Unit = {
     println(s"Bytecode for method ${mnode.name}")
-    val p = new Textifier
-    val tracer = new TraceMethodVisitor(p)
-    mnode.accept(tracer)
-    val w = new PrintWriter(System.out)
-    p.print(w)
-    w.flush()
+    println(textify(mnode))
   }
 
   def traceClass(cnode: ClassNode): Unit = {
     println(s"Bytecode for class ${cnode.name}")
-    val w = new PrintWriter(System.out)
-    cnode.accept(new TraceClassVisitor(w))
-    w.flush()
+    println(textify(cnode))
   }
 
   def traceClass(bytes: Array[Byte]): Unit = traceClass(readClass(bytes))
 
   def readClass(bytes: Array[Byte]): ClassNode = {
     val node = new ClassNode()
-    new ClassReader(bytes).accept(node, 0)
+    new ClassReader(bytes).accept(node, Array[Attribute](InlineInfoAttributePrototype), 0)
     node
+  }
+
+  /**
+   * Returns a human-readable representation of the cnode ClassNode.
+   */
+  def textify(cnode: ClassNode): String = {
+    val trace = new TraceClassVisitor(new PrintWriter(new StringWriter))
+    cnode.accept(trace)
+    val sw = new StringWriter
+    val pw = new PrintWriter(sw)
+    trace.p.print(pw)
+    sw.toString
+  }
+
+  /**
+   * Returns a human-readable representation of the code in the mnode MethodNode.
+   */
+  def textify(mnode: MethodNode): String = {
+    val trace = new TraceClassVisitor(new PrintWriter(new StringWriter))
+    mnode.accept(trace)
+    val sw = new StringWriter
+    val pw = new PrintWriter(sw)
+    trace.p.print(pw)
+    sw.toString
+  }
+
+  /**
+   * Returns a human-readable representation of the given instruction.
+   */
+  def textify(insn: AbstractInsnNode): String = insn match {
+    case _: InitialProducer =>
+      insn.toString
+    case _ =>
+      val trace = new TraceMethodVisitor(new Textifier)
+      insn.accept(trace)
+      val sw = new StringWriter
+      val pw = new PrintWriter(sw)
+      trace.p.print(pw)
+      sw.toString.trim
+  }
+
+  /**
+   * Returns a human-readable representation of the given instruction sequence.
+   */
+  def textify(insns: Iterator[AbstractInsnNode]): String = {
+    val trace = new TraceMethodVisitor(new Textifier)
+    insns.foreach(_.accept(trace))
+    val sw: StringWriter = new StringWriter
+    val pw: PrintWriter = new PrintWriter(sw)
+    trace.p.print(pw)
+    sw.toString.trim
+  }
+
+  /**
+   * Returns a human-readable representation of the given instruction sequence.
+   */
+  def textify(insns: InsnList): String = textify(insns.iterator().asScala)
+
+  /**
+   * Run ASM's CheckClassAdapter over a class. Returns None if no problem is found, otherwise
+   * Some(msg) with the verifier's error message.
+   */
+  def checkClass(classNode: ClassNode): Option[String] = {
+    val cw = new ClassWriter(ClassWriter.COMPUTE_MAXS)
+    classNode.accept(cw)
+    val sw = new StringWriter()
+    val pw = new PrintWriter(sw)
+    CheckClassAdapter.verify(new ClassReader(cw.toByteArray), false, pw)
+    val res = sw.toString
+    if (res.isEmpty) None else Some(res)
   }
 }

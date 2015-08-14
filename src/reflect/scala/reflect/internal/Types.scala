@@ -211,7 +211,7 @@ trait Types
 
   case object UnmappableTree extends TermTree {
     override def toString = "<unmappable>"
-    super.tpe_=(NoType)
+    super.setType(NoType)
     override def tpe_=(t: Type) = if (t != NoType) {
       throw new UnsupportedOperationException("tpe_=("+t+") inapplicable for <empty>")
     }
@@ -249,7 +249,7 @@ trait Types
 
     def companion = {
       val sym = typeSymbolDirect
-      if (sym.isModule && !sym.isPackage) sym.companionSymbol.tpe
+      if (sym.isModule && !sym.hasPackageFlag) sym.companionSymbol.tpe
       else if (sym.isModuleClass && !sym.isPackageClass) sym.sourceModule.companionSymbol.tpe
       else if (sym.isClass && !sym.isModuleClass && !sym.isPackageClass) sym.companionSymbol.info
       else NoType
@@ -733,8 +733,8 @@ trait Types
      * `substThis(from, to).substSym(symsFrom, symsTo)`.
      *
      * `SubstThisAndSymMap` performs a breadth-first map over this type, which meant that
-     * symbol substitution occured before `ThisType` substitution. Consequently, in substitution
-     * of a `SingleType(ThisType(`from`), sym), symbols were rebound to `from` rather than `to`.
+     * symbol substitution occurred before `ThisType` substitution. Consequently, in substitution
+     * of a `SingleType(ThisType(from), sym)`, symbols were rebound to `from` rather than `to`.
      */
     def substThisAndSym(from: Symbol, to: Type, symsFrom: List[Symbol], symsTo: List[Symbol]): Type =
       if (symsFrom eq symsTo) substThis(from, to)
@@ -758,7 +758,7 @@ trait Types
     /** Apply `f` to each part of this type */
     def foreach(f: Type => Unit) { new ForEachTypeTraverser(f).traverse(this) }
 
-    /** Apply `pf' to each part of this type on which the function is defined */
+    /** Apply `pf` to each part of this type on which the function is defined */
     def collect[T](pf: PartialFunction[Type, T]): List[T] = new CollectTypeCollector(pf).collect(this)
 
     /** Apply `f` to each part of this type; children get mapped before their parents */
@@ -920,7 +920,7 @@ trait Types
     def prefixString = trimPrefix(toString) + "#"
 
    /** Convert toString avoiding infinite recursions by cutting off
-     *  after `maxTostringRecursions` recursion levels. Uses `safeToString`
+     *  after `maxToStringRecursions` recursion levels. Uses `safeToString`
      *  to produce a string on each level.
      */
     override final def toString: String = {
@@ -1513,7 +1513,7 @@ trait Types
           } finally {
             if (Statistics.canEnable) Statistics.popTimer(typeOpsStack, start)
           }
-          // [Martin] suppressing memo-ization solves the problem with "same type after erasure" errors
+          // [Martin] suppressing memoization solves the problem with "same type after erasure" errors
           // when compiling with
           // scalac scala.collection.IterableViewLike.scala scala.collection.IterableLike.scala
           // I have not yet figured out precisely why this is the case.
@@ -1711,7 +1711,7 @@ trait Types
      */
     private var refs: Array[RefMap] = _
 
-    /** The initialization state of the class: UnInialized --> Initializing --> Initialized
+    /** The initialization state of the class: UnInitialized --> Initializing --> Initialized
      *  Syncnote: This var need not be protected with synchronized, because
      *  it is accessed only from expansiveRefs, which is called only from
      *  Typer.
@@ -1998,17 +1998,17 @@ trait Types
     require(sym.isNonClassType, sym)
 
     /* Syncnote: These are pure caches for performance; no problem to evaluate these
-     * several times. Hence, no need to protected with synchronzied in a mutli-threaded
+     * several times. Hence, no need to protected with synchronized in a multi-threaded
      * usage scenario.
      */
     private var relativeInfoCache: Type = _
-    private var memberInfoCache: Type = _
+    private var relativeInfoPeriod: Period = NoPeriod
 
-    private[Types] def relativeInfo = {
-      val memberInfo = pre.memberInfo(sym)
-      if (relativeInfoCache == null || (memberInfo ne memberInfoCache)) {
-        memberInfoCache = memberInfo
+    private[Types] def relativeInfo = /*trace(s"relativeInfo(${safeToString}})")*/{
+      if (relativeInfoPeriod != currentPeriod) {
+        val memberInfo = pre.memberInfo(sym)
         relativeInfoCache = transformInfo(memberInfo)
+        relativeInfoPeriod = currentPeriod
       }
       relativeInfoCache
     }
@@ -2071,7 +2071,7 @@ trait Types
     /** SI-3731, SI-8177: when prefix is changed to `newPre`, maintain consistency of prefix and sym
      *  (where the symbol refers to a declaration "embedded" in the prefix).
      *
-     *  @returns newSym so that `newPre` binds `sym.name` to `newSym`,
+     *  @return newSym so that `newPre` binds `sym.name` to `newSym`,
      *                  to remain consistent with `pre` previously binding `sym.name` to `sym`.
      *
      *  `newSym` and `sym` are conceptually the same symbols, but some change to our `prefix`
@@ -2620,7 +2620,7 @@ trait Types
      * based on the bounds of the type parameters of the quantified type
      * In Scala syntax, given a java-defined class C[T <: String], the existential type C[_]
      * is improved to C[_ <: String] before skolemization, which captures (get it?) what Java does:
-     * enter the type paramers' bounds into the context when checking subtyping/type equality of existential types
+     * enter the type parameters' bounds into the context when checking subtyping/type equality of existential types
      *
      * Also tried doing this once during class file parsing or when creating the existential type,
      * but that causes cyclic errors because it happens too early.
@@ -2675,7 +2675,7 @@ trait Types
      *     nowhere inside a type argument
      *   - no quantified type argument contains a quantified variable in its bound
      *   - the typeref's symbol is not itself quantified
-     *   - the prefix is not quanitified
+     *   - the prefix is not quantified
      */
     def isRepresentableWithWildcards = {
       val qset = quantified.toSet
@@ -3142,7 +3142,7 @@ trait Types
       // addressed here: all lower bounds are retained and their intersection calculated when the
       // bounds are solved.
       //
-      // In a side-effect free universe, checking tp and tp.parents beofre checking tp.baseTypeSeq
+      // In a side-effect free universe, checking tp and tp.parents before checking tp.baseTypeSeq
       // would be pointless. In this case, each check we perform causes us to lose specificity: in
       // the end the best we'll do is the least specific type we tested against, since the typevar
       // does not see these checks as "probes" but as requirements to fulfill.
@@ -3373,7 +3373,7 @@ trait Types
    *
    *  SI-6385 Erasure's creation of bridges considers method signatures `exitingErasure`,
    *          which contain `ErasedValueType`-s. In order to correctly consider the overriding
-   *          and overriden signatures as equivalent in `run/t6385.scala`, it is critical that
+   *          and overridden signatures as equivalent in `run/t6385.scala`, it is critical that
    *          this type contains the erasure of the wrapped type, rather than the unerased type
    *          of the value class itself, as was originally done.
    *
@@ -3699,7 +3699,7 @@ trait Types
       // JZ: We used to register this as a perRunCache so it would be cleared eagerly at
       // the end of the compilation run. But, that facility didn't actually clear this map (SI-8129)!
       // When i fixed that bug, run/tpeCache-tyconCache.scala started failing. Why was that?
-      // I've removed the registration for now. I don't think its particularly harmful anymore
+      // I've removed the registration for now. I don't think it's particularly harmful anymore
       // as a) this is now a weak set, and b) it is discarded completely before the next run.
       uniqueRunId = currentRunId
     }
@@ -4304,7 +4304,7 @@ trait Types
       matchesType(res1, res2.substSym(tparams2, tparams1), alwaysMatchSimple)
     (tp1, tp2) match {
       case (MethodType(params1, res1), MethodType(params2, res2)) =>
-        params1.length == params2.length && // useful pre-secreening optimization
+        params1.length == params2.length && // useful pre-screening optimization
         matchingParams(params1, params2, tp1.isInstanceOf[JavaMethodType], tp2.isInstanceOf[JavaMethodType]) &&
         matchesType(res1, res2, alwaysMatchSimple) &&
         tp1.isImplicit == tp2.isImplicit
@@ -4576,7 +4576,7 @@ trait Types
 
   /** Adds the @uncheckedBound annotation if the given `tp` has type arguments */
   final def uncheckedBounds(tp: Type): Type = {
-    if (tp.typeArgs.isEmpty || UncheckedBoundsClass == NoSymbol) tp // second condition for backwards compatibilty with older scala-reflect.jar
+    if (tp.typeArgs.isEmpty || UncheckedBoundsClass == NoSymbol) tp // second condition for backwards compatibility with older scala-reflect.jar
     else tp.withAnnotation(AnnotationInfo marker UncheckedBoundsClass.tpe)
   }
 

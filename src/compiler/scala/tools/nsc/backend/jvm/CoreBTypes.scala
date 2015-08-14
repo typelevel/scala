@@ -4,7 +4,7 @@ package backend.jvm
 import scala.annotation.switch
 
 /**
- * Core BTypes and some other definitions. The initialization of these definitions requies access
+ * Core BTypes and some other definitions. The initialization of these definitions requires access
  * to symbols / types (global).
  *
  * The symbols used to initialize the ClassBTypes may change from one compiler run to the next. To
@@ -18,11 +18,11 @@ import scala.annotation.switch
  *
  * The definitions in `CoreBTypes` need to be lazy vals to break an initialization cycle. When
  * creating a new instance to assign to the proxy, the `classBTypeFromSymbol` invoked in the
- * constructor will actucally go through the proxy. The lazy vals make sure the instance is assigned
+ * constructor will actually go through the proxy. The lazy vals make sure the instance is assigned
  * in the proxy before the fields are initialized.
  *
  * Note: if we did not re-create the core BTypes on each compiler run, BType.classBTypeFromInternalNameMap
- * could not be a perRunCache anymore: the classes defeined here need to be in that map, they are
+ * could not be a perRunCache anymore: the classes defined here need to be in that map, they are
  * added when the ClassBTypes are created. The per run cache removes them, so they would be missing
  * in the second run.
  */
@@ -99,10 +99,9 @@ class CoreBTypes[BTFS <: BTypesFromSymbols[_ <: Global]](val bTypes: BTFS) {
    *
    * Therefore, when RT_NOTHING or RT_NULL are to be emitted, a mapping is needed: the internal
    * names of NothingClass and NullClass can't be emitted as-is.
-   * TODO @lry Once there's a 2.11.3 starr, use the commented argument list. The current starr crashes on the type literal `scala.runtime.Nothing$`
    */
-  lazy val RT_NOTHING : ClassBType = classBTypeFromSymbol(rootMirror.getRequiredClass("scala.runtime.Nothing$")) // (requiredClass[scala.runtime.Nothing$])
-  lazy val RT_NULL    : ClassBType = classBTypeFromSymbol(rootMirror.getRequiredClass("scala.runtime.Null$"))    // (requiredClass[scala.runtime.Null$])
+  lazy val RT_NOTHING : ClassBType = classBTypeFromSymbol(requiredClass[scala.runtime.Nothing$])
+  lazy val RT_NULL    : ClassBType = classBTypeFromSymbol(requiredClass[scala.runtime.Null$])
 
   lazy val ObjectReference   : ClassBType = classBTypeFromSymbol(ObjectClass)
   lazy val objArrayReference : ArrayBType = ArrayBType(ObjectReference)
@@ -115,6 +114,8 @@ class CoreBTypes[BTFS <: BTypesFromSymbols[_ <: Global]](val bTypes: BTFS) {
   lazy val jioSerializableReference    : ClassBType = classBTypeFromSymbol(JavaSerializableClass)     // java/io/Serializable
   lazy val scalaSerializableReference  : ClassBType = classBTypeFromSymbol(SerializableClass)         // scala/Serializable
   lazy val classCastExceptionReference : ClassBType = classBTypeFromSymbol(ClassCastExceptionClass)   // java/lang/ClassCastException
+  lazy val javaUtilMapReference        : ClassBType = classBTypeFromSymbol(JavaUtilMap)               // java/util/Map
+  lazy val javaUtilHashMapReference    : ClassBType = classBTypeFromSymbol(JavaUtilHashMap)           // java/util/HashMap
 
   lazy val srBooleanRef : ClassBType = classBTypeFromSymbol(requiredClass[scala.runtime.BooleanRef])
   lazy val srByteRef    : ClassBType = classBTypeFromSymbol(requiredClass[scala.runtime.ByteRef])
@@ -192,7 +193,7 @@ class CoreBTypes[BTFS <: BTypesFromSymbols[_ <: Global]](val bTypes: BTFS) {
 }
 
 /**
- * This trait make some core BTypes availalbe that don't depend on a Global instance. Some core
+ * This trait make some core BTypes available that don't depend on a Global instance. Some core
  * BTypes are required to be accessible in the BTypes trait, which does not have access to Global.
  *
  * BTypes cannot refer to CoreBTypesProxy because some of its members depend on global, for example
@@ -259,6 +260,8 @@ final class CoreBTypesProxy[BTFS <: BTypesFromSymbols[_ <: Global]](val bTypes: 
   def jioSerializableReference    : ClassBType = _coreBTypes.jioSerializableReference
   def scalaSerializableReference  : ClassBType = _coreBTypes.scalaSerializableReference
   def classCastExceptionReference : ClassBType = _coreBTypes.classCastExceptionReference
+  def javaUtilMapReference        : ClassBType = _coreBTypes.javaUtilMapReference
+  def javaUtilHashMapReference    : ClassBType = _coreBTypes.javaUtilHashMapReference
 
   def srBooleanRef : ClassBType = _coreBTypes.srBooleanRef
   def srByteRef    : ClassBType = _coreBTypes.srByteRef

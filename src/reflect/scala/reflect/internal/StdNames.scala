@@ -112,6 +112,23 @@ trait StdNames {
     val ROOT: NameType                         = "<root>"
     val SPECIALIZED_SUFFIX: NameType           = "$sp"
 
+    val NESTED_IN: String                      = "$nestedIn"
+    val NESTED_IN_ANON_CLASS: String           = NESTED_IN + ANON_CLASS_NAME.toString.replace("$", "")
+    val NESTED_IN_ANON_FUN: String             = NESTED_IN + ANON_FUN_NAME.toString.replace("$", "")
+    val NESTED_IN_LAMBDA: String               = NESTED_IN + DELAMBDAFY_LAMBDA_CLASS_NAME.toString.replace("$", "")
+
+    /**
+     * Ensures that name mangling does not accidentally make a class respond `true` to any of
+     * isAnonymousClass, isAnonymousFunction, isDelambdafyFunction, e.g. by introducing "$anon".
+     */
+    def ensureNonAnon(name: String) = {
+      name
+        .replace(nme.ANON_CLASS_NAME.toString, NESTED_IN_ANON_CLASS)
+        .replace(nme.ANON_FUN_NAME.toString, NESTED_IN_ANON_FUN)
+        .replace(nme.DELAMBDAFY_LAMBDA_CLASS_NAME.toString, NESTED_IN_LAMBDA)
+    }
+
+
     // value types (and AnyRef) are all used as terms as well
     // as (at least) arguments to the @specialize annotation.
     final val Boolean: NameType = "Boolean"
@@ -128,6 +145,7 @@ trait StdNames {
     final val AnyRef: NameType        = "AnyRef"
     final val Array: NameType         = "Array"
     final val List: NameType          = "List"
+    final val Option: NameType        = "Option"
     final val Seq: NameType           = "Seq"
     final val Symbol: NameType        = "Symbol"
     final val WeakTypeTag: NameType   = "WeakTypeTag"
@@ -247,6 +265,7 @@ trait StdNames {
     final val Unliftable: NameType          = "Unliftable"
     final val Name: NameType                = "Name"
     final val Tree: NameType                = "Tree"
+    final val Text: NameType                = "Text"
     final val TermName: NameType            = "TermName"
     final val Type : NameType               = "Type"
     final val TypeName: NameType            = "TypeName"
@@ -777,6 +796,7 @@ trait StdNames {
     val values : NameType              = "values"
     val wait_ : NameType               = "wait"
     val withFilter: NameType           = "withFilter"
+    val xml: NameType                  = "xml"
     val zero: NameType                 = "zero"
 
     // quasiquote interpolators:
@@ -850,7 +870,7 @@ trait StdNames {
     val toFloat: NameType  = "toFloat"
     val toDouble: NameType = "toDouble"
 
-    // primitive operation methods for structual types mostly
+    // primitive operation methods for structural types mostly
     // overlap with the above, but not for these two.
     val toCharacter: NameType = "toCharacter"
     val toInteger: NameType   = "toInteger"
@@ -1058,6 +1078,7 @@ trait StdNames {
     val reflPolyCacheName: NameType   = "reflPoly$Cache"
     val reflParamsCacheName: NameType = "reflParams$Cache"
     val reflMethodName: NameType      = "reflMethod$Method"
+    val argument: NameType            = "<argument>"
 
   }
 
@@ -1144,6 +1165,9 @@ trait StdNames {
     final val GetClassLoader: TermName   = newTermName("getClassLoader")
     final val GetMethod: TermName        = newTermName("getMethod")
     final val Invoke: TermName           = newTermName("invoke")
+    final val InvokeExact: TermName      = newTermName("invokeExact")
+
+    final val AltMetafactory: TermName      = newTermName("altMetafactory")
 
     val Boxed = immutable.Map[TypeName, TypeName](
       tpnme.Boolean -> BoxedBoolean,

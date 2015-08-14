@@ -10,6 +10,8 @@ package backend.jvm
 import scala.tools.asm
 import scala.annotation.switch
 import scala.collection.mutable
+import GenBCode._
+import scala.tools.asm.tree.MethodInsnNode
 
 /*
  *  A high-level facade to the ASM API for bytecode generation.
@@ -41,9 +43,6 @@ abstract class BCodeIdiomatic extends SubComponent {
   )
 
   val StringBuilderClassName = "scala/collection/mutable/StringBuilder"
-
-  val CLASS_CONSTRUCTOR_NAME    = "<clinit>"
-  val INSTANCE_CONSTRUCTOR_NAME = "<init>"
 
   val EMPTY_STRING_ARRAY   = Array.empty[String]
   val EMPTY_INT_ARRAY      = Array.empty[Int]
@@ -107,7 +106,7 @@ abstract class BCodeIdiomatic extends SubComponent {
    */
   abstract class JCodeMethodN {
 
-    def jmethod: asm.MethodVisitor
+    def jmethod: asm.tree.MethodNode
 
     import asm.Opcodes;
     import icodes.opcodes.{ Static, Dynamic,  SuperCall }
@@ -207,20 +206,21 @@ abstract class BCodeIdiomatic extends SubComponent {
     /*
      * can-multi-thread
      */
-    final def genStartConcat {
+    final def genStartConcat(pos: Position): Unit = {
       jmethod.visitTypeInsn(Opcodes.NEW, StringBuilderClassName)
       jmethod.visitInsn(Opcodes.DUP)
       invokespecial(
         StringBuilderClassName,
         INSTANCE_CONSTRUCTOR_NAME,
-        "()V"
+        "()V",
+        pos
       )
     }
 
     /*
      * can-multi-thread
      */
-    final def genStringConcat(el: BType) {
+    final def genStringConcat(el: BType, pos: Position): Unit = {
 
       val jtype =
         if (el.isArray || el.isClass) ObjectReference
@@ -228,14 +228,14 @@ abstract class BCodeIdiomatic extends SubComponent {
 
       val bt = MethodBType(List(jtype), StringBuilderReference)
 
-      invokevirtual(StringBuilderClassName, "append", bt.descriptor)
+      invokevirtual(StringBuilderClassName, "append", bt.descriptor, pos)
     }
 
     /*
      * can-multi-thread
      */
-    final def genEndConcat {
-      invokevirtual(StringBuilderClassName, "toString", "()Ljava/lang/String;")
+    final def genEndConcat(pos: Position): Unit = {
+      invokevirtual(StringBuilderClassName, "toString", "()Ljava/lang/String;", pos)
     }
 
     /*
@@ -271,7 +271,7 @@ abstract class BCodeIdiomatic extends SubComponent {
       assert(from != BOOL && to != BOOL, s"inconvertible types : $from -> $to")
 
       // We're done with BOOL already
-      from match {
+      (from: @unchecked) match {
 
         // using `asm.Type.SHORT` instead of `BType.SHORT` because otherwise "warning: could not emit switch for @switch annotated match"
 
@@ -361,7 +361,7 @@ abstract class BCodeIdiomatic extends SubComponent {
           assert(elem.isNonVoidPrimitiveType)
           val rand = {
             // using `asm.Type.SHORT` instead of `BType.SHORT` because otherwise "warning: could not emit switch for @switch annotated match"
-            elem match {
+            (elem: @unchecked) match {
               case BOOL   => Opcodes.T_BOOLEAN
               case BYTE   => Opcodes.T_BYTE
               case SHORT  => Opcodes.T_SHORT
@@ -391,20 +391,29 @@ abstract class BCodeIdiomatic extends SubComponent {
     final def rem(tk: BType) { emitPrimitive(JCodeMethodN.remOpcodes, tk) } // can-multi-thread
 
     // can-multi-thread
-    final def invokespecial(owner: String, name: String, desc: String) {
-      jmethod.visitMethodInsn(Opcodes.INVOKESPECIAL, owner, name, desc, false)
+    final def invokespecial(owner: String, name: String, desc: String, pos: Position) {
+      addInvoke(Opcodes.INVOKESPECIAL, owner, name, desc, false, pos)
     }
     // can-multi-thread
-    final def invokestatic(owner: String, name: String, desc: String) {
-      jmethod.visitMethodInsn(Opcodes.INVOKESTATIC, owner, name, desc, false)
+    final def invokestatic(owner: String, name: String, desc: String, pos: Position) {
+      addInvoke(Opcodes.INVOKESTATIC, owner, name, desc, false, pos)
     }
     // can-multi-thread
-    final def invokeinterface(owner: String, name: String, desc: String) {
-      jmethod.visitMethodInsn(Opcodes.INVOKEINTERFACE, owner, name, desc, true)
+    final def invokeinterface(owner: String, name: String, desc: String, pos: Position) {
+      addInvoke(Opcodes.INVOKEINTERFACE, owner, name, desc, true, pos)
     }
     // can-multi-thread
-    final def invokevirtual(owner: String, name: String, desc: String) {
-      jmethod.visitMethodInsn(Opcodes.INVOKEVIRTUAL, owner, name, desc, false)
+    final def invokevirtual(owner: String, name: String, desc: String, pos: Position) {
+      addInvoke(Opcodes.INVOKEVIRTUAL, owner, name, desc, false, pos)
+    }
+
+    private def addInvoke(opcode: Int, owner: String, name: String, desc: String, itf: Boolean, pos: Position) = {
+      val node = new MethodInsnNode(opcode, owner, name, desc, itf)
+      jmethod.instructions.add(node)
+      if (settings.YoptInlinerEnabled) callsitePositions(node) = pos
+    }
+    final def invokedynamic(owner: String, name: String, desc: String) {
+      jmethod.visitMethodInsn(Opcodes.INVOKEDYNAMIC, owner, name, desc)
     }
 
     // can-multi-thread
@@ -430,7 +439,7 @@ abstract class BCodeIdiomatic extends SubComponent {
       else            { emitTypeBased(JCodeMethodN.returnOpcodes, tk)      }
     }
 
-    /* Emits one of tableswitch or lookoupswitch.
+    /* Emits one of tableswitch or lookupswitch.
      *
      * can-multi-thread
      */

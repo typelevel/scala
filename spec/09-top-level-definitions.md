@@ -151,7 +151,7 @@ contain a class `B`, a compiler-time error would result.
 
 A _program_ is a top-level object that has a member method
 _main_ of type `(Array[String])Unit`. Programs can be
-executed from a command shell. The program's command arguments are are
+executed from a command shell. The program's command arguments are
 passed to the `main` method as a parameter of type
 `Array[String]`.
 
@@ -159,7 +159,7 @@ The `main` method of a program can be directly defined in the
 object, or it can be inherited. The scala library defines a special class
 `scala.App` whose body acts as a `main` method.
 An objects $m$ inheriting from this class is thus a program,
-which executes the initializaton code of the object $m$.
+which executes the initialization code of the object $m$.
 
 ###### Example
 The following example will create a hello world program by defining

@@ -105,7 +105,7 @@ object Exception {
         case x if rethrow(x)        => throw x
         case x if pf isDefinedAt x  => pf(x)
       }
-      finally fin map (_.invoke())
+      finally fin foreach (_.invoke())
 
     /* Create an empty Try container with this Catch and the supplied `Finally`. */
     def andFinally(body: => Unit): Catch[T] = fin match {
@@ -155,7 +155,7 @@ object Exception {
   /** A `Catch` object which catches everything. */
   final def allCatch[T]: Catch[T] = new Catch(allCatcher[T]) withDesc "<everything>"
 
-  /** A `Catch` object witch catches non-fatal exceptions. */
+  /** A `Catch` object which catches non-fatal exceptions. */
   final def nonFatalCatch[T]: Catch[T] = new Catch(nonFatalCatcher[T]) withDesc "<non-fatal>"
 
   /** Creates a `Catch` object which will catch any of the supplied exceptions.

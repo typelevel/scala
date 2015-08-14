@@ -38,7 +38,7 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
 
   override lazy val rootMirror: Mirror = createMirror(NoSymbol, rootClassLoader)
 
-  // overriden by ReflectGlobal
+  // overridden by ReflectGlobal
   def rootClassLoader: ClassLoader = this.getClass.getClassLoader
 
   trait JavaClassCompleter
@@ -142,7 +142,7 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
       object ConstantArg {
         def enumToSymbol(enum: Enum[_]): Symbol = {
           val staticPartOfEnum = classToScala(enum.getClass).companionSymbol
-          staticPartOfEnum.info.declaration(enum.name: TermName)
+          staticPartOfEnum.info.declaration(TermName(enum.name))
         }
 
         def unapply(schemaAndValue: (jClass[_], Any)): Option[Any] = schemaAndValue match {
@@ -172,7 +172,7 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
       // currently I'm simply sorting the methods to guarantee stability of the output
       override lazy val assocs: List[(Name, ClassfileAnnotArg)] = (
         jann.annotationType.getDeclaredMethods.sortBy(_.getName).toList map (m =>
-          (m.getName: TermName) -> toAnnotArg(m.getReturnType -> m.invoke(jann))
+          TermName(m.getName) -> toAnnotArg(m.getReturnType -> m.invoke(jann))
         )
       )
     }
@@ -428,9 +428,12 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
         var i = 0
         while (i < args1.length) {
           val arg = args(i)
-          if (i >= paramCount) args1(i) = arg // don't transform varargs
-          else if (isByName(i)) args1(i) = () => arg // don't transform by-name value class params
-          else if (isDerivedValueClass(i)) args1(i) = paramUnboxers(i).invoke(arg)
+          args1(i) = (
+            if (i >= paramCount)             arg                           // don't transform varargs
+            else if (isByName(i))            () => arg                     // don't transform by-name value class params
+            else if (isDerivedValueClass(i)) paramUnboxers(i).invoke(arg)  // do get the underlying value
+            else                             arg                           // don't molest anything else
+          )
           i += 1
         }
         jinvoke(args1)
@@ -588,6 +591,7 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
       // don't use classOf[scala.reflect.ScalaSignature] here, because it will use getClass.getClassLoader, not mirror's classLoader
       // don't use asInstanceOf either because of the same reason (lol, I cannot believe I fell for it)
       // don't use structural types to simplify reflective invocations because of the same reason
+      // TODO SI-9296 duplicated code, refactor
       def loadAnnotation(name: String): Option[java.lang.annotation.Annotation] =
         tryJavaClass(name) flatMap { annotClass =>
           val anns = jclazz.getAnnotations
@@ -751,6 +755,7 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
           val ifaces = jclazz.getGenericInterfaces.toList map typeToScala
           val isAnnotation = JavaAccFlags(jclazz).isAnnotation
           if (isAnnotation) AnnotationClass.tpe :: ClassfileAnnotationClass.tpe :: ifaces
+          else if (jclazz.isInterface) ObjectTpe :: ifaces // interfaces have Object as superclass in the classfile (see jvm spec), but getGenericSuperclass seems to return null
           else (if (jsuperclazz == null) AnyTpe else typeToScala(jsuperclazz)) :: ifaces
         } finally {
           parentsLevel -= 1
@@ -937,7 +942,7 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
       val ownerModule: ModuleSymbol =
         if (split > 0) packageNameToScala(fullname take split) else this.RootPackage
       val owner = ownerModule.moduleClass
-      val name = (fullname: TermName) drop split + 1
+      val name = TermName(fullname) drop split + 1
       val opkg = owner.info decl name
       if (opkg.hasPackageFlag)
         opkg.asModule
@@ -988,7 +993,7 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
               if (name.startsWith(nme.NAME_JOIN_STRING)) coreLookup(name drop 1) else NoSymbol
             }
           if (nme.isModuleName(simpleName))
-            coreLookup(nme.stripModuleSuffix(simpleName).toTermName) map (_.moduleClass)
+            coreLookup(simpleName.dropModule.toTermName) map (_.moduleClass)
           else
             coreLookup(simpleName)
         }
@@ -1180,6 +1185,7 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
       constr setInfo GenPolyType(tparams, MethodType(clazz.newSyntheticValueParams(paramtpes), clazz.tpe))
       propagatePackageBoundary(jconstr.javaFlags, constr)
       copyAnnotations(constr, jconstr)
+      if (jconstr.javaFlags.isVarargs) constr modifyInfo arrayToRepeated
       markAllCompleted(constr)
       constr
     }
@@ -1191,7 +1197,7 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
      *   - top-level classes
      *   - Scala classes that were generated via jclassToScala
      *   - classes that have a class owner that has a corresponding Java class
-     *  @throws A `ClassNotFoundException` for all Scala classes not in one of these categories.
+     *  @throws ClassNotFoundException for all Scala classes not in one of these categories.
      */
     @throws(classOf[ClassNotFoundException])
     def classToJava(clazz: ClassSymbol): jClass[_] = classCache.toJava(clazz) {
@@ -1282,16 +1288,12 @@ private[scala] trait JavaMirrors extends internal.SymbolTable with api.JavaUnive
       jclazz getDeclaredConstructor (effectiveParamClasses: _*)
     }
 
-    private def jArrayClass(elemClazz: jClass[_]): jClass[_] = {
-      jArray.newInstance(elemClazz, 0).getClass
-    }
-
     /** The Java class that corresponds to given Scala type.
      *  Pre: Scala type is already transformed to Java level.
      */
     def typeToJavaClass(tpe: Type): jClass[_] = tpe match {
       case ExistentialType(_, rtpe)                  => typeToJavaClass(rtpe)
-      case TypeRef(_, ArrayClass, List(elemtpe))     => jArrayClass(typeToJavaClass(elemtpe))
+      case TypeRef(_, ArrayClass, List(elemtpe))     => ScalaRunTime.arrayClass(typeToJavaClass(elemtpe))
       case TypeRef(_, sym: ClassSymbol, _)           => classToJava(sym.asClass)
       case tpe @ TypeRef(_, sym: AliasTypeSymbol, _) => typeToJavaClass(tpe.dealias)
       case SingleType(_, sym: ModuleSymbol)          => classToJava(sym.moduleClass.asClass)

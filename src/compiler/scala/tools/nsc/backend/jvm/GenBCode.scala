@@ -9,8 +9,7 @@ package tools.nsc
 package backend
 package jvm
 
-import scala.collection.{ mutable, immutable }
-import scala.annotation.switch
+import scala.collection.mutable
 import scala.reflect.internal.util.Statistics
 
 import scala.tools.asm
@@ -168,6 +167,11 @@ abstract class GenBCode extends BCodeSyncAndTry {
             )
         }
 
+        // shim for SBT, see https://github.com/sbt/sbt/issues/2076
+        // TODO put this closer to classfile writing once we have closure elimination
+        // TODO create a nicer public API to find out the correspondence between sourcefile and ultimate classfiles
+        currentUnit.icode += new icodes.IClass(cd.symbol)
+
         // -------------- mirror class, if needed --------------
         val mirrorC =
           if (isTopLevelModuleClass(claszSymbol)) {
@@ -215,16 +219,28 @@ abstract class GenBCode extends BCodeSyncAndTry {
      *          - converting the plain ClassNode to byte array and placing it on queue-3
      */
     class Worker2 {
-      def localOptimizations(classNode: ClassNode): Unit = {
-        def dce(): Boolean = BackendStats.timed(BackendStats.bcodeDceTimer) {
-          if (settings.YoptUnreachableCode) opt.LocalOpt.removeUnreachableCode(classNode)
-          else false
+      def runGlobalOptimizations(): Unit = {
+        import scala.collection.convert.decorateAsScala._
+        if (settings.YoptBuildCallGraph) {
+          q2.asScala foreach {
+            case Item2(_, _, plain, _, _) =>
+              // skip mirror / bean: wd don't inline into tem, and they are not used in the plain class
+              if (plain != null) callGraph.addClass(plain)
+          }
         }
+        if (settings.YoptInlinerEnabled)
+          bTypes.inliner.runInliner()
+        if (settings.YoptClosureElimination)
+          closureOptimizer.rewriteClosureApplyInvocations()
+      }
 
-        dce()
+      def localOptimizations(classNode: ClassNode): Unit = {
+        BackendStats.timed(BackendStats.methodOptTimer)(localOpt.methodOptimizations(classNode))
       }
 
       def run() {
+        runGlobalOptimizations()
+
         while (true) {
           val item = q2.poll
           if (item.isPoison) {
@@ -272,7 +288,12 @@ abstract class GenBCode extends BCodeSyncAndTry {
 
     var arrivalPos = 0
 
-    /*
+    /**
+     * The `run` method is overridden because the backend has a different data flow than the default
+     * phase: the backend does not transform compilation units one by one, but on all units in the
+     * same run. This allows cross-unit optimizations and running some stages of the backend
+     * concurrently on multiple units.
+     *
      *  A run of the BCodePhase phase comprises:
      *
      *    (a) set-up steps (most notably supporting maps in `BCodeTypes`,
@@ -289,7 +310,11 @@ abstract class GenBCode extends BCodeSyncAndTry {
       val initStart = Statistics.startTimer(BackendStats.bcodeInitTimer)
       arrivalPos = 0 // just in case
       scalaPrimitives.init()
-      bTypes.intializeCoreBTypes()
+      bTypes.initializeCoreBTypes()
+      bTypes.javaDefinedClasses.clear()
+      bTypes.javaDefinedClasses ++= currentRun.symSource collect {
+        case (sym, _) if sym.isJavaDefined => sym.javaBinaryName.toString
+      }
       Statistics.stopTimer(BackendStats.bcodeInitTimer, initStart)
 
       // initBytecodeWriter invokes fullName, thus we have to run it before the typer-dependent thread is activated.
@@ -413,4 +438,7 @@ object GenBCode {
 
   final val PublicStatic      = asm.Opcodes.ACC_PUBLIC | asm.Opcodes.ACC_STATIC
   final val PublicStaticFinal = asm.Opcodes.ACC_PUBLIC | asm.Opcodes.ACC_STATIC | asm.Opcodes.ACC_FINAL
+
+  val CLASS_CONSTRUCTOR_NAME    = "<clinit>"
+  val INSTANCE_CONSTRUCTOR_NAME = "<init>"
 }

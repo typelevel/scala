@@ -13,7 +13,6 @@ package mutable
 import generic._
 import immutable.{List, Nil}
 
-// !!! todo: convert to LinkedListBuffer?
 /**
  *  This class is used internally to represent mutable lists. It is the
  *  basis for the implementation of the class `Queue`.
@@ -22,6 +21,8 @@ import immutable.{List, Nil}
  *  @author  Martin Odersky
  *  @version 2.8
  *  @since   1
+ *  @define Coll `mutable.MutableList`
+ *  @define coll mutable list
  *  @see [[http://docs.scala-lang.org/overviews/collections/concrete-mutable-collection-classes.html#mutable_lists "Scala's Collection Library overview"]]
  *  section on `Mutable Lists` for more information.
  */
@@ -111,9 +112,21 @@ extends AbstractSeq[A]
     }
   }
 
-  /** Returns an iterator over all elements of this list.
+  /** Returns an iterator over up to `length` elements of this list.
    */
-  override def iterator: Iterator[A] = first0.iterator
+  override def iterator: Iterator[A] = if (isEmpty) Iterator.empty else
+    new AbstractIterator[A] {
+      var elems   = first0
+      var count   = len
+      def hasNext = count > 0 && elems.nonEmpty
+      def next()  = {
+        if (!hasNext) throw new NoSuchElementException
+        count = count - 1
+        val e = elems.elem
+        elems = if (count == 0) null else elems.next
+        e
+      }
+    }
 
   override def last = {
     if (isEmpty) throw new NoSuchElementException("MutableList.empty.last")

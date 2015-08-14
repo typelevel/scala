@@ -268,7 +268,7 @@ trait PatternTypers {
 
       def freshArgType(tp: Type): Type = tp match {
         case MethodType(param :: _, _) => param.tpe
-        case PolyType(tparams, restpe) => createFromClonedSymbols(tparams, freshArgType(restpe))(polyType)
+        case PolyType(tparams, restpe) => createFromClonedSymbols(tparams, freshArgType(restpe))(genPolyType)
         case OverloadedType(_, _)      => OverloadedUnapplyError(fun) ; ErrorType
         case _                         => UnapplyWithSingleArgError(fun) ; ErrorType
       }
@@ -305,7 +305,7 @@ trait PatternTypers {
       // clearing the type is necessary so that ref will be stabilized; see bug 881
       val fun1 = typedPos(fun.pos)(Apply(Select(fun.clearType(), unapplyMethod), unapplyArgTree :: Nil))
 
-      def makeTypedUnApply() = {
+      def makeTypedUnapply() = {
         // the union of the expected type and the inferred type of the argument to unapply
         val glbType        = glb(ensureFullyDefined(pt) :: unapplyArg.tpe_* :: Nil)
         val wrapInTypeTest = canRemedy && !(fun1.symbol.owner isNonBottomSubClass ClassTagClass)
@@ -325,7 +325,7 @@ trait PatternTypers {
         if (isBlackbox(unapplyMethod)) duplErrorTree(BlackboxExtractorExpansion(tree))
         else duplErrorTree(WrongShapeExtractorExpansion(tree))
       } else
-        makeTypedUnApply()
+        makeTypedUnapply()
     }
 
     def wrapClassTagUnapply(uncheckedPattern: Tree, classTagExtractor: Tree, pt: Type): Tree = {
@@ -336,7 +336,7 @@ trait PatternTypers {
       val app  = atPos(uncheckedPattern.pos)(Apply(classTagExtractor, args))
       // must call doTypedUnapply directly, as otherwise we get undesirable rewrites
       // and re-typechecks of the target of the unapply call in PATTERNmode,
-      // this breaks down when the classTagExtractor (which defineds the unapply member) is not a simple reference to an object,
+      // this breaks down when the classTagExtractor (which defines the unapply member) is not a simple reference to an object,
       // but an arbitrary tree as is the case here
       val res = doTypedUnapply(app, classTagExtractor, classTagExtractor, args, PATTERNmode, pt)
 

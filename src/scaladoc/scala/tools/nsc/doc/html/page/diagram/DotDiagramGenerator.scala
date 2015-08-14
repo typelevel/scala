@@ -15,7 +15,7 @@ import scala.collection.immutable._
 import model._
 import model.diagram._
 
-class DotDiagramGenerator(settings: doc.Settings) extends DiagramGenerator {
+class DotDiagramGenerator(settings: doc.Settings, dotRunner: DotRunner) extends DiagramGenerator {
 
   // the page where the diagram will be embedded
   private var page: HtmlPage = null
@@ -317,7 +317,7 @@ class DotDiagramGenerator(settings: doc.Settings) extends DiagramGenerator {
    * Calls dot with a given dot string and returns the SVG output.
    */
   private def generateSVG(dotInput: String, template: DocTemplateEntity) = {
-    val dotOutput = DiagramGenerator.getDotRunner().feedToDot(dotInput, template)
+    val dotOutput = dotRunner.feedToDot(dotInput, template)
     var tSVG = -System.currentTimeMillis
 
     val result = if (dotOutput != null) {
@@ -383,7 +383,7 @@ class DotDiagramGenerator(settings: doc.Settings) extends DiagramGenerator {
       if (dotId.count(_ == '|') == 1) {
         val Array(klass, id) = dotId.toString.split("\\|")
         /* Sometimes dot "forgets" to add the image -- that's very annoying, but it seems pretty random, and simple
-         * tests like excute 20K times and diff the output don't trigger the bug -- so it's up to us to place the image
+         * tests like execute 20K times and diff the output don't trigger the bug -- so it's up to us to place the image
          * back in the node */
         val kind = getKind(klass)
         if (kind != "")

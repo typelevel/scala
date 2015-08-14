@@ -320,7 +320,14 @@ trait Iterator[+A] extends TraversableOnce[A] {
    *           it omits the first `n` values.
    *  @note    Reuse: $consumesAndProducesIterator
    */
-  def drop(n: Int): Iterator[A] = slice(n, Int.MaxValue)
+  def drop(n: Int): Iterator[A] = {
+    var j = 0
+    while (j < n && hasNext) {
+      next()
+      j += 1
+    }
+    this
+  }
 
   /** Creates an iterator returning an interval of the values produced by this iterator.
    *
@@ -472,7 +479,7 @@ trait Iterator[+A] extends TraversableOnce[A] {
     }
   }
 
-  /** Produces a collection containing cummulative results of applying the
+  /** Produces a collection containing cumulative results of applying the
    *  operator going left to right.
    *
    *  $willNotTerminateInf
@@ -495,8 +502,8 @@ trait Iterator[+A] extends TraversableOnce[A] {
     } else Iterator.empty.next()
   }
 
-  /** Produces a collection containing cummulative results of applying the operator going right to left.
-   *  The head of the collection is the last cummulative result.
+  /** Produces a collection containing cumulative results of applying the operator going right to left.
+   *  The head of the collection is the last cumulative result.
    *
    *  $willNotTerminateInf
    *  $orderDependent
@@ -573,29 +580,21 @@ trait Iterator[+A] extends TraversableOnce[A] {
   def span(p: A => Boolean): (Iterator[A], Iterator[A]) = {
     val self = buffered
 
-    /*
-     * Giving a name to following iterator (as opposed to trailing) because
-     * anonymous class is represented as a structural type that trailing
-     * iterator is referring (the finish() method) and thus triggering
-     * handling of structural calls. It's not what's intended here.
-     */
+    // Must be a named class to avoid structural call to finish from trailing iterator
     class Leading extends AbstractIterator[A] {
-      val lookahead = new mutable.Queue[A]
-      def advance() = {
-        self.hasNext && p(self.head) && {
-          lookahead += self.next
-          true
-        }
+      private val drained  = new mutable.Queue[A]
+      private var finished = false
+      def finish(): Unit = {
+        require(!finished)
+        finished = true
+        while (selfish) drained += self.next
       }
-      def finish() = {
-        while (advance()) ()
-      }
-      def hasNext = lookahead.nonEmpty || advance()
+      private def selfish = self.hasNext && p(self.head)
+      def hasNext = if (finished) drained.nonEmpty else selfish
       def next() = {
-        if (lookahead.isEmpty)
-          advance()
-
-        lookahead.dequeue()
+        if (finished) drained.dequeue()
+        else if (selfish) self.next()
+        else empty.next()
       }
     }
     val leading = new Leading

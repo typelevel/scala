@@ -13,6 +13,8 @@ import Properties.isMac
 
 /** Reads lines from an input stream */
 trait InteractiveReader {
+  def postInit(): Unit = {}
+
   val interactive: Boolean
 
   def reset(): Unit
@@ -24,6 +26,7 @@ trait InteractiveReader {
   def readYesOrNo(prompt: String, alt: => Boolean): Boolean = readOneKey(prompt) match {
     case 'y'  => true
     case 'n'  => false
+    case -1   => false // EOF
     case _    => alt
   }
 

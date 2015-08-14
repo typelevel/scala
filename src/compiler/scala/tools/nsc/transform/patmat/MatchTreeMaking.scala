@@ -21,9 +21,10 @@ trait MatchTreeMaking extends MatchCodeGen with Debugging {
   import global._
   import definitions._
 
-  final case class Suppression(exhaustive: Boolean, unreachable: Boolean)
+  final case class Suppression(suppressExhaustive: Boolean, suppressUnreachable: Boolean)
   object Suppression {
     val NoSuppression = Suppression(false, false)
+    val FullSuppression = Suppression(true, true)
   }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,8 +167,17 @@ trait MatchTreeMaking extends MatchCodeGen with Debugging {
           val usedBinders = new mutable.HashSet[Symbol]()
           // all potentially stored subpat binders
           val potentiallyStoredBinders = stored.unzip._1.toSet
+          def ref(sym: Symbol) =
+            if (potentiallyStoredBinders(sym)) usedBinders += sym
           // compute intersection of all symbols in the tree `in` and all potentially stored subpat binders
-          in.foreach(t => if (potentiallyStoredBinders(t.symbol)) usedBinders += t.symbol)
+          in.foreach {
+            case tt: TypeTree =>
+              tt.tpe foreach { // SI-7459 e.g. case Prod(t) => new t.u.Foo
+                case SingleType(_, sym) => ref(sym)
+                case _ =>
+              }
+            case t => ref(t.symbol)
+          }
 
           if (usedBinders.isEmpty) in
           else {
@@ -192,13 +202,14 @@ trait MatchTreeMaking extends MatchCodeGen with Debugging {
     case class ExtractorTreeMaker(extractor: Tree, extraCond: Option[Tree], nextBinder: Symbol)(
           val subPatBinders: List[Symbol],
           val subPatRefs: List[Tree],
+          val potentiallyMutableBinders: Set[Symbol],
           extractorReturnsBoolean: Boolean,
           val checkedLength: Option[Int],
           val prevBinder: Symbol,
           val ignoredSubPatBinders: Set[Symbol]
           ) extends FunTreeMaker with PreserveSubPatBinders {
 
-      def extraStoredBinders: Set[Symbol] = Set()
+      def extraStoredBinders: Set[Symbol] = potentiallyMutableBinders
 
       debug.patmat(s"""
         |ExtractorTreeMaker($extractor, $extraCond, $nextBinder) {
@@ -525,7 +536,7 @@ trait MatchTreeMaking extends MatchCodeGen with Debugging {
     def removeSubstOnly(makers: List[TreeMaker]) = makers filterNot (_.isInstanceOf[SubstOnlyTreeMaker])
 
     // a foldLeft to accumulate the localSubstitution left-to-right
-    // it drops SubstOnly tree makers, since their only goal in life is to propagate substitutions to the next tree maker, which is fullfilled by propagateSubstitution
+    // it drops SubstOnly tree makers, since their only goal in life is to propagate substitutions to the next tree maker, which is fulfilled by propagateSubstitution
     def propagateSubstitution(treeMakers: List[TreeMaker], initial: Substitution): List[TreeMaker] = {
       var accumSubst: Substitution = initial
       treeMakers foreach { maker =>
@@ -550,7 +561,7 @@ trait MatchTreeMaking extends MatchCodeGen with Debugging {
         debug.patmat("combining cases: "+ (casesNoSubstOnly.map(_.mkString(" >> ")).mkString("{", "\n", "}")))
 
         val (suppression, requireSwitch): (Suppression, Boolean) =
-          if (settings.XnoPatmatAnalysis) (Suppression.NoSuppression, false)
+          if (settings.XnoPatmatAnalysis) (Suppression.FullSuppression, false)
           else scrut match {
             case Typed(tree, tpt) =>
               val suppressExhaustive = tpt.tpe hasAnnotation UncheckedClass
@@ -575,14 +586,12 @@ trait MatchTreeMaking extends MatchCodeGen with Debugging {
                 lengthMax3(casesNoSubstOnly) > 2
               }
               val requireSwitch = hasSwitchAnnotation && exceedsTwoCasesOrAlts
-              if (hasSwitchAnnotation && !requireSwitch)
-                reporter.warning(scrut.pos, "matches with two cases or fewer are emitted using if-then-else instead of switch")
               (suppression, requireSwitch)
             case _ =>
               (Suppression.NoSuppression, false)
           }
 
-        emitSwitch(scrut, scrutSym, casesNoSubstOnly, pt, matchFailGenOverride, suppression.exhaustive).getOrElse{
+        emitSwitch(scrut, scrutSym, casesNoSubstOnly, pt, matchFailGenOverride, unchecked = suppression.suppressExhaustive).getOrElse{
           if (requireSwitch) reporter.warning(scrut.pos, "could not emit switch for @switch annotated match")
 
           if (casesNoSubstOnly nonEmpty) {
@@ -642,7 +651,7 @@ trait MatchTreeMaking extends MatchCodeGen with Debugging {
       }
 
       // override def apply
-      // debug.patmat("before fixerupper: "+ xTree)
+      // debug.patmat("before fixerUpper: "+ xTree)
       // currentRun.trackerFactory.snapshot()
       // debug.patmat("after fixerupper")
       // currentRun.trackerFactory.snapshot()

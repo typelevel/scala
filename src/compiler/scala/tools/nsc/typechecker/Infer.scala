@@ -295,11 +295,17 @@ trait Infer extends Checkable {
         && !isByNameParamType(tp)
         && isCompatible(tp, dropByName(pt))
       )
+      def isCompatibleSam(tp: Type, pt: Type): Boolean = {
+        val samFun = typer.samToFunctionType(pt)
+        (samFun ne NoType) && isCompatible(tp, samFun)
+      }
+
       val tp1 = normalize(tp)
 
       (    (tp1 weak_<:< pt)
         || isCoercible(tp1, pt)
         || isCompatibleByName(tp, pt)
+        || isCompatibleSam(tp, pt)
       )
     }
     def isCompatibleArgs(tps: List[Type], pts: List[Type]) = (tps corresponds pts)(isCompatible)
@@ -370,7 +376,7 @@ trait Infer extends Checkable {
     }
     /** Overload which allocates fresh type vars.
      *  The other one exists because apparently inferExprInstance needs access to the typevars
-     *  after the call, and its wasteful to return a tuple and throw it away almost every time.
+     *  after the call, and it's wasteful to return a tuple and throw it away almost every time.
      */
     private def exprTypeArgs(tparams: List[Symbol], restpe: Type, pt: Type, useWeaklyCompatible: Boolean): List[Type] =
       exprTypeArgs(tparams map freshVar, tparams, restpe, pt, useWeaklyCompatible)
@@ -547,9 +553,8 @@ trait Infer extends Checkable {
       // ...or lower bound of a type param, since they're asking for it.
       def canWarnAboutAny = {
         val loBounds = tparams map (_.info.bounds.lo)
-        val hasAny = pt :: restpe :: formals ::: argtpes ::: loBounds exists (t =>
-          (t contains AnyClass) || (t contains AnyValClass)
-        )
+        def containsAny(t: Type) = (t contains AnyClass) || (t contains AnyValClass)
+        val hasAny = pt :: restpe :: formals ::: argtpes ::: loBounds exists (_.dealiasWidenChain exists containsAny)
         !hasAny
       }
       def argumentPosition(idx: Int): Position = context.tree match {
@@ -929,7 +934,7 @@ trait Infer extends Checkable {
       def infer_s = map3(tparams, tvars, targs)((tparam, tvar, targ) => s"$tparam=$tvar/$targ") mkString ","
       printTyping(tree, s"infer expr instance from pt=$pt, $infer_s")
 
-      // SI-7899 infering by-name types is unsound. The correct behaviour is conditional because the hole is
+      // SI-7899 inferring by-name types is unsound. The correct behaviour is conditional because the hole is
       //         exploited in Scalaz (Free.scala), as seen in: run/t7899-regression.
       def dropByNameIfStrict(tp: Type): Type = if (settings.inferByName) tp else dropByName(tp)
       def targsStrict = if (targs eq null) null else targs mapConserve dropByNameIfStrict
@@ -1011,7 +1016,7 @@ trait Infer extends Checkable {
     /** Substitute free type variables `undetparams` of type constructor
      *  `tree` in pattern, given prototype `pt`.
      *
-     *  @param tree        the constuctor that needs to be instantiated
+     *  @param tree        the constructor that needs to be instantiated
      *  @param undetparams the undetermined type parameters
      *  @param pt0         the expected result type of the instance
      */
@@ -1112,7 +1117,7 @@ trait Infer extends Checkable {
 
     // this is quite nasty: it destructively changes the info of the syms of e.g., method type params
     // (see #3692, where the type param T's bounds were set to > : T <: T, so that parts looped)
-    // the changes are rolled back by restoreTypeBounds, but might be unintentially observed in the mean time
+    // the changes are rolled back by restoreTypeBounds, but might be unintentionally observed in the mean time
     def instantiateTypeVar(tvar: TypeVar) {
       val tparam                    = tvar.origin.typeSymbol
       val TypeBounds(lo0, hi0)      = tparam.info.bounds
@@ -1370,7 +1375,7 @@ trait Infer extends Checkable {
      *  Otherwise, if there is no best alternative, error.
      *
      *  @param argtpes0 contains the argument types. If an argument is named, as
-     *    "a = 3", the corresponding type is `NamedType("a", Int)'. If the name
+     *    "a = 3", the corresponding type is `NamedType("a", Int)`. If the name
      *    of some NamedType does not exist in an alternative's parameter names,
      *    the type is replaces by `Unit`, i.e. the argument is treated as an
      *    assignment expression.

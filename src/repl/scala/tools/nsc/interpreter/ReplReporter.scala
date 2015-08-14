@@ -42,7 +42,7 @@ class ReplReporter(intp: IMain) extends ConsoleReporter(intp.settings, Console.i
 
   override def print(pos: Position, msg: String, severity: Severity) {
     val prefix = (
-      if (intp.colorsOk)
+      if (replProps.colorOk)
         severityColor(severity) + clabel(severity) + RESET
       else
         clabel(severity)

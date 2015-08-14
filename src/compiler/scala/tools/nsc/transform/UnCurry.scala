@@ -10,6 +10,7 @@ package transform
 import symtab.Flags._
 import scala.collection.{ mutable, immutable }
 import scala.language.postfixOps
+import scala.reflect.internal.util.ListOfNil
 
 /*<export> */
 /** - uncurry all symbol and tree types (@see UnCurryPhase) -- this includes normalizing all proper types.
@@ -69,6 +70,14 @@ abstract class UnCurry extends InfoTransform
     private val byNameArgs        = mutable.HashSet[Tree]()
     private val noApply           = mutable.HashSet[Tree]()
     private val newMembers        = mutable.Map[Symbol, mutable.Buffer[Tree]]()
+
+    private lazy val forceSpecializationInfoTransformOfFunctionN: Unit = {
+      if (currentRun.specializePhase != NoPhase) { // be robust in case of -Ystop-after:uncurry
+        exitingSpecialize {
+          FunctionClass.seq.foreach(cls => cls.info)
+        }
+      }
+    }
 
     /** Add a new synthetic member for `currentOwner` */
     private def addNewMember(t: Tree): Unit =
@@ -206,7 +215,7 @@ abstract class UnCurry extends InfoTransform
         // (() => Int) { def apply(): Int @typeConstraint }
         case RefinedType(List(funTp), decls) =>
           debuglog(s"eliminate refinement from function type ${fun.tpe}")
-          fun.tpe = funTp
+          fun.setType(funTp)
         case _ =>
           ()
       }
@@ -220,11 +229,23 @@ abstract class UnCurry extends InfoTransform
           def mkMethod(owner: Symbol, name: TermName, additionalFlags: FlagSet = NoFlags): DefDef =
             gen.mkMethodFromFunction(localTyper)(fun, owner, name, additionalFlags)
 
-          val canUseDelamdafyMethod = (inConstructorFlag == 0) // Avoiding synthesizing code prone to SI-6666, SI-8363 by using old-style lambda translation
+          def isSpecialized = {
+            forceSpecializationInfoTransformOfFunctionN
+            val specialized = specializeTypes.specializedType(fun.tpe)
+            !(specialized =:= fun.tpe)
+          }
 
+          def canUseDelamdafyMethod = (
+               (inConstructorFlag == 0) // Avoiding synthesizing code prone to SI-6666, SI-8363 by using old-style lambda translation
+            && (!isSpecialized || (settings.isBCodeActive && settings.target.value == "jvm-1.8")) // DelambdafyTransformer currently only emits generic FunctionN-s, use the old style in the meantime
+          )
           if (inlineFunctionExpansion || !canUseDelamdafyMethod) {
             val parents = addSerializable(abstractFunctionForFunctionType(fun.tpe))
             val anonClass = fun.symbol.owner newAnonymousFunctionClass(fun.pos, inConstructorFlag) addAnnotation SerialVersionUIDAnnotation
+            // The original owner is used in the backend for the EnclosingMethod attribute. If fun is
+            // nested in a value-class method, its owner was already changed to the extension method.
+            // Saving the original owner allows getting the source structure from the class symbol.
+            defineOriginalOwner(anonClass, fun.symbol.originalOwner)
             anonClass setInfo ClassInfoType(parents, newScope, anonClass)
 
             val applyMethodDef = mkMethod(anonClass, nme.apply)
@@ -412,13 +433,11 @@ abstract class UnCurry extends InfoTransform
 
       val sym = tree.symbol
 
-      // true if the taget is a lambda body that's been lifted into a method
+      // true if the target is a lambda body that's been lifted into a method
       def isLiftedLambdaBody(target: Tree) = target.symbol.isLocalToBlock && target.symbol.isArtifact && target.symbol.name.containsName(nme.ANON_FUN_NAME)
 
       val result = (
-        // TODO - settings.noassertions.value temporarily retained to avoid
-        // breakage until a reasonable interface is settled upon.
-        if ((sym ne null) && (sym.elisionLevel.exists (_ < settings.elidebelow.value || settings.noassertions)))
+        if ((sym ne null) && sym.elisionLevel.exists(_ < settings.elidebelow.value))
           replaceElidableTree(tree)
         else translateSynchronized(tree) match {
           case dd @ DefDef(mods, name, tparams, _, tpt, rhs) =>

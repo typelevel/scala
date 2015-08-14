@@ -141,8 +141,8 @@ trait TypeDiagnostics {
     if (!member.hasAccessorFlag) member
     else if (!member.isDeferred) member.accessed
     else {
-      val getter = if (member.isSetter) member.getter(member.owner) else member
-      val flags  = if (getter.setter(member.owner) != NoSymbol) DEFERRED.toLong | MUTABLE else DEFERRED
+      val getter = if (member.isSetter) member.getterIn(member.owner) else member
+      val flags  = if (getter.setterIn(member.owner) != NoSymbol) DEFERRED.toLong | MUTABLE else DEFERRED
 
       getter.owner.newValue(getter.name.toTermName, getter.pos, flags) setInfo getter.tpe.resultType
     }
@@ -309,6 +309,7 @@ trait TypeDiagnostics {
     // save the name because it will be mutated until it has been
     // distinguished from the other types in the same error message
     private val savedName = sym.name
+    private var postQualifiedWith: List[Symbol] = Nil
     def restoreName()     = sym.name = savedName
     def modifyName(f: String => String) = sym setName newTypeName(f(sym.name.toString))
 
@@ -317,12 +318,12 @@ trait TypeDiagnostics {
      */
     def qualifyDefaultNamespaces() = {
       val intersect = Set(trueOwner, aliasOwner) intersect UnqualifiedOwners
-      if (intersect.nonEmpty) preQualify()
+      if (intersect.nonEmpty && tp.typeSymbolDirect.name == tp.typeSymbol.name) preQualify()
     }
 
     // functions to manipulate the name
     def preQualify()   = modifyName(trueOwner.fullName + "." + _)
-    def postQualify()  = modifyName(_ + "(in " + trueOwner + ")")
+    def postQualify()  = if (!(postQualifiedWith contains trueOwner)) { postQualifiedWith ::= trueOwner; modifyName(_ + "(in " + trueOwner + ")") }
     def typeQualify()  = if (sym.isTypeParameterOrSkolem) postQualify()
     def nameQualify()  = if (trueOwner.isPackageClass) preQualify() else postQualify()
 
@@ -439,7 +440,7 @@ trait TypeDiagnostics {
       context.warning(pos, "imported `%s' is permanently hidden by definition of %s".format(hidden, defn.fullLocationString))
 
     object checkUnused {
-      val ignoreNames = Set[TermName]("readResolve", "readObject", "writeObject", "writeReplace")
+      val ignoreNames: Set[TermName] = Set(TermName("readResolve"), TermName("readObject"), TermName("writeObject"), TermName("writeReplace"))
 
       class UnusedPrivates extends Traverser {
         val defnTrees = ListBuffer[MemberDef]()

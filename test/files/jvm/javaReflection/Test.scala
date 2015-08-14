@@ -31,7 +31,7 @@ getSimpleName / getCanonicalName / isAnonymousClass / isLocalClass / isSynthetic
     These should be avoided, they yield unexpected results:
 
     - isAnonymousClass is always false. Scala-defined classes are never anonymous for Java
-      reflection. Java reflection insepects the class name to decide whether a class is
+      reflection. Java reflection inspects the class name to decide whether a class is
       anonymous, based on the name spec referenced above.
       Also, the implementation of "isAnonymousClass" calls "getSimpleName", which may throw.
 
@@ -124,8 +124,8 @@ object Test {
       // exclude files from Test.scala, just take those from Classes_1.scala
       case s if !s.startsWith("Test") && s.endsWith(".class") => s.substring(0, s.length - 6)
     }).sortWith((a, b) => {
-      // sort such that first there are all anonymous funcitions, then all other classes.
-      // within those cathegories, sort lexically.
+      // sort such that first there are all anonymous functions, then all other classes.
+      // within those categories, sort lexically.
       // this makes the check file smaller: it differs for anonymous functions between -Ydelambdafy:inline/method.
       // the other classes are the same.
       if (isAnonFunClassName(a)) !isAnonFunClassName(b) || a < b

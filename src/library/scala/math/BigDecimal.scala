@@ -49,7 +49,7 @@ object BigDecimal {
   
   /** Constructs a `BigDecimal` using the decimal text representation of `Double` value `d`, rounding if necessary. */
   def decimal(d: Double, mc: MathContext): BigDecimal =
-    new BigDecimal(new BigDec(java.lang.Double.toString(d), mc))
+    new BigDecimal(new BigDec(java.lang.Double.toString(d), mc), mc)
 
   /** Constructs a `BigDecimal` using the decimal text representation of `Double` value `d`. */
   def decimal(d: Double): BigDecimal = decimal(d, defaultMathContext)
@@ -59,7 +59,7 @@ object BigDecimal {
    *  `0.1 != 0.1f`.
    */
   def decimal(f: Float, mc: MathContext): BigDecimal =
-    new BigDecimal(new BigDec(java.lang.Float.toString(f), mc))
+    new BigDecimal(new BigDec(java.lang.Float.toString(f), mc), mc)
 
   /** Constructs a `BigDecimal` using the decimal text representation of `Float` value `f`.
    *  Note that `BigDecimal.decimal(0.1f) != 0.1f` since equality agrees with the `Double` representation, and
@@ -124,7 +124,7 @@ object BigDecimal {
    */
   def exact(s: String): BigDecimal = exact(new BigDec(s))
   
-  /** Constructs a 'BigDecimal` that exactly represents the number
+  /** Constructs a `BigDecimal` that exactly represents the number
    *  specified in base 10 in a character array.
    */
  def exact(cs: Array[Char]): BigDecimal = exact(new BigDec(cs))
@@ -364,7 +364,7 @@ object BigDecimal {
  *  to a decimal text representation, and build a `BigDecimal` based on that.
  *  `BigDecimal.binary` will expand the binary fraction to the requested or default
  *  precision.  `BigDecimal.exact` will expand the binary fraction to the
- *  full number of digits, thus producing the exact decimal value corrsponding to
+ *  full number of digits, thus producing the exact decimal value corresponding to
  *  the binary fraction of that floating-point number.  `BigDecimal` equality
  *  matches the decimal expansion of `Double`: `BigDecimal.decimal(0.1) == 0.1`.
  *  Note that since `0.1f != 0.1`, the same is not true for `Float`.  Instead,
@@ -417,7 +417,7 @@ extends ScalaNumber with ScalaNumericConversions with Serializable {
   private final def computeHashCode(): Unit = {
     computedHashCode =
       if (isWhole && (precision - scale) < BigDecimal.maximumHashScale) toBigInt.hashCode
-      else if (isValidDouble) doubleValue.##
+      else if (isDecimalDouble) doubleValue.##
       else {
         val temp = bigDecimal.stripTrailingZeros
         scala.util.hashing.MurmurHash3.mixLast( temp.scaleByPowerOfTen(temp.scale).toBigInteger.hashCode, temp.scale )
@@ -431,7 +431,7 @@ extends ScalaNumber with ScalaNumericConversions with Serializable {
    *  with unequal `hashCode`s.  These hash codes agree with `BigInt`
    *  for whole numbers up ~4934 digits (the range of IEEE 128 bit floating
    *  point).  Beyond this, hash codes will disagree; this prevents the
-   *  explicit represention of the `BigInt` form for `BigDecimal` values
+   *  explicit representation of the `BigInt` form for `BigDecimal` values
    *  with large exponents.
    */
   override def hashCode(): Int = {
@@ -477,7 +477,7 @@ extends ScalaNumber with ScalaNumericConversions with Serializable {
     * `isExactDouble`, `isBinaryDouble`, or `isDecimalDouble`, depending on the intended meaning.
     * By default, `decimal` creation is used, so `isDecimalDouble` is probably what you want.
     */
-  @deprecated("Validity has two distinct meanings.  Use `isExactBinaryDouble` or `equivalentToDouble` instead.", "2.11")
+  @deprecated("Validity has distinct meanings.  Use `isExactDouble`, `isBinaryDouble`, or `isDecimalDouble` instead.", "2.11")
   def isValidDouble = {
     val d = toDouble
     !d.isInfinity && bigDecimal.compareTo(new BigDec(d)) == 0
