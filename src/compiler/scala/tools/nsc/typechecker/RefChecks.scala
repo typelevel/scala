@@ -421,7 +421,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
             overrideError("cannot be used here - classes can only override abstract types")
           } else if (other.isEffectivelyFinal) { // (1.2)
             overrideError("cannot override final member")
-          } else if (!other.isDeferredOrDefault && !other.hasFlag(DEFAULTMETHOD) && !member.isAnyOverride && !member.isSynthetic) { // (*)
+          } else if (!other.isDeferredOrJavaDefault && !other.hasFlag(JAVA_DEFAULTMETHOD) && !member.isAnyOverride && !member.isSynthetic) { // (*)
             // (*) Synthetic exclusion for (at least) default getters, fixes SI-5178. We cannot assign the OVERRIDE flag to
             // the default getter: one default getter might sometimes override, sometimes not. Example in comment on ticket.
               if (isNeitherInClass && !(other.owner isSubClass member.owner))
@@ -543,7 +543,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         }
 
         def checkOverrideDeprecated() {
-          if (other.hasDeprecatedOverridingAnnotation) {
+          if (other.hasDeprecatedOverridingAnnotation && !member.ownerChain.exists(x => x.isDeprecated || x.hasBridgeAnnotation)) {
             val suffix = other.deprecatedOverridingMessage map (": " + _) getOrElse ""
             val msg = s"overriding ${other.fullLocationString} is deprecated$suffix"
             currentRun.reporting.deprecationWarning(member.pos, other, msg)
@@ -584,7 +584,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
             !other.isDeferred && other.isJavaDefined && !sym.enclClass.isSubClass(other.enclClass) && {
               // #3622: erasure operates on uncurried types --
               // note on passing sym in both cases: only sym.isType is relevant for uncurry.transformInfo
-              // !!! erasure.erasure(sym, uncurry.transformInfo(sym, tp)) gives erreneous of inaccessible type - check whether that's still the case!
+              // !!! erasure.erasure(sym, uncurry.transformInfo(sym, tp)) gives erroneous or inaccessible type - check whether that's still the case!
               def uncurryAndErase(tp: Type) = erasure.erasure(sym)(uncurry.transformInfo(sym, tp))
               val tp1 = uncurryAndErase(clazz.thisType.memberType(sym))
               val tp2 = uncurryAndErase(clazz.thisType.memberType(other))
@@ -604,7 +604,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         def checkNoAbstractMembers(): Unit = {
           // Avoid spurious duplicates: first gather any missing members.
           def memberList = clazz.info.nonPrivateMembersAdmitting(VBRIDGE)
-          val (missing, rest) = memberList partition (m => m.isDeferredNotDefault && !ignoreDeferred(m))
+          val (missing, rest) = memberList partition (m => m.isDeferredNotJavaDefault && !ignoreDeferred(m))
           // Group missing members by the name of the underlying symbol,
           // to consolidate getters and setters.
           val grouped = missing groupBy (sym => analyzer.underlyingSymbol(sym).name)
@@ -718,7 +718,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
 
           // Check the remainder for invalid absoverride.
           for (member <- rest ; if (member.isAbstractOverride && member.isIncompleteIn(clazz))) {
-            val other = member.superSymbol(clazz)
+            val other = member.superSymbolIn(clazz)
             val explanation =
               if (other != NoSymbol) " and overrides incomplete superclass member " + infoString(other)
               else ", but no concrete implementation could be found in a base class"
@@ -1095,7 +1095,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         // better to have lubbed and lost
         def warnIfLubless(): Unit = {
           val common = global.lub(List(actual.tpe, receiver.tpe))
-          if (ObjectTpe <:< common)
+          if (ObjectTpe <:< common && !(ObjectTpe <:< actual.tpe && ObjectTpe <:< receiver.tpe))
             unrelatedTypes()
         }
         // warn if actual has a case parent that is not same as receiver's;
@@ -1122,7 +1122,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
     }
     /** Sensibility check examines flavors of equals. */
     def checkSensible(pos: Position, fn: Tree, args: List[Tree]) = fn match {
-      case Select(qual, name @ (nme.EQ | nme.NE | nme.eq | nme.ne)) if args.length == 1 && isObjectOrAnyComparisonMethod(fn.symbol) =>
+      case Select(qual, name @ (nme.EQ | nme.NE | nme.eq | nme.ne)) if args.length == 1 && isObjectOrAnyComparisonMethod(fn.symbol) && !currentOwner.isSynthetic =>
         checkSensibleEquals(pos, qual, name, fn.symbol, args.head)
       case _ =>
     }
@@ -1134,13 +1134,13 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
           t hasSymbolWhich (_.accessedOrSelf == valOrDef.symbol)
         case _ => false
       }
-      val trivialInifiniteLoop = (
+      val trivialInfiniteLoop = (
         !valOrDef.isErroneous
      && !valOrDef.symbol.isValueParameter
      && valOrDef.symbol.paramss.isEmpty
      && callsSelf
       )
-      if (trivialInifiniteLoop)
+      if (trivialInfiniteLoop)
         reporter.warning(valOrDef.rhs.pos, s"${valOrDef.symbol.fullLocationString} does nothing other than call itself recursively")
     }
 
@@ -1404,7 +1404,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
       if (symbol.isDeprecated) {
         val concrOvers =
           symbol.allOverriddenSymbols.filter(sym =>
-            !sym.isDeprecated && !sym.isDeferred)
+            !sym.isDeprecated && !sym.isDeferred && !sym.hasDeprecatedOverridingAnnotation && !sym.enclClass.hasDeprecatedInheritanceAnnotation)
         if(!concrOvers.isEmpty)
           currentRun.reporting.deprecationWarning(
             tree.pos,
@@ -1514,7 +1514,8 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         sym.isSourceMethod &&
         sym.isCase &&
         sym.name == nme.apply &&
-        isClassTypeAccessible(tree)
+        isClassTypeAccessible(tree) &&
+        !tree.tpe.resultType.typeSymbol.primaryConstructor.isLessAccessibleThan(tree.symbol)
 
       if (doTransform) {
         tree foreach {
@@ -1687,9 +1688,9 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
               case _ =>
             }
             if (skipBounds) {
-              tree.tpe = tree.tpe.map {
+              tree.setType(tree.tpe.map {
                 _.filterAnnotations(_.symbol != UncheckedBoundsClass)
-              }
+              })
             }
 
             tree

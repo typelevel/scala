@@ -78,7 +78,11 @@ trait InteractiveAnalyzer extends Analyzer {
         val owningInfo = sym.owner.info
         val existingDerivedSym = owningInfo.decl(sym.name.toTermName).filter(sym => sym.isSynthetic && sym.isMethod)
         existingDerivedSym.alternatives foreach (owningInfo.decls.unlink)
-        enterImplicitWrapper(tree.asInstanceOf[ClassDef])
+        val defTree = tree match {
+          case dd: DocDef => dd.definition // See SI-9011, Scala IDE's presentation compiler incorporates ScalaDocGlobal with InterativeGlobal, so we have to unwrap DocDefs.
+          case _ => tree
+        }
+        enterImplicitWrapper(defTree.asInstanceOf[ClassDef])
       }
       super.enterExistingSym(sym, tree)
     }
@@ -128,8 +132,8 @@ class Global(settings: Settings, _reporter: Reporter, projectName: String = "") 
     else NullLogger
 
   import log.logreplay
-  debugLog("logger: " + log.getClass + " writing to " + (new java.io.File(logName)).getAbsolutePath)
-  debugLog("classpath: "+classPath)
+  debugLog(s"logger: ${log.getClass} writing to ${(new java.io.File(logName)).getAbsolutePath}")
+  debugLog(s"classpath: $classPath")
 
   private var curTime = System.nanoTime
   private def timeStep = {
@@ -148,7 +152,7 @@ class Global(settings: Settings, _reporter: Reporter, projectName: String = "") 
 
   // don't keep the original owner in presentation compiler runs
   // (the map will grow indefinitely, and the only use case is the backend)
-  override protected def saveOriginalOwner(sym: Symbol) { }
+  override def defineOriginalOwner(sym: Symbol, owner: Symbol): Unit = { }
 
   override def forInteractive = true
   override protected def synchronizeNames = true
@@ -311,7 +315,7 @@ class Global(settings: Settings, _reporter: Reporter, projectName: String = "") 
   private val NoResponse: Response[_] = new Response[Any]
 
   /** The response that is currently pending, i.e. the compiler
-   *  is working on providing an asnwer for it.
+   *  is working on providing an answer for it.
    */
   private var pendingResponse: Response[_] = NoResponse
 
@@ -522,7 +526,7 @@ class Global(settings: Settings, _reporter: Reporter, projectName: String = "") 
   /** The current presentation compiler runner */
   @volatile private[interactive] var compileRunner: Thread = newRunnerThread()
 
-  /** Check that the currenyly executing thread is the presentation compiler thread.
+  /** Check that the currently executing thread is the presentation compiler thread.
    *
    *  Compiler initialization may happen on a different thread (signalled by globalPhase being NoPhase)
    */
@@ -1080,7 +1084,6 @@ class Global(settings: Settings, _reporter: Reporter, projectName: String = "") 
       case t                                             => t
     }
     val context = doLocateContext(pos)
-
     val shouldTypeQualifier = tree0.tpe match {
       case null           => true
       case mt: MethodType => mt.isImplicit
@@ -1135,7 +1138,7 @@ class Global(settings: Settings, _reporter: Reporter, projectName: String = "") 
       for (view <- applicableViews) {
         val vtree = viewApply(view)
         val vpre = stabilizedType(vtree)
-        for (sym <- vtree.tpe.members) {
+        for (sym <- vtree.tpe.members if sym.isTerm) {
           addTypeMember(sym, vpre, inherited = false, view.tree.symbol)
         }
       }
@@ -1188,7 +1191,7 @@ class Global(settings: Settings, _reporter: Reporter, projectName: String = "") 
     }
   }
 
-  /** Parses and enters given source file, stroring parse tree in response */
+  /** Parses and enters given source file, storing parse tree in response */
   private def getParsedEnteredNow(source: SourceFile, response: Response[Tree]) {
     respond(response) {
       onUnitOf(source) { unit =>

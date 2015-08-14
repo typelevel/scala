@@ -9,8 +9,11 @@ import base.comment._
 import diagram._
 
 import scala.collection._
+import scala.tools.nsc.doc.html.HtmlPage
+import scala.tools.nsc.doc.html.page.diagram.{DotRunner}
 import scala.util.matching.Regex
 import scala.reflect.macros.internal.macroImpl
+import scala.xml.NodeSeq
 import symtab.Flags
 
 import io._
@@ -47,6 +50,7 @@ class ModelFactory(val global: Global, val settings: doc.Settings) {
       thisFactory.universe = thisUniverse
       val settings = thisFactory.settings
       val rootPackage = modelCreation.createRootPackage
+      lazy val dotRunner = new DotRunner(settings)
     }
     _modelFinished = true
     // complete the links between model entities, everthing that couldn't have been done before
@@ -313,7 +317,7 @@ class ModelFactory(val global: Global, val settings: doc.Settings) {
 
     /* Subclass cache */
     private lazy val subClassesCache = (
-      if (sym == AnyRefClass) null
+      if (sym == AnyRefClass || sym == AnyClass) null
       else mutable.ListBuffer[DocTemplateEntity]()
     )
     def registerSubClass(sc: DocTemplateEntity): Unit = {
@@ -474,7 +478,7 @@ class ModelFactory(val global: Global, val settings: doc.Settings) {
     override lazy val comment = {
       def nonRootTemplate(sym: Symbol): Option[DocTemplateImpl] =
         if (sym eq RootPackage) None else findTemplateMaybe(sym)
-      /* Variable precendence order for implicitly added members: Take the variable defifinitions from ...
+      /* Variable precedence order for implicitly added members: Take the variable definitions from ...
        * 1. the target of the implicit conversion
        * 2. the definition template (owner)
        * 3. the current template
@@ -753,8 +757,10 @@ class ModelFactory(val global: Global, val settings: doc.Settings) {
         })
       }
       else if (bSym.isConstructor)
-        if (conversion.isDefined)
-          None // don't list constructors inherted by implicit conversion
+        if (conversion.isDefined || (bSym.enclClass.isAbstract && (bSym.enclClass.isSealed || bSym.enclClass.isFinal)))
+          // don't list constructors inherited by implicit conversion
+          // and don't list constructors of abstract sealed types (they cannot be accessed anyway)
+          None
         else
           Some(new NonTemplateParamMemberImpl(bSym, conversion, useCaseOf, inTpl) with Constructor {
             override def isConstructor = true
@@ -988,7 +994,7 @@ class ModelFactory(val global: Global, val settings: doc.Settings) {
     // pruning modules that shouldn't be documented
     // Why Symbol.isInitialized? Well, because we need to avoid exploring all the space available to scaladoc
     // from the classpath -- scaladoc is a hog, it will explore everything starting from the root package unless we
-    // somehow prune the tree. And isInitialized is a good heuristic for prunning -- if the package was not explored
+    // somehow prune the tree. And isInitialized is a good heuristic for pruning -- if the package was not explored
     // during typer and refchecks, it's not necessary for the current application and there's no need to explore it.
     (!sym.isModule || sym.moduleClass.isInitialized) &&
     // documenting only public and protected members

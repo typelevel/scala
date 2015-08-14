@@ -11,9 +11,23 @@ import org.junit.Assert._
 import CodeGenTools._
 import scala.tools.partest.ASMConverters
 import ASMConverters._
+import scala.tools.testing.ClearAfterClass
+
+object EmptyExceptionHandlersTest extends ClearAfterClass.Clearable {
+  var noOptCompiler = newCompiler(extraArgs = "-Ybackend:GenBCode -Yopt:l:none")
+  var dceCompiler   = newCompiler(extraArgs = "-Ybackend:GenBCode -Yopt:unreachable-code")
+  def clear(): Unit = {
+    noOptCompiler = null
+    dceCompiler = null
+  }
+}
 
 @RunWith(classOf[JUnit4])
-class EmptyExceptionHandlersTest {
+class EmptyExceptionHandlersTest extends ClearAfterClass {
+  ClearAfterClass.stateToClear = EmptyExceptionHandlersTest
+
+  val noOptCompiler = EmptyExceptionHandlersTest.noOptCompiler
+  val dceCompiler   = EmptyExceptionHandlersTest.dceCompiler
 
   val exceptionDescriptor = "java/lang/Exception"
 
@@ -26,7 +40,7 @@ class EmptyExceptionHandlersTest {
       Op(RETURN)
     )
     assertTrue(convertMethod(asmMethod).handlers.length == 1)
-    LocalOpt.removeEmptyExceptionHandlers(asmMethod)
+    LocalOptImpls.removeEmptyExceptionHandlers(asmMethod)
     assertTrue(convertMethod(asmMethod).handlers.isEmpty)
   }
 
@@ -35,12 +49,8 @@ class EmptyExceptionHandlersTest {
     val handlers = List(ExceptionHandler(Label(1), Label(2), Label(2), Some(exceptionDescriptor)))
     val asmMethod = genMethod(handlers = handlers)(
       Label(1),          // nops only
-      Op(NOP),
-      Op(NOP),
       Jump(GOTO, Label(3)),
-      Op(NOP),
       Label(3),
-      Op(NOP),
       Jump(GOTO, Label(4)),
 
       Label(2),          // handler
@@ -51,12 +61,9 @@ class EmptyExceptionHandlersTest {
       Op(RETURN)
     )
     assertTrue(convertMethod(asmMethod).handlers.length == 1)
-    LocalOpt.removeEmptyExceptionHandlers(asmMethod)
+    LocalOptImpls.removeEmptyExceptionHandlers(asmMethod)
     assertTrue(convertMethod(asmMethod).handlers.isEmpty)
   }
-
-  val noOptCompiler       = newCompiler(extraArgs = "-Ybackend:GenBCode -Yopt:l:none")
-  val dceCompiler = newCompiler(extraArgs = "-Ybackend:GenBCode -Yopt:unreachable-code")
 
   @Test
   def eliminateUnreachableHandler(): Unit = {

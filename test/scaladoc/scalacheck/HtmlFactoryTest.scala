@@ -485,7 +485,7 @@ object Test extends Properties("HtmlFactory") {
           """, true),
       (Some("DerivedD"),
        """def function[T](arg1: T, arg2: String): Double
-          T The overriden type parameter comment
+          T The overridden type parameter comment
           arg1 The T term comment
           arg2 The string comment
           returns The return comment
@@ -685,7 +685,7 @@ object Test extends Properties("HtmlFactory") {
       case node: scala.xml.Node => {
         val s = node.toString
         s.contains("<h6>Author:</h6>") &&
-        s.contains("<p>The Only Author\n</p>")
+        s.contains("<p>The Only Author</p>")
       }
       case _ => false
     }
@@ -699,7 +699,7 @@ object Test extends Properties("HtmlFactory") {
         val s = node.toString
         s.contains("<h6>Authors:</h6>") &&
         s.contains("<p>The First Author</p>") &&
-        s.contains("<p>The Second Author\n</p>")
+        s.contains("<p>The Second Author</p>")
       }
       case _ => false
     }
@@ -711,7 +711,7 @@ object Test extends Properties("HtmlFactory") {
 
     property("class") = files.get("com/example/p1/Clazz.html") match {
       case Some(node: scala.xml.Node) => {
-        property("implicit convertion") =
+        property("implicit conversion") =
           node.toString contains "<span class=\"modifier\">implicit </span>"
 
         property("gt4s") =

@@ -12,7 +12,7 @@ import TypesStats._
 trait FindMembers {
   this: SymbolTable =>
 
-  /** Implementatation of `Type#{findMember, findMembers}` */
+  /** Implementation of `Type#{findMember, findMembers}` */
   private[internal] abstract class FindMemberBase[T](tpe: Type, name: Name, excludedFlags: Long, requiredFlags: Long) {
     protected val initBaseClasses: List[Symbol] = tpe.baseClasses
 
@@ -155,7 +155,7 @@ trait FindMembers {
         && (    (member.owner eq other.owner)                         // same owner, therefore overload
              || (member.flags & PRIVATE) != 0                         // (unqualified) private members never participate in overriding
              || (other.flags & PRIVATE) != 0                          // ... as overrider or overridee.
-             || !(memberTypeLow(member) matches memberTypeHi(other))  // do the member types match? If so, its an override. Otherwise it's an overload.
+             || !(memberTypeLow(member) matches memberTypeHi(other))  // do the member types match? If so, it's an override. Otherwise it's an overload.
            )
       )
 

@@ -364,10 +364,10 @@ abstract class TreeGen {
         if (body forall treeInfo.isInterfaceMember) None
         else Some(
           atPos(wrappingPos(superPos, lvdefs)) (
-            DefDef(NoMods, nme.MIXIN_CONSTRUCTOR, Nil, ListOfNil, TypeTree(), Block(lvdefs, Literal(Constant())))))
+            DefDef(NoMods, nme.MIXIN_CONSTRUCTOR, Nil, ListOfNil, TypeTree(), Block(lvdefs, Literal(Constant(()))))))
       }
       else {
-        // convert (implicit ... ) to ()(implicit ... ) if its the only parameter section
+        // convert (implicit ... ) to ()(implicit ... ) if it's the only parameter section
         if (vparamss1.isEmpty || !vparamss1.head.isEmpty && vparamss1.head.head.mods.isImplicit)
           vparamss1 = List() :: vparamss1
         val superCall = pendingSuperCall // we can't know in advance which of the parents will end up as a superclass
@@ -378,7 +378,7 @@ abstract class TreeGen {
                                          // therefore here we emit a dummy which gets populated when the template is named and typechecked
         Some(
           atPos(wrappingPos(superPos, lvdefs ::: vparamss1.flatten).makeTransparent) (
-            DefDef(constrMods, nme.CONSTRUCTOR, List(), vparamss1, TypeTree(), Block(lvdefs ::: List(superCall), Literal(Constant())))))
+            DefDef(constrMods, nme.CONSTRUCTOR, List(), vparamss1, TypeTree(), Block(lvdefs ::: List(superCall), Literal(Constant(()))))))
       }
     }
     constr foreach (ensureNonOverlapping(_, parents ::: gvdefs, focus = false))
@@ -596,13 +596,12 @@ abstract class TreeGen {
   *        TupleN(x_1, ..., x_N)
   *      } ...)
   *
-  *    If any of the P_i are variable patterns, the corresponding `x_i @ P_i' is not generated
+  *    If any of the P_i are variable patterns, the corresponding `x_i @ P_i` is not generated
   *    and the variable constituting P_i is used instead of x_i
   *
-  *  @param mapName      The name to be used for maps (either map or foreach)
-  *  @param flatMapName  The name to be used for flatMaps (either flatMap or foreach)
   *  @param enums        The enumerators in the for expression
-  *  @param body          The body of the for expression
+  *  @param sugarBody    The body of the for expression
+  *  @param fresh        A source of new names
   */
   def mkFor(enums: List[Tree], sugarBody: Tree)(implicit fresh: FreshNameCreator): Tree = {
     val (mapName, flatMapName, body) = sugarBody match {
@@ -715,7 +714,7 @@ abstract class TreeGen {
 
       val rhsUnchecked = mkUnchecked(rhs)
 
-      // TODO: clean this up -- there is too much information packked into mkPatDef's `pat` argument
+      // TODO: clean this up -- there is too much information packed into mkPatDef's `pat` argument
       // when it's a simple identifier (case Some((name, tpt)) -- above),
       // pat should have the type ascription that was specified by the user
       // however, in `case None` (here), we must be careful not to generate illegal pattern trees (such as `(a, b): Tuple2[Int, String]`)

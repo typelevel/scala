@@ -423,6 +423,22 @@ private[internal] trait TypeMaps {
     }
   }
 
+  /**
+   * Get rid of BoundedWildcardType where variance allows us to do so.
+   * Invariant: `wildcardExtrapolation(tp) =:= tp`
+   *
+   * For example, the MethodType given by `def bla(x: (_ >: String)): (_ <: Int)`
+   * is both a subtype and a supertype of `def bla(x: String): Int`.
+   */
+  object wildcardExtrapolation extends TypeMap(trackVariance = true) {
+    def apply(tp: Type): Type =
+      tp match {
+        case BoundedWildcardType(TypeBounds(lo, AnyTpe)) if variance.isContravariant => lo
+        case BoundedWildcardType(TypeBounds(NothingTpe, hi)) if variance.isCovariant => hi
+        case tp => mapOver(tp)
+      }
+  }
+
   /** Might the given symbol be important when calculating the prefix
     *  of a type? When tp.asSeenFrom(pre, clazz) is called on `tp`,
     *  the result will be `tp` unchanged if `pre` is trivial and `clazz`
@@ -546,7 +562,7 @@ private[internal] trait TypeMaps {
                |  tparams  ${rhsSym.typeParams map own_s mkString ", "}
                |"""
 
-        if (argIndex < 0)
+        if (!rhsArgs.isDefinedAt(argIndex))
           abort(s"Something is wrong: cannot find $lhs in applied type $rhs\n" + explain)
         else {
           val targ   = rhsArgs(argIndex)
@@ -721,7 +737,7 @@ private[internal] trait TypeMaps {
           substFor(sym)
         case ClassInfoType(parents, decls, sym) =>
           val parents1 = parents mapConserve this
-          // We don't touch decls here; they will be touched when an enclosing TreeSubstitutor
+          // We don't touch decls here; they will be touched when an enclosing TreeSubstituter
           // transforms the tree that defines them.
           if (parents1 eq parents) tp
           else ClassInfoType(parents1, decls, sym)

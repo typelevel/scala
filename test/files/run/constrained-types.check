@@ -1,5 +1,3 @@
-Type in expressions to have them evaluated.
-Type :help for more information.
 
 scala> class Annot(obj: Any) extends annotation.Annotation with annotation.TypeConstraint
 defined class Annot
@@ -131,16 +129,16 @@ y: "hello" = hello
 scala> 
 
 scala> val x = 3 : Int @Annot(e+f+g+h) // should have a graceful error message
-<console>:8: error: not found: value e
+<console>:12: error: not found: value e
        val x = 3 : Int @Annot(e+f+g+h) // should have a graceful error message
                               ^
-<console>:8: error: not found: value f
+<console>:12: error: not found: value f
        val x = 3 : Int @Annot(e+f+g+h) // should have a graceful error message
                                 ^
-<console>:8: error: not found: value g
+<console>:12: error: not found: value g
        val x = 3 : Int @Annot(e+f+g+h) // should have a graceful error message
                                   ^
-<console>:8: error: not found: value h
+<console>:12: error: not found: value h
        val x = 3 : Int @Annot(e+f+g+h) // should have a graceful error message
                                     ^
 

@@ -132,7 +132,7 @@ trait Holes { self: Quasiquotes =>
     private def mapF(tree: Tree, f: Tree => Tree): Tree =
       if (f(Ident(TermName("x"))) equalsStructure Ident(TermName("x"))) tree
       else {
-        val x: TermName = c.freshName()
+        val x = TermName(c.freshName())
         // q"$tree.map { $x => ${f(Ident(x))} }"
         Apply(Select(tree, nme.map),
           Function(ValDef(Modifiers(PARAM), x, TypeTree(), EmptyTree) :: Nil,
@@ -151,7 +151,7 @@ trait Holes { self: Quasiquotes =>
         else None
     }
 
-    /** Map high-rank unquotee onto an expression that eveluates as a list of given rank.
+    /** Map high-rank unquotee onto an expression that evaluates as a list of given rank.
      *
      *  All possible combinations of representations are given in the table below:
      *
@@ -187,7 +187,7 @@ trait Holes { self: Quasiquotes =>
     lazy val tree =
       tptopt.map { tpt =>
         val TypeDef(_, _, _, typedTpt) =
-          try c.typeCheck(TypeDef(NoMods, TypeName("T"), Nil, tpt))
+          try c.typecheck(TypeDef(NoMods, TypeName("T"), Nil, tpt))
           catch { case TypecheckException(pos, msg) => c.abort(pos.asInstanceOf[c.Position], msg) }
         val tpe = typedTpt.tpe
         val (iterableRank, _) = stripIterable(tpe)

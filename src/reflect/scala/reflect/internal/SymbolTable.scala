@@ -339,7 +339,6 @@ abstract class SymbolTable extends macros.Universe
       case _ => false
     }
     if (pkgModule.isModule && !fromSource) {
-      // println("open "+pkgModule)//DEBUG
       openPackageModule(pkgModule, pkgClass)
     }
   }
@@ -355,6 +354,14 @@ abstract class SymbolTable extends macros.Universe
     def recordCache[T <: Clearable](cache: T): T = {
       caches ::= new WeakReference(cache)
       cache
+    }
+
+    /**
+     * Removes a cache from the per-run caches. This is useful for testing: it allows running the
+     * compiler and then inspect the state of a cache.
+     */
+    def unrecordCache[T <: Clearable](cache: T): Unit = {
+      caches = caches.filterNot(_.get eq cache)
     }
 
     def clearAll() = {

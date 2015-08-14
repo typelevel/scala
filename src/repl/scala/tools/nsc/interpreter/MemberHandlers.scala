@@ -105,7 +105,7 @@ trait MemberHandlers {
   import scala.io.AnsiColor.{ BOLD, BLUE, GREEN, RESET }
 
   def color(c: String, s: String) =
-    if (intp.colorsOk) string2code(BOLD) + string2code(c) + s + string2code(RESET)
+    if (replProps.colorOk) string2code(BOLD) + string2code(c) + s + string2code(RESET)
     else s
 
   def colorName(s: String) =
@@ -134,7 +134,7 @@ trait MemberHandlers {
         import scala.io.AnsiColor.{ BOLD, BLUE, GREEN, RESET }
 
         def boldColor(c: String, s: String) =
-          if (intp.colorsOk) string2code(BOLD) + string2code(c) + s + string2code(RESET)
+          if (intp.colorOk) string2code(BOLD) + string2code(c) + s + string2code(RESET)
           else s
 
         val nameString = boldColor(BLUE, string2code(prettyName)) + vidString

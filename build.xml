@@ -165,7 +165,6 @@ TODO:
   <property name="build.dir"               value="${basedir}/build"/>
   <property name="build-deps.dir"          value="${build.dir}/deps"/>
   <property name="build-libs.dir"          value="${build.dir}/libs"/>
-  <property name="build-asm.dir"           value="${build.dir}/asm"/>
   <property name="build-forkjoin.dir"      value="${build-libs.dir}"/>
   <property name="build-locker.dir"        value="${build.dir}/locker"/>
   <property name="build-quick.dir"         value="${build.dir}/quick"/>
@@ -185,7 +184,7 @@ TODO:
 
   <property name="dists.dir"               value="${basedir}/dists"/>
 
-  <property name="copyright.string"        value="Copyright 2002-2013, LAMP/EPFL"/>
+  <property name="copyright.string"        value="Copyright 2002-2015, LAMP/EPFL"/>
 
   <!-- These are NOT the flags used to run SuperSabbus, but the ones written
        into the script runners created with scala.tools.ant.ScalaTool -->
@@ -266,37 +265,85 @@ TODO:
     -->
     <if><not><isset property="maven-deps-done"></isset></not><then>
       <mkdir dir="${user.home}/.m2/repository"/>
+
+      <artifact:remoteRepository id="sonatype-release" url="https://oss.sonatype.org/content/repositories/releases"/>
+      <artifact:remoteRepository id="sonatype-snapshots" url="https://oss.sonatype.org/content/repositories/snapshots"/>
+      <artifact:remoteRepository id="extra-repo" url="${extra.repo.url}"/>
+
       <!-- This task has an issue where if the user directory does not exist, so we create it above. UGH. -->
       <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="extra.tasks.classpath" filesetId="extra.tasks.fileset">
         <dependency groupId="biz.aQute" artifactId="bnd" version="1.50.0"/>
       </artifact:dependencies>
 
+      <artifact:dependencies pathId="jarjar.classpath">
+        <dependency groupId="com.googlecode.jarjar" artifactId="jarjar" version="1.3"/>
+      </artifact:dependencies>
+
       <!-- JUnit -->
-      <property name="junit.version" value="4.10"/>
-      <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="junit.classpath" filesetId="junit.fileset">
+      <property name="junit.version" value="4.11"/>
+      <artifact:dependencies pathId="junit.classpath" filesetId="junit.fileset">
         <dependency groupId="junit" artifactId="junit" version="${junit.version}"/>
       </artifact:dependencies>
       <copy-deps project="junit"/>
 
       <!-- Pax runner -->
-      <property name="pax.exam.version" value="2.6.0"/>
-      <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="pax.exam.classpath" filesetId="pax.exam.fileset">
-        <dependency groupId="org.ops4j.pax.exam" artifactId="pax-exam-container-native" version="${pax.exam.version}"/>
+      <property name="pax.exam.version" value="3.5.0"/><!-- Last version which supports Java 6 -->
+      <property name="osgi.felix.version" value="4.4.0"/>
+      <property name="osgi.equinox.version" value="3.7.1"/>
+      <artifact:dependencies pathId="pax.exam.classpath" filesetId="pax.exam.fileset">
+        <dependency groupId="org.ops4j.pax.exam" artifactId="pax-exam-container-native" version="${pax.exam.version}">
+          <exclusion groupId="org.osgi" artifactId="org.osgi.core"/><!-- Avoid dragging in a dependency which requires Java >6 -->
+        </dependency>
         <dependency groupId="org.ops4j.pax.exam" artifactId="pax-exam-junit4" version="${pax.exam.version}"/>
         <dependency groupId="org.ops4j.pax.exam" artifactId="pax-exam-link-assembly" version="${pax.exam.version}"/>
-        <!-- upgraded to 1.6.0 to get fix for https://ops4j1.jira.com/browse/PAXURL-217
-      https://ops4j1.jira.com/browse/PAXURL-138 is still unresolved... -->
-        <dependency groupId="org.ops4j.pax.url" artifactId="pax-url-aether" version="1.6.0"/>
-        <dependency groupId="org.ops4j.pax.swissbox" artifactId="pax-swissbox-framework" version="1.5.1"/>
-        <dependency groupId="ch.qos.logback" artifactId="logback-core" version="0.9.20"/>
-        <dependency groupId="ch.qos.logback" artifactId="logback-classic" version="0.9.20"/>
+        <dependency groupId="org.ops4j.pax.url" artifactId="pax-url-aether" version="2.2.0"/>
+        <dependency groupId="org.ops4j.pax.swissbox" artifactId="pax-swissbox-tracker" version="1.8.0"/>
+        <dependency groupId="ch.qos.logback" artifactId="logback-core" version="1.1.2"/>
+        <dependency groupId="ch.qos.logback" artifactId="logback-classic" version="1.1.2"/>
         <dependency groupId="junit" artifactId="junit" version="${junit.version}"/>
-        <dependency groupId="org.apache.felix" artifactId="org.apache.felix.framework" version="3.2.2"/>
+      </artifact:dependencies>
+      <copy-deps project="pax.exam"/>
+
+      <artifact:dependencies pathId="osgi.framework.felix">
+        <dependency groupId="org.apache.felix" artifactId="org.apache.felix.framework" version="${osgi.felix.version}"/>
       </artifact:dependencies>
 
+      <artifact:dependencies pathId="osgi.framework.equinox">
+        <dependency groupId="org.eclipse.osgi" artifactId="org.eclipse.osgi" version="${osgi.equinox.version}"/>
+      </artifact:dependencies>
 
       <artifact:remoteRepository id="sonatype-release" url="https://oss.sonatype.org/content/repositories/releases"/>
       <artifact:remoteRepository id="extra-repo" url="${extra.repo.url}"/>
+
+      <!-- scala-java8-compat, used by the experimental -target jvm-1.8 support. -->
+      <if><isset property="scala-java8-compat.package"/><then>
+        <property name="scala-java8-compat.version" value="0.5.0"/>
+        <property name="scala-java8-compat.binary.version" value="2.11"/>
+        <artifact:dependencies pathId="scala-java8-compat.classpath" filesetId="scala-java8-compat.fileset">
+          <dependency groupId="org.scala-lang.modules" artifactId="scala-java8-compat_${scala-java8-compat.binary.version}" version="${scala-java8-compat.version}">
+            <exclusion groupId="org.scala-lang" artifactId="scala-library"/>
+          </dependency>
+        </artifact:dependencies>
+        <property name="scala-java8-compat-classes" value="${build-quick.dir}/scala-java8-compat"/>
+        <delete dir="${scala-java8-compat-classes}"/>
+        <unzip dest="${scala-java8-compat-classes}">
+          <fileset refid="scala-java8-compat.fileset"/>
+          <patternset>
+            <include name="**/*.class"/>
+          </patternset>
+        </unzip>
+        <path id="scala-java8-compat.libs">
+          <pathelement location="${scala-java8-compat-classes}"/>
+        </path>
+        <fileset id="scala-java8-compat.fileset" dir="${scala-java8-compat-classes}">
+          <include name="**/*"/>
+        </fileset>
+      </then>
+        <else>
+          <path id="scala-java8-compat.libs"/>
+          <fileset id="scala-java8-compat.fileset" dir="." excludes="**"/>
+        </else>
+      </if>
 
       <!-- prepare, for each of the names below, the property "@{name}.cross", set to the
            necessary cross suffix (usually something like "_2.11.0-M6". -->
@@ -308,6 +355,11 @@ TODO:
       <prepareCross name="scala-swing"/>
       <prepareCross name="partest"/>
       <prepareCross name="scalacheck"/>
+
+      <artifact:dependencies pathId="asm.classpath" filesetId="asm.fileset">
+        <dependency groupId="org.scala-lang.modules" artifactId="scala-asm" version="${scala-asm.version}"/>
+      </artifact:dependencies>
+      <copy-deps project="asm"/>
 
       <!-- TODO: delay until absolutely necessary to allow minimal build, also move out partest dependency from scaladoc -->
       <artifact:dependencies sourcesFilesetId="sources.dependency.fileset"  pathId="partest.classpath" filesetId="partest.fileset" versionsId="partest.versions">
@@ -463,9 +515,9 @@ TODO:
     <property name="sbt.lib.dir"           value="${build-sbt.dir}/${sbt.latest.version}/lib"/>
 
     <property name="sbt.interface.jar"     value="${sbt.lib.dir}/interface.jar"/>
-    <property name="sbt.interface.url"     value="http://private-repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/interface/${sbt.latest.version}/jars/interface.jar"/>
+    <property name="sbt.interface.url"     value="http://dl.bintray.com/typesafe/ivy-releases/org.scala-sbt/interface/${sbt.latest.version}/jars/interface.jar"/>
     <property name="sbt.interface.src.jar" value="${sbt.src.dir}/compiler-interface-src.jar"/>
-    <property name="sbt.interface.src.url" value="http://private-repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/compiler-interface/${sbt.latest.version}/jars/compiler-interface-src.jar"/>
+    <property name="sbt.interface.src.url" value="http://dl.bintray.com/typesafe/ivy-releases/org.scala-sbt/compiler-interface/${sbt.latest.version}/jars/compiler-interface-src.jar"/>
 
 
     <!-- Additional command line arguments for scalac. They are added to all build targets -->
@@ -580,10 +632,8 @@ TODO:
       </propertyfile>
     </then></if>
 
-    <path id="forkjoin.classpath" path="${build-libs.dir}/classes/forkjoin"/>
-    <path id="asm.classpath"      path="${build-asm.dir}/classes"/>
+    <path id="forkjoin.classpath" path="${build-forkjoin.dir}/classes/forkjoin"/>
     <property name="forkjoin-classes" refid="forkjoin.classpath"/>
-    <property name="asm-classes" refid="asm.classpath"/>
 
     <!-- the following properties fully define staged-docs, staged-pack, make-bundle, copy-bundle and mvn-package for each of the projects -->
     <property name="library.description"           value="Scala Standard Library"/>
@@ -650,8 +700,8 @@ TODO:
     <property name="partest-extras.description"    value="Scala Compiler Testing Tool (compiler-specific extras)"/>
     <property name="partest-javaagent.description" value="Scala Compiler Testing Tool (compiler-specific java agent)"/>
 
-    <!-- projects without project-specific options: asm, forkjoin, manual, bin, repl -->
-    <for list="actors,compiler,interactive,scaladoc,library,typelevel,parser-combinators,partest,partest-extras,partest-javaagent,reflect,scalap,swing,xml,continuations-plugin,continuations-library" param="project">
+    <!-- projects without project-specific options: forkjoin, manual, bin, repl -->
+    <for list="actors,compiler,interactive,scaladoc,library,typelevel,parser-combinators,partest,partest-extras,partest-javaagent,reflect,scalap,swing,xml,continuations-plugin,continuations-library,repl-jline" param="project">
       <sequential>
         <!-- description is mandatory -->
         <init-project-prop project="@{project}" name="package"     default=""/> <!-- used by mvn-package, copy-bundle, make-bundle -->
@@ -710,6 +760,7 @@ TODO:
       <pathelement location="${build-locker.dir}/classes/library"/>
       <path refid="forkjoin.classpath"/>
       <path refid="aux.libs"/>
+      <path refid="scala-java8-compat.libs"/>
     </path>
 
     <path id="locker.reflect.build.path">
@@ -731,6 +782,7 @@ TODO:
       <pathelement location="${build-quick.dir}/classes/library"/>
       <path refid="forkjoin.classpath"/>
       <path refid="aux.libs"/>
+      <path refid="scala-java8-compat.libs"/>
     </path>
 
     <path id="quick.typelevel.build.path">
@@ -757,6 +809,11 @@ TODO:
     <path id="quick.repl.build.path">
       <path refid="quick.compiler.build.path"/>
       <pathelement location="${build-quick.dir}/classes/repl"/>
+    </path>
+
+    <path id="quick.repl-jline.build.path">
+      <path refid="quick.repl.build.path"/>
+      <pathelement location="${build-quick.dir}/classes/repl-jline"/>
       <path refid="repl.deps.classpath"/>
     </path>
 
@@ -791,7 +848,7 @@ TODO:
     </path>
 
     <path id="quick.bin.tool.path">
-      <path refid="quick.repl.build.path"/>
+      <path refid="quick.repl-jline.build.path"/>
       <path refid="quick.typelevel.build.path"/>
       <path refid="quick.actors.build.path"/>
       <pathelement location="${build-quick.dir}/classes/scalap"/>
@@ -827,6 +884,7 @@ TODO:
     <path id="pack.library.files">
       <fileset dir="${build-quick.dir}/classes/library"/>
       <fileset dir="${forkjoin-classes}"/>
+      <fileset refid="scala-java8-compat.fileset"/>
     </path>
 
     <path id="pack.typelevel.files">
@@ -837,6 +895,8 @@ TODO:
       <fileset dir="${build-quick.dir}/classes/actors"/>
     </path>
 
+    <path id="pack.repl-jline.files">    <fileset dir="${build-quick.dir}/classes/repl-jline"/> </path>
+
     <path id="pack.compiler.files">
       <fileset dir="${build-quick.dir}/classes/compiler"/>
 
@@ -844,8 +904,9 @@ TODO:
       <fileset dir="${build-quick.dir}/classes/scaladoc"/>
       <fileset dir="${build-quick.dir}/classes/interactive"/>
       <fileset dir="${build-quick.dir}/classes/repl"/>
-      <fileset dir="${asm-classes}"/>
     </path>
+    <fileset id="pack.compiler.include-jars" refid="asm.fileset"/>
+    <property name="pack.compiler.include-jars.defined" value="yeah"/>
 
     <!-- TODO modularize compiler.
     <path id="pack.scaladoc.files">   <fileset dir="${build-quick.dir}/classes/scaladoc"/> </path>
@@ -853,8 +914,7 @@ TODO:
     -->
 
     <path id="pack.reflect.files">    <fileset dir="${build-quick.dir}/classes/reflect"/> </path>
-    <path id="pack.scalap.files">     <fileset dir="${build-quick.dir}/classes/scalap"/>
-                                      <fileset file="${src.dir}/scalap/decoder.properties"/> </path>
+    <path id="pack.scalap.files">     <fileset dir="${build-quick.dir}/classes/scalap"/>  </path>
 
     <path id="pack.partest-extras.files"> <fileset dir="${build-quick.dir}/classes/partest-extras"/> </path>
     <path id="pack.partest-javaagent.files"> <fileset dir="${build-quick.dir}/classes/partest-javaagent"/> </path>
@@ -989,6 +1049,7 @@ TODO:
       <pathelement location="${test.junit.classes}"/>
       <path refid="quick.compiler.build.path"/>
       <path refid="quick.repl.build.path"/>
+      <path refid="quick.scaladoc.build.path"/>
       <path refid="quick.partest-extras.build.path"/>
       <path refid="junit.classpath"/>
     </path>
@@ -1002,6 +1063,16 @@ TODO:
       <pathelement location="${build-osgi.dir}/org.scala-lang.scala-actors.jar"/>
       <path refid="pax.exam.classpath"/>
       <path refid="forkjoin.classpath"/>
+    </path>
+
+    <path id="test.osgi.compiler.build.path.felix">
+      <path refid="test.osgi.compiler.build.path"/>
+      <path refid="osgi.framework.felix"/>
+    </path>
+
+    <path id="test.osgi.compiler.build.path.equinox">
+      <path refid="test.osgi.compiler.build.path"/>
+      <path refid="osgi.framework.equinox"/>
     </path>
 
     <path id="test.positions.sub.build.path" path="${build-quick.dir}/classes/library"/>
@@ -1036,14 +1107,15 @@ TODO:
     </patternset>
 
     <taskdef resource="scala/tools/ant/sabbus/antlib.xml" classpathref="starr.compiler.path"/>
+    <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpathref="jarjar.classpath" />
   </target>
 
 <!-- ===========================================================================
                                   CLEANLINESS
 =============================================================================-->
-  <target name="libs.clean">                        <clean build="libs"/> <clean build="asm"/>                            </target>
-  <target name="quick.clean"  depends="libs.clean">   <clean build="quick"/> <clean build="pack"/> <clean build="strap"/> </target>
-  <target name="locker.clean" depends="quick.clean">    <clean build="locker"/>                                           </target>
+  <target name="libs.clean">                         <clean build="libs"/>                                               </target>
+  <target name="quick.clean"  depends="libs.clean">  <clean build="quick"/> <clean build="pack"/> <clean build="strap"/> </target>
+  <target name="locker.clean" depends="quick.clean"> <clean build="locker"/>                                             </target>
 
   <target name="docs.clean"> <clean build="docs"/> <delete dir="${build.dir}/manmaker" includeemptydirs="yes" quiet="yes" failonerror="no"/> </target>
   <target name="dist.clean"> <delete dir="${dists.dir}" includeemptydirs="yes" quiet="yes" failonerror="no"/> </target>
@@ -1061,8 +1133,7 @@ TODO:
                                   LOCAL DEPENDENCIES
 ============================================================================ -->
 
-  <target name="asm.done"      depends="init"> <simple-javac project="asm" jar="no"/> </target>
-  <target name="forkjoin.done" depends="init"> <simple-javac project="forkjoin" args="-XDignore.symbol.file"/></target>
+  <target name="forkjoin.done" depends="init"> <simple-javac project="forkjoin" args="-XDignore.symbol.file" jar="no"/></target>
 
   <!-- For local development only. We only allow released versions of Scala for STARR.
     This builds quick (core only) and publishes it with a generated version number,
@@ -1084,7 +1155,7 @@ TODO:
 <!-- ===========================================================================
                                   LOCAL REFERENCE BUILD (LOCKER)
 ============================================================================ -->
-  <target name="locker.start"  depends="asm.done, forkjoin.done">
+  <target name="locker.start"  depends="forkjoin.done">
     <condition property="locker.locked"><available file="${build-locker.dir}/locker.locked"/></condition></target>
 
   <target name="locker.lib"    depends="locker.start"     unless="locker.locked">
@@ -1121,10 +1192,34 @@ TODO:
     <staged-build with="locker"   stage="quick" project="compiler"/> </target>
 
   <target name="quick.repl"       depends="quick.comp">
-    <staged-build with="locker"   stage="quick" project="repl"/> </target>
+    <staged-build with="locker"   stage="quick" project="repl"/>
+    <staged-build with="locker"   stage="quick" project="repl-jline"/>
+
+    <staged-pack project="repl-jline"/>
+
+    <!-- make jline_embedded jar with classes of repl-jline and jline, then shade-->
+    <jarjar jarfile="${build-pack.dir}/${repl-jline.targetdir}/scala-repl-jline-embedded.jar" whenmanifestonly="fail">
+      <zipfileset src="${jline:jline:jar}"/>
+      <zipfileset src="${build-pack.dir}/${repl-jline.targetdir}/${repl-jline.targetjar}"/>
+
+      <rule pattern="org.fusesource.**" result="scala.tools.fusesource_embedded.@1"/>
+      <rule pattern="jline.**" result="scala.tools.jline_embedded.@1"/>
+      <rule pattern="scala.tools.nsc.interpreter.jline.**" result="scala.tools.nsc.interpreter.jline_embedded.@1"/>
+      <keep pattern="scala.tools.**"/>
+    </jarjar>
+
+    <!-- unzip jar to repl's class dir to obtain
+           - standard repl-jline
+           - a shaded repl-jline (scala/tools/nsc/interpreter/jline_embedded) & jline (scala.tools.jline_embedded)
+    -->
+    <copy todir="${build-quick.dir}/classes/repl">
+      <zipfileset src="${build-pack.dir}/${repl-jline.targetdir}/${repl-jline.targetjar}"/>
+      <zipfileset src="${build-pack.dir}/${repl-jline.targetdir}/scala-repl-jline-embedded.jar"/>
+    </copy>
+  </target>
 
   <target name="quick.scaladoc"   depends="quick.comp">
-    <staged-build with="locker"   stage="quick" project="scaladoc" version="scaladoc"/> </target>
+    <staged-build with="locker"   stage="quick" project="scaladoc"/> </target>
 
   <target name="quick.interactive" depends="quick.comp, quick.scaladoc">
     <staged-build with="locker"    stage="quick" project="interactive"/> </target>
@@ -1157,7 +1252,7 @@ TODO:
   <target name="pack.reflect" depends="quick.reflect"> <staged-pack project="reflect"/> </target>
 
   <!-- TODO modularize compiler. Remove other quick targets when they become modules. -->
-  <target name="pack.comp"    depends="quick.comp, quick.scaladoc, quick.interactive, quick.repl, asm.done">
+  <target name="pack.comp"    depends="quick.comp, quick.scaladoc, quick.interactive, quick.repl">
     <staged-pack project="compiler" manifest="${build-pack.dir}/META-INF/MANIFEST.MF">
       <pre> <!-- TODO the files copied here do not influence actuality of this target (nor does the manifest) -->
         <copy todir="${build-pack.dir}/lib">
@@ -1381,22 +1476,36 @@ TODO:
       srcdir="${test.osgi.src}"
       jvmargs="${scalacfork.jvmargs}">
       <include name="**/*.scala"/>
-      <compilationpath refid="test.osgi.compiler.build.path"/>
+      <compilationpath refid="test.osgi.compiler.build.path.felix"/>
     </scalacfork>
     <touch file="${build-osgi.dir}/test-compile.complete" verbose="no"/>
     <stopwatch name="test.osgi.compiler.timer" action="total"/>
   </target>
 
   <target name="test.osgi" depends="test.osgi.comp">
-    <if><isset property="has.java8"/><then>
-      <echo message="Skipping OSGi JUnit tests on Java 8. See SI-8642"/>
+    <if><isset property="test.osgi.skip"/><then>
+      <echo message="Skipping OSGi JUnit tests"/>
     </then><else>
       <echo message="Running OSGi JUnit tests. Output in ${build-osgi.dir}"/>
       <stopwatch name="test.osgi.timer"/>
       <mkdir dir="${test.osgi.classes}"/>
 
+      <echo message="Test pass 1 of 2 using Apache Felix ${osgi.felix.version}"/>
       <junit fork="yes" haltonfailure="yes">
-        <classpath refid="test.osgi.compiler.build.path"/>
+        <classpath refid="test.osgi.compiler.build.path.felix"/>
+        <jvmarg value="-Duser.home=${user.home}"/>
+        <batchtest fork="yes" todir="${build-osgi.dir}">
+          <fileset dir="${test.osgi.classes}">
+            <include name="**/*Test.class"/>
+          </fileset>
+        </batchtest>
+        <formatter type="xml" />
+      </junit>
+
+      <echo message="Test pass 2 of 2 using Eclipse Equinox ${osgi.equinox.version}"/>
+      <junit fork="yes" haltonfailure="yes">
+        <classpath refid="test.osgi.compiler.build.path.equinox"/>
+        <jvmarg value="-Duser.home=${user.home}"/>
         <batchtest fork="yes" todir="${build-osgi.dir}">
           <fileset dir="${test.osgi.classes}">
             <include name="**/*Test.class"/>
@@ -1443,17 +1552,18 @@ TODO:
     <stopwatch name="quick.sbt-interface.timer" action="total"/>
   </target>
 
-  <target name="test.junit.init" depends="quick.done">
-    <uptodate property="test.junit.available" targetfile="${build-junit.dir}/test-compile.complete">
-      <srcfiles dir="${test.junit.src}">
-        <include name="**/*.scala"/>
-      </srcfiles>
-    </uptodate>
-  </target>
-
-  <target name="test.junit.comp" depends="test.junit.init, quick.done" unless="test.junit.available">
+  <target name="test.junit.comp" depends="pack.done">
     <stopwatch name="test.junit.compiler.timer"/>
     <mkdir dir="${test.junit.classes}"/>
+    <javac
+      debug="true"
+      srcdir="${test.junit.src}"
+      destdir="${test.junit.classes}"
+      classpathref="test.junit.compiler.build.path"
+      target="1.6"
+      source="1.5"
+      compiler="javac1.6"
+      includes="**/*.java"/>
     <scalacfork
       destdir="${test.junit.classes}"
       compilerpathref="quick.compiler.path"
@@ -1467,7 +1577,7 @@ TODO:
     <stopwatch name="test.junit.compiler.timer" action="total"/>
   </target>
 
-  <target name="test.junit" depends="test.junit.comp, test.junit.init">
+  <target name="test.junit" depends="test.junit.comp">
     <stopwatch name="test.junit.timer"/>
     <mkdir dir="${test.junit.classes}"/>
     <echo message="Note: details of failed tests will be output to ${build-junit.dir}"/>

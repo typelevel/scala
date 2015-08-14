@@ -250,21 +250,30 @@ abstract class LambdaLift extends InfoTransform {
         debuglog("renaming in %s: %s => %s".format(sym.owner.fullLocationString, originalName, sym.name))
       }
 
+      // make sure that the name doesn't make the symbol accidentally `isAnonymousClass` (et.al) by
+      // introducing `$anon` in its name. to be cautious, we don't make this change in the default
+      // backend under 2.11.x, so only in GenBCode.
+      def nonAnon(s: String) = if (settings.Ybackend.value == "GenBCode") nme.ensureNonAnon(s) else s
+
       def newName(sym: Symbol): Name = {
         val originalName = sym.name
         def freshen(prefix: String): Name =
           if (originalName.isTypeName) unit.freshTypeName(prefix)
           else unit.freshTermName(prefix)
 
+        val join = nme.NAME_JOIN_STRING
         if (sym.isAnonymousFunction && sym.owner.isMethod) {
-          freshen(sym.name + nme.NAME_JOIN_STRING + sym.owner.name + nme.NAME_JOIN_STRING)
+          freshen(sym.name + join + nonAnon(sym.owner.name.toString) + join)
         } else {
+          val name = freshen(sym.name + join)
           // SI-5652 If the lifted symbol is accessed from an inner class, it will be made public. (where?)
-          //         Generating a unique name, mangled with the enclosing class name, avoids a VerifyError
-          //         in the case that a sub-class happens to lifts out a method with the *same* name.
-          val name = freshen("" + sym.name + nme.NAME_JOIN_STRING)
-          if (originalName.isTermName && !sym.enclClass.isImplClass && calledFromInner(sym)) nme.expandedName(name.toTermName, sym.enclClass)
-          else name
+          //         Generating a unique name, mangled with the enclosing full class name (including
+          //         package - subclass might have the same name), avoids a VerifyError in the case
+          //         that a sub-class happens to lifts out a method with the *same* name.
+          if (originalName.isTermName && !sym.enclClass.isImplClass && calledFromInner(sym))
+            newTermNameCached(nonAnon(sym.enclClass.fullName('$')) + nme.EXPAND_SEPARATOR_STRING + name)
+          else
+            name
         }
       }
 
@@ -367,7 +376,7 @@ abstract class LambdaLift extends InfoTransform {
 
     private def addFreeArgs(pos: Position, sym: Symbol, args: List[Tree]) = {
       free get sym match {
-        case Some(fvs) => args ++ (fvs.toList map (fv => atPos(pos)(proxyRef(fv))))
+        case Some(fvs) => addFree(sym, free = fvs.toList map (fv => atPos(pos)(proxyRef(fv))), original = args)
         case _         => args
       }
     }
@@ -379,9 +388,9 @@ abstract class LambdaLift extends InfoTransform {
           case DefDef(_, _, _, vparams :: _, _, _) =>
             val addParams = cloneSymbols(ps).map(_.setFlag(PARAM))
             sym.updateInfo(
-              lifted(MethodType(sym.info.params ::: addParams, sym.info.resultType)))
+              lifted(MethodType(addFree(sym, free = addParams, original = sym.info.params), sym.info.resultType)))
 
-            copyDefDef(tree)(vparamss = List(vparams ++ freeParams))
+            copyDefDef(tree)(vparamss = List(addFree(sym, free = freeParams, original = vparams)))
           case ClassDef(_, _, _, _) =>
             // SI-6231
             // Disabled attempt to to add getters to freeParams
@@ -402,7 +411,7 @@ abstract class LambdaLift extends InfoTransform {
     }
 
 /*  SI-6231: Something like this will be necessary to eliminate the implementation
- *  restiction from paramGetter above:
+ *  restriction from paramGetter above:
  *  We need to pass getters to the interface of an implementation class.
     private def fixTraitGetters(lifted: List[Tree]): List[Tree] =
       for (stat <- lifted) yield stat match {
@@ -539,12 +548,11 @@ abstract class LambdaLift extends InfoTransform {
     override def transformStats(stats: List[Tree], exprOwner: Symbol): List[Tree] = {
       def addLifted(stat: Tree): Tree = stat match {
         case ClassDef(_, _, _, _) =>
-          val lifted = liftedDefs get stat.symbol match {
+          val lifted = liftedDefs remove stat.symbol match {
             case Some(xs) => xs reverseMap addLifted
             case _        => log("unexpectedly no lifted defs for " + stat.symbol) ; Nil
           }
-          try deriveClassDef(stat)(impl => deriveTemplate(impl)(_ ::: lifted))
-          finally liftedDefs -= stat.symbol
+          deriveClassDef(stat)(impl => deriveTemplate(impl)(_ ::: lifted))
 
         case DefDef(_, _, _, _, _, Block(Nil, expr)) if !stat.symbol.isConstructor =>
           deriveDefDef(stat)(_ => expr)
@@ -563,4 +571,12 @@ abstract class LambdaLift extends InfoTransform {
     }
   } // class LambdaLifter
 
+  private def addFree[A](sym: Symbol, free: List[A], original: List[A]): List[A] = {
+    val prependFree = (
+         !sym.isConstructor // this condition is redundant for now. It will be needed if we remove the second condition in 2.12.x
+      && (settings.Ydelambdafy.value == "method" && sym.isDelambdafyTarget) // SI-8359 Makes the lambda body a viable as the target MethodHandle for a call to LambdaMetafactory
+    )
+    if (prependFree) free ::: original
+    else             original ::: free
+  }
 }

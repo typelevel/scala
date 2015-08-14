@@ -15,6 +15,8 @@ UnicodeEscape ::= ‘\‘ ‘u‘ {‘u‘} hexDigit hexDigit hexDigit hexDigit
 hexDigit      ::= ‘0’ | … | ‘9’ | ‘A’ | … | ‘F’ | ‘a’ | … | ‘f’
 ```
 
+## Lexical Syntax
+
 The lexical syntax of Scala is given by the following grammar in EBNF form:
 
 ```ebnf
@@ -41,7 +43,7 @@ idrest           ::=  {letter | digit} [‘_’ op]
 
 integerLiteral   ::=  (decimalNumeral | hexNumeral) [‘L’ | ‘l’]
 decimalNumeral   ::=  ‘0’ | nonZeroDigit {digit}
-hexNumeral       ::=  ‘0’ ‘x’ hexDigit {hexDigit}
+hexNumeral       ::=  ‘0’ (‘x’ | ‘X’) hexDigit {hexDigit}
 digit            ::=  ‘0’ | nonZeroDigit
 nonZeroDigit     ::=  ‘1’ | … | ‘9’
 
@@ -72,8 +74,10 @@ nl               ::=  $\mathit{“new line character”}$
 semi             ::=  ‘;’ |  nl {nl}
 ```
 
+## Context-free Syntax
+
 The context-free syntax of Scala is given by the following EBNF
-grammar.
+grammar:
 
 ```ebnf
   Literal           ::=  [‘-’] integerLiteral
@@ -210,7 +214,7 @@ grammar.
   ClassParams       ::=  ClassParam {‘,’ ClassParam}
   ClassParam        ::=  {Annotation} {Modifier} [(`val' | `var')]
                          id ‘:’ ParamType [‘=’ Expr]
-  Bindings          ::=  ‘(’ Binding {‘,’ Binding ‘)’
+  Bindings          ::=  ‘(’ Binding {‘,’ Binding} ‘)’
   Binding           ::=  (id | ‘_’) [‘:’ Type]
 
   Modifier          ::=  LocalModifier

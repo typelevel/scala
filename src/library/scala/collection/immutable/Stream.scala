@@ -153,7 +153,7 @@ import scala.language.implicitConversions
  *
  *  - The fact that `tail` works at all is of interest.  In the definition of
  *  `fibs` we have an initial `(0, 1, Stream(...))` so `tail` is deterministic.
- *  If we deinfed `fibs` such that only `0` were concretely known then the act
+ *  If we defined `fibs` such that only `0` were concretely known then the act
  *  of determining `tail` would require the evaluation of `tail` which would
  *  cause an infinite recursion and stack overflow.  If we define a definition
  *  where the tail is not initially computable then we're going to have an
@@ -225,7 +225,7 @@ self =>
    * }}}
    *
    *  @return The first element of the `Stream`.
-   *  @throws Predef.NoSuchElementException if the stream is empty.
+   *  @throws java.util.NoSuchElementException if the stream is empty.
    */
   def head: A
 
@@ -236,7 +236,7 @@ self =>
    *  returns the lazy result.
    *
    *  @return The tail of the `Stream`.
-   *  @throws Predef.UnsupportedOperationException if the stream is empty.
+   *  @throws UnsupportedOperationException if the stream is empty.
    */
   def tail: Stream[A]
 
@@ -360,7 +360,7 @@ self =>
    * `List(BigInt(12)) ++ fibs`.
    *
    * @tparam B The element type of the returned collection.'''That'''
-   * @param that The [[scala.collection.GenTraversableOnce]] the be contatenated
+   * @param that The [[scala.collection.GenTraversableOnce]] the be concatenated
    * to this `Stream`.
    * @return A new collection containing the result of concatenating `this` with
    * `that`.
@@ -743,16 +743,18 @@ self =>
           b append end
           return b
         }
-        if ((cursor ne scout) && scout.tailDefined) {
+        if (cursor ne scout) {
           cursor = scout
-          scout = scout.tail        
-          // Use 2x 1x iterator trick for cycle detection; slow iterator can add strings
-          while ((cursor ne scout) && scout.tailDefined) {
-            b append sep append cursor.head
-            n += 1
-            cursor = cursor.tail
+          if (scout.tailDefined) {
             scout = scout.tail
-            if (scout.tailDefined) scout = scout.tail
+            // Use 2x 1x iterator trick for cycle detection; slow iterator can add strings
+            while ((cursor ne scout) && scout.tailDefined) {
+              b append sep append cursor.head
+              n += 1
+              cursor = cursor.tail
+              scout = scout.tail
+              if (scout.tailDefined) scout = scout.tail
+            }
           }
         }
         if (!scout.tailDefined) {  // Not a cycle, scout hit an end
@@ -760,6 +762,9 @@ self =>
             b append sep append cursor.head
             n += 1
             cursor = cursor.tail
+          }
+          if (cursor.nonEmpty) {
+            b append sep append cursor.head
           }
         }
         else {
@@ -876,7 +881,7 @@ self =>
    * @return A new `Stream` containing everything but the last element.  If your
    * `Stream` represents an infinite series, this method will not return.
    *
-   *  @throws `Predef.UnsupportedOperationException` if the stream is empty.
+   *  @throws UnsupportedOperationException if the stream is empty.
    */
   override def init: Stream[A] =
     if (isEmpty) super.init
@@ -944,7 +949,7 @@ self =>
    *
    * @param p the test predicate.
    * @return A new `Stream` representing the results of applying `p` to the
-   * oringal `Stream`.
+   * original `Stream`.
    *
    * @example {{{
    * // Assume we have a Stream that takes the first 20 natural numbers
@@ -1175,11 +1180,17 @@ object Stream extends SeqFactory[Stream] {
    *  to streams.
    */
   class ConsWrapper[A](tl: => Stream[A]) {
+    /** Construct a stream consisting of a given first element followed by elements
+     *  from a lazily evaluated Stream.
+     */
     def #::(hd: A): Stream[A] = cons(hd, tl)
+    /** Construct a stream consisting of the concatenation of the given stream and
+     *  a lazily evaluated Stream.
+     */
     def #:::(prefix: Stream[A]): Stream[A] = prefix append tl
   }
 
-  /** A wrapper method that adds `#::` for cons and `#::: for concat as operations
+  /** A wrapper method that adds `#::` for cons and `#:::` for concat as operations
    *  to streams.
    */
   implicit def consWrapper[A](stream: => Stream[A]): ConsWrapper[A] =

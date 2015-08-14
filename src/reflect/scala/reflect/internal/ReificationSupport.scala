@@ -292,7 +292,7 @@ trait ReificationSupport { self: SymbolTable =>
           if (ctorMods.isTrait)
             result(ctorMods, Nil, edefs, body)
           else {
-            // undo conversion from (implicit ... ) to ()(implicit ... ) when its the only parameter section
+            // undo conversion from (implicit ... ) to ()(implicit ... ) when it's the only parameter section
             val vparamssRestoredImplicits = ctorVparamss match {
               case Nil :: (tail @ ((head :: _) :: _)) if head.mods.isImplicit => tail
               case other => other
@@ -802,7 +802,7 @@ trait ReificationSupport { self: SymbolTable =>
       require(enums.nonEmpty, "enumerators can't be empty")
       enums.head match {
         case SyntacticValFrom(_, _) =>
-        case t => throw new IllegalArgumentException(s"$t is not a valid fist enumerator of for loop")
+        case t => throw new IllegalArgumentException(s"$t is not a valid first enumerator of for loop")
       }
       enums.tail.foreach {
         case SyntacticValEq(_, _) | SyntacticValFrom(_, _) | SyntacticFilter(_) =>

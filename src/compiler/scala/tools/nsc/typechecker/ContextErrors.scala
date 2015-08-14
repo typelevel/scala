@@ -45,6 +45,14 @@ trait ContextErrors {
   case class NormalTypeError(underlyingTree: Tree, errMsg: String)
     extends TreeTypeError
 
+  /**
+   * Marks a TypeError that was constructed from a CyclicReference (under silent).
+   * This is used for named arguments, where we need to know if an assignment expression
+   * failed with a cyclic reference or some other type error.
+   */
+  class NormalTypeErrorFromCyclicReference(underlyingTree: Tree, errMsg: String)
+    extends NormalTypeError(underlyingTree, errMsg)
+
   case class AccessTypeError(underlyingTree: Tree, errMsg: String)
     extends TreeTypeError
 
@@ -73,7 +81,7 @@ trait ContextErrors {
   // 2) provide the type of the implicit parameter for which we got diverging expansion
   //    (pt at the point of divergence gives less information to the user)
   // Note: it is safe to delay error message generation in this case
-  // becasue we don't modify implicits' infos.
+  // because we don't modify implicits' infos.
   case class DivergentImplicitTypeError(underlyingTree: Tree, pt0: Type, sym: Symbol)
     extends TreeTypeError {
     def errMsg: String   = errMsgForPt(pt0)
@@ -542,23 +550,18 @@ trait ContextErrors {
       def ModuleUsingCompanionClassDefaultArgsErrror(tree: Tree) =
         NormalTypeError(tree, "module extending its companion class cannot use default constructor arguments")
 
-      def NotEnoughArgsError(tree: Tree, fun0: Tree, missing0: List[Symbol]) = {
-        def notEnoughArgumentsMsg(fun: Tree, missing: List[Symbol]) = {
-          val suffix = {
-            if (missing.isEmpty) ""
-            else {
-              val keep = missing take 3 map (_.name)
-              ".\nUnspecified value parameter%s %s".format(
-                if (missing.tail.isEmpty) "" else "s",
-                if ((missing drop 3).nonEmpty) (keep :+ "...").mkString(", ")
-                else keep.mkString("", ", ", ".")
-              )
-            }
+      def NotEnoughArgsError(tree: Tree, fun: Tree, missing: List[Symbol]) = {
+        val notEnoughArgumentsMsg = {
+          val suffix = if (missing.isEmpty) "" else {
+            val keep = missing take 3 map (_.name)
+            val ess  = if (missing.tail.isEmpty) "" else "s"
+            f".%nUnspecified value parameter$ess ${
+              keep.mkString("", ", ", if ((missing drop 3).nonEmpty) "..." else ".")
+            }"
           }
-
-          "not enough arguments for " + treeSymTypeMsg(fun) + suffix
+          s"not enough arguments for ${ treeSymTypeMsg(fun) }$suffix"
         }
-        NormalTypeError(tree, notEnoughArgumentsMsg(fun0, missing0))
+        NormalTypeError(tree, notEnoughArgumentsMsg)
       }
 
       //doTypedApply - patternMode
@@ -624,12 +627,16 @@ trait ContextErrors {
 
       //adapt
       def MissingArgsForMethodTpeError(tree: Tree, meth: Symbol) = {
+        val f = meth.name
+        val paf = s"$f(${ meth.asMethod.paramLists map (_ map (_ => "_") mkString ",") mkString ")(" })"
+        val advice = s"""
+          |Unapplied methods are only converted to functions when a function type is expected.
+          |You can make this conversion explicit by writing `$f _` or `$paf` instead of `$f`.""".stripMargin
         val message =
           if (meth.isMacro) MacroTooFewArgumentListsMessage
-          else "missing arguments for " + meth.fullLocationString + (
-            if (meth.isConstructor) ""
-            else ";\nfollow this method with `_' if you want to treat it as a partially applied function"
-          )
+          else s"""missing argument list for ${meth.fullLocationString}${
+            if (!meth.isConstructor) advice else ""
+          }"""
         issueNormalTypeError(tree, message)
         setError(tree)
       }
@@ -1087,8 +1094,9 @@ trait ContextErrors {
             // hence we (together with reportTypeError in TypeDiagnostics) make sure that this CyclicReference
             // evades all the handlers on its way and successfully reaches `isCyclicOrErroneous` in Implicits
             throw ex
-          case CyclicReference(sym, info: TypeCompleter) =>
-            issueNormalTypeError(tree, typer.cyclicReferenceMessage(sym, info.tree) getOrElse ex.getMessage())
+          case c @ CyclicReference(sym, info: TypeCompleter) =>
+            val error = new NormalTypeErrorFromCyclicReference(tree, typer.cyclicReferenceMessage(sym, info.tree) getOrElse ex.getMessage)
+            issueTypeError(error)
           case _ =>
             contextNamerErrorGen.issue(TypeErrorWithUnderlyingTree(tree, ex))
         }
@@ -1286,8 +1294,8 @@ trait ContextErrors {
     }
 
     def WarnAfterNonSilentRecursiveInference(param: Symbol, arg: Tree)(implicit context: Context) = {
-      val note = "type-checking the invocation of "+ param.owner +" checks if the named argument expression '"+ param.name + " = ...' is a valid assignment\n"+
-                 "in the current scope. The resulting type inference error (see above) can be fixed by providing an explicit type in the local definition for "+ param.name +"."
+      val note = "failed to determine if '"+ param.name + " = ...' is a named argument or an assignment expression.\n"+
+                 "an explicit type is required for the definition mentioned in the error message above."
       context.warning(arg.pos, note)
     }
 

@@ -1,66 +1,130 @@
-# Scala Project & Developer Guidelines
+# Welcome! Thank you for contributing to Scala!
+We follow the standard GitHub [fork & pull](https://help.github.com/articles/using-pull-requests/#fork--pull) approach to pull requests. Just fork the official repo, develop in a branch, and submit a PR!
 
-These guidelines are meant to be a living document that should be changed and adapted as needed. We encourage changes that make it easier to achieve our goals in an efficient way.
+You're always welcome to submit your PR straight away and start the discussion (without reading the rest of this wonderful doc, or the `READMEnot^H^H^H.md`). The goal of these notes is to make your experience contributing to Scala as smooth and pleasant as possible. We're happy to guide you through the process once you've submitted your PR.
 
-## General Workflow
+## The Scala Community
+In 2014, you -- the Scala community -- matched the core team at EPFL in number of commits contributed to Scala 2.11, doubling the percentage of commits from outside EPFL/Typesafe since 2.10. Excellent work! (The split was roughly 25/25/50 for you/EPFL/Typesafe.)
 
-This is the process for committing code to the Scala project. There are of course exceptions to these rules, for example minor changes to comments and documentation, fixing a broken build etc.
+We are super happy about this, and are eager to make your experience contributing to Scala productive and satisfying, so that we can keep up this growth. We can't do this alone (nor do we want to)!
 
-1. Make sure you have signed the [Scala CLA](http://typesafe.com/contribute/cla/scala), if not, sign it.
-2. Before starting to work on a feature or a fix, it's good practice to ensure that:
-    1. There is a ticket for your work in the project's issue tracker. If not, create it first (perhaps given a thumbs up from the scala-internals mailing list first).
-    2. The ticket has been discussed and prioritized by the team.
-3. You should always perform your work in its own Git branch. The branch should be given a descriptive name that explains its intent. Some teams also like adding the ticket number and/or the [GitHub](http://github.com) user ID to the branch name, these details is up to each of the individual teams. (See below for more details on branch naming.)
-4. When the feature or fix is completed you should open a [Pull Request](https://help.github.com/articles/using-pull-requests) on GitHub.
-5. The Pull Request should be reviewed by other maintainers (as many as feasible/practical). Note that a reviewer can also be an outside contributor-- members of Typesafe and independent contributors are encouraged to participate in the review process. It is not a closed process. Please try to avoid conflict of interest -- the spirit of the review process is to evenly distribute the understanding of our code base across its maintainers as well as to load balance quality assurance. Assigning a review to a "sure win" reviewer is not a good long-term solution.
-6. After the review, you should resolve issues brought up by the reviewers as needed (pushing a new commit to address reviewers' comments), iterating until the reviewers give their thumbs up, the "LGTM" (acronym for "Looks Good To Me").
-7. Once the code has passed review the Pull Request can be merged into the distribution.
+This is why we're collecting these notes on how to contribute, and we hope you'll share your experience to improve the process for the next contributor! (Feel free to send a PR for this note, send your thoughts to scala-internals, or tweet about it to @adriaanm.)
 
-## Pull Request Requirements
+By the way, the team at Typesafe is: @adriaanm, @lrytz, @retronym, and @SethTisue.
 
-First, please have a look at and follow the [Pull Request Policy](https://github.com/scala/scala/wiki/Pull-Request-Policy) for guidelines on submitting a pull request to the Scala project.
+## What kind of PR are you submitting?
 
-In order for a Pull Request to be considered, it has to meet these requirements:
+Regardless of the nature of your Pull Request, we have to ask you to digitally sign the [Scala CLA](http://typesafe.com/contribute/cla/scala), to protect the OSS nature of the code base.
 
-1. Live up to the current code standard:
-   - Not violate [DRY](http://programmer.97things.oreilly.com/wiki/index.php/Don%27t_Repeat_Yourself).
-   - [Boy Scout Rule](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule) should be applied.
-2. Tests are of paramount importance.
-3. The code must be well documented in the project's standard documentation format (see the ‘Documentation’ section below).
+You don't need to submit separate PRs for 2.11.x, 2.12.x, and 2.13.x. Any changes accepted on one of these branches will, in time, be merged into the later branches.
 
-If *all* of these requirements are not met then the code should **not** be merged into the distribution, and need not even be reviewed.
+### Documentation
+Whether you finally decided you couldn't stand that annoying typo anymore, you fixed the outdated code sample in some comment, or you wrote a nice, comprehensive, overview for an under-documented package, some docs for a class or the specifics about a method, your documentation improvement is very much appreciated, and we will do our best to fasttrack it.
 
-## Documentation
+You can make these changes directly in your browser in GitHub, or follow the same process as for code. Up to you!
 
-All contributed code should come accompanied with documentation. Pull requests containing undocumented code will not be accepted. Both user-facing Scaladoc comments, as well as committer-facing internal documentation (i.e. important design decisions that other maintainers should know about should be placed inline with line comments `//`) should be accompanying all contributed code where possible.
+For bigger documentation changes, you may want to poll the (scala-internals) mailing list first, to quickly gauge whether others support the direction you're taking, so there won't be any surprises when it comes to reviewing your PR.
 
+### Code
+For bigger changes, we do recommend announcing your intentions on scala-internals first, to avoid duplicated effort, or spending a lot of time reworking something we are not able to change at this time in the release cycle, for example.
 
-## Work In Progress
+The kind of code we can accept depends on the life cycle for the release you're targeting. The current maintenance release (2.11.x) cannot break source/binary compatibility, which means public APIs cannot change. It also means we are reluctant to change, e.g., type inference or implicit search, as this can have unforeseen consequences for source compatibility.
 
-It is ok to work on a public feature branch in the GitHub repository. Something that can sometimes be useful for early feedback etc. If so, then it is preferable to name the branch accordingly. This can be done by either prefixing the name with ``wip-`` as in ‘Work In Progress’, or use hierarchical names like ``wip/..``, ``feature/..`` or ``topic/..``. Either way is fine as long as it is clear that it is work in progress and not ready for merge. This work can temporarily have a lower standard. However, to be merged into master it will have to go through the regular process outlined above, with Pull Request, review etc..
+#### Bug Fix
 
-Also, to facilitate both well-formed commits and working together, the ``wip`` and ``feature``/``topic`` identifiers also have special meaning.   Any branch labelled with ``wip`` is considered “git-unstable” and may be rebased and have its history rewritten.   Any branch with ``feature``/``topic`` in the name is considered “stable” enough for others to depend on when a group is working on a feature.
+Prefix your commit title with "SI-NNNN", where https://issues.scala-lang.org/browse/SI-NNNN tracks the bug you're fixing. We also recommend naming your branch after the JIRA ticket number.
 
-## Creating Commits And Writing Commit Messages
+Please make sure the JIRA ticket's fix version corresponds to the upcoming milestone for the branch your PR targets. The CI automation will automatically assign the milestone after you open the PR.
 
-Follow these guidelines when creating public commits and writing commit messages.
+#### Enhancement or New Feature
 
-1. If your work spans multiple local commits (for example; if you do safe point commits while working in a feature branch or work in a branch for long time doing merges/rebases etc.) then please do not commit it all but rewrite the history by squashing the commits into one large commit which is accompanied by a detailed commit message for (as discussed in the following sections). For more info, see the article: [Git Workflow](http://sandofsky.com/blog/git-workflow.html). Additionally, every commit should be able to be used in isolation-- that is, each commit must build and pass all tests.
-2. The first line should be a descriptive sentence about what the commit is doing. It should be possible to fully understand what the commit does by just reading this single line. It is **not ok** to only list the ticket number, type "minor fix" or similar. If the commit has a corresponding ticket, include a reference to the ticket number, prefixed with "SI-", at the beginning of the first line followed by the title of the ticket, assuming that it aptly and concisely summarizes the commit in a single line. If the commit is a small fix, then you are done. If not, go to 3.
-3. Following the single line description (ideally no more than 70 characters long) should be a blank line followed by an enumerated list with the details of the commit.
-4. Add keywords for your commit (depending on the degree of automation we reach, the list may change over time):
-    * ``Review by @githubuser`` - will notify the reviewer via GitHub. Everyone is encouraged to give feedback, however. (Remember that @-mentions will result in notifications also when pushing to a WIP branch, so please only include this in your commit message when you're ready for your pull request to be reviewed. Alternatively, you may request a review in the pull request's description.)
-    * ``Fix/Fixing/Fixes/Close/Closing/Refs #ticket`` - if you want to mark the ticket as fixed in the issue tracker (Assembla understands this).
-    * ``backport to _branch name_`` - if the fix needs to be cherry-picked to another branch (like 2.9.x, 2.10.x, etc)
+For longer-running development, likely required for this category of code contributions, we suggest you include "topic/" or "wip/" in your branch name, to indicate that this is work in progress, and that others should be prepared to rebase if they branch off your branch.
 
-Example:
+Any language change (including bug fixes) must be accompanied by the relevant updates to the spec, which lives in the same repository for this reason.
 
-    SI-4032 Implicit conversion visibility affected by presence of "this"
+A new language feature requires a SIP (Scala Improvement Process) proposal. For more details on submitting SIPs, see [how to submit a SIP](http://docs.scala-lang.org/sips/sip-submission.html).
 
-      - Details 1
-      - Details 2
-      - Details 3
+## Guidelines
 
-## The Scala Improvement Process
-A new language feature requires a SIP (Scala Improvement Process) proposal. Note that significant additions to the standard library are also considered candidates for a SIP proposal.
-For more details on submitting SIPs, see [how to submit a SIP](http://docs.scala-lang.org/sips/sip-submission.html).
+Here is some advice on how to craft a pull request with the best possible
+chance of being accepted.
+
+### Tests
+
+Bug fixes should include regression tests -- in the same commit as the fix.
+
+If testing isn't feasible, the commit message should explain why.
+
+New features and enhancements must be supported by a respectable test suite.
+
+Some characteristics of good tests:
+
+* includes comments: what is being tested and why?
+* be minimal, deterministic, stable (unaffected by irrelevant changes), easy to understand and review
+* have minimal dependencies: a compiler bug test should not depend on, e.g., the Scala library
+
+### Documentation
+
+This is of course required for new features and enhancements.
+
+Any API additions should include Scaladoc.
+
+Consider updating the package-level doc (in the package object), if appropriate.
+
+### Coding standards
+
+Please follow these standard code standards, though in moderation (scouts quickly learn to let sleeping dogs lie):
+
+* Don't violate [DRY](http://programmer.97things.oreilly.com/wiki/index.php/Don%27t_Repeat_Yourself).
+* Follow the [Boy Scout Rule](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule).
+
+Please also have a look at the [Scala Hacker Guide](http://www.scala-lang.org/contribute/hacker-guide.html) by @xeno-by.
+
+### Clean commits, clean history
+
+A pull request should consist of commits with messages that clearly state what problem the commit resolves and how.
+
+Commit logs should be stated in the active, present tense.
+
+A commit's subject should be 60 characters or less.  Overall, think of
+the first line of the commit as a description of the action performed
+by the commit on the code base, so use the active voice and the
+present tense.  That also makes the commit subjects easy to reuse in
+release notes.
+
+For a bugfix, the title must look like "SI-NNNN - don't crash when
+moon is in wrong phase".
+
+If a commit purely refactors and is not intended to change behaviour,
+say so.
+
+Backports should be tagged as "[backport]".
+
+When working on maintenance branches (e.g., 2.11.x), include "[nomerge]"
+if this commit should not be merged forward into the next release
+branch.
+
+Here is standard advice on good commit messages:
+http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+
+### Pass Scabot
+
+Our pull request bot, Scabot, automatically builds all the commits in a PR individually. (All, so we can `git bisect` later.)
+
+Click on the little x next to a commit sha to go to the overview of the PR validation job. To diagnose a failure, consult the console output of the job that failed.
+
+See the [scala-jenkins-infra repo](https://github.com/scala/scala-jenkins-infra) and [Scabot repo](https://github.com/) for full details on PR validation.  One tip you should know is that commenting `/rebuild` on a PR asks validation to be run again on the same commits. This is only necessary when a spurious failure occurred.
+
+### Pass code review
+
+Your PR will need to be assigned to one or more reviewers.  You can suggest reviewers yourself; if you're not sure, see the list in [README.md](README.md) or ask on scala-internals.
+
+To assign a reviewer, add a "review by @reviewer" to your PR description.
+
+NOTE: it's best not to @mention in commit messages, as github pings you every time a commit with your @name on it shuffles through the system (even in other repos, on merges,...).
+
+A reviewer gives the green light by commenting "LGTM" (looks good to me).
+
+A review feedback may be addressed by pushing new commits to the request, if these commits stand on their own.
+
+Once all these conditions are met, and we agree with the change (we are available on scala-internals to discuss this beforehand, before you put in the coding work!), we will merge your changes.

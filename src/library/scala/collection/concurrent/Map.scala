@@ -20,7 +20,7 @@ package collection.concurrent
  *  @tparam A  the key type of the map
  *  @tparam B  the value type of the map
  *
- *  @define Coll `ConcurrentMap`
+ *  @define Coll `concurrent.Map`
  *  @define coll concurrent map
  *  @define concurrentmapinfo
  *  This is a base trait for all Scala concurrent map implementations. It
@@ -49,7 +49,7 @@ trait Map[A, B] extends scala.collection.mutable.Map[A, B] {
   def putIfAbsent(k: A, v: B): Option[B]
 
   /**
-   * Removes the entry for the specified key if its currently mapped to the
+   * Removes the entry for the specified key if it's currently mapped to the
    * specified value.
    *
    * $atomicop

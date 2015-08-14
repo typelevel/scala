@@ -148,10 +148,6 @@ The selection $e.x$ is evaluated by first evaluating the qualifier
 expression $e$, which yields an object $r$, say. The selection's
 result is then the member of $r$ that is either defined by $m$ or defined
 by a definition overriding $m$.
-If that member has a type which
-conforms to `scala.NotNull`, the member's value must be initialized
-to a value different from `null`, otherwise a `scala.UnitializedError`
-is thrown.
 
 ## This and Super
 
@@ -205,7 +201,7 @@ to the type or method of $x$ in the parent trait of $C$ whose simple
 name is $T$. That member must be uniquely defined. If it is a method,
 it must be concrete.
 
-### Example
+###### Example
 Consider the following class definitions
 
 ```scala
@@ -410,6 +406,19 @@ The final result of the transformation is a block of the form
 }
 ```
 
+### Signature Polymorphic Methods
+
+For invocations of signature polymorphic methods of the target platform `$f$($e_1 , \ldots , e_m$)`,
+the invoked function has a different method type `($p_1$:$T_1 , \ldots , p_n$:$T_n$)$U$` at each call
+site. The parameter types `$T_ , \ldots , T_n$` are the types of the argument expressions
+`$e_1 , \ldots , e_m$` and `$U$` is the expected type at the call site. If the expected type is
+undefined then `$U$` is `scala.AnyRef`. The parameter names `$p_1 , \ldots , p_n$` are fresh.
+
+###### Note
+
+On the Java platform version 7 and later, the methods `invoke` and `invokeExact` in class
+`java.lang.invoke.MethodHandle` are signature polymorphic.
+
 ## Method Values
 
 ```ebnf
@@ -503,7 +512,7 @@ In the latter case, the concrete self type of the expression is the
 compound type `$T$ with $x$.type`.
 
 The expression is evaluated by creating a fresh
-object of type $T$ which is is initialized by evaluating $c$. The
+object of type $T$ which is initialized by evaluating $c$. The
 type of the expression is $T$.
 
 A general instance creation expression is of the form
@@ -666,7 +675,7 @@ followed by operators starting with ``|`', etc.
 
 There's one exception to this rule, which concerns
 [_assignment operators_](#assignment-operators).
-The precedence of an assigment operator is the same as the one
+The precedence of an assignment operator is the same as the one
 of simple assignment `(=)`. That is, it is lower than the
 precedence of any other operator.
 
@@ -765,7 +774,7 @@ Expr1              ::=  PostfixExpr `:' Annotation {Annotation}
 ```
 
 An annotated expression `$e$: @$a_1$ $\ldots$ @$a_n$`
-attaches [annotations](11-user-defined-annotations.html#user-defined-annotations) $a_1 , \ldots , a_n$ to the
+attaches [annotations](11-annotations.html#user-defined-annotations) $a_1 , \ldots , a_n$ to the
 expression $e$.
 
 ## Assignments
@@ -802,7 +811,7 @@ Here are some assignment expressions and their equivalent expansions.
 |`x.f(i) = e`              | `x.f.update(i, e)`   |
 |`x.f(i, j) = e`           | `x.f.update(i, j, e)`|
 
-### Example Imperative Matrix Multiplication
+###### Example Imperative Matrix Multiplication
 
 Here is the usual imperative code for matrix multiplication.
 
@@ -1109,7 +1118,7 @@ is `scala.Nothing`.
 ## Try Expressions
 
 ```ebnf
-Expr1 ::=  `try' `{' Block `}' [`catch' `{' CaseClauses `}']
+Expr1 ::=  `try' (`{' Block `}' | Expr) [`catch' `{' CaseClauses `}']
            [`finally' Expr]
 ```
 
@@ -1208,9 +1217,9 @@ In that case, a fresh name for the parameter is chosen arbitrarily.
 
 A named parameter of an anonymous function may be optionally preceded
 by an `implicit` modifier. In that case the parameter is
-labeled [`implicit`](07-implicit-parameters-and-views.html#implicit-parameters-and-views); however the
+labeled [`implicit`](07-implicits.html#implicit-parameters-and-views); however the
 parameter section itself does not count as an implicit parameter
-section in the sense defined [here](07-implicit-parameters-and-views.html#implicit-parameters). Hence, arguments to
+section in the sense defined [here](07-implicits.html#implicit-parameters). Hence, arguments to
 anonymous functions always have to be given explicitly.
 
 ###### Example
@@ -1328,7 +1337,7 @@ available implicit conversions are given in the next two sub-sections.
 
 We say, a type $T$ is _compatible_ to a type $U$ if $T$ weakly conforms
 to $U$ after applying [eta-expansion](#eta-expansion) and
-[view applications](07-implicit-parameters-and-views.html#views).
+[view applications](07-implicits.html#views).
 
 ### Value Conversions
 
@@ -1376,7 +1385,7 @@ term `{ $e$; () }`.
 ###### View Application
 If none of the previous conversions applies, and $e$'s type
 does not conform to the expected type $\mathit{pt}$, it is attempted to convert
-$e$ to the expected type with a [view](07-implicit-parameters-and-views.html#views).
+$e$ to the expected type with a [view](07-implicits.html#views).
 
 ###### Dynamic Member Selection
 If none of the previous conversions applies, and $e$ is a prefix
@@ -1395,7 +1404,7 @@ type $T$ by evaluating the expression to which $m$ is bound.
 
 ###### Implicit Application
 If the method takes only implicit parameters, implicit
-arguments are passed following the rules [here](07-implicit-parameters-and-views.html#implicit-parameters).
+arguments are passed following the rules [here](07-implicits.html#implicit-parameters).
 
 ###### Eta Expansion
 Otherwise, if the method is not a constructor,
@@ -1761,7 +1770,7 @@ trait Dynamic {
 ```
 
 Assume a selection of the form $e.x$ where the type of $e$ conforms to `scala.Dynamic`.
-Further assuming the selection is not followed by any function arguments, such an expression can be rewitten under the conditions given [here](#implicit-conversions) to:
+Further assuming the selection is not followed by any function arguments, such an expression can be rewritten under the conditions given [here](#implicit-conversions) to:
 
 ```scala
 $e$.applyDynamic("$x$")

@@ -13,7 +13,7 @@ import scala.collection.{ mutable, immutable }
 import mutable.{ ListBuffer, StringBuilder }
 import scala.reflect.internal.{ Precedence, ModifierFlags => Flags }
 import scala.reflect.internal.Chars.{ isScalaLetter }
-import scala.reflect.internal.util.{ SourceFile, Position, FreshNameCreator }
+import scala.reflect.internal.util.{ SourceFile, Position, FreshNameCreator, ListOfNil }
 import Tokens._
 
 /** Historical note: JavaParsers started life as a direct copy of Parsers
@@ -1296,7 +1296,7 @@ self =>
         atPos(start) { Apply(t3, exprsBuf.toList) }
       }
       if (inPattern) stringCheese
-      else withPlaceholders(stringCheese, isAny = true) // strinterpolator params are Any* by definition
+      else withPlaceholders(stringCheese, isAny = true) // string interpolator params are Any* by definition
     }
 
 /* ------------- NEW LINES ------------------------------------------------- */
@@ -1596,7 +1596,7 @@ self =>
     }
 
     /** {{{
-     *  PrefixExpr   ::= [`-' | `+' | `~' | `!' | `&'] SimpleExpr
+     *  PrefixExpr   ::= [`-' | `+' | `~' | `!'] SimpleExpr
      *  }}}
      */
     def prefixExpr(): Tree = {
@@ -2825,7 +2825,7 @@ self =>
      */
     def packageObjectDef(start: Offset): PackageDef = {
       val defn   = objectDef(in.offset, NoMods)
-      val pidPos = o2p(defn.pos.startOrPoint)
+      val pidPos = o2p(defn.pos.start)
       val pkgPos = r2p(start, pidPos.point)
       gen.mkPackageObject(defn, pidPos, pkgPos)
     }

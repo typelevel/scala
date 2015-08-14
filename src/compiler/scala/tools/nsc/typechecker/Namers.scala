@@ -10,6 +10,7 @@ import scala.collection.mutable
 import scala.annotation.tailrec
 import symtab.Flags._
 import scala.language.postfixOps
+import scala.reflect.internal.util.ListOfNil
 
 /** This trait declares methods to create symbols and to enter them into scopes.
  *
@@ -144,8 +145,8 @@ trait Namers extends MethodSynthesis {
         // while Scala's enum constants live directly in the class.
         // We don't check for clazz.superClass == JavaEnumClass, because this causes a illegal
         // cyclic reference error. See the commit message for details.
-        if (context.unit.isJava) owner.companionClass.hasEnumFlag else owner.hasEnumFlag
-      vd.mods.hasAllFlags(ENUM | STABLE | STATIC) && ownerHasEnumFlag
+        if (context.unit.isJava) owner.companionClass.hasJavaEnumFlag else owner.hasJavaEnumFlag
+      vd.mods.hasAllFlags(JAVA_ENUM | STABLE | STATIC) && ownerHasEnumFlag
     }
 
     def setPrivateWithin[T <: Symbol](tree: Tree, sym: T, mods: Modifiers): T =
@@ -171,7 +172,7 @@ trait Namers extends MethodSynthesis {
       val newFlags = (sym.flags & LOCKED) | flags
       sym.rawInfo match {
         case tr: TypeRef =>
-          // !!! needed for: pos/t5954d; the uniques type cache will happilly serve up the same TypeRef
+          // !!! needed for: pos/t5954d; the uniques type cache will happily serve up the same TypeRef
           // over this mutated symbol, and we witness a stale cache for `parents`.
           tr.invalidateCaches()
         case _ =>
@@ -203,7 +204,7 @@ trait Namers extends MethodSynthesis {
     }
 
     // FIXME - this logic needs to be thoroughly explained
-    // and justified.  I know it's wrong with repect to package
+    // and justified.  I know it's wrong with respect to package
     // objects, but I think it's also wrong in other ways.
     protected def conflict(newS: Symbol, oldS: Symbol) = (
        (   !oldS.isSourceMethod
@@ -464,7 +465,7 @@ trait Namers extends MethodSynthesis {
     def enterModuleSymbol(tree : ModuleDef): Symbol = {
       var m: Symbol = context.scope lookupModule tree.name
       val moduleFlags = tree.mods.flags | MODULE
-      if (m.isModule && !m.isPackage && inCurrentScope(m) && (currentRun.canRedefine(m) || m.isSynthetic)) {
+      if (m.isModule && !m.hasPackageFlag && inCurrentScope(m) && (currentRun.canRedefine(m) || m.isSynthetic)) {
         // This code accounts for the way the package objects found in the classpath are opened up
         // early by the completer of the package itself. If the `packageobjects` phase then finds
         // the same package object in sources, we have to clean the slate and remove package object
@@ -487,7 +488,7 @@ trait Namers extends MethodSynthesis {
         m.moduleClass setFlag moduleClassFlags(moduleFlags)
         setPrivateWithin(tree, m.moduleClass)
       }
-      if (m.isTopLevel && !m.isPackage) {
+      if (m.isTopLevel && !m.hasPackageFlag) {
         m.moduleClass.associatedFile = contextFile
         currentRun.symSource(m) = m.moduleClass.sourceFile
         registerTopLevelSym(m)
@@ -584,7 +585,7 @@ trait Namers extends MethodSynthesis {
           // more than one hidden name, the second will not be warned.
           // So it is the position of the actual hidden name.
           //
-          // Note: java imports have precence over definitions in the same package
+          // Note: java imports have precedence over definitions in the same package
           //       so don't warn for them. There is a corresponding special treatment
           //       in the shadowing rules in typedIdent to (SI-7232). In any case,
           //       we shouldn't be emitting warnings for .java source files.
@@ -890,10 +891,12 @@ trait Namers extends MethodSynthesis {
               || refersToSymbolLessAccessibleThan(tpe, sym)
              )
         )
+      dropIllegalStarTypes(
         if (shouldWiden) tpe.widen
         else if (sym.isFinal) tpe    // "final val" allowed to retain constant type
         else tpe.deconst
-      }
+      )
+    }
 
     /** Computes the type of the body in a ValDef or DefDef, and
      *  assigns the type to the tpt's node.  Returns the type.
@@ -1130,7 +1133,7 @@ trait Namers extends MethodSynthesis {
        * As a first side effect, this method assigns a MethodType constructed using this
        * return type to `meth`. This allows omitting the result type for recursive methods.
        *
-       * As another side effect, this method also assigns paramter types from the overridden
+       * As another side effect, this method also assigns parameter types from the overridden
        * method to parameters of `meth` that have missing types (the parser accepts missing
        * parameter types under -Yinfer-argument-types).
        */
@@ -1149,7 +1152,7 @@ trait Namers extends MethodSynthesis {
             for (vparam <- vparams) {
               if (vparam.tpt.isEmpty) {
                 val overriddenParamTp = overriddenParams.head.tpe
-                // references to type parameteres in overriddenParamTp link to the type skolems, so the
+                // references to type parameters in overriddenParamTp link to the type skolems, so the
                 // assigned type is consistent with the other / existing parameter types in vparamSymss.
                 vparam.symbol setInfo overriddenParamTp
                 vparam.tpt defineType overriddenParamTp setPos vparam.pos.focus
@@ -1330,7 +1333,7 @@ trait Namers extends MethodSynthesis {
                   // by martin: the null case can happen in IDE; this is really an ugly hack on top of an ugly hack but it seems to work
                   case Some(cda) =>
                     if (cda.companionModuleClassNamer == null) {
-                      debugwarn(s"SI-6576 The companion module namer for $meth was unexpectedly null")
+                      devWarning(s"SI-6576 The companion module namer for $meth was unexpectedly null")
                       return
                     }
                     val p = (cda.classWithDefault, cda.companionModuleClassNamer)

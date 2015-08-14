@@ -4,18 +4,17 @@
  */
 
 
-package scala
-package tools.nsc
+package scala.tools.nsc
 package backend
 package jvm
 
 import scala.collection.{ mutable, immutable }
+import scala.tools.nsc.backend.jvm.opt.ByteCodeRepository
 import scala.tools.nsc.symtab._
-import scala.annotation.switch
 
 import scala.tools.asm
-import scala.tools.asm.util.{TraceMethodVisitor, ASMifier}
-import java.io.PrintWriter
+import GenBCode._
+import BackendReporting._
 
 /*
  *
@@ -69,6 +68,8 @@ abstract class BCodeSkelBuilder extends BCodeHelpers {
     var isCZStaticModule           = false
     var isCZRemote                 = false
 
+    protected val indyLambdaHosts = collection.mutable.Set[Symbol]()
+
     /* ---------------- idiomatic way to ask questions to typer ---------------- */
 
     def paramTKs(app: Apply): List[BType] = {
@@ -89,7 +90,7 @@ abstract class BCodeSkelBuilder extends BCodeHelpers {
 
     override def getCurrentCUnit(): CompilationUnit = { cunit }
 
-    /* ---------------- helper utils for generating classes and fiels ---------------- */
+    /* ---------------- helper utils for generating classes and fields ---------------- */
 
     def genPlainClass(cd: ClassDef) {
       assert(cnode == null, "GenBCode detected nested methods.")
@@ -100,6 +101,8 @@ abstract class BCodeSkelBuilder extends BCodeHelpers {
       isCZStaticModule  = isStaticModuleClass(claszSymbol)
       isCZRemote        = isRemote(claszSymbol)
       thisName          = internalName(claszSymbol)
+
+      val classBType = classBTypeFromSymbol(claszSymbol)
 
       cnode = new asm.tree.ClassNode()
 
@@ -118,16 +121,31 @@ abstract class BCodeSkelBuilder extends BCodeHelpers {
 
       addClassFields()
 
-      innerClassBufferASM ++= classBTypeFromSymbol(claszSymbol).info.memberClasses
+      innerClassBufferASM ++= classBType.info.get.nestedClasses
       gen(cd.impl)
+
+
+      val shouldAddLambdaDeserialize = (
+        settings.target.value == "jvm-1.8"
+          && settings.Ydelambdafy.value == "method"
+          && indyLambdaHosts.contains(claszSymbol))
+
+      if (shouldAddLambdaDeserialize)
+        addLambdaDeserialize(claszSymbol, cnode)
+
       addInnerClassesASM(cnode, innerClassBufferASM.toList)
+
+      cnode.visitAttribute(classBType.inlineInfoAttribute.get)
 
       if (AsmUtils.traceClassEnabled && cnode.name.contains(AsmUtils.traceClassPattern))
         AsmUtils.traceClass(cnode)
 
-      cnode.innerClasses
-      assert(cd.symbol == claszSymbol, "Someone messed up BCodePhase.claszSymbol during genPlainClass().")
+      if (settings.YoptAddToBytecodeRepository) {
+        // The inliner needs to find all classes in the code repo, also those being compiled
+        byteCodeRepository.add(cnode, ByteCodeRepository.CompilationUnit)
+      }
 
+      assert(cd.symbol == claszSymbol, "Someone messed up BCodePhase.claszSymbol during genPlainClass().")
     } // end of method genPlainClass()
 
     /*
@@ -135,11 +153,11 @@ abstract class BCodeSkelBuilder extends BCodeHelpers {
      */
     private def initJClass(jclass: asm.ClassVisitor) {
 
-      val ps = claszSymbol.info.parents
-      val superClass: String = if (ps.isEmpty) ObjectReference.internalName else internalName(ps.head.typeSymbol)
-      val interfaceNames = classBTypeFromSymbol(claszSymbol).info.interfaces map {
+      val bType = classBTypeFromSymbol(claszSymbol)
+      val superClass = bType.info.get.superClass.getOrElse(ObjectReference).internalName
+      val interfaceNames = bType.info.get.interfaces map {
         case classBType =>
-          if (classBType.isNestedClass) { innerClassBufferASM += classBType }
+          if (classBType.isNestedClass.get) { innerClassBufferASM += classBType }
           classBType.internalName
       }
 
@@ -425,7 +443,7 @@ abstract class BCodeSkelBuilder extends BCodeHelpers {
      *        which rethrows the caught exception once it's done with the cleanup code.
      *
      *  A particular cleanup may in general contain LabelDefs. Care is needed when duplicating such jump-targets,
-     *  so as to preserve agreement wit the (also duplicated) jump-sources.
+     *  so as to preserve agreement with the (also duplicated) jump-sources.
      *  This is achieved based on the bookkeeping provided by two maps:
      *    - `labelDefsAtOrUnder` lists all LabelDefs enclosed by a given Tree node (the key)
      *    - `labelDef` provides the LabelDef node whose symbol is used as key.

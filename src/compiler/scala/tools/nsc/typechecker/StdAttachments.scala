@@ -61,7 +61,7 @@ trait StdAttachments {
     val metadata = MacroExpansionAttachment(expandee, expanded)
     expandee updateAttachment metadata
     expanded match {
-      case expanded: Tree => expanded updateAttachment metadata
+      case expanded: Tree if !expanded.isEmpty => expanded updateAttachment metadata
       case _ => // do nothing
     }
   }
@@ -132,7 +132,7 @@ trait StdAttachments {
   /** Marks the tree as a macro impl reference, which is a naked reference to a method.
    *
    *  This is necessary for typechecking macro impl references (see `DefaultMacroCompiler.defaultResolveMacroImpl`),
-   *  because otherwise typing a naked reference will result in the "follow this method with `_' if you want to
+   *  because otherwise typing a naked reference will result in the "follow this method with `_` if you want to
    *  treat it as a partially applied function" errors.
    *
    *  This mark suppresses adapt except for when the annottee is a macro application.

@@ -15,7 +15,7 @@ import immutable.{List, Nil, ::}
 import java.io._
 import scala.annotation.migration
 
-/** A `Buffer` implementation back up by a list. It provides constant time
+/** A `Buffer` implementation backed by a list. It provides constant time
  *  prepend and append. Most other operations are linear.
  *
  *  @author  Matthias Zenger
@@ -132,7 +132,7 @@ final class ListBuffer[A]
    *
    *  @param n  the index of the element to replace.
    *  @param x  the new element.
-   *  @throws Predef.IndexOutOfBoundsException if `n` is out of bounds.
+   *  @throws IndexOutOfBoundsException if `n` is out of bounds.
    */
   def update(n: Int, x: A) {
     // We check the bounds early, so that we don't trigger copying.
@@ -217,7 +217,7 @@ final class ListBuffer[A]
    *
    *  @param  n     the index where a new element will be inserted.
    *  @param  seq   the iterable object providing all elements to insert.
-   *  @throws Predef.IndexOutOfBoundsException if `n` is out of bounds.
+   *  @throws IndexOutOfBoundsException if `n` is out of bounds.
    */
   def insertAll(n: Int, seq: Traversable[A]) {
     // We check the bounds early, so that we don't trigger copying.
@@ -330,7 +330,7 @@ final class ListBuffer[A]
    *  @param  n  the index which refers to the element to delete.
    *  @return n  the element that was formerly at position `n`.
    *  @note      an element must exists at position `n`.
-   *  @throws Predef.IndexOutOfBoundsException if `n` is out of bounds.
+   *  @throws IndexOutOfBoundsException if `n` is out of bounds.
    */
   def remove(n: Int): A = {
     if (n < 0 || n >= len) throw new IndexOutOfBoundsException(n.toString())

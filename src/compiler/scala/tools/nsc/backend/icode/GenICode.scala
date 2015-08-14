@@ -876,13 +876,20 @@ abstract class GenICode extends SubComponent {
                 genLoadModule(ctx, tree)
                 generatedType = toTypeKind(sym.info)
               } else {
-                try {
-                  val Some(l) = ctx.method.lookupLocal(sym)
-                  ctx.bb.emit(LOAD_LOCAL(l), tree.pos)
-                  generatedType = l.kind
-                } catch {
-                  case ex: MatchError =>
-                    abort("symbol " + sym + " does not exist in " + ctx.method)
+                ctx.method.lookupLocal(sym) match {
+                  case Some(l) =>
+                    ctx.bb.emit(LOAD_LOCAL(l), tree.pos)
+                    generatedType = l.kind
+                  case None =>
+                    val saved = settings.uniqid
+                    settings.uniqid.value = true
+                    try {
+                      val methodCode = unit.body.collect { case dd: DefDef
+                        if dd.symbol == ctx.method.symbol => showCode(dd);
+                      }.headOption.getOrElse("<unknown>")
+                      abort(s"symbol $sym does not exist in ${ctx.method}, which contains locals ${ctx.method.locals.mkString(",")}. \nMethod code: $methodCode")
+                    }
+                    finally settings.uniqid.value = saved
                 }
               }
             }
@@ -1015,7 +1022,7 @@ abstract class GenICode extends SubComponent {
         tree match {
           case Literal(Constant(null)) if generatedType == NullReference && expectedType != UNIT =>
             // literal null on the stack (as opposed to a boxed null, see SI-8233),
-            // we can bypass `adapt` which would otherwise emitt a redundant [DROP, CONSTANT(null)]
+            // we can bypass `adapt` which would otherwise emit a redundant [DROP, CONSTANT(null)]
             // except one case: when expected type is UNIT (unboxed) where we need to emit just a DROP
           case _ =>
             adapt(generatedType, expectedType, resCtx, tree.pos)
@@ -1077,7 +1084,7 @@ abstract class GenICode extends SubComponent {
           ()
         case (_, UNIT) =>
           ctx.bb.emit(DROP(from), pos)
-        // otherwise we'd better be doing a primtive -> primitive coercion or there's a problem
+        // otherwise we'd better be doing a primitive -> primitive coercion or there's a problem
         case _ if !from.isRefOrArrayType && !to.isRefOrArrayType =>
           coerce(from, to)
         case _ =>
@@ -1495,7 +1502,7 @@ abstract class GenICode extends SubComponent {
           if (!settings.optimise) {
             if (l.tpe <:< BoxedNumberClass.tpe) {
               if (r.tpe <:< BoxedNumberClass.tpe) platform.externalEqualsNumNum
-              else if (r.tpe <:< BoxedCharacterClass.tpe) platform.externalEqualsNumChar
+              else if (r.tpe <:< BoxedCharacterClass.tpe) platform.externalEqualsNumObject // will be externalEqualsNumChar in 2.12, SI-9030
               else platform.externalEqualsNumObject
             } else platform.externalEquals
           } else {
@@ -2101,7 +2108,7 @@ abstract class GenICode extends SubComponent {
     /**
      * Represent a label in the current method code. In order
      * to support forward jumps, labels can be created without
-     * having a deisgnated target block. They can later be attached
+     * having a designated target block. They can later be attached
      * by calling `anchor`.
      */
     class Label(val symbol: Symbol) {

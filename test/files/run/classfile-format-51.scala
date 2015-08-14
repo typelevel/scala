@@ -12,9 +12,9 @@ import Opcodes._
 // it runs a normal compile on the source in the 'code' field that refers to
 // DynamicInvoker. Any failure will be dumped to std out.
 //
-// By it's nature the test can only work on JDK 7+ because under JDK 6 some of the
+// By its nature the test can only work on JDK 7+ because under JDK 6 some of the
 // classes referred to by DynamicInvoker won't be available and DynamicInvoker won't
-// verify. So the test includes a version check that short-circuites the whole test
+// verify. So the test includes a version check that short-circuits the whole test
 // on JDK 6
 object Test extends DirectTest {
   override def extraSettings: String = "-optimise -usejavacp -d " + testOutput.path + " -cp " + testOutput.path

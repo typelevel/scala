@@ -1,12 +1,10 @@
-Type in expressions to have them evaluated.
-Type :help for more information.
 
 scala> def foo[T]{
   import scala.reflect.runtime.universe._
   val tt = implicitly[WeakTypeTag[List[T]]]
   println(tt)
 }
-<console>:9: free type: Ident(TypeName("T")) defined by foo in <console>:7:16
+<console>:13: free type: Ident(TypeName("T")) defined by foo in <console>:11:16
          val tt = implicitly[WeakTypeTag[List[T]]]
                             ^
 foo: [T]=> Unit

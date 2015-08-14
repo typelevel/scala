@@ -268,7 +268,7 @@ trait GenTraversableOnce[+A] extends Any {
    *             op(x_1, op(x_2, ..., op(x_{n-1}, x_n)...))
    *           }}}
    *           where `x,,1,,, ..., x,,n,,` are the elements of this $coll.
-   *  @throws `UnsupportedOperationException` if this $coll is empty.
+   *  @throws UnsupportedOperationException if this $coll is empty.
    */
   def reduceRight[B >: A](op: (A, B) => B): B
 
@@ -278,7 +278,7 @@ trait GenTraversableOnce[+A] extends Any {
    *
    *  @param  op    the binary operator.
    *  @tparam  B    the result type of the binary operator.
-   *  @return  an option value containing the result of `reduceLeft(op)` is this $coll is nonempty,
+   *  @return  an option value containing the result of `reduceLeft(op)` if this $coll is nonempty,
    *           `None` otherwise.
    */
   def reduceLeftOption[B >: A](op: (B, A) => B): Option[B]
@@ -290,7 +290,7 @@ trait GenTraversableOnce[+A] extends Any {
    *
    *  @param  op    the binary operator.
    *  @tparam  B    the result type of the binary operator.
-   *  @return  an option value containing the result of `reduceRight(op)` is this $coll is nonempty,
+   *  @return  an option value containing the result of `reduceRight(op)` if this $coll is nonempty,
    *           `None` otherwise.
    */
   def reduceRightOption[B >: A](op: (A, B) => B): Option[B]

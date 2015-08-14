@@ -332,13 +332,13 @@ abstract class TypeFlowAnalysis {
     `remainingCALLs` also caches info about the typestack just before the callsite, so as to spare computing them again at inlining time.
 
     Besides caching, a further optimization involves skipping those basic blocks whose in-flow and out-flow isn't needed anyway (as explained next).
-    A basic block lacking a callsite in `remainingCALLs`, when visisted by the standard algorithm, won't cause any inlining.
+    A basic block lacking a callsite in `remainingCALLs`, when visited by the standard algorithm, won't cause any inlining.
     But as we know from the way type-flows are computed, computing the in- and out-flow for a basic block relies in general on those of other basic blocks.
     In detail, we want to focus on that sub-graph of the CFG such that control flow may reach a remaining candidate callsite.
     Those basic blocks not in that subgraph can be skipped altogether. That's why:
        - `forwardAnalysis()` in `MTFAGrowable` now checks for inclusion of a basic block in `relevantBBs`
        - same check is performed before adding a block to the worklist, and as part of choosing successors.
-    The bookkeeping supporting on-the-fly pruning of irrelevant blocks requires overridding most methods of the dataflow-analysis.
+    The bookkeeping supporting on-the-fly pruning of irrelevant blocks requires overriding most methods of the dataflow-analysis.
 
     The rest of the story takes place in Inliner, which does not visit all of the method's basic blocks but only on those represented in `remainingCALLs`.
 
@@ -387,7 +387,7 @@ abstract class TypeFlowAnalysis {
 
       Moreover, it's often the case that the last CALL_METHOD of interest ("of interest" equates to "being tracked in `isOnWatchlist`) isn't the last instruction on the block.
       There are cases where the typeflows computed past this `lastInstruction` are needed, and cases when they aren't.
-      The reasoning behind this decsision is described in `populatePerimeter()`. All `blockTransfer()` needs to do (in order to know at which instruction it can stop)
+      The reasoning behind this decision is described in `populatePerimeter()`. All `blockTransfer()` needs to do (in order to know at which instruction it can stop)
       is querying `isOnPerimeter`.
 
       Upon visiting a CALL_METHOD that's an inlining candidate, the relevant pieces of information about the pre-instruction typestack are collected for future use.
@@ -572,7 +572,7 @@ abstract class TypeFlowAnalysis {
 
         - `inlined` : These blocks were spliced into the method's CFG as part of inlining. Being new blocks, they haven't been visited yet by the typeflow analysis.
 
-        - `staleIn` : These blocks are what `doInline()` calls `afterBlock`s, ie the new home for instructions that previously appearead
+        - `staleIn` : These blocks are what `doInline()` calls `afterBlock`s, ie the new home for instructions that previously appeared
                       after a callsite in a `staleOut` block.
 
       Based on the above information, we have to bring up-to-date the caches that `forwardAnalysis` and `blockTransfer` use to skip blocks and instructions.

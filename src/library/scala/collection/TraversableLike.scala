@@ -54,7 +54,7 @@ import scala.language.higherKinds
  *  `HashMap` of objects. The traversal order for hash maps will
  *  depend on the hash codes of its elements, and these hash codes might
  *  differ from one run to the next. By contrast, a `LinkedHashMap`
- *  is ordered because it's `foreach` method visits elements in the
+ *  is ordered because its `foreach` method visits elements in the
  *  order they were inserted into the `HashMap`.
  *
  *  @author Martin Odersky
@@ -419,7 +419,7 @@ trait TraversableLike[+A, +Repr] extends Any
   /** Selects the first element of this $coll.
    *  $orderDependent
    *  @return  the first element of this $coll.
-   *  @throws `NoSuchElementException` if the $coll is empty.
+   *  @throws NoSuchElementException if the $coll is empty.
    */
   def head: A = {
     var result: () => A = () => throw new NoSuchElementException
@@ -473,7 +473,7 @@ trait TraversableLike[+A, +Repr] extends Any
    *  $orderDependent
    *  @return  a $coll consisting of all elements of this $coll
    *           except the last one.
-   *  @throws `UnsupportedOperationException` if the $coll is empty.
+   *  @throws UnsupportedOperationException if the $coll is empty.
    */
   def init: Repr = {
     if (isEmpty) throw new UnsupportedOperationException("empty.init")

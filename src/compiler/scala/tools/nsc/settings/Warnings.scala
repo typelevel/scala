@@ -23,15 +23,16 @@ trait Warnings {
   val warnValueDiscard     = BooleanSetting("-Ywarn-value-discard", "Warn when non-Unit expression results are unused.")
   val warnNumericWiden     = BooleanSetting("-Ywarn-numeric-widen", "Warn when numerics are widened.")
   // SI-7712, SI-7707 warnUnused not quite ready for prime-time
-  val warnUnused           = BooleanSetting("-Ywarn-unused", "Warn when local and private vals, vars, defs, and types are are unused.")
+  val warnUnused           = BooleanSetting("-Ywarn-unused", "Warn when local and private vals, vars, defs, and types are unused.")
   // currently considered too noisy for general use
   val warnUnusedImport     = BooleanSetting("-Ywarn-unused-import", "Warn when imports are unused.")
 
   // Experimental lint warnings that are turned off, but which could be turned on programmatically.
-  // These warnings are said to blind those who dare enable them.
-  // They are not activated by -Xlint and can't be enabled on the command line.
-  val warnValueOverrides = { // currently turned off as experimental. creaded using constructor (new BS), so not available on the command line.
-  val flag = new BooleanSetting("value-overrides", "Generated value class method overrides an implementation")
+  // They are not activated by -Xlint and can't be enabled on the command line because they are not
+  // created using the standard factory methods.
+
+  val warnValueOverrides = {
+    val flag = new BooleanSetting("value-overrides", "Generated value class method overrides an implementation.")
     flag.value = false
     flag
   }
@@ -53,10 +54,11 @@ trait Warnings {
     val TypeParameterShadow    = LintWarning("type-parameter-shadow",     "A local type parameter shadows a type already in scope.")
     val PolyImplicitOverload   = LintWarning("poly-implicit-overload",    "Parameterized overloaded implicit methods are not visible as view bounds.")
     val OptionImplicit         = LintWarning("option-implicit",           "Option.apply used implicit view.")
-    val DelayedInitSelect      = LintWarning("delayedinit-select",        "Selecting member of DelayedInit")
+    val DelayedInitSelect      = LintWarning("delayedinit-select",        "Selecting member of DelayedInit.")
     val ByNameRightAssociative = LintWarning("by-name-right-associative", "By-name parameter of right associative operator.")
     val PackageObjectClasses   = LintWarning("package-object-classes",    "Class or object defined in package object.")
     val UnsoundMatch           = LintWarning("unsound-match",             "Pattern match may not be typesafe.")
+    val StarsAlign             = LintWarning("stars-align",               "Pattern sequence wildcard must align with sequence component.")
 
     def allLintWarnings = values.toSeq.asInstanceOf[Seq[LintWarning]]
   }
@@ -77,6 +79,7 @@ trait Warnings {
   def warnByNameRightAssociative = lint contains ByNameRightAssociative
   def warnPackageObjectClasses   = lint contains PackageObjectClasses
   def warnUnsoundMatch           = lint contains UnsoundMatch
+  def warnStarsAlign             = lint contains StarsAlign
 
   // Lint warnings that are currently -Y, but deprecated in that usage
   @deprecated("Use warnAdaptedArgs", since="2.11.2")

@@ -18,7 +18,7 @@ import scala.annotation.tailrec
  *
  * With some more work it could be extended to
  * - cache stable values (final fields, modules) in locals
- * - replace the copy propagation in ClosureElilmination
+ * - replace the copy propagation in ClosureElimination
  * - fold constants
  * - eliminate unnecessary stores and loads
  * - propagate knowledge gathered from conditionals for further optimization
@@ -170,9 +170,11 @@ abstract class ConstantOptimization extends SubComponent {
         // out all the possibilities
         case Impossible(possible2) => (possible -- possible2).nonEmpty
       })
-      def mightNotEqual(other: Contents): Boolean = (this ne other) && (other match {
-        // two Possibles might not be equal if either has possible members that the other doesn't
-        case Possible(possible2) => (possible -- possible2).nonEmpty || (possible2 -- possible).nonEmpty
+      def mightNotEqual(other: Contents): Boolean = (other match {
+        case Possible(possible2) =>
+          // two Possibles must equal if each is known to be of the same, single value
+          val mustEqual = possible.size == 1 && possible == possible2
+          !mustEqual
         case Impossible(_) => true
       })
     }
@@ -437,7 +439,7 @@ abstract class ConstantOptimization extends SubComponent {
         // TODO if we do all that we need to be careful in the
         // case that success and failure are the same target block
         // because we're using a Map and don't want one possible state to clobber the other
-        // alternative mayb we should just replace the conditional with a jump if both targets are the same
+        // alternative maybe we should just replace the conditional with a jump if both targets are the same
 
         def mightEqual = val1 mightEqual val2
         def mightNotEqual = val1 mightNotEqual val2

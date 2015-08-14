@@ -80,6 +80,7 @@ import java.io._
  *  @define mayNotTerminateInf
  *  @define willNotTerminateInf
  */
+@SerialVersionUID(-6084104484083858598L) // value computed by serialver for 2.11.2, annotation added in 2.11.4
 sealed abstract class List[+A] extends AbstractSeq[A]
                                   with LinearSeq[A]
                                   with Product
@@ -323,7 +324,7 @@ sealed abstract class List[+A] extends AbstractSeq[A]
         var h: ::[B] = null
         var t: ::[B] = null
         while (rest ne Nil) {
-          f(rest.head).foreach{ b =>
+          f(rest.head).seq.foreach{ b =>
             if (!found) {
               h = new ::(b, Nil)
               t = h
@@ -427,13 +428,14 @@ case object Nil extends List[Nothing] {
 }
 
 /** A non empty list characterized by a head and a tail.
- *  @param hd   the first element of the list
+ *  @param head the first element of the list
  *  @param tl   the list containing the remaining elements of this list after the first one.
  *  @tparam B   the type of the list elements.
  *  @author  Martin Odersky
  *  @version 1.0, 15/07/2003
  *  @since   2.8
  */
+@SerialVersionUID(509929039250432923L) // value computed by serialver for 2.11.2, annotation added in 2.11.4
 final case class ::[B](override val head: B, private[scala] var tl: List[B]) extends List[B] {
   override def tail : List[B] = tl
   override def isEmpty: Boolean = false
@@ -460,6 +462,7 @@ object List extends SeqFactory[List] {
   private class SerializationProxy[A](@transient private var orig: List[A]) extends Serializable {
 
     private def writeObject(out: ObjectOutputStream) {
+      out.defaultWriteObject()
       var xs: List[A] = orig
       while (!xs.isEmpty) {
         out.writeObject(xs.head)
@@ -471,6 +474,7 @@ object List extends SeqFactory[List] {
     // Java serialization calls this before readResolve during de-serialization.
     // Read the whole list and store it in `orig`.
     private def readObject(in: ObjectInputStream) {
+      in.defaultReadObject()
       val builder = List.newBuilder[A]
       while (true) in.readObject match {
         case ListSerializeEnd =>

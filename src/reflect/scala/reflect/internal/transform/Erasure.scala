@@ -90,7 +90,7 @@ trait Erasure {
     }
   }
 
-  /** Does this vakue class have an underlying type that's a type parameter of
+  /** Does this value class have an underlying type that's a type parameter of
    *  the class itself?
    *  This method needs to be called at a phase no later than erasurephase
    */
@@ -254,6 +254,8 @@ trait Erasure {
     def mergeParents(parents: List[Type]): Type =
       if (parents.isEmpty) ObjectTpe
       else parents.head
+
+    override protected def eraseDerivedValueClassRef(tref: TypeRef): Type = eraseNormalClassRef(tref)
   }
 
   object scalaErasure extends ScalaErasureMap

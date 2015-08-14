@@ -33,7 +33,7 @@ package api
  *
  *  The following creates an AST representing `print("Hello World")`:
  *  {{{
- *    Apply(Select(Select(This(newTypeName("scala")), newTermName("Predef")), newTermName("print")), List(Literal(Constant("Hello World"))))
+ *    Apply(Select(Select(This(TypeName("scala")), TermName("Predef")), TermName("print")), List(Literal(Constant("Hello World"))))
  *  }}}
  *
  *  The following creates an AST from a literal 5, and then uses `showRaw` to print it in a readable format.
@@ -143,7 +143,7 @@ trait Trees { self: Universe =>
     /** Find all subtrees matching predicate `p`. Same as `withFilter` */
     def filter(f: Tree => Boolean): List[Tree]
 
-    /** Apply `pf' to each subtree on which the function is defined and collect the results.
+    /** Apply `pf` to each subtree on which the function is defined and collect the results.
      */
     def collect[T](pf: PartialFunction[Tree, T]): List[T]
 
@@ -158,7 +158,7 @@ trait Trees { self: Universe =>
     /** Do all parts of this tree satisfy predicate `p`? */
     def forAll(p: Tree => Boolean): Boolean
 
-    /** Tests whether two trees are structurall equal.
+    /** Tests whether two trees are structurally equal.
      *  Note that `==` on trees is reference equality.
      */
     def equalsStructure(that : Tree): Boolean
@@ -1098,11 +1098,11 @@ trait Trees { self: Universe =>
    *            // a dummy node that carries the type of unapplication to patmat
    *            // the <unapply-selector> here doesn't have an underlying symbol
    *            // it only has a type assigned, therefore after `untypecheck` this tree is no longer typeable
-   *            Apply(Select(Ident(Foo), newTermName("unapply")), List(Ident(newTermName("<unapply-selector>")))),
+   *            Apply(Select(Ident(Foo), TermName("unapply")), List(Ident(TermName("<unapply-selector>")))),
    *            // arguments of the unapply => nothing synthetic here
-   *            List(Bind(newTermName("x"), Ident(nme.WILDCARD)))),
+   *            List(Bind(TermName("x"), Ident(nme.WILDCARD)))),
    *          EmptyTree,
-   *          Ident(newTermName("x")))))
+   *          Ident(TermName("x")))))
    *  }}}
    *
    * Introduced by typer. Eliminated by compiler phases patmat (in the new pattern matcher of 2.10) or explicitouter (in the old pre-2.10 pattern matcher).
@@ -2661,7 +2661,7 @@ trait Trees { self: Universe =>
    *  @group Traversal
    */
   abstract class ModifiersExtractor {
-    def apply(): Modifiers = Modifiers(NoFlags, tpnme.EMPTY, List())
+    def apply(): Modifiers = Modifiers(NoFlags, typeNames.EMPTY, List())
     def apply(flags: FlagSet, privateWithin: Name, annotations: List[Tree]): Modifiers
     def unapply(mods: Modifiers): Option[(FlagSet, Name, List[Tree])]
   }
@@ -2674,7 +2674,7 @@ trait Trees { self: Universe =>
   /** The factory for `Modifiers` instances.
    *  @group Traversal
    */
-  def Modifiers(flags: FlagSet): Modifiers = Modifiers(flags, tpnme.EMPTY)
+  def Modifiers(flags: FlagSet): Modifiers = Modifiers(flags, typeNames.EMPTY)
 
   /** An empty `Modifiers` object: no flags, empty visibility annotation and no Scala annotations.
    *  @group Traversal
