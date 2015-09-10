@@ -126,8 +126,8 @@ lazy val commonSettings = clearSourceAndResourceDirectories ++ Seq[Setting[_]](
     <url>https://github.com/typelevel/scala</url>
     <licenses>
       <license>
-        <name>Apache License</name>
-        <url>http://opensource.org/licenses/Apache-2.0</url>
+        <name>BSD 3-Clause License</name>
+        <url>http://opensource.org/licenses/BSD-3-Clause</url>
         <distribution>repo</distribution>
       </license>
     </licenses>
