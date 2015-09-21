@@ -492,9 +492,9 @@
             <manifest>
               <attribute name="Manifest-Version" value="1.0"/>
               <attribute name="Bundle-Name" value="${@{project}.description} Sources"/>
-              <attribute name="Bundle-SymbolicName" value="org.scala-lang.${@{project}.package}${@{project}.name}${@{project}.namesuffix}.source"/>
+              <attribute name="Bundle-SymbolicName" value="org.typelevel.${@{project}.package}${@{project}.name}${@{project}.namesuffix}.source"/>
               <attribute name="Bundle-Version" value="${@{project}.version}"/>
-              <attribute name="Eclipse-SourceBundle" value="org.scala-lang.${@{project}.package}${@{project}.name}${@{project}.namesuffix};version=&quot;${@{project}.version}&quot;;roots:=&quot;.&quot;"/>
+              <attribute name="Eclipse-SourceBundle" value="org.typelevel.${@{project}.package}${@{project}.name}${@{project}.namesuffix};version=&quot;${@{project}.version}&quot;;roots:=&quot;.&quot;"/>
             </manifest>
           </jar>
         </then>
@@ -505,7 +505,7 @@
   <macrodef name="copy-bundle">
     <attribute name="project"/>
     <sequential>
-      <copy tofile="${dist.dir}/${@{project}.targetdir}/${@{project}.name}.jar" file="${build-osgi.dir}/org.scala-lang.${@{project}.package}${@{project}.name}.jar" overwrite="true"/>
+      <copy tofile="${dist.dir}/${@{project}.targetdir}/${@{project}.name}.jar" file="${build-osgi.dir}/org.typelevel.${@{project}.package}${@{project}.name}.jar" overwrite="true"/>
       <copy tofile="${dist.dir}/src/${@{project}.name}-src.jar" file="${@{project}.srcjar}" overwrite="true"/>
     </sequential>
   </macrodef>
@@ -516,7 +516,7 @@
       <local name="artifact-base"/>
       <property name="artifact-base" value="${dist.maven}/${@{project}.dir}${@{project}.name}/${@{project}.name}"/>
       <mkdir dir="${dist.maven}/${@{project}.dir}${@{project}.name}"/>
-      <copy tofile="${artifact-base}.jar" file="${build-osgi.dir}/org.scala-lang.${@{project}.package}${@{project}.name}${@{project}.namesuffix}.jar" overwrite="true"/>
+      <copy tofile="${artifact-base}.jar" file="${build-osgi.dir}/org.typelevel.${@{project}.package}${@{project}.name}${@{project}.namesuffix}.jar" overwrite="true"/>
       <copy tofile="${artifact-base}-src.jar" file="${build-osgi.dir}/${@{project}.name}-src.jar" overwrite="true"/>
       <copy tofile="${artifact-base}-pom.xml" file="${src.dir}/build/maven/${@{project}.dir}/${@{project}.name}-pom.xml" overwrite="true"/>
       <if>

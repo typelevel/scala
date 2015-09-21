@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.scala-lang</groupId>
+  <groupId>org.typelevel</groupId>
   <artifactId>scala-library-all</artifactId>
   <packaging>pom</packaging>
   <version>@VERSION@</version>
@@ -30,12 +30,12 @@
   </issueManagement>
   <dependencies>
     <dependency>
-      <groupId>org.scala-lang</groupId>
+      <groupId>org.typelevel</groupId>
       <artifactId>scala-library</artifactId>
       <version>@VERSION@</version>
     </dependency>
     <dependency>
-      <groupId>org.scala-lang</groupId>
+      <groupId>org.typelevel</groupId>
       <artifactId>scala-reflect</artifactId>
       <version>@VERSION@</version>
     </dependency>
@@ -55,7 +55,7 @@
          depend on plugins/the compiler.
     -->
     <dependency>
-      <groupId>org.scala-lang.plugins</groupId>
+      <groupId>org.typelevel.plugins</groupId>
       <artifactId>scala-continuations-library_@SCALA_BINARY_VERSION@</artifactId>
       <version>@CONTINUATIONS_LIBRARY_VERSION@</version>
     </dependency>
@@ -70,7 +70,7 @@
       <version>@AKKA_ACTOR_VERSION@</version>
     </dependency>
     <dependency>
-      <groupId>org.scala-lang</groupId>
+      <groupId>org.typelevel</groupId>
       <artifactId>scala-actors-migration_@SCALA_BINARY_VERSION@</artifactId>
       <version>@ACTORS_MIGRATION_VERSION@</version>
     </dependency>

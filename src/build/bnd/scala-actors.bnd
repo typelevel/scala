@@ -1,5 +1,5 @@
 Bundle-Name: Scala Actors
-Bundle-SymbolicName: org.scala-lang.scala-actors
+Bundle-SymbolicName: org.typelevel.scala-actors
 ver: @VERSION@
 Bundle-Version: ${ver}
 Export-Package: *;version=${ver}

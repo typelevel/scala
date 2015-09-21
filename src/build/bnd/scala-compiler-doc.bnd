@@ -1,5 +1,5 @@
 Bundle-Name: Scala Documentation Generator
-Bundle-SymbolicName: org.scala-lang.modules.scala-compiler-doc_@SCALA_BINARY_VERSION@
+Bundle-SymbolicName: org.typelevel.modules.scala-compiler-doc_@SCALA_BINARY_VERSION@
 ver: @SCALA_COMPILER_DOC_VERSION@
 Bundle-Version: ${ver}
 Export-Package: *;version=${ver}
