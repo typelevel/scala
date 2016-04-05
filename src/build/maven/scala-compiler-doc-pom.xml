@@ -30,7 +30,7 @@
   </issueManagement>
   <dependencies>
     <dependency>
-      <groupId>org.scala-lang</groupId>
+      <groupId>org.typelevel</groupId>
       <artifactId>scala-compiler</artifactId>
       <version>@VERSION@</version>
     </dependency>

@@ -1,5 +1,5 @@
 Bundle-Name: Scala Compiler
-Bundle-SymbolicName: org.scala-lang.scala-compiler
+Bundle-SymbolicName: org.typelevel.scala-compiler
 ver: @VERSION@
 Bundle-Version: ${ver}
 Export-Package: *;version=${ver}

@@ -1,5 +1,5 @@
 Bundle-Name: Scala Typelevel Library
-Bundle-SymbolicName: org.scala-lang.scala-typelevel
+Bundle-SymbolicName: org.typelevel.scala-typelevel
 ver: @VERSION@
 Bundle-Version: ${ver}
 Export-Package: *;version=${ver}
