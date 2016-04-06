@@ -1182,11 +1182,23 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
     private def eliminateModuleDefs(moduleDef: Tree): List[Tree] = exitingRefchecks {
       val ModuleDef(_, _, impl) = moduleDef
       val module        = moduleDef.symbol
+      val moduleClass   = module.moduleClass
       val site          = module.owner
       val moduleName    = module.name.toTermName
       // The typer doesn't take kindly to seeing this ClassDef; we have to
       // set NoType so it will be ignored.
-      val cdef          = ClassDef(module.moduleClass, impl) setType NoType
+      val cdef          = ClassDef(moduleClass, impl) setType NoType
+
+      // This code is related to the fix of SI-9375, which stops adding `readResolve` methods to
+      // non-static (nested) modules. Before the fix, the method would cause the module accessor
+      // to become notPrivate. To prevent binary changes in the 2.11.x branch, we mimic that behavior.
+      // There is a bit of code duplication between here and SyntheticMethods. We cannot call
+      // makeNotPrivate already in SyntheticMethod: that is during type checking, and not all references
+      // are resolved yet, so we cannot rename a definition. This code doesn't exist in the 2.12.x branch.
+      def hasConcreteImpl(name: Name) = moduleClass.info.member(name).alternatives exists (m => !m.isDeferred)
+      val hadReadResolveBeforeSI9375 = moduleClass.isSerializable && !hasConcreteImpl(nme.readResolve)
+      if (hadReadResolveBeforeSI9375)
+        moduleClass.sourceModule.makeNotPrivate(moduleClass.sourceModule.owner)
 
       // Create the module var unless the immediate owner is a class and
       // the module var already exists there. See SI-5012, SI-6712.
@@ -1210,7 +1222,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
       }
       def matchingInnerObject() = {
         val newFlags = (module.flags | STABLE) & ~MODULE
-        val newInfo  = NullaryMethodType(module.moduleClass.tpe)
+        val newInfo  = NullaryMethodType(moduleClass.tpe)
         val accessor = site.newMethod(moduleName, module.pos, newFlags) setInfoAndEnter newInfo
 
         DefDef(accessor, Select(This(site), module)) :: Nil
@@ -1494,9 +1506,8 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
       }
     }
 
-    private def transformCaseApply(tree: Tree, ifNot: => Unit) = {
+    private def isSimpleCaseApply(tree: Tree): Boolean = {
       val sym = tree.symbol
-
       def isClassTypeAccessible(tree: Tree): Boolean = tree match {
         case TypeApply(fun, targs) =>
           isClassTypeAccessible(fun)
@@ -1504,31 +1515,26 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
           ( // SI-4859 `CaseClass1().InnerCaseClass2()` must not be rewritten to `new InnerCaseClass2()`;
             //          {expr; Outer}.Inner() must not be rewritten to `new Outer.Inner()`.
             treeInfo.isQualifierSafeToElide(module) &&
-            // SI-5626 Classes in refinement types cannot be constructed with `new`. In this case,
-            // the companion class is actually not a ClassSymbol, but a reference to an abstract type.
-            module.symbol.companionClass.isClass
-          )
+              // SI-5626 Classes in refinement types cannot be constructed with `new`. In this case,
+              // the companion class is actually not a ClassSymbol, but a reference to an abstract type.
+              module.symbol.companionClass.isClass
+            )
       }
 
-      val doTransform =
-        sym.isSourceMethod &&
+      sym.isSourceMethod &&
         sym.isCase &&
         sym.name == nme.apply &&
         isClassTypeAccessible(tree) &&
-        !tree.tpe.resultType.typeSymbol.primaryConstructor.isLessAccessibleThan(tree.symbol)
+        !tree.tpe.finalResultType.typeSymbol.primaryConstructor.isLessAccessibleThan(tree.symbol)
+    }
 
-      if (doTransform) {
-        tree foreach {
-          case i@Ident(_) =>
-            enterReference(i.pos, i.symbol) // SI-5390 need to `enterReference` for `a` in `a.B()`
-          case _ =>
-        }
-        toConstructor(tree.pos, tree.tpe)
+    private def transformCaseApply(tree: Tree) = {
+      tree foreach {
+        case i@Ident(_) =>
+          enterReference(i.pos, i.symbol) // SI-5390 need to `enterReference` for `a` in `a.B()`
+        case _ =>
       }
-      else {
-        ifNot
-        tree
-      }
+      toConstructor(tree.pos, tree.tpe)
     }
 
     private def transformApply(tree: Apply): Tree = tree match {
@@ -1568,12 +1574,24 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         // term should have been eliminated by super accessors
         assert(!(qual.symbol.isTrait && sym.isTerm && mix == tpnme.EMPTY), (qual.symbol, sym, mix))
 
-      transformCaseApply(tree,
+      // Rewrite eligible calls to monomorphic case companion apply methods to the equivalent constructor call.
+      //
+      // Note: for generic case classes the rewrite needs to be handled at the enclosing `TypeApply` to transform
+      // `TypeApply(Select(C, apply), targs)` to `Select(New(C[targs]), <init>)`. In case such a `TypeApply`
+      // was deemed ineligible for transformation (e.g. the case constructor was private), the refchecks transform
+      // will recurse to this point with `Select(C, apply)`, which will have a type `[T](...)C[T]`.
+      //
+      // We don't need to perform the check on the Select node, and `!isHigherKinded will guard against this
+      // redundant (and previously buggy, SI-9546) consideration.
+      if (!tree.tpe.isHigherKinded && isSimpleCaseApply(tree)) {
+        transformCaseApply(tree)
+      } else {
         qual match {
           case Super(_, mix)  => checkSuper(mix)
           case _              =>
         }
-      )
+        tree
+      }
     }
     private def transformIf(tree: If): Tree = {
       val If(cond, thenpart, elsepart) = tree
@@ -1697,7 +1715,10 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
 
           case TypeApply(fn, args) =>
             checkBounds(tree, NoPrefix, NoSymbol, fn.tpe.typeParams, args map (_.tpe))
-            transformCaseApply(tree, ())
+            if (isSimpleCaseApply(tree))
+              transformCaseApply(tree)
+            else
+              tree
 
           case x @ Apply(_, _)  =>
             transformApply(x)
@@ -1716,12 +1737,11 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
 
           case Ident(name) =>
             checkUndesiredProperties(sym, tree.pos)
-            transformCaseApply(tree,
-              if (name != nme.WILDCARD && name != tpnme.WILDCARD_STAR) {
-                assert(sym != NoSymbol, "transformCaseApply: name = " + name.debugString + " tree = " + tree + " / " + tree.getClass) //debug
-                enterReference(tree.pos, sym)
-              }
-            )
+            if (name != nme.WILDCARD && name != tpnme.WILDCARD_STAR) {
+              assert(sym != NoSymbol, "transformCaseApply: name = " + name.debugString + " tree = " + tree + " / " + tree.getClass) //debug
+              enterReference(tree.pos, sym)
+            }
+            tree
 
           case x @ Select(_, _) =>
             transformSelect(x)

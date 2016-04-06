@@ -43,6 +43,8 @@ import scala.reflect.ClassTag
  *
  *  @author  Philipp Haller, Heather Miller, Aleksandar Prokopec, Viktor Klang
  *
+ *  @see [[http://docs.scala-lang.org/overviews/core/futures.html Futures and Promises]]
+ *
  *  @define multipleCallbacks
  *  Multiple callbacks may be registered; there is no guarantee that they will be
  *  executed in a particular order.
@@ -497,7 +499,7 @@ object Future {
   def sequence[A, M[X] <: TraversableOnce[X]](in: M[Future[A]])(implicit cbf: CanBuildFrom[M[Future[A]], A, M[A]], executor: ExecutionContext): Future[M[A]] = {
     in.foldLeft(successful(cbf(in))) {
       (fr, fa) => for (r <- fr; a <- fa) yield (r += a)
-    } map (_.result())
+    }.map(_.result())(InternalCallbackExecutor)
   }
 
   /** Returns a new `Future` to the result of the first future in the list that is completed.

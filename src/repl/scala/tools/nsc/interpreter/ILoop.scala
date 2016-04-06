@@ -1,8 +1,7 @@
 /* NSC -- new Scala compiler
- * Copyright 2005-2013 LAMP/EPFL
+ * Copyright 2005-2015 LAMP/EPFL
  * @author Alexander Spoon
  */
-
 package scala
 package tools.nsc
 package interpreter
@@ -24,9 +23,9 @@ import io.AbstractFile
 import scala.collection.generic.Clearable
 import scala.concurrent.{ ExecutionContext, Await, Future, future }
 import ExecutionContext.Implicits._
-import java.io.{ BufferedReader, FileReader }
+import java.io.{ BufferedReader, FileReader, StringReader }
 
-import scala.util.{Try, Success, Failure}
+import scala.util.{ Try, Success, Failure }
 
 /** The Scala interactive shell.  It provides a read-eval-print loop
  *  around the Interpreter class.
@@ -664,12 +663,9 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
     unleashAndSetPhase()
     asyncEcho(isDuringInit, power.banner)
   }
-  private def unleashAndSetPhase() {
-    if (isReplPower) {
-      power.unleash()
-      // Set the phase to "typer"
-      intp beSilentDuring phaseCommand("typer")
-    }
+  private def unleashAndSetPhase() = if (isReplPower) {
+    power.unleash()
+    intp beSilentDuring phaseCommand("typer") // Set the phase to "typer"
   }
 
   def asyncEcho(async: Boolean, msg: => String) {
@@ -704,25 +700,37 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
     Iterator continually in.readLine("") takeWhile (x => x != null && cond(x))
   }
 
+  /* :paste -raw file
+   * or
+   * :paste < EOF
+   *   your code
+   * EOF
+   * :paste <~ EOF
+   *   ~your code
+   * EOF
+   */
   def pasteCommand(arg: String): Result = {
     var shouldReplay: Option[String] = None
     def result = Result(keepRunning = true, shouldReplay)
-    val (raw, file) =
-      if (arg.isEmpty) (false, None)
+    val (raw, file, margin) =
+      if (arg.isEmpty) (false, None, None)
       else {
-        val r = """(-raw)?(\s+)?([^\-]\S*)?""".r
-        arg match {
-          case r(flag, sep, name) =>
-            if (flag != null && name != null && sep == null)
-              echo(s"""I assume you mean "$flag $name"?""")
-            (flag != null, Option(name))
-          case _ =>
-            echo("usage: :paste -raw file")
-            return result
+        def maybeRaw(ss: List[String]) = if (ss.nonEmpty && ss.head == "-raw") (true, ss.tail) else (false, ss)
+        def maybeHere(ss: List[String]) =
+          if (ss.nonEmpty && ss.head.startsWith("<")) (ss.head.dropWhile(_ == '<'), ss.tail)
+          else (null, ss)
+
+        val (raw0, ss0) = maybeRaw(words(arg))
+        val (margin0, ss1) = maybeHere(ss0)
+        val file0 = ss1 match {
+          case Nil      => null
+          case x :: Nil => x
+          case _        => echo("usage: :paste [-raw] file | < EOF") ; return result
         }
+        (raw0, Option(file0), Option(margin0))
       }
-    val code = file match {
-      case Some(name) =>
+    val code = (file, margin) match {
+      case (Some(name), None) =>
         withFile(name) { f =>
           shouldReplay = Some(s":paste $arg")
           val s = f.slurp.trim
@@ -730,9 +738,16 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
           else echo(s"Pasting file $f...")
           s
         } getOrElse ""
-      case None =>
-        echo("// Entering paste mode (ctrl-D to finish)\n")
-        val text = (readWhile(_ => true) mkString "\n").trim
+      case (eof, _) =>
+        echo(s"// Entering paste mode (${ eof getOrElse "ctrl-D" } to finish)\n")
+        val delimiter = eof orElse replProps.pasteDelimiter.option
+        val input = readWhile(s => delimiter.isEmpty || delimiter.get != s) mkString "\n"
+        val text = (
+          margin filter (_.nonEmpty) map {
+            case "-" => input.lines map (_.trim) mkString "\n"
+            case m   => input stripMargin m.head   // ignore excess chars in "<<||"
+          } getOrElse input
+        ).trim
         if (text.isEmpty) echo("\n// Nothing pasted, nothing gained.\n")
         else echo("\n// Exiting paste mode, now interpreting.\n")
         text
@@ -757,28 +772,9 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
     result
   }
 
-  private object paste extends Pasted {
-    import scala.util.matching.Regex.quote
-    val ContinuePrompt = replProps.continuePrompt
-    val ContinueString = replProps.continueText     // "     | "
-    val PromptString   = prompt.lines.toList.last
-    val anyPrompt = s"""\\s*(?:${quote(PromptString.trim)}|${quote(AltPromptString.trim)})\\s*""".r
-
-    def isPrompted(line: String)   = matchesPrompt(line)
-    def isPromptOnly(line: String) = line match { case anyPrompt() => true ; case _ => false }
-
-    def interpret(line: String): Unit = {
-      echo(line.trim)
-      intp interpret line
-      echo("")
-    }
-
-    def transcript(start: String) = {
-      echo("\n// Detected repl transcript paste: ctrl-D to finish.\n")
-      apply(Iterator(start) ++ readWhile(!isPromptOnly(_)))
-    }
-
-    def unapply(line: String): Boolean = isPrompted(line)
+  private object paste extends Pasted(prompt) {
+    def interpret(line: String) = intp interpret line
+    def echo(message: String)   = ILoop.this echo message
   }
 
   private object invocation {
@@ -793,29 +789,9 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
     * read, go ahead and interpret it.  Return the full string
     * to be recorded for replay, if any.
     */
-  def interpretStartingWith(code: String): Option[String] = {
+  final def interpretStartingWith(code: String): Option[String] = {
     // signal completion non-completion input has been received
     in.completion.resetVerbosity()
-
-    def reallyInterpret = intp.interpret(code) match {
-      case IR.Error      => None
-      case IR.Success    => Some(code)
-      case IR.Incomplete if in.interactive && code.endsWith("\n\n") =>
-        echo("You typed two blank lines.  Starting a new command.")
-        None
-      case IR.Incomplete =>
-        in.readLine(paste.ContinuePrompt) match {
-          case null =>
-            // we know compilation is going to fail since we're at EOF and the
-            // parser thinks the input is still incomplete, but since this is
-            // a file being read non-interactively we want to fail.  So we send
-            // it straight to the compiler for the nice error message.
-            intp.compileString(code)
-            None
-
-          case line => interpretStartingWith(code + "\n" + line)
-        }
-    }
 
     /* Here we place ourselves between the user and the interpreter and examine
      * the input they are ostensibly submitting.  We intervene in several cases:
@@ -829,9 +805,33 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
     code match {
       case ""                                       => None
       case lineComment()                            => None                 // line comment, do nothing
-      case paste() if !paste.running                => paste.transcript(code) ; None
+      case paste() if !paste.running                => paste.transcript(Iterator(code) ++ readWhile(!paste.isPromptOnly(_))) match {
+                                                         case Some(s) => interpretStartingWith(s)
+                                                         case _       => None
+                                                       }
       case invocation() if intp.mostRecentVar != "" => interpretStartingWith(intp.mostRecentVar + code)
-      case _                                        => reallyInterpret
+      case _                                        => intp.interpret(code) match {
+        case IR.Error      => None
+        case IR.Success    => Some(code)
+        case IR.Incomplete if in.interactive && code.endsWith("\n\n") =>
+          echo("You typed two blank lines.  Starting a new command.")
+          None
+        case IR.Incomplete =>
+          val saved = intp.partialInput
+          intp.partialInput = code + "\n"
+          try {
+            in.readLine(paste.ContinuePrompt) match {
+              case null =>
+                // we know compilation is going to fail since we're at EOF and the
+                // parser thinks the input is still incomplete, but since this is
+                // a file being read non-interactively we want to fail.  So we send
+                // it straight to the compiler for the nice error message.
+                intp.compileString(code)
+                None
+              case line => interpretStartingWith(s"$code\n$line")
+            }
+          } finally intp.partialInput = saved
+      }
     }
   }
 
@@ -847,9 +847,10 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
     case _ =>
   }
 
-  /** Tries to create a JLineReader, falling back to SimpleReader:
-   *  unless settings or properties are such that it should start
-   *  with SimpleReader.
+  /** Tries to create a JLineReader, falling back to SimpleReader,
+   *  unless settings or properties are such that it should start with SimpleReader.
+   *  The constructor of the InteractiveReader must take a Completion strategy,
+   *  supplied as a `() => Completion`; the Completion object provides a concrete Completer.
    */
   def chooseReader(settings: Settings): InteractiveReader = {
     if (settings.Xnojline || Properties.isEmacsShell) SimpleReader()
@@ -857,26 +858,31 @@ class ILoop(in0: Option[BufferedReader], protected val out: JPrintWriter)
       type Completer = () => Completion
       type ReaderMaker = Completer => InteractiveReader
 
-      def instantiate(className: String): ReaderMaker = completer => {
-        if (settings.debug) Console.println(s"Trying to instantiate a InteractiveReader from $className")
+      def instantiater(className: String): ReaderMaker = completer => {
+        if (settings.debug) Console.println(s"Trying to instantiate an InteractiveReader from $className")
         Class.forName(className).getConstructor(classOf[Completer]).
           newInstance(completer).
           asInstanceOf[InteractiveReader]
       }
 
-      def mkReader(maker: ReaderMaker) =
-        if (settings.noCompletion) maker(() => NoCompletion)
-        else maker(() => new JLineCompletion(intp)) // JLineCompletion is a misnomer -- it's not tied to jline
+      def mkReader(maker: ReaderMaker) = maker { () =>
+        settings.completion.value match {
+          case _ if settings.noCompletion => NoCompletion
+          case "none"   => NoCompletion
+          case "adhoc"  => new JLineCompletion(intp) // JLineCompletion is a misnomer; it's not tied to jline
+          case "pc" | _ => new PresentationCompilerCompleter(intp)
+        }
+      }
 
       def internalClass(kind: String) = s"scala.tools.nsc.interpreter.$kind.InteractiveReader"
       val readerClasses = sys.props.get("scala.repl.reader").toStream ++ Stream(internalClass("jline"), internalClass("jline_embedded"))
-      val readers = readerClasses map (cls => Try { mkReader(instantiate(cls)) })
+      val readers = readerClasses map (cls => Try { mkReader(instantiater(cls)) })
 
       val reader = (readers collect { case Success(reader) => reader } headOption) getOrElse SimpleReader()
 
       if (settings.debug) {
         val readerDiags = (readerClasses, readers).zipped map {
-          case (cls, Failure(e)) => s"  - $cls --> " + e.getStackTrace.mkString(e.toString+"\n\t", "\n\t","\n")
+          case (cls, Failure(e)) => s"  - $cls --> \n\t" + scala.tools.nsc.util.stackTraceString(e) + "\n"
           case (cls, Success(_)) => s"  - $cls OK"
         }
         Console.println(s"All InteractiveReaders tried: ${readerDiags.mkString("\n","\n","\n")}")

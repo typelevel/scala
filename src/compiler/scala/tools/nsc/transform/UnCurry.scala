@@ -475,13 +475,6 @@ abstract class UnCurry extends InfoTransform
               withNeedLift(needLift = true) { super.transform(tree) }
             else
               super.transform(tree)
-          case UnApply(fn, args) =>
-            val fn1   = transform(fn)
-            val args1 = fn.symbol.name match {
-              case nme.unapplySeq => transformArgs(tree.pos, fn.symbol, args, patmat.alignPatterns(global.typer.context, tree).expectedTypes)
-              case _              => args
-            }
-            treeCopy.UnApply(tree, fn1, args1)
 
           case Apply(fn, args) =>
             val needLift = needTryLift || !fn.symbol.isLabel // SI-6749, no need to lift in args to label jumps.
@@ -645,7 +638,7 @@ abstract class UnCurry extends InfoTransform
      * This transformation erases the dependent method types by:
      *   - Widening the formal parameter type to existentially abstract
      *     over the prior parameters (using `packSymbols`). This transformation
-     *     is performed in the the `InfoTransform`er [[scala.reflect.internal.transform.UnCurry]].
+     *     is performed in the `InfoTransform`er [[scala.reflect.internal.transform.UnCurry]].
      *   - Inserting casts in the method body to cast to the original,
      *     precise type.
      *
