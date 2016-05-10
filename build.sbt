@@ -212,7 +212,9 @@ lazy val commonSettings = clearSourceAndResourceDirectories ++ publishSettings +
 
   // Don't log process output (e.g. of forked `compiler/runMain ...Main`), just pass it
   // directly to stdout
-  outputStrategy in run := Some(StdoutOutput)
+  outputStrategy in run := Some(StdoutOutput),
+  Quiet.silenceScalaBinaryVersionWarning,
+  Quiet.silenceIvyUpdateInfoLogging
 )
 
 /** Extra post-processing for the published POM files. These are needed to create POMs that
@@ -503,6 +505,7 @@ lazy val replJlineEmbedded = Project("repl-jline-embedded", file(".") / "target"
       JarJar(inputs, outdir, config)
     }),
     connectInput in run := true
+
   )
   .dependsOn(replJline)
 
@@ -705,8 +708,9 @@ lazy val root = (project in file("."))
   .settings(
     publish := {},
     publishLocal := {},
-    commands ++= ScriptCommands.all
-  )
+    commands ++= ScriptCommands.all,
+    Quiet.silenceIvyUpdateInfoLogging
+)
   .aggregate(library, forkjoin, reflect, compiler, interactive, repl, replJline, replJlineEmbedded,
     scaladoc, scalap, actors, partestExtras, junit, libraryAll, scalaDist).settings(
     sources in Compile := Seq.empty,
