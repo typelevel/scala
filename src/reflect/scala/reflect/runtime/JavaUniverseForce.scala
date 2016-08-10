@@ -47,6 +47,7 @@ trait JavaUniverseForce { self: runtime.JavaUniverse  =>
     this.InlineCallsiteAttachment
     this.OuterArgCanBeElided
     this.UseInvokeSpecial
+    this.KnownDirectSubclassesCalled
     this.noPrint
     this.typeDebug
     this.Range
