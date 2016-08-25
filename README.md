@@ -207,4 +207,4 @@ much the same way as any other github hosted FLOSS Scala project.
 [lbs-readme]: https://github.com/scala/scala/blob/2.12.x/README.md
 [scalac-post]: http://milessabin.com/blog/2016/05/13/scalac-hacking/
 [milessabin]: https://github.com/milessabin
-[2.11.8-bin-typelevel]: https://github.com/typelevel/scala/tree/2.11.8-bin-typelevel
+[2.11.8-bin-typelevel]: https://github.com/typelevel/scala/commits/2.11.8-bin-typelevel
