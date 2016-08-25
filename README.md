@@ -106,7 +106,7 @@ relevant to practitioners.
 There are just two requirements for using Typelevel Scala in your existing projects,
 
 + You must be using (or be able to switch to) a corresponding version of Lightbend Scala. Currently this is 2.11.8
-  with 2.12.0-RC1 expected as soon as it is release by Lightbend.
+  with 2.12.0-RC1 expected as soon as it is released by Lightbend.
 + You must be using (or be able to switch to) SBT 0.13.13-M1. Earlier versions of SBT don't have full support for
   using an alternative `scalaOrganization`.
 
