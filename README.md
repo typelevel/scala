@@ -39,7 +39,7 @@ interoperability with the rest of the Scala ecosystem.
 ## Typelevel Scala releases
 
 Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8. As soon as Lightbend Scala
-2.12.0-RC is published a release of a corresponding release of Typelevel Scala will be made.
+2.12.0-RC is published a corresponding release of Typelevel Scala will be published.
 
 ### Typelevel Scala 2.11.8
 
