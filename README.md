@@ -2,7 +2,7 @@
 
 ## What is this repository?
 
-This repository contains the Typelevel [fork][fork] of the Scala compiler.
+This repository contains the [Typelevel][typelevel] [fork][fork] of the Scala compiler.
 
 Typelevel Scala is a conservative, collaborative and binary compatible fork of [Lightbend Scala][lbs]. The intention
 is for it to provide early access to bug fixes and enhancements of the Scala toolchain which are of particular
@@ -43,6 +43,9 @@ Currently Typelevel Scala is available as a drop in replacement for Lightbend Sc
 
 ### Typelevel Scala 2.11.8
 
+The Typelevel Scala additions to Lightbend Scala 2.11.8 can be found on the branch
+[2.11.8-bin-typelevel][2.11.8-bin-typelevel] of this repository.
+
 Typelevel Scala 2.11.8 offers the following fixes and features over Lightbend Scala 2.11.8,
 
 + Support for partial unification (ie. a fix for [SI-2712][SI-2712]) &mdash; merged in Lightbend Scala 2.12.0-RC1.
@@ -57,15 +60,15 @@ Typelevel Scala 2.11.8 offers the following fixes and features over Lightbend Sc
   Implements [literal types][SIP-23]. Enabled by `-Yliteral-types` (also enabled in `-Xexperimental` mode).
 
   Literals can now appear in type position, designating the corresponding singleton type. A `scala.ValueOf[T]` type
-  class and corresponding scala.Predef.valueOf[T] operator has been added yielding the unique value of types with a
+  class and corresponding `scala.Predef.valueOf[T]` operator has been added yielding the unique value of types with a
   single inhabitant. Support for `scala.Symbol` literal types has been added.
 + A partial fix for SI-7046 &mdash; proposed for Lightbend Scala 2.12.1.
 
   The macro API call `knownDirectSubclasses` now yields the correct result in most cases and will report an error in
   cases where it is unable to yield the correct result.
 
-  This is only a partial fix because subclasses defined in local scopes might be missed by `knownDirectSubclasses` In
-  mitigation, though, it is almost certain that a local subclass would represent an error in any scenario where
+  This is only a partial fix because subclasses defined in local scopes might be missed by `knownDirectSubclasses`. In
+  mitigation it is very likely that a local subclass would represent an error in any scenario where
   `knownDirectSubclasses` might be used. An error will be reported in these cases.
   
   Full details on the [pull request][pr-7046].
@@ -77,13 +80,13 @@ Typelevel Scala 2.11.8 offers the following fixes and features over Lightbend Sc
 ## Should I use Typelevel Scala? In production?
 
 The baseline for Typelevel Scala is the corresponding version of Lightbend Scala. Every bugfix or feature addition to
-Typelevel Scala exists as a pull request against that Lightbend Scala version which will have been passed by the full
+Typelevel Scala exists as a pull request against that Lightbend Scala version, so will have been passed by the full
 Scala toolchain test suite and, in most cases, will have been reviewed by the Lightbend Scala compiler team.
 
 If you are affected by one of the bugs which Typelevel Scala addresses then you will have to weigh the risks and costs
 of using a compiler with the bug (perhaps with workarounds using unnecessarily complex encodings, macros or compiler
 plugins), against the risks and costs of using an alternative Scala distribution which fixes that bug. Only you can
-make that call. The same applies to the additional features that Typelevel Scala supports.
+make that call. The same considerations apply to the additional features that Typelevel Scala supports.
 
 More generally there are many reasons why you might want to use and contribute to Typelevel Scala,
 
@@ -96,7 +99,7 @@ More generally there are many reasons why you might want to use and contribute t
 
 Within the Typelevel family of projects we are particularly excited by the prospect of being able to coevolve
 libraries along with the language and believe that this is one of the best ways to keep the language fresh and
-relevant to practicioners.
+relevant to practitioners.
 
 ## How to use Typelevel Scala
 
@@ -185,7 +188,7 @@ to participation in compiler development recently, in large part due to a new SB
 documentation][lbs-readme] &mdash; the Scala distribution is now an SBT project which you can expect to work on in
 much the same way as any other github hosted FLOSS Scala project.
 
-Miles Sabin has provided a write up (now slightly outdated) of the process [here][scalac-post].
+[Miles Sabin][milessabin] has provided a write up (now slightly outdated) of the process [here][scalac-post].
 
 [fork]: http://typelevel.org/blog/2014/09/02/typelevel-scala.html
 [lbs]: https://github.com/scala/scala
@@ -203,3 +206,5 @@ Miles Sabin has provided a write up (now slightly outdated) of the process [here
 [coc]: http://typelevel.org/conduct.html
 [lbs-readme]: https://github.com/scala/scala/blob/2.12.x/README.md
 [scalac-post]: http://milessabin.com/blog/2016/05/13/scalac-hacking/
+[milessabin]: https://github.com/milessabin
+[2.11.8-bin-typelevel]: https://github.com/typelevel/scala/tree/2.11.8-bin-typelevel
