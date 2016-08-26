@@ -209,13 +209,13 @@ If you are being harassed, please contact one of [us](#maintainers) immediately 
 
 The current maintainers (people who can merge pull requests) are:
 
- + George Leontiv ([@folone](https://github.com/folone))
- + Lars Hupel ([@larsrh](https://github.com/larsrh))
- + Miles Sabin ([@milessabin](https://github.com/milessabin))
  + Erik Osheim ([@non](https://github.com/non))
- + Mike O'Connor ([@stew](https://github.com/stew))
- + Tom Switzer ([@tixxit](https://github.com/tixxit))
+ + George Leontiv ([@folone](https://github.com/folone))
  + Jon Pretty ([@propensive](https://github.com/propensive))
+ + Lars Hupel ([@larsrh](https://github.com/larsrh))
+ + Mike O'Connor ([@stew](https://github.com/stew))
+ + Miles Sabin ([@milessabin](https://github.com/milessabin))
+ + Tom Switzer ([@tixxit](https://github.com/tixxit))
 
 [fork]: http://typelevel.org/blog/2014/09/02/typelevel-scala.html
 [lbs]: https://github.com/scala/scala
