@@ -180,6 +180,20 @@ scala> foo((x: Int) => x*2)   // Function1[Int, Int] unifies with F[_]
 res1: String = <function1>
 ```
 
+## Roadmap
+
+The following are high priority issues for Typelevel projects on which progress is likely to be made in 2016,
+
++ Partial type application.
++ Multiple implicit parameter blocks.
++ Improved compile times for inductive implicits.
++ Improved control over implicit prioritization.
++ GADT and singleton type bugfixes.
++ Support for alternative `scala.Predef`.
+
+In accordance with the policy for inclusion contributions on these issues will be made as pull requests against
+Lightbend Scala in the first instance.
+
 ## How to contribute to Typelevel Scala
 
 Because of our policy of "pull request against Lightbend Scala first" the primary route to contributing to Typelevel
