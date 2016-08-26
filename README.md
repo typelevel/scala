@@ -115,15 +115,25 @@ Scala,
 
 + Update your `project/build.properties` to require SBT 0.13.13-M1,
 
-```
-sbt.version=0.13.13-M1
-```
+  ```
+  sbt.version=0.13.13-M1
+  ```
 
-+ Create a file `local.sbt` at the root of your project with the following content,
++ Add the following to your `build.sbt` immediately next to where you set `scalaVersion`,
 
-```
-scalaOrganization in ThisBuild := "org.typelevel"
-```
+  ```
+  scalaOrganization := "org.typelevel"
+  ```
+
+  Alternatively, if you want to try Typelevel Scala without modifying your `build.sbt` you can instead create a file
+  `local.sbt` at the root of your project with the following content,
+
+  ```
+  scalaOrganization in ThisBuild := "org.typelevel"
+  ```
+
+  This will be merged with your main build definitions and can be added to `.gitignore` or `.git/info/exclude` if so
+  desired.
 
 Now your build should function as before but using the Typelevel Scala toolchain instead of the Lightbend one. You can
 verify this from the SBT prompt,
@@ -136,11 +146,9 @@ verify this from the SBT prompt,
 
 This will immediately provide you with the fixes for [SI-7046][SI-7046] and [SI-9760][SI-9760]. To additionally enable
 the the fix for [SI-2712] and the implementation of [SIP-23] you should add either or both of their enabling flags to
-`scalacOptions` in `local.sbt`,
+`scalacOptions` (or `local.sbt` if that was the path you took earlier),
 
 ```
-scalaOrganization in ThisBuild := "org.typelevel"
-
 scalacOptions += "-Ypartial-unification" // enable fix for SI-2712
 scalacOptions += "-Yliteral-types"       // enable SIP-23 implementation
 
