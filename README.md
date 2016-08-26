@@ -172,15 +172,7 @@ scala> foo((x: Int) => x*2)   // Function1[Int, Int] unifies with F[_]
 res1: String = <function1>
 ```
 
-## Participation
-
-This project supports the [Typelevel][typelevel] [code of conduct][coc] and wants all of its channels (Gitter, github,
-etc.) to be welcoming environments for everyone.
-
 ## How to contribute to Typelevel Scala
-
-Topics specific to Typelevel Scala are discussed on its [gitter channel][tls-gitter]. Scala compiler development is
-discussed on the [scala/contributors gitter channel][lbs-gitter].
 
 Because of our policy of "pull request against Lightbend Scala first" the primary route to contributing to Typelevel
 Scala is by contributing to Lightbend Scala. The Lightbend Scala team have made huge advances in lowering the barrier
@@ -189,6 +181,33 @@ documentation][lbs-readme] &mdash; the Scala distribution is now an SBT project 
 much the same way as any other github hosted FLOSS Scala project.
 
 [Miles Sabin][milessabin] has provided a write up (now slightly outdated) of the process [here][scalac-post].
+
+## Community
+
+Topics specific to Typelevel Scala are discussed on its [gitter channel][tls-gitter]. Scala compiler development is
+discussed on the [scala/contributors gitter channel][lbs-gitter].
+
+People are expected to follow the [Typelevel Code of Conduct][coc] when discussing Typelevel Scala on the Github page,
+Gitter channel, or other venues.
+
+We hope that our community will be respectful, helpful, and kind. If you find yourself embroiled in a situation that
+becomes heated, or that fails to live up to our expectations, you should disengage and contact one of the [project
+maintainers](#maintainers) in private. We hope to avoid letting minor aggressions and misunderstandings escalate into
+larger problems.
+
+If you are being harassed, please contact one of [us](#maintainers) immediately so that we can support you.
+
+## Maintainers
+
+The current maintainers (people who can merge pull requests) are:
+
+ + George Leontiv ([@folone](https://github.com/folone))
+ + Lars Hupel ([@larsrh](https://github.com/larsrh))
+ + Miles Sabin ([@milessabin](https://github.com/milessabin))
+ + Erik Osheim ([@non](https://github.com/non))
+ + Mike O'Connor ([@stew](https://github.com/stew))
+ + Tom Switzer ([@tixxit](https://github.com/tixxit))
+ + Jon Pretty ([@propensive](https://github.com/propensive))
 
 [fork]: http://typelevel.org/blog/2014/09/02/typelevel-scala.html
 [lbs]: https://github.com/scala/scala
