@@ -231,7 +231,7 @@ If you are being harassed, please contact one of [us](#maintainers) immediately 
 The current maintainers (people who can merge pull requests) are:
 
  + Erik Osheim ([@non](https://github.com/non))
- + George Leontiv ([@folone](https://github.com/folone))
+ + George Leontiev ([@folone](https://github.com/folone))
  + Jon Pretty ([@propensive](https://github.com/propensive))
  + Lars Hupel ([@larsrh](https://github.com/larsrh))
  + Mike O'Connor ([@stew](https://github.com/stew))
