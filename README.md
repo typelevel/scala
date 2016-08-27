@@ -2,7 +2,7 @@
 
 ## What is this repository?
 
-This repository contains the [Typelevel][typelevel] [fork][fork] of the Scala compiler.
+This [repository][tls] contains the [Typelevel][typelevel] [fork][fork] of the Scala compiler.
 
 Typelevel Scala is a conservative, collaborative and binary compatible fork of [Lightbend Scala][lbs]. The intention
 is for it to provide early access to bug fixes and enhancements of the Scala toolchain which are of particular
@@ -238,6 +238,7 @@ The current maintainers (people who can merge pull requests) are:
  + Miles Sabin ([@milessabin](https://github.com/milessabin))
  + Tom Switzer ([@tixxit](https://github.com/tixxit))
 
+[tls]: https://github.com/typelevel/scala
 [fork]: http://typelevel.org/blog/2014/09/02/typelevel-scala.html
 [lbs]: https://github.com/scala/scala
 [projects]: http://typelevel.org/projects/
