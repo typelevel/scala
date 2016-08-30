@@ -205,11 +205,13 @@ documentation][lbs-readme] &mdash; the Scala distribution is now an SBT project 
 much the same way as any other github hosted FLOSS Scala project. [Miles Sabin][milessabin] has provided a write up
 (now slightly outdated) of the process [here][scalac-post].
 
-Because a pull request against [scala/scala][lbs] is the first step, to contribute you will need to
-sign the [Scala CLA][scala-cla] and be willing to make your contributions under the [Scala License][scala-license].
-Typelevel is strongly in favour of this non-standard licence and CLA being replaced by the [Apache 2.0
-license][apache-2.0] as soon as is feasible. If you would like to contribute but are unable to sign the CLA please
-raise this issue on the [Lightbend][lbs-gitter] and [Typelevel][tls-gitter] gitter channels.
+Because a pull request against [scala/scala][lbs] is the first step, to contribute you will need to sign the [Scala
+CLA][scala-cla] and be willing to make your contributions under the [Scala License][scala-license].  Typelevel is
+strongly in favour of the currently Scala license/CLA (which requires contributors to grant a patent license but does
+not grant one in return) being replaced by the Apache 2.0 [license][apache-2.0-license] and [ICLA][apache-2.0-icla]
+(which both requires and grants a patent license) as soon as is feasible. If you would like to contribute but are
+unable to sign the CLA please raise this issue on the [Lightbend][lbs-gitter] and [Typelevel][tls-gitter] gitter
+channels.
 
 ## Community
 
@@ -258,5 +260,6 @@ The current maintainers (people who can merge pull requests) are:
 [milessabin]: https://github.com/milessabin
 [2.11.8-bin-typelevel]: https://github.com/typelevel/scala/commits/2.11.8-bin-typelevel
 [scala-cla]: http://www.lightbend.com/contribute/cla/scala
-[scala-license]: http://www.scala-lang.org/license.html
-[apache-2.0]: http://www.apache.org/licenses/LICENSE-2.0
+[scala-license]: https://github.com/scala/scala/blob/2.12.x/doc/LICENSE.md
+[apache-2.0-license]: http://www.apache.org/licenses/LICENSE-2.0
+[apache-2.0-icla]: https://www.apache.org/licenses/icla.txt
