@@ -50,14 +50,13 @@ Typelevel Scala 2.11.8 offers the following fixes and features over Lightbend Sc
 
 + Support for partial unification (ie. a fix for [SI-2712][SI-2712]) &mdash; merged in Lightbend Scala 2.12.0-RC1.
 
-  An improvement to type inference for type constructors, enabled by the `-Ypartial-unification` scalac option (also
-  enabled in `-Xexperimental` mode). This has many benefits for libraries, such as Cats and Scalaz, which make
-  extensive use of higher-kinded types.
+  An improvement to type inference for type constructors, enabled by the `-Ypartial-unification` scalac option. This
+  has many benefits for libraries, such as Cats and Scalaz, which make extensive use of higher-kinded types.
 
   Full details on the [pull request][pr-2712].
 + Support for literal types (aka SIP-23) &mdash; proposed for Lightbend Scala 2.12.1.
 
-  Implements [literal types][SIP-23]. Enabled by `-Yliteral-types` (also enabled in `-Xexperimental` mode).
+  Implements [literal types][SIP-23]. Enabled by `-Yliteral-types`.
 
   Literals can now appear in type position, designating the corresponding singleton type. A `scala.ValueOf[T]` type
   class and corresponding `scala.Predef.valueOf[T]` operator has been added yielding the unique value of types with a
@@ -156,6 +155,10 @@ scalacOptions += "-Yliteral-types"       // enable SIP-23 implementation
 
 Note that Typelevel Scala 2.11.8 replaces the [si2712fix compiler plugin][si2712fix-plugin] &mdash; if you are using
 it you should remove it from your build before switching to Typelevel Scala.
+
+Also note that the two compiler flags above should be used in preference to `-Xexperimental` at present &mdash; as
+well as enabling the above two features `-Xexperimental` also enables some other features which are not typically
+desirable.
 
 You now can verify that these features have been enabled from the SBT console,
 
