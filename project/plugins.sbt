@@ -1,0 +1,1 @@
+addSbtPlugin("com.fortysevendeg"  % "sbt-microsites" % "1.0.1-SNAPSHOT")
