@@ -4,7 +4,7 @@ scalaVersion := "2.11.8"
 
 micrositeName := "Typelevel"
 micrositeDescription := "Our fork of the Scala compiler"
-micrositeAuthor := "Typelevel.org"
+micrositeAuthor := "Typelevel contributors"
 micrositeHomepage := "http://typelevel.org/scala"
 micrositeGithubOwner := "typelevel"
 micrositeGithubRepo := "scala"
