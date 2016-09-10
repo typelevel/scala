@@ -1,0 +1,9 @@
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i);
+
+h1, h2, h3, h4, h5, h6, .brand {
+	font-family: 'Droid Serif', serif;
+}
+
+.technologies {
+	display: none;
+}
