@@ -8,6 +8,7 @@ micrositeAuthor := "Typelevel contributors"
 micrositeHomepage := "http://typelevel.org/scala"
 micrositeGithubOwner := "typelevel"
 micrositeGithubRepo := "scala"
+micrositeExtratMdFiles := Map(file("README.md") -> "index.md")
 micrositeHighlightTheme := "atom-one-light"
 micrositePalette := Map(
   "brand-primary"     -> "#FC4053",
