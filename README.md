@@ -1,3 +1,7 @@
+---
+layout: home
+---
+
 # Typelevel Scala
 
 ## What is this repository?
