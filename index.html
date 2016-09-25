@@ -132,23 +132,23 @@ Scala,</p>
   <li>
     <p>Update your <code class="highlighter-rouge">project/build.properties</code> to require SBT 0.13.13-M1,</p>
 
-    <p><code class="highlighter-rouge">
-sbt.version=0.13.13-M1
-</code></p>
+    <div class="highlighter-rouge"><pre class="highlight"><code>sbt.version=0.13.13-M1
+</code></pre>
+    </div>
   </li>
   <li>
     <p>Add the following to your <code class="highlighter-rouge">build.sbt</code> immediately next to where you set <code class="highlighter-rouge">scalaVersion</code>,</p>
 
-    <p><code class="highlighter-rouge">
-scalaOrganization := "org.typelevel"
-</code></p>
+    <div class="highlighter-rouge"><pre class="highlight"><code>scalaOrganization := "org.typelevel"
+</code></pre>
+    </div>
 
     <p>Alternatively, if you want to try Typelevel Scala without modifying your <code class="highlighter-rouge">build.sbt</code> you can instead create a file
 <code class="highlighter-rouge">local.sbt</code> at the root of your project with the following content,</p>
 
-    <p><code class="highlighter-rouge">
-scalaOrganization in ThisBuild := "org.typelevel"
-</code></p>
+    <div class="highlighter-rouge"><pre class="highlight"><code>scalaOrganization in ThisBuild := "org.typelevel"
+</code></pre>
+    </div>
 
     <p>This will be merged with your main build definitions and can be added to <code class="highlighter-rouge">.gitignore</code> or <code class="highlighter-rouge">.git/info/exclude</code> if so
 desired.</p>
@@ -158,21 +158,21 @@ desired.</p>
 <p>Now your build should function as before but using the Typelevel Scala toolchain instead of the Lightbend one. You can
 verify this from the SBT prompt,</p>
 
-<p><code class="highlighter-rouge">
-&gt; show scalaOrganization
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; show scalaOrganization
 [info] org.typelevel
 &gt;
-</code></p>
+</code></pre>
+</div>
 
 <p>This will immediately provide you with the fixes for <a href="https://issues.scala-lang.org/browse/SI-7046">SI-7046</a> and <a href="https://issues.scala-lang.org/browse/SI-9760">SI-9760</a>. To additionally enable
 the the fix for <a href="https://issues.scala-lang.org/browse/SI-2712">SI-2712</a> and the implementation of <a href="https://github.com/scala/scala/pull/5310">SIP-23</a> you should add either or both of their enabling flags to
 <code class="highlighter-rouge">scalacOptions</code> (or <code class="highlighter-rouge">local.sbt</code> if that was the path you took earlier),</p>
 
-<p>```
-scalacOptions += “-Ypartial-unification” // enable fix for SI-2712
-scalacOptions += “-Yliteral-types”       // enable SIP-23 implementation</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>scalacOptions += "-Ypartial-unification" // enable fix for SI-2712
+scalacOptions += "-Yliteral-types"       // enable SIP-23 implementation
 
-<p>```</p>
+</code></pre>
+</div>
 
 <p>Note that Typelevel Scala 2.11.8 replaces the <a href="https://github.com/milessabin/si2712fix-plugin">si2712fix compiler plugin</a> — if you are using
 it you should remove it from your build before switching to Typelevel Scala.</p>
@@ -183,26 +183,26 @@ desirable.</p>
 
 <p>You now can verify that these features have been enabled from the SBT console,</p>
 
-<p>```
-&gt; console
-[info] Compiling 3 Scala sources to /home/miles/projects/value-wrapper/target/scala-2.11/classes…
-[info] Starting scala interpreter…
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; console
+[info] Compiling 3 Scala sources to /home/miles/projects/value-wrapper/target/scala-2.11/classes...
+[info] Starting scala interpreter...
 [info] 
 Welcome to Scala 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_102).
-Type in expressions for evaluation. Or try :help.</p>
+Type in expressions for evaluation. Or try :help.
 
-<p>scala&gt; val foo: “foo” = “foo” // Use of literal type “foo”
-foo: “foo” = foo</p>
+scala&gt; val foo: "foo" = "foo" // Use of literal type "foo"
+foo: "foo" = foo
 
-<p>scala&gt; import scala.language.higherKinds
-import scala.language.higherKinds</p>
+scala&gt; import scala.language.higherKinds
+import scala.language.higherKinds
 
-<p>scala&gt; def foo<a href="fa: F[A]">F[<em>], A](fa: F[A]): String = fa.toString
-foo: [F[</em>], A</a>String</p>
+scala&gt; def foo[F[_], A](fa: F[A]): String = fa.toString
+foo: [F[_], A](fa: F[A])String
 
-<p>scala&gt; foo((x: Int) =&gt; x*2)   // Function1[Int, Int] unifies with F[_]
-res1: String = <function1>
-```</function1></p>
+scala&gt; foo((x: Int) =&gt; x*2)   // Function1[Int, Int] unifies with F[_]
+res1: String = &lt;function1&gt;
+</code></pre>
+</div>
 
 <h2 id="roadmap">Roadmap</h2>
 
