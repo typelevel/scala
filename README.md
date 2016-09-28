@@ -110,16 +110,16 @@ There are just two requirements for using Typelevel Scala in your existing proje
 
 + You must be using (or be able to switch to) a corresponding version of Lightbend Scala. Currently this is 2.11.8
   with 2.12.0-RC1 expected as soon as it is released by Lightbend.
-+ You must be using (or be able to switch to) SBT 0.13.13-M1. Earlier versions of SBT don't have full support for
-  using an alternative `scalaOrganization`.
++ You must be using (or be able to switch to) SBT 0.13.13-RC2 or later. Earlier versions of SBT don't have full
+  support for using an alternative `scalaOrganization`.
 
 If you are using Lightbend Scala 2.11.8 and SBT 0.13.x the following steps will build your project with Typelevel
 Scala,
 
-+ Update your `project/build.properties` to require SBT 0.13.13-M1,
++ Update your `project/build.properties` to require SBT 0.13.13-RC2,
 
   ```
-  sbt.version=0.13.13-M1
+  sbt.version=0.13.13-RC2
   ```
 
 + Add the following to your `build.sbt` immediately next to where you set `scalaVersion`,
