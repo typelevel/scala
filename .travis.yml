@@ -19,7 +19,7 @@ script:
 
 deploy:
   - provider: script
-    script: deploy-microsite.sh
+    script: ./deploy-microsite.sh
     skip_cleanup: true
     on:
       branch: typelevel-readme
