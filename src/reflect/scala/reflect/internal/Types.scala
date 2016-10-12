@@ -667,7 +667,6 @@ trait Types
           val m     = newAsSeenFromMap(pre.normalize, clazz)
           val tp    = m(this)
           val tp1   = existentialAbstraction(m.capturedParams, tp)
-
           if (m.capturedSkolems.isEmpty) tp1
           else deriveType(m.capturedSkolems, _.cloneSymbol setFlag CAPTURED)(tp1)
         }
@@ -4349,13 +4348,22 @@ trait Types
       }
   }
 
+  // if using Kind Polymorphism, we check those flags to avoid CyclicError & TypeError
+  // if there is any better way to do it, it would be cool to replace those
+  def isAnyKind(tpe: Type): Boolean =
+    !tpe.typeSymbol.rawInfo.bounds.hi.typeSymbol.hasFlag(LOCKED) &&
+    !tpe.typeSymbol.hasFlag(LOCKED) &&
+    tpe.typeSymbol.isNonBottomSubClass(definitions.AnyKindClass)
+
   /** Do type arguments `targs` conform to formal parameters `tparams`?
    */
   def isWithinBounds(pre: Type, owner: Symbol, tparams: List[Symbol], targs: List[Type]): Boolean = {
     var bounds = instantiatedBounds(pre, owner, tparams, targs)
     if (targs exists typeHasAnnotations)
       bounds = adaptBoundsToAnnotations(bounds, tparams, targs)
-    (bounds corresponds targs)(boundsContainType)
+    (bounds corresponds targs) { (bounds: TypeBounds, tp: Type) => 
+      boundsContainType(bounds, tp)
+    }
   }
 
   def instantiatedBounds(pre: Type, owner: Symbol, tparams: List[Symbol], targs: List[Type]): List[TypeBounds] =
