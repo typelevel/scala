@@ -17,12 +17,8 @@ install:
 script:
   - sbt makeMicrosite
 
-deploy:
-  - provider: script
-    script: ./deploy-microsite.sh
-    skip_cleanup: true
-    on:
-      branch: typelevel-readme
+after_success:
+  - ./deploy-microsite.sh
 
 cache:
   directories:
