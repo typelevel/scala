@@ -125,7 +125,7 @@ Scala,
 + Add the following to your `build.sbt` immediately next to where you set `scalaVersion`,
 
   ```
-  scalaOrganization := "org.typelevel"
+  scalaOrganization in ThisBuild := "org.typelevel"
   ```
 
   Alternatively, if you want to try Typelevel Scala without modifying your `build.sbt` you can instead create a file
