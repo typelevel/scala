@@ -99,8 +99,6 @@ trait Types
   private final val propagateParameterBoundsToTypeVars = sys.props contains "scalac.debug.prop-constraints"
   private final val sharperSkolems = sys.props contains "scalac.experimental.sharper-skolems"
 
-  protected val enableTypeVarExperimentals = settings.Xexperimental.value
-
   /** Caching the most recent map has a 75-90% hit rate. */
   private object substTypeMapCache {
     private[this] var cached: SubstTypeMap = new SubstTypeMap(Nil, Nil)
@@ -2958,7 +2956,7 @@ trait Types
      *  Syncnote: Type variables are assumed to be used from only one
      *  thread. They are not exposed in api.Types and are used only locally
      *  in operations that are exposed from types. Hence, no syncing of `constr`
-     *  or `encounteredHigherLevel` or `suspended` accesses should be necessary.
+     *  or `suspended` accesses should be necessary.
      */
     def instValid = constr.instValid
     def inst = constr.inst
@@ -3002,16 +3000,6 @@ trait Types
     // only one of them is in the set of tvars that need to be solved, but
     // they share the same TypeConstraint instance
 
-    // When comparing to types containing skolems, remember the highest level
-    // of skolemization. If that highest level is higher than our initial
-    // skolemizationLevel, we can't re-use those skolems as the solution of this
-    // typevar, which means we'll need to repack our inst into a fresh existential.
-    // were we compared to skolems at a higher skolemizationLevel?
-    // EXPERIMENTAL: value will not be considered unless enableTypeVarExperimentals is true
-    // see SI-5729 for why this is still experimental
-    private var encounteredHigherLevel = false
-    private def shouldRepackType = enableTypeVarExperimentals && encounteredHigherLevel
-
     // <region name="constraint mutators + undoLog">
     // invariant: before mutating constr, save old state in undoLog
     // (undoLog is used to reset constraints to avoid piling up unrelated ones)
@@ -3023,7 +3011,7 @@ trait Types
       undoLog record this
       // if we were compared against later typeskolems, repack the existential,
       // because skolems are only compatible if they were created at the same level
-      val res = if (shouldRepackType) repackExistential(tp) else tp
+      val res = tp
       constr.inst = TypeVar.trace("setInst", "In " + originLocation + ", " + originName + "=" + res)(res)
       this
     }
@@ -3251,19 +3239,14 @@ trait Types
       case ts: TypeSkolem => ts.level > level
       case _              => false
     }
-    // side-effects encounteredHigherLevel
     private def containsSkolemAboveLevel(tp: Type) =
-      (tp exists isSkolemAboveLevel) && { encounteredHigherLevel = true ; true }
+      tp exists isSkolemAboveLevel
 
      /** Can this variable be related in a constraint to type `tp`?
       *  This is not the case if `tp` contains type skolems whose
       *  skolemization level is higher than the level of this variable.
       */
-    def isRelatable(tp: Type) = (
-         shouldRepackType               // short circuit if we already know we've seen higher levels
-      || !containsSkolemAboveLevel(tp)  // side-effects tracking boolean
-      || enableTypeVarExperimentals     // -Xexperimental: always say we're relatable, track consequences
-    )
+    def isRelatable(tp: Type) = !containsSkolemAboveLevel(tp)
 
     override def normalize: Type = (
       if (instValid) inst

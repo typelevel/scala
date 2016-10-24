@@ -2545,19 +2545,7 @@ trait Typers extends Adaptations with Tags with TypersTracking with PatternTyper
     }
 
     // match has been typed -- virtualize it during type checking so the full context is available
-    def virtualizedMatch(match_ : Match, mode: Mode, pt: Type) = {
-      import patmat.{ vpmName, PureMatchTranslator }
-
-      // TODO: add fallback __match sentinel to predef
-      val matchStrategy: Tree =
-        if (!(settings.Xexperimental && context.isNameInScope(vpmName._match))) null    // fast path, avoiding the next line if there's no __match to be seen
-        else newTyper(context.makeImplicit(reportAmbiguousErrors = false)).silent(_.typed(Ident(vpmName._match)), reportAmbiguousErrors = false) orElse (_ => null)
-
-      if (matchStrategy ne null) // virtualize
-        typed((new PureMatchTranslator(this.asInstanceOf[patmat.global.analyzer.Typer] /*TODO*/, matchStrategy)).translateMatch(match_), mode, pt)
-      else
-        match_ // will be translated in phase `patmat`
-    }
+    def virtualizedMatch(match_ : Match, mode: Mode, pt: Type) = match_
 
     /** synthesize and type check a PartialFunction implementation based on the match in `tree`
      *
