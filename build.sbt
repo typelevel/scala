@@ -87,11 +87,11 @@ lazy val publishSettings : Seq[Setting[_]] = Seq(
 // `baseVersionSuffix`.
 globalVersionSettings
 baseVersion in Global := "2.12.0"
-baseVersionSuffix in Global := "SNAPSHOT"
+baseVersionSuffix in Global := "RC2"
 mimaReferenceVersion in Global := Some("2.12.0-RC1")
 
 lazy val commonSettings = clearSourceAndResourceDirectories ++ publishSettings ++ Seq[Setting[_]](
-  organization := "org.scala-lang",
+  organization := "org.typelevel",
   // we don't cross build Scala itself
   crossPaths := false,
   // do not add Scala library jar as a dependency automatically
