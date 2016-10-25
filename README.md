@@ -158,6 +158,8 @@ Compiling SharedPredef.sc
 Compiling LoadedPredef.sc
 Welcome to the Ammonite Repl 0.7.8
 (Scala 2.11.8 Java 1.8.0_112)
+@ repl.compiler.settings.YliteralTypes.value = true
+
 @ trait Cond[T] { type V ; val value: V }
 defined trait Cond
 @
