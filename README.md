@@ -177,7 +177,7 @@ res7: Int = 23
 %
 ```
 
-[try-tls]: https://github.com/typelevel/scala/blob/typelevel-readme/scripts/try-shapeless.sh
+[try-tls]: https://github.com/typelevel/scala/blob/typelevel-readme/scripts/try-typelevel-scala.sh
 [coursier]: https://github.com/alexarchambault/coursier
 [ammonite]: https://github.com/lihaoyi/Ammonite
 
