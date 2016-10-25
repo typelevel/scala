@@ -12,5 +12,3 @@ test -e ~/.coursier/coursier || \
   org.typelevel:scala-reflect:2.11.8 \
   -- --predef 'repl.compiler.settings.YpartialUnification.value = true
     repl.compiler.settings.YliteralTypes.value = true' < /dev/tty
-#  -- --predef 'repl.compiler.settings.YpartialUnification.value = true' < /dev/tty
-#  -- --predef 'repl.compiler.settings.YliteralTypes.value = true' < /dev/tty
