@@ -143,16 +143,15 @@ Within the Typelevel family of projects we are particularly excited by the prosp
 libraries along with the language and believe that this is one of the best ways to keep the language fresh and
 relevant to practitioners.
 
-### Try Typelevel Scala with an Ammonite instant REPL
+## Try Typelevel Scala with an Ammonite instant REPL
 
 The quickest way to get to a Typelevel Scala 2.11.9 REPL path is to run the provided
-["try Typelevel Scala"][try-shapeless] script, which has no dependencies other than an installed JDK. This script
+["try Typelevel Scala"][try-tls] script, which has no dependencies other than an installed JDK. This script
 downloads and installs [coursier][coursier] and uses it to fetch the [Ammonite][ammonite] REPL and Typelevel Scala
 2.11.8. It then drops you immediately into a REPL session,
 
 ```text
-% curl -s https://raw.githubusercontent.com/typelevel/scala/master/try-typelevel-scala.sh | bash
-% ./try-typelevel-scala.sh
+% curl -s https://raw.githubusercontent.com/typelevel/scala/typelevel-readme/try-typelevel-scala.sh | bash
 Loading...
 Compiling predef.sc
 Compiling SharedPredef.sc
@@ -178,7 +177,7 @@ res7: Int = 23
 %
 ```
 
-[try-shapeless]: https://github.com/milessabin/shapeless/blob/master/scripts/try-shapeless.sh
+[try-tls]: https://github.com/typelevel/scala/blob/typelevel-readme/scripts/try-shapeless.sh
 [coursier]: https://github.com/alexarchambault/coursier
 [ammonite]: https://github.com/lihaoyi/Ammonite
 
