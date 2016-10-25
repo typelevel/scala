@@ -42,8 +42,8 @@ interoperability with the rest of the Scala ecosystem.
 
 ## Typelevel Scala releases
 
-Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8. As soon as Lightbend Scala
-2.12.0-RC1 is published a corresponding release of Typelevel Scala will be published.
+Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8 and 2.12.0-RC2. As soon as
+Lightbend Scala 2.11.9 and 2.12.0 are published corresponding releases of Typelevel Scala will be published.
 
 ### Typelevel Scala 2.11.8
 
@@ -52,12 +52,42 @@ The Typelevel Scala additions to Lightbend Scala 2.11.8 can be found on the bran
 
 Typelevel Scala 2.11.8 offers the following fixes and features over Lightbend Scala 2.11.8,
 
-+ Support for partial unification (ie. a fix for [SI-2712][SI-2712]) &mdash; merged in Lightbend Scala 2.12.0-RC1.
++ Support for partial unification (ie. a fix for [SI-2712][SI-2712]) &mdash; merged in Lightbend Scala 2.12.0-RC1 and
+  2.11.9
 
   An improvement to type inference for type constructors, enabled by the `-Ypartial-unification` scalac option. This
   has many benefits for libraries, such as Cats and Scalaz, which make extensive use of higher-kinded types.
 
   Full details on the [pull request][pr-2712].
++ Support for literal types (aka SIP-23) &mdash; proposed for Lightbend Scala 2.12.1.
+
+  Implements [literal types][SIP-23]. Enabled by `-Yliteral-types`.
+
+  Literals can now appear in type position, designating the corresponding singleton type. A `scala.ValueOf[T]` type
+  class and corresponding `scala.Predef.valueOf[T]` operator has been added yielding the unique value of types with a
+  single inhabitant. Support for `scala.Symbol` literal types has been added.
++ A partial fix for SI-7046 &mdash; proposed for Lightbend Scala 2.12.1 and merged in 2.11.9.
+
+  The macro API call `knownDirectSubclasses` now yields the correct result in most cases and will report an error in
+  cases where it is unable to yield the correct result.
+
+  This is only a partial fix because subclasses defined in local scopes might be missed by `knownDirectSubclasses`. In
+  mitigation it is very likely that a local subclass would represent an error in any scenario where
+  `knownDirectSubclasses` might be used. An error will be reported in these cases.
+
+  Full details on the [pull request][pr-7046].
++ A fix for SI-9760 &mdash; merged in Lightbend Scala 2.12.0-RC1 and 2.11.9.
+
+  Higher kinded type arguments are now refined by GADT pattern matching. Details can be found on [the
+  ticket][SI-9760].
+
+### Typelevel Scala 2.12.0-RC2
+
+The Typelevel Scala additions to Lightbend Scala 2.12.0-RC2 can be found on the branch
+[2.12.0-RC2-bin-typelevel][2.12.0-RC2-bin-typelevel] of this repository.
+
+Typelevel Scala 2.12.0-RC2 offers the following fixes and features over Lightbend Scala 2.12.0-RC2,
+
 + Support for literal types (aka SIP-23) &mdash; proposed for Lightbend Scala 2.12.1.
 
   Implements [literal types][SIP-23]. Enabled by `-Yliteral-types`.
@@ -73,8 +103,17 @@ Typelevel Scala 2.11.8 offers the following fixes and features over Lightbend Sc
   This is only a partial fix because subclasses defined in local scopes might be missed by `knownDirectSubclasses`. In
   mitigation it is very likely that a local subclass would represent an error in any scenario where
   `knownDirectSubclasses` might be used. An error will be reported in these cases.
-  
+
   Full details on the [pull request][pr-7046].
+
+The following have already been merged in Lightbend Scala 2.12.x and so are included here automatically,
+
++ Support for partial unification (ie. a fix for [SI-2712][SI-2712]) &mdash; merged in Lightbend Scala 2.12.0-RC1.
+
+  An improvement to type inference for type constructors, enabled by the `-Ypartial-unification` scalac option. This
+  has many benefits for libraries, such as Cats and Scalaz, which make extensive use of higher-kinded types.
+
+  Full details on the [pull request][pr-2712].
 + A fix for SI-9760 &mdash; merged in Lightbend Scala 2.12.0-RC1.
 
   Higher kinded type arguments are now refined by GADT pattern matching. Details can be found on [the
@@ -104,22 +143,61 @@ Within the Typelevel family of projects we are particularly excited by the prosp
 libraries along with the language and believe that this is one of the best ways to keep the language fresh and
 relevant to practitioners.
 
+### Try Typelevel Scala with an Ammonite instant REPL
+
+The quickest way to get to a Typelevel Scala 2.11.9 REPL path is to run the provided
+["try Typelevel Scala"][try-shapeless] script, which has no dependencies other than an installed JDK. This script
+downloads and installs [coursier][coursier] and uses it to fetch the [Ammonite][ammonite] REPL and Typelevel Scala
+2.11.8. It then drops you immediately into a REPL session,
+
+```text
+% curl -s https://raw.githubusercontent.com/typelevel/scala/master/try-typelevel-scala.sh | bash
+% ./try-typelevel-scala.sh
+Loading...
+Compiling predef.sc
+Compiling SharedPredef.sc
+Compiling LoadedPredef.sc
+Welcome to the Ammonite Repl 0.7.8
+(Scala 2.11.8 Java 1.8.0_112)
+@ trait Cond[T] { type V ; val value: V }
+defined trait Cond
+@
+@ implicit val condTrue = new Cond[true] { type V = String ; val value = "foo" }
+condTrue: AnyRef with Cond[true]{type V = String} = $sess.cmd2$$anon$1@22265a2d
+@ implicit val condFalse = new Cond[false] { type V = Int ; val value = 23 }
+condFalse: AnyRef with Cond[false]{type V = Int} = $sess.cmd3$$anon$1@606ab048
+@
+@ def cond[T](implicit cond: Cond[T]): cond.V = cond.value
+defined function cond
+@
+@ cond[true] : String
+res8: String = "foo"
+@ cond[false] : Int
+res7: Int = 23
+@ Bye!
+%
+```
+
+[try-shapeless]: https://github.com/milessabin/shapeless/blob/master/scripts/try-shapeless.sh
+[coursier]: https://github.com/alexarchambault/coursier
+[ammonite]: https://github.com/lihaoyi/Ammonite
+
 ## How to use Typelevel Scala
 
 There are just two requirements for using Typelevel Scala in your existing projects,
 
 + You must be using (or be able to switch to) a corresponding version of Lightbend Scala. Currently this is 2.11.8
-  with 2.12.0-RC1 expected as soon as it is released by Lightbend.
+  and 2.12.0-RC2.
 + You must be using (or be able to switch to) SBT 0.13.13-RC2 or later. Earlier versions of SBT don't have full
   support for using an alternative `scalaOrganization`.
 
 If you are using Lightbend Scala 2.11.8 and SBT 0.13.x the following steps will build your project with Typelevel
 Scala,
 
-+ Update your `project/build.properties` to require SBT 0.13.13-RC2,
++ Update your `project/build.properties` to require SBT 0.13.13-RC3,
 
   ```
-  sbt.version=0.13.13-RC2
+  sbt.version=0.13.13-RC3
   ```
 
 + Add the following to your `build.sbt` immediately next to where you set `scalaVersion`,
@@ -170,7 +248,7 @@ You now can verify that these features have been enabled from the SBT console,
 > console
 [info] Compiling 3 Scala sources to /home/miles/projects/value-wrapper/target/scala-2.11/classes...
 [info] Starting scala interpreter...
-[info] 
+[info]
 Welcome to Scala 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_102).
 Type in expressions for evaluation. Or try :help.
 
@@ -266,6 +344,7 @@ The current maintainers (people who can merge pull requests) are:
 [scalac-post]: http://milessabin.com/blog/2016/05/13/scalac-hacking/
 [milessabin]: https://github.com/milessabin
 [2.11.8-bin-typelevel]: https://github.com/typelevel/scala/commits/2.11.8-bin-typelevel
+[2.12.0-RC2-bin-typelevel]: https://github.com/typelevel/scala/commits/2.12.0-RC2-bin-typelevel
 [scala-cla]: http://www.lightbend.com/contribute/cla/scala
 [scala-license]: https://github.com/scala/scala/blob/2.12.x/doc/LICENSE.md
 [apache-2.0-license]: http://www.apache.org/licenses/LICENSE-2.0
