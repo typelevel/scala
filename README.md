@@ -145,7 +145,7 @@ relevant to practitioners.
 
 ## Try Typelevel Scala with an Ammonite instant REPL
 
-The quickest way to get to a Typelevel Scala 2.11.9 REPL path is to run the provided
+The quickest way to get to a Typelevel Scala 2.11.8 REPL path is to run the provided
 ["try Typelevel Scala"][try-tls] script, which has no dependencies other than an installed JDK. This script
 downloads and installs [coursier][coursier] and uses it to fetch the [Ammonite][ammonite] REPL and Typelevel Scala
 2.11.8. It then drops you immediately into a REPL session,
