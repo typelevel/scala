@@ -40,8 +40,8 @@ interoperability with the rest of the Scala ecosystem.</p>
 
 <h2 id="typelevel-scala-releases">Typelevel Scala releases</h2>
 
-<p>Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8. As soon as Lightbend Scala
-2.12.0-RC1 is published a corresponding release of Typelevel Scala will be published.</p>
+<p>Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8 and 2.12.0-RC2. As soon as
+Lightbend Scala 2.11.9 and 2.12.0 are published corresponding releases of Typelevel Scala will be published.</p>
 
 <h3 id="typelevel-scala-2118">Typelevel Scala 2.11.8</h3>
 
@@ -52,13 +52,51 @@ interoperability with the rest of the Scala ecosystem.</p>
 
 <ul>
   <li>
-    <p>Support for partial unification (ie. a fix for <a href="https://issues.scala-lang.org/browse/SI-2712">SI-2712</a>) — merged in Lightbend Scala 2.12.0-RC1.</p>
+    <p>Support for partial unification (ie. a fix for <a href="https://issues.scala-lang.org/browse/SI-2712">SI-2712</a>) — merged in Lightbend Scala 2.12.0-RC1 and
+2.11.9</p>
 
     <p>An improvement to type inference for type constructors, enabled by the <code class="highlighter-rouge">-Ypartial-unification</code> scalac option. This
 has many benefits for libraries, such as Cats and Scalaz, which make extensive use of higher-kinded types.</p>
 
     <p>Full details on the <a href="https://github.com/scala/scala/pull/5102">pull request</a>.</p>
   </li>
+  <li>
+    <p>Support for literal types (aka SIP-23) — proposed for Lightbend Scala 2.12.1.</p>
+
+    <p>Implements <a href="https://github.com/scala/scala/pull/5310">literal types</a>. Enabled by <code class="highlighter-rouge">-Yliteral-types</code>.</p>
+
+    <p>Literals can now appear in type position, designating the corresponding singleton type. A <code class="highlighter-rouge">scala.ValueOf[T]</code> type
+class and corresponding <code class="highlighter-rouge">scala.Predef.valueOf[T]</code> operator has been added yielding the unique value of types with a
+single inhabitant. Support for <code class="highlighter-rouge">scala.Symbol</code> literal types has been added.</p>
+  </li>
+  <li>
+    <p>A partial fix for SI-7046 — proposed for Lightbend Scala 2.12.1 and merged in 2.11.9.</p>
+
+    <p>The macro API call <code class="highlighter-rouge">knownDirectSubclasses</code> now yields the correct result in most cases and will report an error in
+cases where it is unable to yield the correct result.</p>
+
+    <p>This is only a partial fix because subclasses defined in local scopes might be missed by <code class="highlighter-rouge">knownDirectSubclasses</code>. In
+mitigation it is very likely that a local subclass would represent an error in any scenario where
+<code class="highlighter-rouge">knownDirectSubclasses</code> might be used. An error will be reported in these cases.</p>
+
+    <p>Full details on the <a href="https://github.com/scala/scala/pull/5284">pull request</a>.</p>
+  </li>
+  <li>
+    <p>A fix for SI-9760 — merged in Lightbend Scala 2.12.0-RC1 and 2.11.9.</p>
+
+    <p>Higher kinded type arguments are now refined by GADT pattern matching. Details can be found on <a href="https://issues.scala-lang.org/browse/SI-9760">the
+ticket</a>.</p>
+  </li>
+</ul>
+
+<h3 id="typelevel-scala-2120-rc2">Typelevel Scala 2.12.0-RC2</h3>
+
+<p>The Typelevel Scala additions to Lightbend Scala 2.12.0-RC2 can be found on the branch
+<a href="https://github.com/typelevel/scala/commits/2.12.0-RC2-bin-typelevel">2.12.0-RC2-bin-typelevel</a> of this repository.</p>
+
+<p>Typelevel Scala 2.12.0-RC2 offers the following fixes and features over Lightbend Scala 2.12.0-RC2,</p>
+
+<ul>
   <li>
     <p>Support for literal types (aka SIP-23) — proposed for Lightbend Scala 2.12.1.</p>
 
@@ -79,6 +117,19 @@ mitigation it is very likely that a local subclass would represent an error in a
 <code class="highlighter-rouge">knownDirectSubclasses</code> might be used. An error will be reported in these cases.</p>
 
     <p>Full details on the <a href="https://github.com/scala/scala/pull/5284">pull request</a>.</p>
+  </li>
+</ul>
+
+<p>The following have already been merged in Lightbend Scala 2.12.x and so are included here automatically,</p>
+
+<ul>
+  <li>
+    <p>Support for partial unification (ie. a fix for <a href="https://issues.scala-lang.org/browse/SI-2712">SI-2712</a>) — merged in Lightbend Scala 2.12.0-RC1.</p>
+
+    <p>An improvement to type inference for type constructors, enabled by the <code class="highlighter-rouge">-Ypartial-unification</code> scalac option. This
+has many benefits for libraries, such as Cats and Scalaz, which make extensive use of higher-kinded types.</p>
+
+    <p>Full details on the <a href="https://github.com/scala/scala/pull/5102">pull request</a>.</p>
   </li>
   <li>
     <p>A fix for SI-9760 — merged in Lightbend Scala 2.12.0-RC1.</p>
@@ -114,25 +165,61 @@ other pending features and fixes.</li>
 libraries along with the language and believe that this is one of the best ways to keep the language fresh and
 relevant to practitioners.</p>
 
+<h2 id="try-typelevel-scala-with-an-ammonite-instant-repl">Try Typelevel Scala with an Ammonite instant REPL</h2>
+
+<p>The quickest way to get to a Typelevel Scala 2.11.8 REPL path is to run the provided
+<a href="https://github.com/typelevel/scala/blob/typelevel-readme/try-typelevel-scala.sh">“try Typelevel Scala”</a> script, which has no dependencies other than an installed JDK. This script
+downloads and installs <a href="https://github.com/alexarchambault/coursier">coursier</a> and uses it to fetch the <a href="https://github.com/lihaoyi/Ammonite">Ammonite</a> REPL and Typelevel Scala
+2.11.8. It then drops you immediately into a REPL session,</p>
+
+<div class="language-text highlighter-rouge"><pre class="highlight"><code>% curl -s https://raw.githubusercontent.com/typelevel/scala/typelevel-readme/try-typelevel-scala.sh | bash
+Loading...
+Compiling predef.sc
+Compiling SharedPredef.sc
+Compiling LoadedPredef.sc
+Welcome to the Ammonite Repl 0.7.8
+(Scala 2.11.8 Java 1.8.0_112)
+@ repl.compiler.settings.YliteralTypes.value = true
+
+@ trait Cond[T] { type V ; val value: V }
+defined trait Cond
+@
+@ implicit val condTrue = new Cond[true] { type V = String ; val value = "foo" }
+condTrue: AnyRef with Cond[true]{type V = String} = $sess.cmd2$$anon$1@22265a2d
+@ implicit val condFalse = new Cond[false] { type V = Int ; val value = 23 }
+condFalse: AnyRef with Cond[false]{type V = Int} = $sess.cmd3$$anon$1@606ab048
+@
+@ def cond[T](implicit cond: Cond[T]): cond.V = cond.value
+defined function cond
+@
+@ cond[true] : String
+res8: String = "foo"
+@ cond[false] : Int
+res7: Int = 23
+@ Bye!
+%
+</code></pre>
+</div>
+
 <h2 id="how-to-use-typelevel-scala">How to use Typelevel Scala</h2>
 
 <p>There are just two requirements for using Typelevel Scala in your existing projects,</p>
 
 <ul>
   <li>You must be using (or be able to switch to) a corresponding version of Lightbend Scala. Currently this is 2.11.8
-with 2.12.0-RC1 expected as soon as it is released by Lightbend.</li>
+and 2.12.0-RC2.</li>
   <li>You must be using (or be able to switch to) SBT 0.13.13-RC2 or later. Earlier versions of SBT don’t have full
 support for using an alternative <code class="highlighter-rouge">scalaOrganization</code>.</li>
 </ul>
 
-<p>If you are using Lightbend Scala 2.11.8 and SBT 0.13.x the following steps will build your project with Typelevel
-Scala,</p>
+<p>If you are using Lightbend Scala 2.11.8 or 2.12.0-RC2 and SBT 0.13.13 the following steps will build your project with
+Typelevel Scala,</p>
 
 <ul>
   <li>
-    <p>Update your <code class="highlighter-rouge">project/build.properties</code> to require SBT 0.13.13-RC2,</p>
+    <p>Update your <code class="highlighter-rouge">project/build.properties</code> to require SBT 0.13.13-RC3,</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>sbt.version=0.13.13-RC2
+    <div class="highlighter-rouge"><pre class="highlight"><code>sbt.version=0.13.13-RC3
 </code></pre>
     </div>
   </li>
@@ -186,7 +273,7 @@ desirable.</p>
 <div class="highlighter-rouge"><pre class="highlight"><code>&gt; console
 [info] Compiling 3 Scala sources to /home/miles/projects/value-wrapper/target/scala-2.11/classes...
 [info] Starting scala interpreter...
-[info] 
+[info]
 Welcome to Scala 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_102).
 Type in expressions for evaluation. Or try :help.
 
