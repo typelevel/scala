@@ -20,6 +20,10 @@ script:
 after_success:
   - ./deploy-microsite.sh
 
+branches:
+  only:
+    - typelevel-readme
+
 cache:
   directories:
     - $HOME/.ivy2/cache
