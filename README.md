@@ -42,8 +42,8 @@ interoperability with the rest of the Scala ecosystem.
 
 ## Typelevel Scala releases
 
-Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8 and 2.12.0-RC2. As soon as
-Lightbend Scala 2.11.9 and 2.12.0 are published corresponding releases of Typelevel Scala will be published.
+Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8 and 2.12.0. As soon as
+Lightbend Scala 2.11.9 and 2.12.1 are published corresponding releases of Typelevel Scala will be published.
 
 ### Typelevel Scala 2.11.8
 
@@ -81,12 +81,12 @@ Typelevel Scala 2.11.8 offers the following fixes and features over Lightbend Sc
   Higher kinded type arguments are now refined by GADT pattern matching. Details can be found on [the
   ticket][SI-9760].
 
-### Typelevel Scala 2.12.0-RC2
+### Typelevel Scala 2.12.0
 
-The Typelevel Scala additions to Lightbend Scala 2.12.0-RC2 can be found on the branch
-[2.12.0-RC2-bin-typelevel][2.12.0-RC2-bin-typelevel] of this repository.
+The Typelevel Scala additions to Lightbend Scala 2.12.0 can be found on the branch
+[2.12.0-bin-typelevel][2.12.0-bin-typelevel] of this repository.
 
-Typelevel Scala 2.12.0-RC2 offers the following fixes and features over Lightbend Scala 2.12.0-RC2,
+Typelevel Scala 2.12.0 offers the following fixes and features over Lightbend Scala 2.12.0,
 
 + Support for literal types (aka SIP-23) &mdash; proposed for Lightbend Scala 2.12.1.
 
@@ -188,17 +188,17 @@ res7: Int = 23
 There are just two requirements for using Typelevel Scala in your existing projects,
 
 + You must be using (or be able to switch to) a corresponding version of Lightbend Scala. Currently this is 2.11.8
-  and 2.12.0-RC2.
-+ You must be using (or be able to switch to) SBT 0.13.13-RC2 or later. Earlier versions of SBT don't have full
+  and 2.12.0.
++ You must be using (or be able to switch to) SBT 0.13.13 or later. Earlier versions of SBT don't have full
   support for using an alternative `scalaOrganization`.
 
-If you are using Lightbend Scala 2.11.8 or 2.12.0-RC2 and SBT 0.13.13 the following steps will build your project with
+If you are using Lightbend Scala 2.11.8 or 2.12.0 and SBT 0.13.13 the following steps will build your project with
 Typelevel Scala,
 
-+ Update your `project/build.properties` to require SBT 0.13.13-RC3,
++ Update your `project/build.properties` to require SBT 0.13.13,
 
   ```
-  sbt.version=0.13.13-RC3
+  sbt.version=0.13.13
   ```
 
 + Add the following to your `build.sbt` immediately next to where you set `scalaVersion`,
@@ -345,7 +345,7 @@ The current maintainers (people who can merge pull requests) are:
 [scalac-post]: http://milessabin.com/blog/2016/05/13/scalac-hacking/
 [milessabin]: https://github.com/milessabin
 [2.11.8-bin-typelevel]: https://github.com/typelevel/scala/commits/2.11.8-bin-typelevel
-[2.12.0-RC2-bin-typelevel]: https://github.com/typelevel/scala/commits/2.12.0-RC2-bin-typelevel
+[2.12.0-bin-typelevel]: https://github.com/typelevel/scala/commits/2.12.0-bin-typelevel
 [scala-cla]: http://www.lightbend.com/contribute/cla/scala
 [scala-license]: https://github.com/scala/scala/blob/2.12.x/doc/LICENSE.md
 [apache-2.0-license]: http://www.apache.org/licenses/LICENSE-2.0
