@@ -1,0 +1,13 @@
+.header-link {
+  opacity: 0;
+	padding-left: 1em;
+	font-size: 50%;
+}
+
+h2:hover .header-link,
+h3:hover .header-link,
+h4:hover .header-link,
+h5:hover .header-link,
+h6:hover .header-link {
+  opacity: 1;
+}

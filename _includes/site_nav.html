@@ -1,0 +1,27 @@
+{% comment %}
+When you include this in a layout, specify the current page as a parameter, e.g.:
+
+    {% include site_nav.html page=page %}
+
+All variables in Liquid are global, so we can't use recursion.
+We're also working around some limitations in the Liquid language constructs.
+What follows is horrible. Sorry!
+{% endcomment %}
+
+{% assign site_pages      = site.pages | sort:'order' %}
+{% assign current_page    = include.page %}
+{% assign current_section = current_page.url | remove_first:'/' | split:'/' | first %}
+
+{% for node in site_pages %}
+  {% assign test_depth   = 1 %}
+  {% assign node_depth   = node.url | split:'/' | size | minus:1 %}
+  {% assign node_section = node.url | remove_first:'/' | split:'/' | first %}
+
+  {% if node.site_nav_entry %}
+    {% if node_section == current_section %}
+      <a class="sidebar-nav-item active" href="{{ node.url }}">{{ node.title }}</a>
+    {% else %}
+      <a class="sidebar-nav-item" href="{{ node.url }}">{{ node.title }}</a>
+    {% endif %}
+  {% endif %}
+{% endfor %}

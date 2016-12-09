@@ -1,0 +1,24 @@
+# Dependencies
+
+# We use kramdown for TOC generation.
+# See http://www.seanbuscay.com/blog/jekyll-toc-markdown for details:
+markdown:         kramdown
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            Typelevel Scala
+description:      'Typelevel fork of the Scala Compiler'
+baseurl:          /
+
+#exclude: [talks]
+exclude: [bundle-vendor]
+
+gems:
+  - jekyll-sitemap
+  - jekyll-mentions
