@@ -1,0 +1,83 @@
+{% comment %}
+When you include this in a layout, specify the current page as a parameter, e.g.:
+
+    {% include section_nav.html page=page %}
+
+All variables in Liquid are global, so we can't use recursion.
+We're also working around some limitations in the Liquid language constructs.
+What follows is horrible. Sorry!
+
+There are three nested levels of TOC represented by three nested loops.
+Each loop iterates through all pages in the site and filters
+for pages that are immediate children of the page in the parent loop.
+
+We test for membership as follows:
+
+- Inclusion in the top-level loop is calculated via a "section" slug,
+  which is taken as the first component in the URL.
+
+- Inclusion in second- and third-level loops is calculated by:
+  - whether or not the page's URL contains the parent page's URL;
+  - whether the page's URL has exactly one more segment than the parent page's URL.
+
+This won't work in all cases, but it should suffice for this web site.
+For example, URL containment is a substring check, not a shared prefix check.
+Might cause a bug in the future. Might not. Who knows?
+{% endcomment %}
+
+{% assign site_pages       = site.pages | sort:'order' %}
+{% assign current_page     = include.page %}
+{% assign current_section1 = current_page.url | replace:'/':' ' | truncatewords:1 %}
+{% assign current_section2 = current_page.url | replace:'/':' ' | truncatewords:2 %}
+
+<ul>
+{% for node1 in site_pages %}
+  {% assign test1_depth    = 2 %}
+  {% assign node1_depth    = node1.url | split:'/' | size | minus:1 %}
+  {% assign node1_section1 = node1.url | replace:'/':' ' | truncatewords:1 %}
+  {% assign node1_section2 = node1.url | replace:'/':' ' | truncatewords:2 %}
+
+  {% if node1_section1 == current_section1 and node1_depth == test1_depth %}
+    <li>
+      {% include section_nav_item.html label=node1.title url=node1.url current_url=current_page.url %}
+
+      {% if node1_section2 == current_section2 %}
+        <ul>
+          {% for node2 in site_pages %}
+            {% assign test2_depth   = node1_depth | plus:1 %}
+            {% assign node2_depth   = node2.url | split:'/' | size | minus:1 %}
+            {% assign node2_section = node2.url | replace:'/':' ' | truncatewords:2 %}
+
+            {% if node2.url contains node1.url and node2_depth == test2_depth %}
+              <li>
+                {% include section_nav_item.html label=node2.title url=node2.url current_url=current_page.url %}
+
+                <ul>
+                  {% for node3 in site_pages %}
+                    {% assign test3_depth = node2_depth | plus:1 %}
+                    {% assign node3_depth = node3.url | split:'/' | size | minus:1 %}
+
+                    {% if node3.url contains node2.url and node3_depth == test3_depth %}
+                      <li>
+                        {% include section_nav_item.html label=node3.title url=node3.url current_url=current_page.url %}
+
+                        {% comment %}
+                        {% if current_page.url contains node3.url %}
+                          {{ node3.title }}
+                        {% else %}
+                          <a href="{{ node3.url }}">{{ node3.title }}</a></li>
+                        {% endif %}
+                        {% endcomment %}
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endif %}
+{% endfor %}
+</ul>
