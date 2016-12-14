@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/typelevel/scala.svg?branch=typelevel-readme)](https://travis-ci.org/typelevel/scala) [![Join the chat at https://gitter.im/typelevel/scala](https://badges.gitter.im/typelevel/scala.svg)](https://gitter.im/typelevel/scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 # Typelevel Scala
 
 ## What is this repository?
