@@ -399,3 +399,5 @@ package <empty> {
 [[syntax trees at end of                     icode]] // sample.scala: tree is unchanged since flatten
 [[syntax trees at end of                       jvm]] // sample.scala: tree is unchanged since flatten
 ```
+
+Want to contribute? [Edit this file](https://github.com/typelevel/scala/edit/typelevel-readme/src/main/resources/microsite/docs/phases.md)

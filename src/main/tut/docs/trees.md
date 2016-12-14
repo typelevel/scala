@@ -13,3 +13,5 @@ The implementation of the Tree is encoded in [this file](https://github.com/scal
 The AST is organised in a series of traits and self-types, which follows the following structure: 
 
 WIP
+
+Want to contribute? [Edit this file](https://github.com/typelevel/scala/edit/typelevel-readme/src/main/resources/microsite/docs/trees.md)
