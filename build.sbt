@@ -11,6 +11,7 @@ micrositeHomepage := "http://typelevel.org/scala"
 micrositeGithubOwner := "typelevel"
 micrositeGithubRepo := "scala"
 micrositeBaseUrl := "scala"
+micrositeDocumentationUrl := "docs"
 micrositeExtraMdFiles := Map(
   file("README.md") -> ExtraMdFileConfig(
     "index.md",

@@ -1,0 +1,24 @@
+options:
+  - title: Getting Started
+    url: docs/index.html
+
+  - title: Basic structure
+    url: docs/basic_structure.html
+
+  - title: Project folders
+    url: docs/project_structure.html
+
+  - title: Compiler phases
+    url: docs/phases.html
+
+  - title: Trees
+    url: docs/trees.html
+
+  - title: Symbols
+    url: docs/symbols.html
+
+  - title: Types
+    url: docs/types.html
+
+  - title: References
+    url: docs/references.html
