@@ -163,7 +163,7 @@ object ScalaRunTime {
     if (x == null) throw new UninitializedError else x
 
   def _toString(x: Product): String =
-    x.productIterator.mkString(x.productPrefix + "(", ",", ")")
+    x.productToString
 
   def _hashCode(x: Product): Int = scala.util.hashing.MurmurHash3.productHash(x)
 

@@ -19,6 +19,12 @@ package scala
 case class Tuple1[@specialized(Int, Long, Double) +T1](_1: T1)
   extends Product1[T1]
 {
-  override def toString() = "(" + _1 + ")"
+  override def toString() = "(" + tup_to_s(_1) + ")"
+  
+  
+    private def tup_to_s(x: Any): String = x match {
+      case (xx: String) => "\"" + xx + "\""
+      case xx => xx.toString()
+    }
   
 }

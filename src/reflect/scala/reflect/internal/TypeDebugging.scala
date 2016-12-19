@@ -78,7 +78,7 @@ trait TypeDebugging {
       // otherwise case classes are caught looking like products
       case _: Tree | _: Type     => "" + x
       case x: TraversableOnce[_] => x mkString ", "
-      case x: Product            => x.productIterator mkString ("(", ", ", ")")
+      case x: Product            => x.productToString
       case _                     => "" + x
     }
     def ptBlock(label: String, pairs: (String, Any)*): String = {

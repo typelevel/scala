@@ -298,7 +298,7 @@ class Tuple(val i: Int) extends Group("Tuple") with Arity {
 
   // prettifies it a little if it's overlong
   def mkToString() = {
-  def str(xs: List[String]) = xs.mkString(""" + "," + """)
+  def str(xs: List[String]) = xs.map(x => "tup_to_s(" + x + ")").mkString(""" + "," + """)
     if (i <= MAX_ARITY / 2) str(mdefs)
     else {
       val s1 = str(mdefs take (i / 2))
@@ -306,6 +306,12 @@ class Tuple(val i: Int) extends Group("Tuple") with Arity {
       s1 + " +\n    \",\" + " + s2
     }
   }
+  def tupToSDef(): String = """
+    private def tup_to_s(x: Any): String = x match {
+      case (xx: String) => "\"" + xx + "\""
+      case xx => xx.toString()
+    }
+  """
 
   def apply() = {
 <file name={fileName}>{header}
@@ -321,6 +327,7 @@ case class {className}{covariantArgs}({fields})
 {{
   override def toString() = "(" + {mkToString} + ")"
   {moreMethods}
+  {tupToSDef}
 }}
 </file>}
 } // object Tuple

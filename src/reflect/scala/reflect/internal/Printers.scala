@@ -1107,7 +1107,7 @@ trait Printers extends api.Printers { self: SymbolTable =>
 
   /** Hook for extensions */
   def xprintTree(treePrinter: TreePrinter, tree: Tree) =
-    treePrinter.print(tree.productPrefix+tree.productIterator.mkString("(", ", ", ")"))
+    treePrinter.print(tree.productPrefix+tree.productToString)
 
   def newCodePrinter(writer: PrintWriter, tree: Tree, printRootPkg: Boolean): TreePrinter =
     new CodePrinter(writer, printRootPkg)
