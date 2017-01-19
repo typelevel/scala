@@ -1091,8 +1091,8 @@ trait Implicits {
 
       (dealiasUnrefine(argTpe).typeArgs zip dealiasUnrefine(resTpe).typeArgs) map {
         case (arg, res) =>
-          if(res =:= arg) Neutral
-          else if(res.contains(arg.typeSymbol)) Convergent
+          if (res =:= arg) Neutral
+          else if (res.contains(arg.typeSymbol)) Convergent
           else Divergent
       }
     }
@@ -1136,7 +1136,7 @@ trait Implicits {
         local.forall(i => !i.sym.isMacro && (isBase(i) || isInduction(i))) &&
         scope.forall(i => !i.sym.isMacro && (isBase(i) || isInduction(i)))
 
-      if(exhaustive) {
+      if (exhaustive) {
         val inductions = local.filter(isInduction) ++ scope.filter(isInduction)
         inductions.map(divergenceMap).transpose.forall { convergences =>
           !(convergences.exists(_ == Convergent) && convergences.exists(_ == Divergent))
@@ -1155,15 +1155,15 @@ trait Implicits {
       val tvars = allUndetparams map freshVar
       val tpInstantiated = tp0.instantiateTypeParams(allUndetparams, tvars)
 
-      if(!matchesPt(tpInstantiated, wildPt, allUndetparams)) SearchFailure
+      if (!matchesPt(tpInstantiated, wildPt, allUndetparams)) SearchFailure
       else {
         val targs = solvedTypes(tvars, allUndetparams, allUndetparams map varianceInType(pt), upper = false, lubDepth(wildPt :: tp :: Nil))
-        if(!checkBounds(EmptyTree, NoPrefix, NoSymbol, allUndetparams, targs, "inferred ")) SearchFailure
+        if (!checkBounds(EmptyTree, NoPrefix, NoSymbol, allUndetparams, targs, "inferred ")) SearchFailure
         else {
           val AdjustedTypeArgs(okParams, okArgs) = adjustTypeArgs(allUndetparams, tvars, targs)
           val undetparams = allUndetparams diff okParams
           val tpSubst = tp0.instantiateTypeParams(okParams, okArgs)
-          if(!matchesPt(tpSubst, wildPt, undetparams)) SearchFailure
+          if (!matchesPt(tpSubst, wildPt, undetparams)) SearchFailure
           else {
             val subst: TreeTypeSubstituter =
               if (okParams.isEmpty) EmptyTreeTypeSubstituter
@@ -1180,11 +1180,11 @@ trait Implicits {
 
       lazy val markedInductive = dealiasUnrefine(pt).typeConstructor.typeSymbol.hasAnnotation(InductiveClass)
       val nonInductive: SearchResult =
-        if(markedInductive) NoninductiveSearchFailure
+        if (markedInductive) NoninductiveSearchFailure
         else SearchFailure
 
       val inductionResult =
-        if(!inductive(local, scope)) nonInductive
+        if (!inductive(local, scope)) nonInductive
         else {
           val ranked = local.sortWith(improves) ++ scope.sortWith(improves)
 
@@ -1198,7 +1198,7 @@ trait Implicits {
                 val solvedContext = solve(pt, info.tpe) // Is there duplication between solve and the subsequent type
                                                         // checking which could be eliminated?
                 val result =
-                  if(solvedContext.isFailure) acc
+                  if (solvedContext.isFailure) acc
                   else {
                     val allUndetparams = (context.undetparams ++ context.outer.undetparams ++ solvedContext.undetparams).distinct
                     context.undetparams = (context.undetparams ++ solvedContext.undetparams).distinct
@@ -1218,7 +1218,7 @@ trait Implicits {
                       }
 
                     val tree1 =
-                      if(isImplicitMethodType(mt)) {
+                      if (isImplicitMethodType(mt)) {
                         applyImplicitArgs(fun3, mt, solvedContext)
                       } else {
                         solvedContext.subst traverse fun3
@@ -1226,11 +1226,11 @@ trait Implicits {
                       }
 
                     val tree2 = typed(tree1, EXPRmode, wildPt)
-                    if(tree2.isErroneous) acc
+                    if (tree2.isErroneous) acc
                     else {
                       val tvars = allUndetparams map freshVar
                       def ptInstantiated = pt.instantiateTypeParams(allUndetparams, tvars)
-                      if(!matchesPt(tree2.tpe, ptInstantiated, allUndetparams)) acc
+                      if (!matchesPt(tree2.tpe, ptInstantiated, allUndetparams)) acc
                       else {
                         val targs = solvedTypes(tvars, allUndetparams, allUndetparams map varianceInType(pt), upper = false, lubDepth(tree2.tpe :: pt :: Nil))
                         val AdjustedTypeArgs(okParams, okArgs) = adjustTypeArgs(allUndetparams, tvars, targs)
@@ -1249,7 +1249,7 @@ trait Implicits {
                       }
                     }
                   }
-                if(result.isFailure)
+                if (result.isFailure)
                   context.undetparams = savedUndetparams
                 result
               case (res, _) => res
@@ -1279,7 +1279,7 @@ trait Implicits {
 
                 val res =
                   if (paramFailed || (paramTp.isErroneous && {paramFailed = true; true})) SearchFailure
-                  else if(paramRecursive && samePlausibleImplicits(pt, paramTp)) loop(paramTp)
+                  else if (paramRecursive && samePlausibleImplicits(pt, paramTp)) loop(paramTp)
                   else inferImplicitFor(paramTp, fun, context, reportAmbiguous = context.reportErrors)
 
                 argResultsBuff += res
@@ -1289,7 +1289,7 @@ trait Implicits {
                 } else {
                   mkArg = gen.mkNamedArg // don't pass the default argument (if any) here, but start emitting named arguments for the following args
                   if (!param.hasDefault && !paramFailed) {
-                    if(paramRecursive || !markedInductive)
+                    if (paramRecursive || !markedInductive)
                       context.reporter.reportFirstDivergentError(fun, param, paramTp)(context)
                     else
                       IncompleteInductionImplicitExpansionError(fun, pt, paramTp)(context)
@@ -1321,7 +1321,7 @@ trait Implicits {
           loop(pt)
         }
 
-      if(inductionResult.isNoninductive && inductionResult.tree.isEmpty)
+      if (inductionResult.isNoninductive && inductionResult.tree.isEmpty)
         NoninductiveImplicitExpansionError(tree, pt)(context)
 
       inductionResult
@@ -1720,7 +1720,7 @@ trait Implicits {
 
         // `materializeImplicit` does some preprocessing for `pt`
         // is it only meant for manifests/tags or we need to do the same for `implicitsOfExpectedType`?
-        if(settings.YinductionHeuristics) {
+        if (settings.YinductionHeuristics) {
           if (result.isFailure && !wasAmbiguous) {
             result = tryInduction(implicitsOfExpectedType)
 

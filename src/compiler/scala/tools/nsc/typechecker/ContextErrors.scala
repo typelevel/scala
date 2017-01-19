@@ -99,7 +99,7 @@ trait ContextErrors {
 
   case class IncompleteInductionImplicitTypeError(underlyingTree: Tree, pt: Type, aux: Type)
     extends ImplicitTypeError {
-    def errMsg: String = s"Inductive implicit expansion for type ${pt} failed due to missing auxilliary implicit ${aux}"
+    def errMsg: String = s"Inductive implicit expansion for type ${pt} failed due to missing auxiliary implicit ${aux}"
   }
 
   case class PosAndMsgTypeError(errPos: Position, errMsg: String)
