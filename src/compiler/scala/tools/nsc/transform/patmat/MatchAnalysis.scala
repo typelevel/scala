@@ -525,8 +525,8 @@ trait MatchAnalysis extends MatchApproximation {
       val symbolicCases = approx.approximateMatch(cases, approx.onUnknown { tm =>
         approx.fullRewrite.applyOrElse[TreeMaker, Prop](tm, {
           case BodyTreeMaker(_, _) => True // irrelevant -- will be discarded by symbolCase later
-          case GuardTreeMaker(_) => if (strict) False else True
-          case ExtractorTreeMaker(extractor, _, _) if extractor.symbol.name != nme.unapplySeq =>
+          case ExtractorTreeMaker(_, _, _)
+             | GuardTreeMaker(_) =>
             if (strict) False else True
           case _ => // debug.patmat("backing off due to "+ tm)
             backoff = true
@@ -892,7 +892,8 @@ trait MatchAnalysis extends MatchApproximation {
               // if uniqueEqualTo contains more than one symbol of the same domain
               // then we can safely ignore these counter examples since we will eventually encounter
               // both counter examples separately
-              case _ if inSameDomain => Some(WildcardExample)
+              case _ if inSameDomain =>
+                if (settings.XstrictPatmatAnalysis.value) Some(WildcardExample) else None
 
               // not a valid counter-example, possibly since we have a definite type but there was a field mismatch
               // TODO: improve reasoning -- in the mean time, a false negative is better than an annoying false positive
