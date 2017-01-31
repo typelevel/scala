@@ -695,6 +695,16 @@ trait ContextErrors {
         setError(tree)
       }
 
+      def InferredReturnTypeError(tree: Tree, pt: Type) = {
+        issueNormalTypeError(tree, s"inferred result type ($pt) takes type parameters")
+        setError(tree)
+      }
+
+      def AnyKindTypeError(tree: Tree) = {
+        issueNormalTypeError(tree, s"AnyKind can't be used as a real type")
+        setError(tree)
+      }
+
       def KindArityMismatchError(tree: Tree, pt: Type) = {
         issueNormalTypeError(tree,
           tree.tpe+" takes "+countElementsAsString(tree.tpe.typeParams.length, "type parameter")+
