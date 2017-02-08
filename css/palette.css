@@ -53,8 +53,7 @@ body.docs {
 .sidebar-nav > li a:hover {
   background: #8C192F; }
 .sidebar-nav > li a.active {
-  border-left: 3px solid #FC4053;
-  color: #fff; }
+  border-left: 3px solid #FC4053; }
 .sidebar-nav > .sidebar-brand a {
   background: #8C192F; }
   .sidebar-nav > .sidebar-brand a:hover {
