@@ -266,6 +266,19 @@ scala> foo((x: Int) => x*2)   // Function1[Int, Int] unifies with F[_]
 res1: String = <function1>
 ```
 
+If you are using maven with the `scala-maven-plugin`, set the `<scalaOrganization>` to `org.typelevel`:
+
+````
+<plugin>
+  <groupId>net.alchim31.maven</groupId>
+  <artifactId>scala-maven-plugin</artifactId>
+  <version>3.2.1</version>
+  <configuration>
+    <scalaOrganization>org.typelevel</scalaOrganization>
+  </configuration>
+</plugin>
+````
+
 ## Roadmap
 
 The following are high priority issues for Typelevel projects on which progress is likely to be made in 2016,
