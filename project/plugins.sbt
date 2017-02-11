@@ -1,1 +1,1 @@
-addSbtPlugin("com.fortysevendeg"  % "sbt-microsites" % "0.2.4")
+addSbtPlugin("com.fortysevendeg"  % "sbt-microsites" % "0.4.0")
