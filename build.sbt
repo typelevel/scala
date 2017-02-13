@@ -1,3 +1,5 @@
+import microsites._
+
 name := "Scala"
 version := "1.0"
 scalaVersion := "2.11.8"
@@ -9,7 +11,13 @@ micrositeHomepage := "http://typelevel.org/scala"
 micrositeGithubOwner := "typelevel"
 micrositeGithubRepo := "scala"
 micrositeBaseUrl := "scala"
-micrositeExtraMdFiles := Map(file("README.md") -> "index.md")
+micrositeDocumentationUrl := "docs"
+micrositeExtraMdFiles := Map(
+  file("README.md") -> ExtraMdFileConfig(
+    "index.md",
+    "home"
+  )
+)
 micrositeHighlightTheme := "atom-one-light"
 micrositePalette := Map(
   "brand-primary"     -> "#FC4053",
