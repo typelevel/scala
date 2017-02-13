@@ -291,6 +291,19 @@ res1: String = &lt;function1&gt;
 </code></pre>
 </div>
 
+<p>If you are using maven with the <code class="highlighter-rouge">scala-maven-plugin</code>, set the <code class="highlighter-rouge">&lt;scalaOrganization&gt;</code> to <code class="highlighter-rouge">org.typelevel</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;plugin&gt;
+  &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;
+  &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;3.2.1&lt;/version&gt;
+  &lt;configuration&gt;
+    &lt;scalaOrganization&gt;org.typelevel&lt;/scalaOrganization&gt;
+  &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+</div>
+
 <h2 id="roadmap">Roadmap</h2>
 
 <p>The following are high priority issues for Typelevel projects on which progress is likely to be made in 2016,</p>
