@@ -40,82 +40,19 @@ interoperability with the rest of the Scala ecosystem.
 
 ## Typelevel Scala releases
 
-Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8 and 2.12.0. As soon as
-Lightbend Scala 2.11.9 and 2.12.1 are published corresponding releases of Typelevel Scala will be published.
+Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8 and 2.12.1. As soon
+as Lightbend Scala 2.11.9 is published a corresponding release of Typelevel Scala will be published.
 
-### Typelevel Scala 2.11.8
+Full release notes are available,
 
-The Typelevel Scala additions to Lightbend Scala 2.11.8 can be found on the branch
-[2.11.8-bin-typelevel][2.11.8-bin-typelevel] of this repository.
++ Typelevel Scala [2.11.8](https://github.com/typelevel/scala/blob/typelevel-readme/notes/2.11.8.md).
++ Typelevel Scala [2.12.1](https://github.com/typelevel/scala/blob/typelevel-readme/notes/2.12.1.md).
 
-Typelevel Scala 2.11.8 offers the following fixes and features over Lightbend Scala 2.11.8,
+## Older releases
 
-+ Support for partial unification (ie. a fix for [SI-2712][SI-2712]) &mdash; merged in Lightbend Scala 2.12.0-RC1 and
-  2.11.9
+Full release notes are available,
 
-  An improvement to type inference for type constructors, enabled by the `-Ypartial-unification` scalac option. This
-  has many benefits for libraries, such as Cats and Scalaz, which make extensive use of higher-kinded types.
-
-  Full details on the [pull request][pr-2712].
-+ Support for literal types (aka SIP-23) &mdash; proposed for Lightbend Scala 2.12.1.
-
-  Implements [literal types][SIP-23]. Enabled by `-Yliteral-types`.
-
-  Literals can now appear in type position, designating the corresponding singleton type. A `scala.ValueOf[T]` type
-  class and corresponding `scala.Predef.valueOf[T]` operator has been added yielding the unique value of types with a
-  single inhabitant. Support for `scala.Symbol` literal types has been added.
-+ A partial fix for SI-7046 &mdash; proposed for Lightbend Scala 2.12.1 and merged in 2.11.9.
-
-  The macro API call `knownDirectSubclasses` now yields the correct result in most cases and will report an error in
-  cases where it is unable to yield the correct result.
-
-  This is only a partial fix because subclasses defined in local scopes might be missed by `knownDirectSubclasses`. In
-  mitigation it is very likely that a local subclass would represent an error in any scenario where
-  `knownDirectSubclasses` might be used. An error will be reported in these cases.
-
-  Full details on the [pull request][pr-7046].
-+ A fix for SI-9760 &mdash; merged in Lightbend Scala 2.12.0-RC1 and 2.11.9.
-
-  Higher kinded type arguments are now refined by GADT pattern matching. Details can be found on [the
-  ticket][SI-9760].
-
-### Typelevel Scala 2.12.0
-
-The Typelevel Scala additions to Lightbend Scala 2.12.0 can be found on the branch
-[2.12.0-bin-typelevel][2.12.0-bin-typelevel] of this repository.
-
-Typelevel Scala 2.12.0 offers the following fixes and features over Lightbend Scala 2.12.0,
-
-+ Support for literal types (aka SIP-23) &mdash; proposed for Lightbend Scala 2.12.1.
-
-  Implements [literal types][SIP-23]. Enabled by `-Yliteral-types`.
-
-  Literals can now appear in type position, designating the corresponding singleton type. A `scala.ValueOf[T]` type
-  class and corresponding `scala.Predef.valueOf[T]` operator has been added yielding the unique value of types with a
-  single inhabitant. Support for `scala.Symbol` literal types has been added.
-+ A partial fix for SI-7046 &mdash; proposed for Lightbend Scala 2.12.1.
-
-  The macro API call `knownDirectSubclasses` now yields the correct result in most cases and will report an error in
-  cases where it is unable to yield the correct result.
-
-  This is only a partial fix because subclasses defined in local scopes might be missed by `knownDirectSubclasses`. In
-  mitigation it is very likely that a local subclass would represent an error in any scenario where
-  `knownDirectSubclasses` might be used. An error will be reported in these cases.
-
-  Full details on the [pull request][pr-7046].
-
-The following have already been merged in Lightbend Scala 2.12.x and so are included here automatically,
-
-+ Support for partial unification (ie. a fix for [SI-2712][SI-2712]) &mdash; merged in Lightbend Scala 2.12.0-RC1.
-
-  An improvement to type inference for type constructors, enabled by the `-Ypartial-unification` scalac option. This
-  has many benefits for libraries, such as Cats and Scalaz, which make extensive use of higher-kinded types.
-
-  Full details on the [pull request][pr-2712].
-+ A fix for SI-9760 &mdash; merged in Lightbend Scala 2.12.0-RC1.
-
-  Higher kinded type arguments are now refined by GADT pattern matching. Details can be found on [the
-  ticket][SI-9760].
++ Typelevel Scala [2.12.0](https://github.com/typelevel/scala/blob/typelevel-readme/notes/2.12.0.md).
 
 ## Should I use Typelevel Scala? In production?
 
@@ -181,19 +118,17 @@ res7: Int = 23
 [coursier]: https://github.com/alexarchambault/coursier
 [ammonite]: https://github.com/lihaoyi/Ammonite
 
-## How to use Typelevel Scala
+## How to use Typelevel Scala 2.12.1 with SBT
 
-There are just two requirements for using Typelevel Scala in your existing projects,
+There are two requirements for using Typelevel Scala in your existing projects,
 
-+ You must be using (or be able to switch to) a corresponding version of Lightbend Scala. Currently this is 2.11.8
-  and 2.12.0.
-+ You must be using (or be able to switch to) SBT 0.13.13 or later. Earlier versions of SBT don't have full
-  support for using an alternative `scalaOrganization`.
++ You must be using (or be able to switch to) Lightbend Scala 2.12.1.
++ You must be using (or be able to switch to) SBT 0.13.13 or later. Earlier versions of SBT don't have full support
+  for using an alternative `scalaOrganization`.
 
-If you are using Lightbend Scala 2.11.8 or 2.12.0 and SBT 0.13.13 the following steps will build your project with
-Typelevel Scala,
+If these conditions are met the following steps will build your project with Typelevel Scala,
 
-+ Update your `project/build.properties` to require SBT 0.13.13,
++ Ensure that your `project/build.properties` specifies SBT 0.13.13,
 
   ```
   sbt.version=0.13.13
@@ -224,49 +159,14 @@ verify this from the SBT prompt,
 >
 ```
 
-This will immediately provide you with the fixes for [SI-7046][SI-7046] and [SI-9760][SI-9760]. To additionally enable
-the the fix for [SI-2712] and the implementation of [SIP-23] you should add either or both of their enabling flags to
-`scalacOptions` (or `local.sbt` if that was the path you took earlier),
-
-```
-scalacOptions += "-Ypartial-unification" // enable fix for SI-2712
-scalacOptions += "-Yliteral-types"       // enable SIP-23 implementation
-
-```
-
-Note that Typelevel Scala 2.11.8 replaces the [si2712fix compiler plugin][si2712fix-plugin] &mdash; if you are using
+Gote that Typelevel Scala 2.11.8 replaces the [si2712fix compiler plugin][si2712fix-plugin] &mdash; if you are using
 it you should remove it from your build before switching to Typelevel Scala.
 
-Also note that the two compiler flags above should be used in preference to `-Xexperimental` at present &mdash; as
-well as enabling the above two features `-Xexperimental` also enables some other features which are not typically
-desirable.
+## How to use Typelevel Scala 2.12.1 with Maven
 
-You now can verify that these features have been enabled from the SBT console,
+If you are using maven with the `scala-maven-plugin`, set the `<scalaOrganization>` to `org.typelevel`,
 
 ```
-> console
-[info] Compiling 3 Scala sources to /home/miles/projects/value-wrapper/target/scala-2.11/classes...
-[info] Starting scala interpreter...
-[info]
-Welcome to Scala 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_102).
-Type in expressions for evaluation. Or try :help.
-
-scala> val foo: "foo" = "foo" // Use of literal type "foo"
-foo: "foo" = foo
-
-scala> import scala.language.higherKinds
-import scala.language.higherKinds
-
-scala> def foo[F[_], A](fa: F[A]): String = fa.toString
-foo: [F[_], A](fa: F[A])String
-
-scala> foo((x: Int) => x*2)   // Function1[Int, Int] unifies with F[_]
-res1: String = <function1>
-```
-
-If you are using maven with the `scala-maven-plugin`, set the `<scalaOrganization>` to `org.typelevel`:
-
-````
 <plugin>
   <groupId>net.alchim31.maven</groupId>
   <artifactId>scala-maven-plugin</artifactId>
@@ -275,20 +175,20 @@ If you are using maven with the `scala-maven-plugin`, set the `<scalaOrganizatio
     <scalaOrganization>org.typelevel</scalaOrganization>
   </configuration>
 </plugin>
-````
+```
 
 ## Roadmap
 
 The following are high priority issues for Typelevel projects on which progress is likely to be made in 2016,
 
-+ Partial type application.
-+ Multiple implicit parameter blocks.
-+ Improved compile times for inductive implicits.
-+ Improved control over implicit prioritization.
-+ Improved error reporting for implicit resolution failures.
++ Partial type application
++ Multiple implicit parameter blocks
++ ~~Improved compile times for inductive implicits~~ &mdash; **Done**
++ Improved control over implicit prioritization
++ ~~Improved error reporting for implicit resolution failures~~ &mdash; **Done**
 + GADT and singleton type bugfixes.
 + Literal syntax for Byte and Short types.
-+ Support for alternative `scala.Predef`.
++ ~~Support for alternative `scala.Predef`~~ &mdash; **Done**
 
 In accordance with the policy for inclusion contributions on these issues will be made as pull requests against
 Lightbend Scala in the first instance.
