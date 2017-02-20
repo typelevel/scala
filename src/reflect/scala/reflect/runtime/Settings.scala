@@ -52,7 +52,8 @@ private[reflect] class Settings extends MutableSettings {
   val YliteralTypes     = new BooleanSetting(false)
   val YinductionHeuristics = new BooleanSetting(false)
   val YkindPolymorphism   = new BooleanSetting(false)
-
+  val YcoforExtension   = new BooleanSetting(false)
+  
   val Yrecursion        = new IntSetting(0)
   val maxClassfileName  = new IntSetting(255)
   def isScala211        = true
