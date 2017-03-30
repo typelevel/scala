@@ -1131,8 +1131,11 @@ trait Scanners extends ScannersCommon {
   } // end Scanner
 
   // ------------- keyword configuration -----------------------------------
-
-  private val allKeywords = List[(Name, Token)](
+  private[this] val addKeywords: List[(Name, Token)] => List[(Name, Token)] =
+    if (settings.YcoforExtension) ((nme.COFORkw -> COFOR) +: _)  else ( identity)
+  private val allKeywords =
+    addKeywords(
+      List[(Name, Token)](
     nme.ABSTRACTkw  -> ABSTRACT,
     nme.CASEkw      -> CASE,
     nme.CATCHkw     -> CATCH,
@@ -1185,7 +1188,8 @@ trait Scanners extends ScannersCommon {
     nme.ATkw        -> AT,
     nme.MACROkw     -> IDENTIFIER,
     nme.THENkw      -> IDENTIFIER)
-
+  )
+  
   private var kwOffset: Offset = -1
   private val kwArray: Array[Token] = {
     val (offset, arr) = createKeywordArray(allKeywords, IDENTIFIER)

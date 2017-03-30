@@ -30,7 +30,7 @@ trait ScalaSettings extends AbsScalaSettings
   protected def defaultClasspath = sys.env.getOrElse("CLASSPATH", ".")
 
   /** Enabled under -Xexperimental. */
-  protected def experimentalSettings = List[BooleanSetting](YpartialUnification, YliteralTypes, YinductionHeuristics, YkindPolymorphism)
+  protected def experimentalSettings = List[BooleanSetting](YpartialUnification, YliteralTypes, YinductionHeuristics, YkindPolymorphism, YcoforExtension)
 
   /** Enabled under -Xfuture. */
   protected def futureSettings = List[BooleanSetting]()
@@ -230,7 +230,8 @@ trait ScalaSettings extends AbsScalaSettings
   val YliteralTypes   = BooleanSetting    ("-Yliteral-types", "Enable literal-based singleton types")
   val YinductionHeuristics = BooleanSetting ("-Yinduction-heuristics", "Enable induction heuristics in implicit resolution")
   val YkindPolymorphism = BooleanSetting ("-Ykind-polymorphism", "Enable kind polymorphism")
-
+  val YcoforExtension   = BooleanSetting ("-Ycofor-extension", "Enable cofor keyword")
+  
   val exposeEmptyPackage = BooleanSetting ("-Yexpose-empty-package", "Internal only: expose the empty package.").internalOnly()
   val Ydelambdafy        = ChoiceSetting  ("-Ydelambdafy", "strategy", "Strategy used for translating lambdas into JVM code.", List("inline", "method"), "method")
 
