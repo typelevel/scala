@@ -30,10 +30,3 @@ micrositePalette := Map(
   "white-color"       -> "#FFFFFF")
 
 enablePlugins(MicrositesPlugin)
-
-sys.env.get("GH_TOKEN") match {
-  case None => Seq()
-  case Some(token) => Seq(
-    git.remoteRepo := s"https://$token@github.com/${micrositeGithubOwner.value}/${micrositeGithubRepo.value}.git"
-  )
-}
