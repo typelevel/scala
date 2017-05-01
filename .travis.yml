@@ -7,6 +7,7 @@ env:
 
 before_install:
   - export PATH="$PATH:./vendor/bundle"
+  - if [ "$TRAVIS_BRANCH" = "typelevel-readme" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then bash scripts/decrypt-keys.sh; fi
 
 install:
   - rvm use 2.2.3 --install --fuzzy
@@ -18,7 +19,7 @@ script:
   - sbt makeMicrosite
 
 after_success:
-  - ./deploy-microsite.sh
+  - if [ "$TRAVIS_BRANCH" = "typelevel-readme" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then bash scripts/publishMicrosite.sh; fi
 
 branches:
   only:
