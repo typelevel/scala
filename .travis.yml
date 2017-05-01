@@ -1,10 +1,6 @@
 language: scala
 sudo: false
 
-env:
-  global:
-    secure: "NhcuUIVAtUcwXRNKN3TDvhuPBtRy6kpUGRnnRlqZMsPcJe1tScaA1/WnhbNjcDrvMGyMuNImXtfWIVS3h0QD5rpnc/FsAY4P5/QOA3fwQo49rRwGThIcI6liU2+IZxgjI0C3gIoR+7gP1xuZLvQSEa2ZVglUbolUTPWu8aIG3Us="
-
 before_install:
   - export PATH="$PATH:./vendor/bundle"
   - if [ "$TRAVIS_BRANCH" = "typelevel-readme" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then bash scripts/decrypt-keys.sh; fi
