@@ -35,7 +35,7 @@ abstract class ReplTest extends DirectTest {
     val lines = transcript.lines
     val clean =
       if (welcoming) {
-        val welcome = "(Welcome to Scala).*".r
+        val welcome = "(Welcome to Typelevel Scala).*".r
         lines map {
           case welcome(s) => s
           case s          => s
