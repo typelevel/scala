@@ -34,7 +34,7 @@ abstract class ReplTest extends DirectTest {
     log("eval(): settings = " + s)
     val lines = ILoop.runForTranscript(code, s, inSession = inSession).lines
     (if (welcoming) {
-      val welcome = "(Welcome to Scala).*".r
+      val welcome = "(Welcome to Typelevel Scala).*".r
       //val welcome = Regex.quote(header.lines.next).r
       //val version = "(.*version).*".r   // version on separate line?
       //var inHead  = false

@@ -114,11 +114,13 @@ lazy val publishSettings : Seq[Setting[_]] = Seq(
 // is the same as the Maven version and derived automatically from `baseVersion` and `baseVersionSuffix`.
 globalVersionSettings
 baseVersion in Global := "2.11.11"
-baseVersionSuffix in Global := "SNAPSHOT"
+baseVersionSuffix in Global := "bin-typelevel-4"
 mimaReferenceVersion in Global := Some("2.11.0")
 
+scalaVersion in Global := versionProps("starr.version")
+
 lazy val commonSettings = clearSourceAndResourceDirectories ++ publishSettings ++ Seq[Setting[_]](
-  organization := "org.scala-lang",
+  organization := "org.typelevel",
   // we don't cross build Scala itself
   crossPaths := false,
   // do not add Scala library jar as a dependency automatically
