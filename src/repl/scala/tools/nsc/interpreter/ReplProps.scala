@@ -64,7 +64,7 @@ class ReplProps {
       case "banner" => shellWelcomeString
       case text     => text
     } else
-      """Welcome to Scala %1$#s (%3$s, Java %2$s).
+      """Welcome to Typelevel Scala %1$#s (%3$s, Java %2$s).
         |Type in expressions for evaluation. Or try :help.""".stripMargin
   }
 
