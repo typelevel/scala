@@ -139,7 +139,7 @@ res6: Int = 23
   <li>
     <p>(Optional) Your build should scope <code class="highlighter-rouge">scalaVersion</code> to <code class="highlighter-rouge">ThisBuild</code>.</p>
 
-    <p>You can find an example in <a href="https://github.com/milessabin/shapeless/blob/master/build.sbt#L13-L17">this shapeless commit</a>,</p>
+    <p>You can find an example in <a href="https://github.com/milessabin/shapeless/blob/master/build.sbt#L13-L17">the shapeless build</a>,</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code>inThisBuild(Seq(
   organization := "com.chuusai",
@@ -157,14 +157,7 @@ res6: Int = 23
 </code></pre>
 </div>
 
-<p>on the SBT REPL. You can verify that the settings have been updated correctly using <code class="highlighter-rouge">show</code>,</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; show scalaOrganization
-[info] org.typelevel
-&gt; show scalaVersion
-[info] 2.12.2-bin-typelevel-4
-</code></pre>
-</div>
+<p>on the SBT REPL.</p>
 
 <p>To switch your project permanently to Typelevel Scala 4 update your <code class="highlighter-rouge">build.sbt</code> as follows,</p>
 
