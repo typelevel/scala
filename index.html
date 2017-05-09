@@ -42,23 +42,19 @@ interoperability with the rest of the Scala ecosystem.</p>
 
 <h2 id="typelevel-scala-releases">Typelevel Scala releases</h2>
 
-<p>Currently Typelevel Scala is available as a drop in replacement for Lightbend Scala 2.11.8 and 2.12.1. As soon
-as Lightbend Scala 2.11.9 is published a corresponding release of Typelevel Scala will be published.</p>
+<p>Typelevel Scala releases are distinguished from the corresponding Lightbend Scala releases by a version number suffix
+which indicates the Typelevel feature level beyond the baseline compiler. We are attempting to maintain parity of
+Typelevel features across the Scala compiler versions we support.</p>
 
-<p>Full release notes are available,</p>
-
-<ul>
-  <li>Typelevel Scala <a href="https://github.com/typelevel/scala/blob/typelevel-readme/notes/2.11.8.md">2.11.8</a>.</li>
-  <li>Typelevel Scala <a href="https://github.com/typelevel/scala/blob/typelevel-readme/notes/2.12.1.md">2.12.1</a>.</li>
-</ul>
-
-<h2 id="older-releases">Older releases</h2>
-
-<p>Full release notes are available,</p>
+<p>The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11 and
+2.12.2. Full release notes are available,</p>
 
 <ul>
-  <li>Typelevel Scala <a href="https://github.com/typelevel/scala/blob/typelevel-readme/notes/2.12.0.md">2.12.0</a>.</li>
+  <li>Typelevel Scala 4 <a href="https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md">2.12.2/2.11.11</a>.</li>
 </ul>
+
+<p>Support for Scala 2.13.0-M1 will be added in due course. Support for Scala 2.10.6 will be considered if sponsors step
+forward to support the necessary work.</p>
 
 <h2 id="should-i-use-typelevel-scala-in-production">Should I use Typelevel Scala? In production?</h2>
 
@@ -88,92 +84,121 @@ relevant to practitioners.</p>
 
 <h2 id="try-typelevel-scala-with-an-ammonite-instant-repl">Try Typelevel Scala with an Ammonite instant REPL</h2>
 
-<p>The quickest way to get to a Typelevel Scala 2.11.8 REPL path is to run the provided
+<p>The quickest way to get to a Typelevel Scala 2.12.2 REPL path is to run the provided
 <a href="https://github.com/typelevel/scala/blob/typelevel-readme/try-typelevel-scala.sh">“try Typelevel Scala”</a> script, which has no dependencies other than an installed JDK. This script
-downloads and installs <a href="https://github.com/alexarchambault/coursier">coursier</a> and uses it to fetch the <a href="https://github.com/lihaoyi/Ammonite">Ammonite</a> REPL and Typelevel Scala
-2.11.8. It then drops you immediately into a REPL session,</p>
+downloads and installs <a href="https://github.com/coursier/coursier">coursier</a> and uses it to fetch the <a href="https://github.com/lihaoyi/Ammonite">Ammonite</a> REPL and Typelevel Scala
+2.12.2. It then drops you immediately into a REPL session,</p>
 
 <div class="language-text highlighter-rouge"><pre class="highlight"><code>% curl -s https://raw.githubusercontent.com/typelevel/scala/typelevel-readme/try-typelevel-scala.sh | bash
 Loading...
+Compiling replBridge.sc
+Compiling interpBridge.sc
+Compiling HardcodedPredef.sc
+Compiling ArgsPredef.sc
 Compiling predef.sc
 Compiling SharedPredef.sc
 Compiling LoadedPredef.sc
-Welcome to the Ammonite Repl 0.7.8
-(Scala 2.11.8 Java 1.8.0_112)
+Welcome to the Ammonite Repl 0.8.4
+(Scala 2.12.2-bin-typelevel-4 Java 1.8.0_131)
+If you like Ammonite, please support our development at www.patreon.com/lihaoyi
+@
 @ repl.compiler.settings.YliteralTypes.value = true
 
 @ trait Cond[T] { type V ; val value: V }
 defined trait Cond
 @
 @ implicit val condTrue = new Cond[true] { type V = String ; val value = "foo" }
-condTrue: AnyRef with Cond[true]{type V = String} = $sess.cmd2$$anon$1@22265a2d
+condTrue: AnyRef with Cond[true]{type V = String} = $sess.cmd2$$anon$1@4fef2259
 @ implicit val condFalse = new Cond[false] { type V = Int ; val value = 23 }
-condFalse: AnyRef with Cond[false]{type V = Int} = $sess.cmd3$$anon$1@606ab048
+condFalse: AnyRef with Cond[false]{type V = Int} = $sess.cmd3$$anon$1@463887f6
 @
 @ def cond[T](implicit cond: Cond[T]): cond.V = cond.value
 defined function cond
 @
 @ cond[true] : String
-res8: String = "foo"
+res5: String = "foo"
 @ cond[false] : Int
-res7: Int = 23
+res6: Int = 23
 @ Bye!
 %
 </code></pre>
 </div>
 
-<h2 id="how-to-use-typelevel-scala-2121-with-sbt">How to use Typelevel Scala 2.12.1 with SBT</h2>
+<h2 id="how-to-use-typelevel-scala-4-with-sbt">How to use Typelevel Scala 4 with SBT</h2>
 
-<p>There are two requirements for using Typelevel Scala in your existing projects,</p>
-
-<ul>
-  <li>You must be using (or be able to switch to) Lightbend Scala 2.12.1.</li>
-  <li>You must be using (or be able to switch to) SBT 0.13.13 or later. Earlier versions of SBT don’t have full support
-for using an alternative <code class="highlighter-rouge">scalaOrganization</code>.</li>
-</ul>
-
-<p>If these conditions are met the following steps will build your project with Typelevel Scala,</p>
+<p>Requirements for using Typelevel Scala in your existing projects,</p>
 
 <ul>
+  <li>You must be using Lightbend Scala 2.12.2 or 2.11.11.</li>
+  <li>You must be using SBT 0.13.13 or later.</li>
   <li>
-    <p>Ensure that your <code class="highlighter-rouge">project/build.properties</code> specifies SBT 0.13.13,</p>
+    <p>Your build should use <code class="highlighter-rouge">scalaOrganization.value</code> and <code class="highlighter-rouge">CrossVersion.patch</code> appropriately.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>sbt.version=0.13.13
+    <p>You can find many examples linked to from <a href="https://github.com/typelevel/scala/issues/135">this issue</a>.</p>
+  </li>
+  <li>
+    <p>(Optional) Your build should scope <code class="highlighter-rouge">scalaVersion</code> to <code class="highlighter-rouge">ThisBuild</code>.</p>
+
+    <p>You can find an example in <a href="https://github.com/milessabin/shapeless/blob/master/build.sbt#L13-L17">this shapeless commit</a>,</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>inThisBuild(Seq(
+  organization := "com.chuusai",
+  scalaVersion := "2.12.2",
+  crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.2", "2.13.0-M1")
+))
 </code></pre>
     </div>
   </li>
-  <li>
-    <p>Add the following to your <code class="highlighter-rouge">build.sbt</code> immediately next to where you set <code class="highlighter-rouge">scalaVersion</code>,</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code>scalaOrganization in ThisBuild := "org.typelevel"
-</code></pre>
-    </div>
-
-    <p>Alternatively, if you want to try Typelevel Scala without modifying your <code class="highlighter-rouge">build.sbt</code> you can instead create a file
-<code class="highlighter-rouge">local.sbt</code> at the root of your project with the following content,</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code>scalaOrganization in ThisBuild := "org.typelevel"
-</code></pre>
-    </div>
-
-    <p>This will be merged with your main build definitions and can be added to <code class="highlighter-rouge">.gitignore</code> or <code class="highlighter-rouge">.git/info/exclude</code> if so
-desired.</p>
-  </li>
 </ul>
 
-<p>Now your build should function as before but using the Typelevel Scala toolchain instead of the Lightbend one. You can
-verify this from the SBT prompt,</p>
+<p>You can now temporarily build with Typelevel Scala by entering,</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; show scalaOrganization
-[info] org.typelevel
-&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; ; set every scalaOrganization := "org.typelevel" ; ++2.12.2-bin-typelevel-4
 </code></pre>
 </div>
 
-<p>Gote that Typelevel Scala 2.11.8 replaces the <a href="https://github.com/milessabin/si2712fix-plugin">si2712fix compiler plugin</a> — if you are using
-it you should remove it from your build before switching to Typelevel Scala.</p>
+<p>on the SBT REPL. You can verify that the settings have been updated correctly using <code class="highlighter-rouge">show</code>,</p>
 
-<h2 id="how-to-use-typelevel-scala-2121-with-maven">How to use Typelevel Scala 2.12.1 with Maven</h2>
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; show scalaOrganization
+[info] org.typelevel
+&gt; show scalaVersion
+[info] 2.12.2-bin-typelevel-4
+</code></pre>
+</div>
+
+<p>To switch your project permanently to Typelevel Scala 4 update your <code class="highlighter-rouge">build.sbt</code> as follows,</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>inThisBuild(Seq(
+  scalaOrganization := "org.typelevel"
+  scalaVersion := "2.12.2-bin-typelevel-4"
+))
+</code></pre>
+</div>
+
+<p>Alternatively, if you want to try Typelevel Scala without modifying your <code class="highlighter-rouge">build.sbt</code> and you have scoped
+<code class="highlighter-rouge">scalaVersion</code> as shown earlier you can instead create a file <code class="highlighter-rouge">local.sbt</code> at the root of your project with the
+following content,</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>inThisBuild(Seq(
+  scalaOrganization := "org.typelevel",
+  scalaVersion      := "2.11.11-bin-typelevel-4"
+))
+</code></pre>
+</div>
+
+<p>These settings will override the <code class="highlighter-rouge">ThisBuild</code> scoped settings in your <code class="highlighter-rouge">build.sbt</code>.</p>
+
+<p>Whichever method you choose, your build should now function as before but using the Typelevel Scala toolchain instead
+of the Lightbend one. You can verify that the settings have been updated correctly from the SBT prompt using <code class="highlighter-rouge">show</code>,</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; show scalaOrganization
+[info] org.typelevel
+&gt; show scalaVersion
+[info] 2.12.2-bin-typelevel-4
+</code></pre>
+</div>
+
+<h2 id="how-to-use-typelevel-scala-4-with-maven">How to use Typelevel Scala 4 with Maven</h2>
 
 <p>If you are using maven with the <code class="highlighter-rouge">scala-maven-plugin</code>, set the <code class="highlighter-rouge">&lt;scalaOrganization&gt;</code> to <code class="highlighter-rouge">org.typelevel</code>,</p>
 
@@ -183,6 +208,7 @@ it you should remove it from your build before switching to Typelevel Scala.</p>
   &lt;version&gt;3.2.1&lt;/version&gt;
   &lt;configuration&gt;
     &lt;scalaOrganization&gt;org.typelevel&lt;/scalaOrganization&gt;
+    &lt;scalaVersion&gt;2.12.2-bin-typelevel-4&lt;/scalaOrganization&gt;
   &lt;/configuration&gt;
 &lt;/plugin&gt;
 </code></pre>
@@ -190,7 +216,7 @@ it you should remove it from your build before switching to Typelevel Scala.</p>
 
 <h2 id="roadmap">Roadmap</h2>
 
-<p>The following are high priority issues for Typelevel projects on which progress is likely to be made in 2016,</p>
+<p>The following are high priority issues for Typelevel projects on which progress is likely to be made in 2017,</p>
 
 <ul>
   <li>Partial type application</li>
