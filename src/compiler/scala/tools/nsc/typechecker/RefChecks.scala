@@ -1599,7 +1599,7 @@ abstract class RefChecks extends InfoTransform with scala.reflect.internal.trans
         if (t == EmptyTree) Literal(Constant(())).setPos(tree.pos).setType(UnitTpe) else t
 
       cond.tpe match {
-        case ConstantType(value) =>
+        case FoldableConstantType(value) =>
           val res = if (value.booleanValue) thenpart else elsepart
           unitIfEmpty(res)
         case _ => tree
