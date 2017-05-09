@@ -133,7 +133,7 @@ Requirements for using Typelevel Scala in your existing projects,
   You can find many examples linked to from [this issue][build-tweaks-1].
 + (Optional) Your build should scope `scalaVersion` to `ThisBuild`.
 
-  You can find an example in [this shapeless commit][build-tweaks-2],
+  You can find an example in [the shapeless build][build-tweaks-2],
 
   ```
   inThisBuild(Seq(
@@ -149,14 +149,7 @@ You can now temporarily build with Typelevel Scala by entering,
 > ; set every scalaOrganization := "org.typelevel" ; ++2.12.2-bin-typelevel-4
 ```
 
-on the SBT REPL. You can verify that the settings have been updated correctly using `show`,
-
-```
-> show scalaOrganization
-[info] org.typelevel
-> show scalaVersion
-[info] 2.12.2-bin-typelevel-4
-```
+on the SBT REPL.
 
 To switch your project permanently to Typelevel Scala 4 update your `build.sbt` as follows,
 
