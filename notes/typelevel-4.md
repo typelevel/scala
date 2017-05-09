@@ -374,7 +374,7 @@ If you are using maven with the `scala-maven-plugin`, set the `<scalaOrganizatio
 ## Contributors
 
 Typelevel Scala is only possible because of the contributions made to Lightbend Scala &mdash; see the contributors
-section of the LBS Scala 2.12.2 and 2.11.11[release notes][lbs-2.12.2].
+section of the LBS Scala 2.12.2 and 2.11.11 [release notes][lbs-2.12.2].
 
 We are hugely grateful to the following for their work on the enhancements included in Typelevel Scala 4 and look
 forward to them being included in future Lightbend Scala releases,
