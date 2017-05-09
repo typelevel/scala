@@ -69,7 +69,7 @@ res0: List[Int] = List(1, 2, 3)
 scala> unsafeToIntList(strings) // Whoops!
 res1: List[Int] = List(foo, bar, baz)
 
-scala> res7(0)
+scala> res1(0)
 java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Integer
   at scala.runtime.BoxesRunTime.unboxToInt(BoxesRunTime.java:101)
   ... 39 elided
