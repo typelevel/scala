@@ -33,7 +33,7 @@ trait ScalaSettings extends AbsScalaSettings
   protected def defaultClasspath = sys.env.getOrElse("CLASSPATH", ".")
 
   /** Enabled under -Xexperimental. */
-  protected def experimentalSettings = List[BooleanSetting](YmethodInfer, overrideObjects, overrideVars, YpartialUnification, YinductionHeuristics)
+  protected def experimentalSettings = List[BooleanSetting](YmethodInfer, overrideObjects, overrideVars, YpartialUnification, YinductionHeuristics, YkindPolymorphism)
 
   /** Enabled under -Xfuture. */
   protected def futureSettings = List[BooleanSetting]()
@@ -222,6 +222,7 @@ trait ScalaSettings extends AbsScalaSettings
   val YdisableFlatCpCaching  = BooleanSetting    ("-YdisableFlatCpCaching", "Do not cache flat classpath representation of classpath elements from jars across compiler instances.")
   val YpartialUnification = BooleanSetting ("-Ypartial-unification", "Enable partial unification in type constructor inference")
   val YinductionHeuristics = BooleanSetting ("-Yinduction-heuristics", "Enable induction heuristics in implicit resolution")
+  val YkindPolymorphism = BooleanSetting ("-Ykind-polymorphism", "Enable kind polymorphism")
 
   val YvirtClasses    = false // too embryonic to even expose as a -Y //BooleanSetting    ("-Yvirtual-classes", "Support virtual classes")
   val YdisableUnreachablePrevention = BooleanSetting("-Ydisable-unreachable-prevention", "Disable the prevention of unreachable blocks in code generation.")
