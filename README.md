@@ -155,7 +155,7 @@ To switch your project permanently to Typelevel Scala 4 update your `build.sbt` 
 
 ```
 inThisBuild(Seq(
-  scalaOrganization := "org.typelevel"
+  scalaOrganization := "org.typelevel",
   scalaVersion := "2.12.2-bin-typelevel-4"
 ))
 ```
