@@ -45,11 +45,11 @@ which indicates the Typelevel feature level beyond the baseline compiler. We are
 Typelevel features across the Scala compiler versions we support.
 
 The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11 and
-2.12.2. Full release notes are available,
+2.12.3. Full release notes are available,
 
-+ Typelevel Scala 4 [2.12.2/2.11.11](https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md).
++ Typelevel Scala 4 [2.12.3/2.11.11](https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md).
 
-Support for Scala 2.13.0-M1 will be added in due course. Support for Scala 2.10.6 will be considered if sponsors step
+Support for Scala 2.13.0-M2 will be added in due course. Support for Scala 2.10.6 will be considered if sponsors step
 forward to support the necessary work.
 
 ## Should I use Typelevel Scala? In production?
@@ -78,42 +78,41 @@ relevant to practitioners.
 
 ## Try Typelevel Scala with an Ammonite instant REPL
 
-The quickest way to get to a Typelevel Scala 2.12.2 REPL path is to run the provided
+The quickest way to get to a Typelevel Scala 2.12.3 REPL path is to run the provided
 ["try Typelevel Scala"][try-tls] script, which has no dependencies other than an installed JDK. This script
 downloads and installs [coursier][coursier] and uses it to fetch the [Ammonite][ammonite] REPL and Typelevel Scala
-2.12.2. It then drops you immediately into a REPL session,
+2.12.3. It then drops you immediately into a REPL session,
 
 ```text
 % curl -s https://raw.githubusercontent.com/typelevel/scala/typelevel-readme/try-typelevel-scala.sh | bash
 Loading...
-Compiling replBridge.sc
-Compiling interpBridge.sc
-Compiling HardcodedPredef.sc
-Compiling ArgsPredef.sc
-Compiling predef.sc
-Compiling SharedPredef.sc
-Compiling LoadedPredef.sc
-Welcome to the Ammonite Repl 0.8.4
-(Scala 2.12.2-bin-typelevel-4 Java 1.8.0_131)
+Compiling (synthetic)/ammonite/predef/interpBridge.sc
+Compiling (synthetic)/ammonite/predef/replBridge.sc
+Compiling (synthetic)/ammonite/predef/DefaultPredef.sc
+Welcome to the Ammonite Repl 1.0.1
+(Scala 2.12.3-bin-typelevel-4 Java 1.8.0_144)
 If you like Ammonite, please support our development at www.patreon.com/lihaoyi
-@
 @ repl.compiler.settings.YliteralTypes.value = true
+
 
 @ trait Cond[T] { type V ; val value: V }
 defined trait Cond
-@
+
 @ implicit val condTrue = new Cond[true] { type V = String ; val value = "foo" }
-condTrue: AnyRef with Cond[true]{type V = String} = $sess.cmd2$$anon$1@4fef2259
+condTrue: AnyRef with Cond[true]{type V = String} = ammonite.$sess.cmd2$$anon$1@696a6506
+
 @ implicit val condFalse = new Cond[false] { type V = Int ; val value = 23 }
-condFalse: AnyRef with Cond[false]{type V = Int} = $sess.cmd3$$anon$1@463887f6
-@
+condFalse: AnyRef with Cond[false]{type V = Int} = ammonite.$sess.cmd3$$anon$1@461e9b31
+
 @ def cond[T](implicit cond: Cond[T]): cond.V = cond.value
 defined function cond
-@
+
 @ cond[true] : String
 res5: String = "foo"
+
 @ cond[false] : Int
 res6: Int = 23
+
 @ Bye!
 %
 ```
@@ -126,7 +125,7 @@ res6: Int = 23
 
 Requirements for using Typelevel Scala in your existing projects,
 
-+ You must be using Lightbend Scala 2.12.2 or 2.11.11.
++ You must be using Lightbend Scala 2.12.3 or 2.11.11.
 + You must be using SBT 0.13.13 or later.
 + Your build should use `scalaOrganization.value` and `CrossVersion.patch` appropriately.
 
@@ -138,15 +137,15 @@ Requirements for using Typelevel Scala in your existing projects,
   ```
   inThisBuild(Seq(
     organization := "com.chuusai",
-    scalaVersion := "2.12.2",
-    crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.2", "2.13.0-M1")
+    scalaVersion := "2.12.3",
+    crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.3", "2.13.0-M1")
   ))
   ```
 
 You can now temporarily build with Typelevel Scala by entering,
 
 ```
-> ; set every scalaOrganization := "org.typelevel" ; ++2.12.2-bin-typelevel-4
+> ; set every scalaOrganization := "org.typelevel" ; ++2.12.3-bin-typelevel-4
 ```
 
 on the SBT REPL.
@@ -156,7 +155,7 @@ To switch your project permanently to Typelevel Scala 4 update your `build.sbt` 
 ```
 inThisBuild(Seq(
   scalaOrganization := "org.typelevel"
-  scalaVersion := "2.12.2-bin-typelevel-4"
+  scalaVersion := "2.12.3-bin-typelevel-4"
 ))
 ```
 
@@ -180,7 +179,7 @@ of the Lightbend one. You can verify that the settings have been updated correct
 > show scalaOrganization
 [info] org.typelevel
 > show scalaVersion
-[info] 2.12.2-bin-typelevel-4
+[info] 2.12.3-bin-typelevel-4
 ```
 
 [build-tweaks-1]: https://github.com/typelevel/scala/issues/135
@@ -197,7 +196,7 @@ If you are using maven with the `scala-maven-plugin`, set the `<scalaOrganizatio
   <version>3.2.1</version>
   <configuration>
     <scalaOrganization>org.typelevel</scalaOrganization>
-    <scalaVersion>2.12.2-bin-typelevel-4</scalaOrganization>
+    <scalaVersion>2.12.3-bin-typelevel-4</scalaOrganization>
   </configuration>
 </plugin>
 ```
