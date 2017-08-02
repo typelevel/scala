@@ -1,6 +1,7 @@
 # Typelevel Scala 4
 
-We are pleased to announce the availability of [Typelevel][typelevel] [Scala][tls] 4 for Scala 2.12.2 and 2.11.11.
+We are pleased to announce the availability of [Typelevel][typelevel] [Scala][tls] 4 for Scala 2.11.11, 2.12.3 and
+2.13.0-M2.
 
 ## Typelevel Scala releases
 
@@ -8,21 +9,20 @@ As of this release, Typelevel Scala releases are distinguished from the correspo
 version number suffix which indicates the Typelevel feature level beyond the baseline compiler. We are attempting to
 maintain parity of Typelevel features across the Scala compiler versions we support.
 
-The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11 and
-2.12.2.
+The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11,
+2.12.3 and 2.13.0-M2.
 
-Support for Scala 2.13.0-M1 will be added in due course. Support for Scala 2.10.6 will be considered if sponsors step
-forward to support the necessary work.
+Support for Scala 2.10.6 will be considered if sponsors step forward to support the necessary work.
 
 ## Additonal features included in TLS 4
 
-The Typelevel Scala additions to Lightbend Scala 2.12.2 and 2.11.11 can be found on the branches
-[2.12.2-bin-typelevel-4][2.12.2-bin-typelevel-4] and [2.11.11-bin-typelevel-4][2.11.11-bin-typelevel-4] respectively
-of this repository.
+The Typelevel Scala additions to Lightbend Scala 2.11.11, 2.12.3 and 2.13.0-M2 can be found on the branches
+[2.11.11-bin-typelevel-4][2.11.11-bin-typelevel-4], [2.12.3-bin-typelevel-4][2.12.3-bin-typelevel-4] and
+respectively [2.13.0-M2-bin-typelevel-4][2.13.0-M2-bin-typelevel-4] of this repository.
 
-Typelevel Scala 4 offers the features listed below over Lightbend Scala 2.12.2/2.11.11. Following [Typelevel Scala
-policy][merge-policy] each one of these exists as a pull request against Lightbend Scala and is being considered for
-merging.
+Typelevel Scala 4 offers the features listed below over Lightbend Scala 2.11.11/2.12.3/2.13.0-M2. Following [Typelevel
+Scala policy][merge-policy] each one of these exists as a pull request against Lightbend Scala and is being considered
+for merging.
 
 Please report issues with the new features on the [TLS][tls] github repo issue tracker or directly on the
 corresponding LBS pull request. Discussion can be found on the TLS [gitter channel][tls-gitter]. More general Scala
@@ -295,7 +295,7 @@ More details on the [PR][pr-trailing-commas].
 
 Requirements for using Typelevel Scala in your existing projects,
 
-+ You must be using Lightbend Scala 2.12.2 or 2.11.11.
++ You must be using Lightbend Scala 2.11.11, 2.12.3 or 2.13.0-M2.
 + You must be using SBT 0.13.13 or later.
 + Your build should use `scalaOrganization.value` and `CrossVersion.patch` appropriately.
 
@@ -307,15 +307,15 @@ Requirements for using Typelevel Scala in your existing projects,
   ```
   inThisBuild(Seq(
     organization := "com.chuusai",
-    scalaVersion := "2.12.2",
-    crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.2", "2.13.0-M1")
+    scalaVersion := "2.12.3",
+    crossScalaVersions := Seq("2.10.6", "2.11.11", "2.12.3", "2.13.0-M2")
   ))
   ```
 
 You can now temporarily build with Typelevel Scala by entering,
 
 ```
-> ; set every scalaOrganization := "org.typelevel" ; ++2.12.2-bin-typelevel-4
+> ; set every scalaOrganization := "org.typelevel" ; ++2.12.3-bin-typelevel-4
 ```
 
 on the SBT REPL.
@@ -325,7 +325,7 @@ To switch your project permanently to Typelevel Scala 4 update your `build.sbt` 
 ```
 inThisBuild(Seq(
   scalaOrganization := "org.typelevel"
-  scalaVersion := "2.12.2-bin-typelevel-4"
+  scalaVersion := "2.12.3-bin-typelevel-4"
 ))
 ```
 
@@ -349,7 +349,7 @@ of the Lightbend one. You can verify that the settings have been updated correct
 > show scalaOrganization
 [info] org.typelevel
 > show scalaVersion
-[info] 2.12.2-bin-typelevel-4
+[info] 2.12.3-bin-typelevel-4
 ```
 
 [build-tweaks-1]: https://github.com/typelevel/scala/issues/135
@@ -366,7 +366,7 @@ If you are using maven with the `scala-maven-plugin`, set the `<scalaOrganizatio
   <version>3.2.1</version>
   <configuration>
     <scalaOrganization>org.typelevel</scalaOrganization>
-    <scalaVersion>2.12.2-bin-typelevel-4</scalaOrganization>
+    <scalaVersion>2.12.3-bin-typelevel-4</scalaOrganization>
   </configuration>
 </plugin>
 ```
@@ -374,7 +374,7 @@ If you are using maven with the `scala-maven-plugin`, set the `<scalaOrganizatio
 ## Contributors
 
 Typelevel Scala is only possible because of the contributions made to Lightbend Scala &mdash; see the contributors
-section of the LBS Scala 2.12.2 and 2.11.11 [release notes][lbs-2.12.2].
+section of the LBS Scala 2.12.3 and 2.11.11 [release notes][lbs-2.12.3].
 
 We are hugely grateful to the following for their work on the enhancements included in Typelevel Scala 4 and look
 forward to them being included in future Lightbend Scala releases,
@@ -412,12 +412,13 @@ Typelevel Scala in general and to the PRs merged in this release in particular.
 [lbs-gitter]: https://gitter.im/scala/contributors
 [typelevel]: http://typelevel.org/
 [lbs-readme]: https://github.com/scala/scala/blob/2.12.x/README.md
-[2.12.2-bin-typelevel-4]: https://github.com/typelevel/scala/commits/2.12.2-bin-typelevel-4
+[2.12.3-bin-typelevel-4]: https://github.com/typelevel/scala/commits/2.12.3-bin-typelevel-4
 [2.11.11-bin-typelevel-4]: https://github.com/typelevel/scala/commits/2.11.11-bin-typelevel-4
-[lbs-2.12.2]: https://www.scala-lang.org/news/releases-1Q17.html
+[2.13.0-M2-bin-typelevel-4]: https://github.com/typelevel/scala/commits/2.13.0-M2-bin-typelevel-4
+[lbs-2.12.3]: https://www.scala-lang.org/news/2.12.3
 [sip-23]: http://docs.scala-lang.org/sips/pending/42.type.html
 [shapeless]: https://github.com/milessabin/shapeless
-[induction-benchmark]: https://github.com/typelevel/scala/blob/2.12.2-bin-typelevel-4/test/induction/inductive-implicits-bench.scala
-[kind-poly-examples]: https://github.com/typelevel/scala/blob/2.12.2-bin-typelevel-4/test/files/pos/kind-poly.scala
-[trailing-comma-examples]: https://github.com/typelevel/scala/blob/2.12.2-bin-typelevel-4/test/files/pos/trailing-commas.scala
+[induction-benchmark]: https://github.com/typelevel/scala/blob/2.12.3-bin-typelevel-4/test/induction/inductive-implicits-bench.scala
+[kind-poly-examples]: https://github.com/typelevel/scala/blob/2.12.3-bin-typelevel-4/test/files/pos/kind-poly.scala
+[trailing-comma-examples]: https://github.com/typelevel/scala/blob/2.12.3-bin-typelevel-4/test/files/pos/trailing-commas.scala
 [typeable]: https://github.com/milessabin/shapeless/commit/820f12c678a7c1bb2bfb98c201db207cc7fc81de
