@@ -44,13 +44,12 @@ Typelevel Scala releases are distinguished from the corresponding Lightbend Scal
 which indicates the Typelevel feature level beyond the baseline compiler. We are attempting to maintain parity of
 Typelevel features across the Scala compiler versions we support.
 
-The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11 and
-2.12.3. Full release notes are available,
+The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11, 
+2.12.3 and 2.13.0-M2. Full release notes are available,
 
-+ Typelevel Scala 4 [2.12.3/2.11.11](https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md).
++ Typelevel Scala 4 [2.11.11/2.12.3/2.13.0-M2](https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md).
 
-Support for Scala 2.13.0-M2 will be added in due course. Support for Scala 2.10.6 will be considered if sponsors step
-forward to support the necessary work.
+Support for Scala 2.10.6 will be considered if sponsors step forward to support the necessary work.
 
 ## Should I use Typelevel Scala? In production?
 
@@ -125,7 +124,7 @@ res6: Int = 23
 
 Requirements for using Typelevel Scala in your existing projects,
 
-+ You must be using Lightbend Scala 2.12.3 or 2.11.11.
++ You must be using Lightbend Scala 2.11.11, 2.12.3 or 2.13.0-M2.
 + You must be using SBT 0.13.13 or later.
 + Your build should use `scalaOrganization.value` and `CrossVersion.patch` appropriately.
 
@@ -138,7 +137,7 @@ Requirements for using Typelevel Scala in your existing projects,
   inThisBuild(Seq(
     organization := "com.chuusai",
     scalaVersion := "2.12.3",
-    crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.3", "2.13.0-M1")
+    crossScalaVersions := Seq("2.10.6", "2.11.11", "2.12.3", "2.13.0-M2")
   ))
   ```
 
@@ -166,7 +165,7 @@ following content,
 ```
 inThisBuild(Seq(
   scalaOrganization := "org.typelevel",
-  scalaVersion      := "2.11.11-bin-typelevel-4"
+  scalaVersion      := "2.12.3-bin-typelevel-4"
 ))
 ```
 
