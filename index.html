@@ -46,15 +46,14 @@ interoperability with the rest of the Scala ecosystem.</p>
 which indicates the Typelevel feature level beyond the baseline compiler. We are attempting to maintain parity of
 Typelevel features across the Scala compiler versions we support.</p>
 
-<p>The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11 and
-2.12.3. Full release notes are available,</p>
+<p>The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11, 
+2.12.3 and 2.13.0-M2. Full release notes are available,</p>
 
 <ul>
-  <li>Typelevel Scala 4 <a href="https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md">2.12.3/2.11.11</a>.</li>
+  <li>Typelevel Scala 4 <a href="https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md">2.11.11/2.12.3/2.13.0-M2</a>.</li>
 </ul>
 
-<p>Support for Scala 2.13.0-M2 will be added in due course. Support for Scala 2.10.6 will be considered if sponsors step
-forward to support the necessary work.</p>
+<p>Support for Scala 2.10.6 will be considered if sponsors step forward to support the necessary work.</p>
 
 <h2 id="should-i-use-typelevel-scala-in-production">Should I use Typelevel Scala? In production?</h2>
 
@@ -128,7 +127,7 @@ res6: Int = 23
 <p>Requirements for using Typelevel Scala in your existing projects,</p>
 
 <ul>
-  <li>You must be using Lightbend Scala 2.12.3 or 2.11.11.</li>
+  <li>You must be using Lightbend Scala 2.11.11, 2.12.3 or 2.13.0-M2.</li>
   <li>You must be using SBT 0.13.13 or later.</li>
   <li>
     <p>Your build should use <code class="highlighter-rouge">scalaOrganization.value</code> and <code class="highlighter-rouge">CrossVersion.patch</code> appropriately.</p>
@@ -143,7 +142,7 @@ res6: Int = 23
     <div class="highlighter-rouge"><pre class="highlight"><code>inThisBuild(Seq(
   organization := "com.chuusai",
   scalaVersion := "2.12.3",
-  crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.3", "2.13.0-M1")
+  crossScalaVersions := Seq("2.10.6", "2.11.11", "2.12.3", "2.13.0-M2")
 ))
 </code></pre>
     </div>
@@ -173,7 +172,7 @@ following content,</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>inThisBuild(Seq(
   scalaOrganization := "org.typelevel",
-  scalaVersion      := "2.11.11-bin-typelevel-4"
+  scalaVersion      := "2.12.3-bin-typelevel-4"
 ))
 </code></pre>
 </div>
