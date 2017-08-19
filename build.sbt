@@ -7,11 +7,11 @@ scalaVersion := "2.11.8"
 micrositeName := "Typelevel"
 micrositeDescription := "Our fork of the Scala compiler"
 micrositeAuthor := "Typelevel contributors"
-micrositeHomepage := "http://typelevel.org/scala"
+micrositeHomepage := "http://typelevel.org/scala/"
 micrositeGithubOwner := "typelevel"
 micrositeGithubRepo := "scala"
 micrositeBaseUrl := "scala"
-micrositeDocumentationUrl := "docs"
+micrositeDocumentationUrl := "docs/"
 micrositeExtraMdFiles := Map(
   file("README.md") -> ExtraMdFileConfig(
     "index.md",
