@@ -3202,12 +3202,14 @@ trait Types
        *  }}}
        */
       def unifySimple = {
-        val sym = tp.typeSymbol
-        if (sym == NothingClass || sym == AnyClass) { // kind-polymorphic
-          // scala/bug#7126 if we register some type alias `T=Any`, we can later end
-          // with malformed types like `T[T]` during type inference in
-          // `handlePolymorphicCall`. No such problem if we register `Any`.
-          addBound(sym.tpe)
+        // scala/bug#7126 if we register some type alias `T=Any`, we can later end
+        // with malformed types like `T[T]` during type inference in
+        // `handlePolymorphicCall`. No such problem if we register `Any`.
+        if (typeIsNothing(tp)) { // kind-polymorphic
+          addBound(NothingTpe)
+          true
+        } else if(typeIsAny(tp)) { // kind-polymorphic
+          addBound(AnyTpe)
           true
         } else if (params.isEmpty) {
           addBound(tp)
@@ -4787,8 +4789,8 @@ trait Types
   private[scala] val boundsContainType = (bounds: TypeBounds, tp: Type) => bounds containsType tp
   private[scala] val typeListIsEmpty = (ts: List[Type]) => ts.isEmpty
   private[scala] val typeIsSubTypeOfSerializable = (tp: Type) => tp <:< SerializableTpe
-  private[scala] val typeIsNothing = (tp: Type) => tp.typeSymbolDirect eq NothingClass
-  private[scala] val typeIsAny = (tp: Type) => tp.typeSymbolDirect eq AnyClass
+  private[scala] val typeIsNothing = (tp: Type) => tp.dealias match { case TypeRef(_, NothingClass, _) => true ; case _ => false }
+  private[scala] val typeIsAny = (tp: Type) => tp.dealias match { case TypeRef(_, AnyClass, _) => true ; case _ => false }
   private[scala] val typeIsHigherKinded = (tp: Type) => tp.isHigherKinded
 
   /** The maximum depth of type `tp` */

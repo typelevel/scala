@@ -366,4 +366,17 @@ class TypesTest {
       checks.foreach(check => assert(lub(check) =:= result))
     }
   }
+
+  @Test
+  def testAnyNothing(): Unit = {
+    object Foo { val a: Any = 23 ; val n: Nothing = ??? }
+    val aSym = typeOf[Foo.type].member(TermName("a"))
+    val nSym = typeOf[Foo.type].member(TermName("n"))
+
+    assert(typeIsAny(AnyTpe))
+    assert(typeIsNothing(NothingTpe))
+    assert(!typeIsAny(LiteralType(Constant(1))))
+    assert(!typeIsAny(SingleType(NoPrefix, aSym)))
+    assert(!typeIsNothing(SingleType(NoPrefix, nSym)))
+  }
 }
