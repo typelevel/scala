@@ -18,3 +18,5 @@ ProblemFilters.exclude[DirectMissingMethodProblem]("scala.reflect.runtime.Synchr
 ProblemFilters.exclude[DirectMissingMethodProblem]("scala.reflect.runtime.Settings.isScala213")
 
 ProblemFilters.exclude[DirectMissingMethodProblem]("scala.reflect.runtime.Settings.YinductionHeuristics")
+
+ProblemFilters.exclude[DirectMissingMethodProblem]("scala.reflect.runtime.Settings.YkindPolymorphism")

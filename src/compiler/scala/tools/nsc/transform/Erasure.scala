@@ -121,7 +121,7 @@ abstract class Erasure extends InfoTransform
         if (sym == ArrayClass && args.nonEmpty)
           if (unboundedGenericArrayLevel(tp1) == 1) ObjectTpe
           else mapOver(tp1)
-        else if (sym == AnyClass || sym == AnyValClass || sym == SingletonClass)
+        else if (sym == AnyClass || sym == AnyValClass || sym == SingletonClass || sym == AnyKindClass)
           ObjectTpe
         else if (sym == UnitClass)
           BoxedUnitTpe
@@ -316,7 +316,7 @@ abstract class Erasure extends InfoTransform
             assert(!sym.isAliasType, "Unexpected alias type: " + sym)
             builder.append(TVAR_TAG).append(sym.name).append(';')
           }
-          else if (sym == AnyClass || sym == AnyValClass || sym == SingletonClass)
+          else if (sym == AnyClass || sym == AnyValClass || sym == SingletonClass || sym == AnyKindClass)
             jsig(ObjectTpe)
           else if (sym == UnitClass)
             jsig(BoxedUnitTpe)
