@@ -296,7 +296,7 @@ More details on the [PR][pr-trailing-commas].
 Requirements for using Typelevel Scala in your existing projects,
 
 + You must be using Lightbend Scala 2.11.11, 2.12.3 or 2.13.0-M2.
-+ You must be using SBT 0.13.13 or later.
++ You must be using SBT 0.13.15 or later.
 + Your build should use `scalaOrganization.value` and `CrossVersion.patch` appropriately.
 
   You can find many examples linked to from [this issue][build-tweaks-1].
