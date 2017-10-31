@@ -40,3 +40,7 @@ ProblemFilters.exclude[MissingFieldProblem]("scala.runtime.LazyBoolean.serialVer
 ProblemFilters.exclude[MissingFieldProblem]("scala.runtime.LazyFloat.serialVersionUID")
 
 ProblemFilters.exclude[MissingClassProblem]("scala.annotation.inductive")
+
+ProblemFilters.exclude[MissingClassProblem]("scala.ValueOf")
+ProblemFilters.exclude[MissingClassProblem]("scala.ValueOf$")
+ProblemFilters.exclude[DirectMissingMethodProblem]("scala.Predef.valueOf")

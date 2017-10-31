@@ -20,3 +20,5 @@ ProblemFilters.exclude[DirectMissingMethodProblem]("scala.reflect.runtime.Settin
 ProblemFilters.exclude[DirectMissingMethodProblem]("scala.reflect.runtime.Settings.YinductionHeuristics")
 
 ProblemFilters.exclude[DirectMissingMethodProblem]("scala.reflect.runtime.Settings.YkindPolymorphism")
+
+ProblemFilters.exclude[DirectMissingMethodProblem]("scala.reflect.runtime.Settings.YliteralTypes")
