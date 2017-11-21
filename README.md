@@ -44,7 +44,7 @@ Typelevel Scala releases are distinguished from the corresponding Lightbend Scal
 which indicates the Typelevel feature level beyond the baseline compiler. We are attempting to maintain parity of
 Typelevel features across the Scala compiler versions we support.
 
-The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11, 
+The current Typelevel feature level is 4 and it is avaliable as a drop in replacement for Lightbend Scala 2.11.11,
 2.12.4 and 2.13.0-M2. Full release notes are available,
 
 + Typelevel Scala 4 [2.11.11/2.12.4/2.13.0-M2](https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md).
@@ -195,7 +195,7 @@ If you are using maven with the `scala-maven-plugin`, set the `<scalaOrganizatio
   <version>3.2.1</version>
   <configuration>
     <scalaOrganization>org.typelevel</scalaOrganization>
-    <scalaVersion>2.12.4-bin-typelevel-4</scalaOrganization>
+    <scalaVersion>2.12.4-bin-typelevel-4</scalaVersion>
   </configuration>
 </plugin>
 ```
