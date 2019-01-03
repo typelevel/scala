@@ -72,7 +72,7 @@ Some things that may not be obvious from reading the documentation of the phases
 * After `typer` (phase 4) completes, all the typechecking has been completed. For example, any error due to Type classes missing an implicit implementation will happen at this stage. The remaining 20 phases work with code that type-checks. Guaranteed ;)
 * `pickler` (phase 8) generates attributes for class files which are later on used for compilation against binaries. This is what allows you to use a certain jar file as a library without having to bring the source code of the library along.
 * `uncurry` (phase 10) turns functions (like `val f: Int => Int`) to anonymous classes. In JVM 8 this benefits from new structures introduced to work with lambdas.
-* `lambalift` (phase 17) lifts nested functions outside of methods, a different task that `uncurry`
+* `lambdalift` (phase 17) lifts nested functions outside of methods, a different task that `uncurry`
 * `constructors` (phase 18) generates the constructors for the classes. Keep in mind Scala constructors are very different to the ones expected by the jvm (for instance any expression in the body of a class is executed during construction) so there' quite a bit going on in this phase.
 
 ## Example
