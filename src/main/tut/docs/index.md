@@ -20,4 +20,4 @@ represents elements of the Scala language.
 * [Symbols](./symbols.html)
 * [Types](./types.html)
 
-If you want to contribute, you can easily do so via edit links present at the bottom of the pages [like this one](https://github.com/typelevel/scala/edit/typelevel-readme/src/main/resources/microsite/docs/index.md)
+If you want to contribute, you can easily do so via edit links present at the bottom of the pages [like this one](https://github.com/typelevel/scala/edit/typelevel-readme/src/main/tut/docs/index.md)
