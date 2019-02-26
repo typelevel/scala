@@ -256,7 +256,6 @@ The current maintainers (people who can merge pull requests) are:
  + George Leontiev ([@folone](https://github.com/folone))
  + Jon Pretty ([@propensive](https://github.com/propensive))
  + Lars Hupel ([@larsrh](https://github.com/larsrh))
- + Mike O'Connor ([@stew](https://github.com/stew))
  + Miles Sabin ([@milessabin](https://github.com/milessabin))
  + Tom Switzer ([@tixxit](https://github.com/tixxit))
 
