@@ -238,7 +238,7 @@ channels.
 Topics specific to Typelevel Scala are discussed on its [gitter channel][tls-gitter]. Scala compiler development is
 discussed on the [scala/contributors gitter channel][lbs-gitter].
 
-People are expected to follow the [Typelevel Code of Conduct][coc] when discussing Typelevel Scala on the Github page,
+People are expected to follow the [Scala Code of Conduct][coc] when discussing Typelevel Scala on the Github page,
 Gitter channel, or other venues.
 
 We hope that our community will be respectful, helpful, and kind. If you find yourself embroiled in a situation that
@@ -266,7 +266,7 @@ The current maintainers (people who can merge pull requests) are:
 [tls-gitter]: https://gitter.im/typelevel/scala
 [lbs-gitter]: https://gitter.im/scala/contributors
 [typelevel]: http://typelevel.org/
-[coc]: http://typelevel.org/conduct.html
+[coc]: https://www.scala-lang.org/conduct/
 [lbs-readme]: https://github.com/scala/scala/blob/2.12.x/README.md
 [scalac-post]: http://milessabin.com/blog/2016/05/13/scalac-hacking/
 [milessabin]: https://github.com/milessabin
