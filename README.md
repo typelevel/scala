@@ -1,16 +1,22 @@
 [![Build Status](https://travis-ci.org/typelevel/scala.svg?branch=typelevel-readme)](https://travis-ci.org/typelevel/scala) [![Join the chat at https://gitter.im/typelevel/scala](https://badges.gitter.im/typelevel/scala.svg)](https://gitter.im/typelevel/scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# Typelevel Scala
+# (ARCHIVED) Typelevel Scala
 
-## What is this repository?
 
-This [repository][tls] contains the [Typelevel][typelevel] [fork][fork] of the Scala compiler.
+## What ~is~ was this repository?
 
-Typelevel Scala is a conservative, collaborative and binary compatible fork of [Lightbend Scala][lbs]. The intention
-is for it to provide early access to bug fixes and enhancements of the Scala toolchain which are of particular
-interest to [projects][projects] which use the "Typelevel style" &mdash; extensive use of type classes, generic
-programming and exploitation of the distinctive features of Scala's type system such as higher-kinded, dependent and
-singleton types.
+This [repository][tls] contains the [Typelevel][typelevel] maintained [fork][fork] of [Lightbend's][lbs] compiler for the Scala 2.
+
+Typelevel Scala was a fork of `scalac`, the compiler for the Scala 2 language. The TypeLevel fork was based on  [Lightbend Scala][lbs], 
+and it was forked as a conservative, collaborative, and binary compatible fork. 
+Its main purpose was to prototype and deliver features, enhancements, and bugfixes, to improve the experience of those who 
+use functional programming in Scala.
+
+In July 2019, after the release of version 2.13.0 of the Scala 2 compiler, and with Dotty (Scala 3) already in advanced state of development, 
+the authors [concluded](https://github.com/typelevel/scala/issues/186) that the TypeLevel fork had served its purpose.
+New contributions are best forwarded to the [Lightbend's][lbs] compiler fork.
+
+> The way I see it, the TypeLevel compiler was very useful for trying out and refining features that have found their way into the mainline compiler afterwards. (by [Martin Odersky](https://github.com/typelevel/scala/issues/186#issuecomment-508002321)
 
 ## Relationship with Lightbend Scala
 
