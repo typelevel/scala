@@ -1,16 +1,19 @@
 [![Build Status](https://travis-ci.org/typelevel/scala.svg?branch=typelevel-readme)](https://travis-ci.org/typelevel/scala) [![Join the chat at https://gitter.im/typelevel/scala](https://badges.gitter.im/typelevel/scala.svg)](https://gitter.im/typelevel/scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# Typelevel Scala
+# (ARCHIVED) Typelevel Scala
 
-## What is this repository?
+## What ~is~ was this repository?
 
-This [repository][tls] contains the [Typelevel][typelevel] [fork][fork] of the Scala compiler.
+This [repository][tls] contains the [Typelevel][typelevel] maintained [fork][fork] of [Lightbend's][lbs] compiler for the Scala 2.
 
-Typelevel Scala is a conservative, collaborative and binary compatible fork of [Lightbend Scala][lbs]. The intention
-is for it to provide early access to bug fixes and enhancements of the Scala toolchain which are of particular
-interest to [projects][projects] which use the "Typelevel style" &mdash; extensive use of type classes, generic
-programming and exploitation of the distinctive features of Scala's type system such as higher-kinded, dependent and
-singleton types.
+Typelevel Scala was forked in 2015 and 2016, as a conservative, collaborative, and binary compatible fork of [Lightbend Scala][lbs]. 
+The motivation for creating this fork was to provide and integrate bug fixes and enhancements to the Scala toolchain.
+These enhancements were of particular interest for Scala programmers and [projects][projects] that use the "Typelevel style" &mdash;
+which involves an extensive use of type classes, generic programming, higuer-kinded type parameters, dependent types, and singleton types.
+
+As of 2019, with the release of version 2.13.0 of the Scala 2 compiler, many of the issues and bugs that motivated the fork have been solved. 
+Furthermore, given that [Scala 3](https://dotty.epfl.ch/) is to be released soon, and some developers have started to moved on to it, 
+further development of this fork is no longer useful.  We recommend submitting improvements directly to [Lightbend Scala][lbs].
 
 ## Relationship with Lightbend Scala
 
