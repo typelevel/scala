@@ -10,4 +10,4 @@ as described in the [language specification](https://www.scala-lang.org/files/ar
 
 The official documentation of the compiler has a great section giving more details on  [Trees](http://docs.scala-lang.org/overviews/reflection/symbols-trees-types.html)/
 
-Want to contribute? [Edit this file](https://github.com/typelevel/scala/edit/typelevel-readme/src/main/resources/microsite/docs/trees.md)
+Want to contribute? [Edit this file](https://github.com/typelevel/scala/edit/typelevel-readme/src/main/tut/docs/trees.md)

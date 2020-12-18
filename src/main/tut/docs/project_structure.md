@@ -114,4 +114,4 @@ Once in `sbt`, run `compile`. The first time this may take several minutes, depe
 
 Once it finishes, you are ready to start hacking the compiler. For more information on the initial compilation you may want to read [Miles Sabin's post](https://milessabin.com/blog/2016/05/13/scalac-hacking/) on working with the compiler, if you haven't already.
 
-Want to contribute? [Edit this file](https://github.com/typelevel/scala/edit/typelevel-readme/src/main/resources/microsite/docs/project_structure.md)
+Want to contribute? [Edit this file](https://github.com/typelevel/scala/edit/typelevel-readme/src/main/tut/docs/project_structure.md)
